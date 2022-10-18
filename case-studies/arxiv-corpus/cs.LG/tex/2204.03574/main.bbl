@@ -1,0 +1,375 @@
+\begin{thebibliography}{50}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bach et~al.(2022)Bach, Sanh, Yong, Webson, Raffel, Nayak, Sharma, Kim,
+  Bari, Fevry, Alyafeai, Dey, Santilli, Sun, Ben-David, Xu, Chhablani, Wang,
+  Fries, Al-shaibani, Sharma, Thakker, Almubarak, Tang, Radev, Jiang, and
+  Rush]{bach:acldemo22}
+S.~H. Bach, V.~Sanh, Z.-X. Yong, A.~Webson, C.~Raffel, N.~V. Nayak, A.~Sharma,
+  T.~Kim, M.~S. Bari, T.~Fevry, Z.~Alyafeai, M.~Dey, A.~Santilli, Z.~Sun,
+  S.~Ben-David, C.~Xu, G.~Chhablani, H.~Wang, J.~A. Fries, M.~S. Al-shaibani,
+  S.~Sharma, U.~Thakker, K.~Almubarak, X.~Tang, D.~Radev, M.~T.-J. Jiang, and
+  A.~M. Rush.
+\newblock {P}rompt{S}ource: {A}n integrated development environment and
+  repository for natural language prompts.
+\newblock In \emph{Meeting of the Association for Computational Linguistics
+  (ACL) Demonstration}, 2022.
+
+\bibitem[Bommasani et~al.(2021)Bommasani, Hudson, Adeli, Altman, Arora, von
+  Arx, Bernstein, Bohg, Bosselut, Brunskill, Brynjolfsson, Buch, Card,
+  Castellon, Chatterji, Chen, Creel, Davis, Demszky, Donahue, Doumbouya,
+  Durmus, Ermon, Etchemendy, Ethayarajh, Fei-Fei, Finn, Gale, Gillespie, Goel,
+  Goodman, Grossman, Guha, Hashimoto, Henderson, Hewitt, Ho, Hong, Hsu, Huang,
+  Icard, Jain, Jurafsky, Kalluri, Karamcheti, Keeling, Khani, Khattab, Koh,
+  Krass, Krishna, Kuditipudi, Kumar, Ladhak, Lee, Lee, Leskovec, Levent, Li,
+  Li, Ma, Malik, Manning, Mirchandani, Mitchell, Munyikwa, Nair, Narayan,
+  Narayanan, Newman, Nie, Niebles, Nilforoshan, Nyarko, Ogut, Orr,
+  Papadimitriou, Park, Piech, Portelance, Potts, Raghunathan, Reich, Ren, Rong,
+  Roohani, Ruiz, Ryan, R'e, Sadigh, Sagawa, Santhanam, Shih, Srinivasan,
+  Tamkin, Taori, Thomas, Tram{\`e}r, Wang, Wang, Wu, Wu, Wu, Xie, Yasunaga,
+  You, Zaharia, Zhang, Zhang, Zhang, Zhang, Zheng, Zhou, and
+  Liang]{bommasani:arxiv21}
+R.~Bommasani, D.~A. Hudson, E.~Adeli, R.~Altman, S.~Arora, S.~von Arx, M.~S.
+  Bernstein, J.~Bohg, A.~Bosselut, E.~Brunskill, E.~Brynjolfsson, S.~Buch,
+  D.~Card, R.~Castellon, N.~S. Chatterji, A.~S. Chen, K.~Creel, J.~Davis,
+  D.~Demszky, C.~Donahue, M.~Doumbouya, E.~Durmus, S.~Ermon, J.~Etchemendy,
+  K.~Ethayarajh, L.~Fei-Fei, C.~Finn, T.~Gale, L.~E. Gillespie, K.~Goel, N.~D.
+  Goodman, S.~Grossman, N.~Guha, T.~Hashimoto, P.~Henderson, J.~Hewitt, D.~E.
+  Ho, J.~Hong, K.~Hsu, J.~Huang, T.~F. Icard, S.~Jain, D.~Jurafsky, P.~Kalluri,
+  S.~Karamcheti, G.~Keeling, F.~Khani, O.~Khattab, P.~W. Koh, M.~S. Krass,
+  R.~Krishna, R.~Kuditipudi, A.~Kumar, F.~Ladhak, M.~Lee, T.~Lee, J.~Leskovec,
+  I.~Levent, X.~L. Li, X.~Li, T.~Ma, A.~Malik, C.~D. Manning, S.~P.
+  Mirchandani, E.~Mitchell, Z.~Munyikwa, S.~Nair, A.~Narayan, D.~Narayanan,
+  B.~Newman, A.~Nie, J.~C. Niebles, H.~Nilforoshan, J.~F. Nyarko, G.~Ogut,
+  L.~Orr, I.~Papadimitriou, J.~S. Park, C.~Piech, E.~Portelance, C.~Potts,
+  A.~Raghunathan, R.~Reich, H.~Ren, F.~Rong, Y.~H. Roohani, C.~Ruiz, J.~Ryan,
+  C.~R'e, D.~Sadigh, S.~Sagawa, K.~Santhanam, A.~Shih, K.~P. Srinivasan,
+  A.~Tamkin, R.~Taori, A.~W. Thomas, F.~Tram{\`e}r, R.~E. Wang, W.~Wang, B.~Wu,
+  J.~Wu, Y.~Wu, S.~M. Xie, M.~Yasunaga, J.~You, M.~A. Zaharia, M.~Zhang,
+  T.~Zhang, X.~Zhang, Y.~Zhang, L.~Zheng, K.~Zhou, and P.~Liang.
+\newblock On the opportunities and risks of foundation models.
+\newblock \emph{ArXiv}, abs/2108.07258, 2021.
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell, Agarwal, Herbert-Voss, Krueger, Henighan,
+  Child, Ramesh, Ziegler, Wu, Winter, Hesse, Chen, Sigler, Litwin, Gray, Chess,
+  Clark, Berner, McCandlish, Radford, Sutskever, and Amodei]{brown:arxiv20}
+T.~B. Brown, B.~Mann, N.~Ryder, M.~Subbiah, J.~Kaplan, P.~Dhariwal,
+  A.~Neelakantan, P.~Shyam, G.~Sastry, A.~Askell, S.~Agarwal, A.~Herbert-Voss,
+  G.~Krueger, T.~J. Henighan, R.~Child, A.~Ramesh, D.~M. Ziegler, J.~Wu,
+  C.~Winter, C.~Hesse, M.~Chen, E.~Sigler, M.~Litwin, S.~Gray, B.~Chess,
+  J.~Clark, C.~Berner, S.~McCandlish, A.~Radford, I.~Sutskever, and D.~Amodei.
+\newblock Language models are few-shot learners.
+\newblock \emph{ArXiv}, 2020.
+
+\bibitem[Chao et~al.(2016)Chao, Changpinyo, Gong, and Sha]{chao:eccv16}
+W.-L. Chao, S.~Changpinyo, B.~Gong, and F.~Sha.
+\newblock An empirical study and analysis of generalized zero-shot learning for
+  object recognition in the wild.
+\newblock In \emph{European conference on computer vision (ECCV)}, 2016.
+
+\bibitem[Chomsky(1956)]{chomsky1956three}
+N.~Chomsky.
+\newblock Three models for the description of language.
+\newblock \emph{IRE Transactions on information theory}, 2\penalty0
+  (3):\penalty0 113--124, 1956.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby]{dosovitskiy:arxiv21}
+A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai,
+  T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit,
+  and N.~Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at
+  scale.
+\newblock \emph{ArXiv}, abs/2010.11929, 2021.
+
+\bibitem[Farhadi et~al.(2009)Farhadi, Endres, Hoiem, and
+  Forsyth]{farhadi:cvpr09}
+A.~Farhadi, I.~Endres, D.~Hoiem, and D.~A. Forsyth.
+\newblock Describing objects by their attributes.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2009.
+
+\bibitem[Fodor and Pylyshyn(1988)]{fodor:cognition88}
+J.~A. Fodor and Z.~W. Pylyshyn.
+\newblock Connectionism and cognitive architecture: A critical analysis.
+\newblock \emph{Cognition}, 28:\penalty0 3--71, 1988.
+
+\bibitem[Gan et~al.(2015)Gan, Lin, Yang, Zhuang, and Hauptmann]{gan:aaai15}
+C.~Gan, M.~Lin, Y.~Yang, Y.~Zhuang, and A.~G. Hauptmann.
+\newblock Exploring semantic inter-class relationships (sir) for zero-shot
+  action recognition.
+\newblock In \emph{AAAI Conference on Artificial Intelligence (AAAI)}, 2015.
+
+\bibitem[Hao et~al.(2020)Hao, Li, Li, Carin, and Gao]{hao:cvpr20}
+W.~Hao, C.~Li, X.~Li, L.~Carin, and J.~Gao.
+\newblock Towards learning a generic agent for vision-and-language navigation
+  via pre-training.
+\newblock \emph{2020 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 13134--13143, 2020.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{kaiming:cvpr16}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2016.
+
+\bibitem[Houlsby et~al.(2019)Houlsby, Giurgiu, Jastrzebski, Morrone,
+  de~Laroussilhe, Gesmundo, Attariyan, and Gelly]{houlsby:icml19}
+N.~Houlsby, A.~Giurgiu, S.~Jastrzebski, B.~Morrone, Q.~de~Laroussilhe,
+  A.~Gesmundo, M.~Attariyan, and S.~Gelly.
+\newblock Parameter-efficient transfer learning for nlp.
+\newblock In \emph{ICML}, 2019.
+
+\bibitem[Hudson and Manning(2019)]{hudson:cvpr19}
+D.~A. Hudson and C.~D. Manning.
+\newblock Gqa: A new dataset for real-world visual reasoning and compositional
+  question answering.
+\newblock \emph{2019 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, 2019.
+
+\bibitem[Hupkes et~al.(2020)Hupkes, Dankers, Mul, and Bruni]{hupkes:jair20}
+D.~Hupkes, V.~Dankers, M.~Mul, and E.~Bruni.
+\newblock Compositionality decomposed: How do neural networks generalise?
+\newblock \emph{J. Artif. Intell. Res.}, 67:\penalty0 757--795, 2020.
+
+\bibitem[Isola et~al.(2015)Isola, Lim, and Adelson]{isola:cvpr15}
+P.~Isola, J.~J. Lim, and E.~H. Adelson.
+\newblock Discovering states and transformations in image collections.
+\newblock In \emph{CVPR}, 2015.
+
+\bibitem[Jain et~al.(2021)Jain, Guo, Srinivasan, Chen, Kudugunta, Jia, Yang,
+  and Baldridge]{jain:arxiv21}
+A.~Jain, M.~Guo, K.~Srinivasan, T.~Chen, S.~Kudugunta, C.~Jia, Y.~Yang, and
+  J.~Baldridge.
+\newblock Mural: multimodal, multitask retrieval across languages.
+\newblock \emph{arXiv preprint arXiv:2109.05125}, 2021.
+
+\bibitem[Jia et~al.(2021)Jia, Yang, Xia, Chen, Parekh, Pham, Le, Sung, Li, and
+  Duerig]{jia:icml21}
+C.~Jia, Y.~Yang, Y.~Xia, Y.-T. Chen, Z.~Parekh, H.~Pham, Q.~V. Le, Y.-H. Sung,
+  Z.~Li, and T.~Duerig.
+\newblock Scaling up visual and vision-language representation learning with
+  noisy text supervision.
+\newblock In \emph{ICML}, 2021.
+
+\bibitem[Kipf and Welling(2017)]{kipf:iclr17}
+T.~N. Kipf and M.~Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2017.
+
+\bibitem[Lake and Baroni(2018)]{lake:icml18}
+B.~M. Lake and M.~Baroni.
+\newblock Generalization without systematicity: On the compositional skills of
+  sequence-to-sequence recurrent networks.
+\newblock In \emph{ICML}, 2018.
+
+\bibitem[Lampert et~al.(2013)Lampert, Nickisch, and Harmeling]{lampert:pami14}
+C.~H. Lampert, H.~Nickisch, and S.~Harmeling.
+\newblock Attribute-based classification for zero-shot visual object
+  categorization.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
+  (PAMI)}, 36\penalty0 (3):\penalty0 453--465, 2013.
+
+\bibitem[Lester et~al.(2021)Lester, Al-Rfou, and Constant]{lester:emnlp21}
+B.~Lester, R.~Al-Rfou, and N.~Constant.
+\newblock The power of scale for parameter-efficient prompt tuning.
+\newblock In \emph{EMNLP}, 2021.
+
+\bibitem[Li et~al.(2022)Li, Weinberger, Belongie, Koltun, and
+  Ranftl]{li:iclr22}
+B.~Li, K.~Q. Weinberger, S.~Belongie, V.~Koltun, and R.~Ranftl.
+\newblock Language-driven semantic segmentation.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Li and Liang(2021)]{li:arxiv21}
+X.~L. Li and P.~Liang.
+\newblock Prefix-tuning: Optimizing continuous prompts for generation, 2021.
+
+\bibitem[Li et~al.(2021)Li, Liang, Zhao, Cui, Ouyang, Shao, Yu, and
+  Yan]{li:arxiv21declip}
+Y.~Li, F.~Liang, L.~Zhao, Y.~Cui, W.~Ouyang, J.~Shao, F.~Yu, and J.~Yan.
+\newblock Supervision exists everywhere: A data efficient contrastive
+  language-image pre-training paradigm.
+\newblock \emph{ArXiv}, abs/2110.05208, 2021.
+
+\bibitem[Li et~al.(2020)Li, Xu, Mao, and Lu]{li:cvpr20}
+Y.-L. Li, Y.~Xu, X.~Mao, and C.~Lu.
+\newblock Symmetry and group in attribute-object compositions.
+\newblock \emph{2020 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 11313--11322, 2020.
+
+\bibitem[Liu et~al.(2021)Liu, Yuan, Fu, Jiang, Hayashi, and
+  Neubig]{liu:arxiv21}
+P.~Liu, W.~Yuan, J.~Fu, Z.~Jiang, H.~Hayashi, and G.~Neubig.
+\newblock Pre-train, prompt, and predict: A systematic survey of prompting
+  methods in natural language processing.
+\newblock \emph{ArXiv}, abs/2107.13586, 2021.
+
+\bibitem[Mancini et~al.(2021{\natexlab{a}})Mancini, Naeem, Xian, and
+  Akata]{mancini:cvpr21}
+M.~Mancini, M.~Naeem, Y.~Xian, and Z.~Akata.
+\newblock Open world compositional zero-shot learning.
+\newblock In \emph{34th IEEE Conference on Computer Vision and Pattern
+  Recognition}. IEEE, 2021{\natexlab{a}}.
+
+\bibitem[Mancini et~al.(2021{\natexlab{b}})Mancini, Naeem, Xian, and
+  Akata]{mancini:arxiv21}
+M.~Mancini, M.~F. Naeem, Y.~Xian, and Z.~Akata.
+\newblock Learning graph embeddings for open world compositional zero-shot
+  learning.
+\newblock \emph{ArXiv}, abs/2105.01017, 2021{\natexlab{b}}.
+
+\bibitem[Marcus(2001)]{marcus:mit01}
+G.~F. Marcus.
+\newblock The algebraic mind: Integrating connectionism and cognitive science.
+\newblock 2001.
+
+\bibitem[Misra et~al.(2017)Misra, Gupta, and Hebert]{misra:cvpr17}
+I.~Misra, A.~K. Gupta, and M.~Hebert.
+\newblock From red wine to red tomato: Composition with context.
+\newblock \emph{2017 IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 1160--1169, 2017.
+
+\bibitem[Naeem et~al.(2021)Naeem, Xian, Tombari, and Akata]{naeem:cvpr21}
+M.~F. Naeem, Y.~Xian, F.~Tombari, and Z.~Akata.
+\newblock Learning graph embeddings for compositional zero-shot learning.
+\newblock \emph{2021 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 953--962, 2021.
+
+\bibitem[Nagarajan and Grauman(2018)]{nagarajan:eccv18}
+T.~Nagarajan and K.~Grauman.
+\newblock Attributes as operators.
+\newblock \emph{ECCV}, 2018.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, Desmaison, Kopf, Yang, DeVito, Raison,
+  Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala]{paszke:neurips19}
+A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen,
+  Z.~Lin, N.~Gimelshein, L.~Antiga, A.~Desmaison, A.~Kopf, E.~Yang, Z.~DeVito,
+  M.~Raison, A.~Tejani, S.~Chilamkurthy, B.~Steiner, L.~Fang, J.~Bai, and
+  S.~Chintala.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In \emph{Advances in Neural Information Processing Systems 32}, 2019.
+
+\bibitem[Pennington et~al.(2014)Pennington, Socher, and
+  Manning]{pennington:emnlp14}
+J.~Pennington, R.~Socher, and C.~D. Manning.
+\newblock Glove: Global vectors for word representation.
+\newblock In \emph{Proceedings of the 2014 conference on empirical methods in
+  natural language processing (EMNLP)}, 2014.
+
+\bibitem[Purushwalkam et~al.(2019)Purushwalkam, Nickel, Gupta, and
+  Ranzato]{purushwalkam:iccv19}
+S.~Purushwalkam, M.~Nickel, A.~Gupta, and M.~Ranzato.
+\newblock Task-driven modular networks for zero-shot compositional learning.
+\newblock \emph{ICCV}, 2019.
+
+\bibitem[Qin and Eisner(2021)]{qin:emnlp21}
+G.~Qin and J.~Eisner.
+\newblock Learning how to ask: Querying lms with mixtures of soft prompts.
+\newblock In \emph{EMNLP}, 2021.
+
+\bibitem[Radenovi{\'c} et~al.(2021)Radenovi{\'c}, Sinha, Gordo, Berg, and
+  Mahajan]{radenovic:arxiv21}
+F.~Radenovi{\'c}, A.~Sinha, A.~Gordo, T.~L. Berg, and D.~K. Mahajan.
+\newblock Large-scale attribute-object compositions.
+\newblock \emph{ArXiv}, 2021.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal,
+  Sastry, Askell, Mishkin, Clark, Krueger, and Sutskever]{radford:icml21}
+A.~Radford, J.~W. Kim, C.~Hallacy, A.~Ramesh, G.~Goh, S.~Agarwal, G.~Sastry,
+  A.~Askell, P.~Mishkin, J.~Clark, G.~Krueger, and I.~Sutskever.
+\newblock Learning transferable visual models from natural language
+  supervision.
+\newblock In \emph{ICML}, 2021.
+
+\bibitem[Ruis et~al.(2021)Ruis, Burghouts, and Bucur]{ruis:neurips21}
+F.~Ruis, G.~J. Burghouts, and D.~Bucur.
+\newblock Independent prototype propagation for zero-shot compositionality.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~34, 2021.
+
+\bibitem[Sanh et~al.(2022)Sanh, Webson, Raffel, Bach, Sutawika, Alyafeai,
+  Chaffin, Stiegler, Raja, Dey, Bari, Xu, Thakker, Sharma, Szczechla, Kim,
+  Chhablani, Nayak, Datta, Chang, Jiang, Wang, Manica, Shen, Yong, Pandey,
+  Bawden, Wang, Neeraj, Rozen, Sharma, Santilli, Fevry, Fries, Teehan, Scao,
+  Biderman, Gao, Wolf, and Rush]{sanh:iclr22}
+V.~Sanh, A.~Webson, C.~Raffel, S.~Bach, L.~Sutawika, Z.~Alyafeai, A.~Chaffin,
+  A.~Stiegler, A.~Raja, M.~Dey, M.~S. Bari, C.~Xu, U.~Thakker, S.~S. Sharma,
+  E.~Szczechla, T.~Kim, G.~Chhablani, N.~Nayak, D.~Datta, J.~Chang, M.~T.-J.
+  Jiang, H.~Wang, M.~Manica, S.~Shen, Z.~X. Yong, H.~Pandey, R.~Bawden,
+  T.~Wang, T.~Neeraj, J.~Rozen, A.~Sharma, A.~Santilli, T.~Fevry, J.~A. Fries,
+  R.~Teehan, T.~L. Scao, S.~Biderman, L.~Gao, T.~Wolf, and A.~M. Rush.
+\newblock Multitask prompted training enables zero-shot task generalization.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Shin et~al.(2020)Shin, Razeghi, Logan~IV, Wallace, and
+  Singh]{shin:emnlp20}
+T.~Shin, Y.~Razeghi, R.~L. Logan~IV, E.~Wallace, and S.~Singh.
+\newblock {A}uto{P}rompt: {E}liciting {K}nowledge from {L}anguage {M}odels with
+  {A}utomatically {G}enerated {P}rompts.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, 2020.
+
+\bibitem[Su et~al.(2020)Su, Zhu, Cao, Li, Lu, Wei, and Dai]{su:iclr20}
+W.~Su, X.~Zhu, Y.~Cao, B.~Li, L.~Lu, F.~Wei, and J.~Dai.
+\newblock Vl-bert: Pre-training of generic visual-linguistic representations.
+\newblock In \emph{International Conference on Learning Representations}, 2020.
+
+\bibitem[Sun et~al.(2019)Sun, Myers, Vondrick, Murphy, and Schmid]{sun:iccv19}
+C.~Sun, A.~Myers, C.~Vondrick, K.~P. Murphy, and C.~Schmid.
+\newblock Videobert: A joint model for video and language representation
+  learning.
+\newblock \emph{2019 IEEE/CVF International Conference on Computer Vision
+  (ICCV)}, pages 7463--7472, 2019.
+
+\bibitem[Tan and Bansal(2019)]{tan:emnlp19}
+H.~Tan and M.~Bansal.
+\newblock Lxmert: Learning cross-modality encoder representations from
+  transformers.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing}, 2019.
+
+\bibitem[Vu et~al.(2021)Vu, Lester, Constant, Al-Rfou, and Cer]{vu:arxiv21}
+T.~Vu, B.~Lester, N.~Constant, R.~Al-Rfou, and D.~M. Cer.
+\newblock Spot: Better frozen model adaptation through soft prompt transfer.
+\newblock \emph{ArXiv}, 2021.
+
+\bibitem[Wang et~al.(2019)Wang, Zheng, Yu, and Miao]{wang:tist19}
+W.~Wang, V.~W. Zheng, H.~Yu, and C.~Miao.
+\newblock A survey of zero-shot learning: Settings, methods, and applications.
+\newblock \emph{ACM Transactions on Intelligent Systems and Technology (TIST)},
+  10\penalty0 (2):\penalty0 1--37, 2019.
+
+\bibitem[Wu et~al.(2019)Wu, Zhang, Souza~Jr, Fifty, Yu, and
+  Weinberger]{wu:icml19}
+F.~Wu, T.~Zhang, A.~H.~d. Souza~Jr, C.~Fifty, T.~Yu, and K.~Q. Weinberger.
+\newblock Simplifying graph convolutional networks.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2019.
+
+\bibitem[Xian et~al.(2018)Xian, Lampert, Schiele, and Akata]{xian:pami18}
+Y.~Xian, C.~H. Lampert, B.~Schiele, and Z.~Akata.
+\newblock Zero-shot learning—a comprehensive evaluation of the good, the bad
+  and the ugly.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence
+  (PAMI)}, 41\penalty0 (9):\penalty0 2251--2265, 2018.
+
+\bibitem[Yu and Grauman(2014)]{yu:cvpr14}
+A.~Yu and K.~Grauman.
+\newblock Fine-grained visual comparisons with local learning.
+\newblock \emph{2014 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 192--199, 2014.
+
+\bibitem[Zhou et~al.(2021)Zhou, Yang, Loy, and Liu]{zhou:arxiv21}
+K.~Zhou, J.~Yang, C.~C. Loy, and Z.~Liu.
+\newblock Learning to prompt for vision-language models.
+\newblock \emph{arXiv preprint arXiv:2109.01134}, 2021.
+
+\end{thebibliography}

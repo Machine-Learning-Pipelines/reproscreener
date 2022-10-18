@@ -1,0 +1,21 @@
+
+%peilin
+\newcommand{\cv}{\textit{VLM}_{\textbf{V}}\ }
+\newcommand{\ct}{\textit{VLM}_{\textbf{T}}\ }
+\newcommand{\peilin}[1]{\textcolor{blue}{Peilin: #1}}
+\newcommand{\nihal}[1]{\textcolor{red}{Nihal: #1}}
+\newcommand{\steve}[1]{\textcolor{brown}{Steve: #1}}
+
+% credit: https://arxiv.org/pdf/2107.01294.pdf
+\definecolor{prompt_color}{HTML}{EEEEEE}
+\definecolor{soft_prompt}{HTML}{d9d2e9}
+\definecolor{attribute_color}{HTML}{c9daf8}
+\definecolor{object_color}{HTML}{ead1dc}
+\newcommand{\prompt}[2][prompt_color]{{\sethlcolor{#1} \hl{\texttt{#2}}}}
+\newcommand{\softprompt}[2][soft_prompt]{{\sethlcolor{#1} \hl{\texttt{#2}}}}
+\newcommand{\attribute}[2][attribute_color]{{\sethlcolor{#1} \hl{\texttt{#2}}}}
+\newcommand{\object}[2][object_color]{{\sethlcolor{#1} \hl{\texttt{#2}}}}
+
+\newcommand\cspemoji{\raisebox{-1pt}{\includegraphics[width=0.8em]{figures/puzzle.png}}}
+\newcommand{\cspname}{$\mathbb{CSP}$\ }
+\newcommand{\cspnamenospace}{$\mathbb{CSP}$}

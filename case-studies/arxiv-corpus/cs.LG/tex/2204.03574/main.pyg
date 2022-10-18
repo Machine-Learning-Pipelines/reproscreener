@@ -1,0 +1,40 @@
+def inference(batch_images: nn.Tensor,
+              test_pairs: List[List, List],
+              model: nn.Module):
+    """
+    Function to run inference with the fine-tuned embeddings.
+    Args:
+        batch_images (torch.Tensor): minibatch of images [n, h, w, c]
+        test_pairs (tuple): attribute-object pairs in the test
+            split [m, 2]
+        model (nn.Module): model with the fine-tuned embeddings
+
+    Returns:
+        torch.Tensor: cosine similarties of the minibatch images
+            and attribute-object pairs [n, m]
+    """
+    prompt_template = "a photo of x x"
+    tokenized_prompt = tokenize(prompt_template)
+    tokenized_prompt = tokenized_prompt.repeat(len(test_pairs))
+    token_tensor = model.token_embedding(tokenized_prompt)
+
+
+    # fine-tuned embeddings
+    attr, obj = zip(*test_pairs)
+    attr_emb = model.soft_embedding(attr)
+    obj_emb = model.soft_embedding(obj)
+
+
+    # replace the "x x" in prompt template with fine-tuned embeddings
+    token_tensor = replace_emb(token_tensor, attr_emb, obj_emb)
+
+
+    # l2-normalized
+    text_rep = model.text_encoder(token_tensor)
+    image_rep = model.image_encoder(batch_images)
+
+
+    logits = (image_rep @ text_rep) * model.logit_scale.exp()
+
+
+    return logits

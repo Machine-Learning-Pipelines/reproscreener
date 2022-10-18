@@ -1,0 +1,28 @@
+- Method (14)
+	- Problem statement: Is there an explicit mention of the problem the research seeks to address?
+	- Goal: Is the research goal explicitly mentioned?
+	- Research question: Is there an explicit mention of the research question(s) addressed?
+	- Research method: Is there an explicit mention of the research method used?
+	- Algorithm: Is there an explicit mention of the algorithm(s) the research used?
+	- Hypothesis: Is there an explicit mention of the hypotheses being investigated?
+	- Prediction: Is there an explicit mention of prediction related to the hypotheses?
+	- Experiment setup: Are the variable settings shared, such as hyper-parameters?
+	- Contributions: Does the paper state the contributions or implications of the research?
+	- Related study: Does the paper explicitly mention related literature?
+	- Scope and limitations: Is there an explicit mention of scope and limitation of the research?
+	- Machine learning: Is there an explicit mention of using machine learning for analysis?
+	- Statistical analysis: Does the paper conduct any statistical analysis?
+	- Conclusion: Is there an explicit outcome concluded in the paper?
+- Data (9)
+	- Model results: Is the output of the model constructed shared?
+	- Training data: Is the training set shared?
+	- Validation data: Is the validation set shared?
+	- Test data: Is the test set shared?
+	- Evaluation criteria: Is the evaluation metrics (e.g. Accuracy, R-squared, etc.) of the model shared?
+	- Data preprocessing: Is the method of data preprocessing of the analysis shared, including data merging or feature engineering?
+	- Publicly available data: Is the data available to the public?
+	- Time series data: Does the paper use time series data for analysis (e.g. across multiple years or month)?
+	- Data source: Does the paper explicitly state the data source?
+- Experiment (2)
+	- Method source code: Is the system code available as open source?
+	- Software used: Is the software used in the research explicitly mentioned (Python, R, etc.)
