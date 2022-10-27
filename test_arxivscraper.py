@@ -28,3 +28,5 @@ for index, row in df[:50].iterrows():
     filename = path + 'html/' + row['id'] + '.html'
     with open(filename, "w", encoding='utf-8') as f:
         f.write(str(soup))
+    
+    print(row['url_html'])
