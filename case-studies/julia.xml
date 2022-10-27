@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">A fast marching algorithm for the factored eikonal equation</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher>Elsevier BV</publisher>
+				<availability status="unknown"><p>Copyright Elsevier BV</p>
+				</availability>
+				<date type="published" when="2016-08-12">12 August 2016</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Eran</forename><surname>Treister</surname></persName>
+							<email>erantreister@gmail.com</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Earth and Ocean Sciences</orgName>
+								<orgName type="institution">The University of British Columbia</orgName>
+								<address>
+									<settlement>Vancouver</settlement>
+									<region>BC</region>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Eldad</forename><surname>Haber</surname></persName>
+							<email>haber@math.ubc.ca</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Earth and Ocean Sciences</orgName>
+								<orgName type="institution">The University of British Columbia</orgName>
+								<address>
+									<settlement>Vancouver</settlement>
+									<region>BC</region>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Mathematics</orgName>
+								<orgName type="institution">The University of British Columbia</orgName>
+								<address>
+									<settlement>Vancouver</settlement>
+									<region>BC</region>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">A fast marching algorithm for the factored eikonal equation</title>
+					</analytic>
+					<monogr>
+						<title level="j" type="main">Journal of Computational Physics</title>
+						<title level="j" type="abbrev">Journal of Computational Physics</title>
+						<idno type="ISSN">0021-9991</idno>
+						<imprint>
+							<publisher>Elsevier BV</publisher>
+							<biblScope unit="volume">324</biblScope>
+							<biblScope unit="page" from="210" to="225"/>
+							<date type="published" when="2016-08-12">12 August 2016</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">7ED24270334BA2C5A5058E107C3ED944</idno>
+					<idno type="DOI">10.1016/j.jcp.2016.08.012</idno>
+					<note type="submission">Received 14 April 2016 Received in revised form 5 August 2016 Accepted 8 August 2016</note>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1-SNAPSHOT" ident="GROBID" when="2022-04-03T17:07+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>Eikonal equation Factored eikonal equation Fast Marching First arrival Travel time tomography Gauss-Newton Seismic imaging</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p><s>The eikonal equation is instrumental in many applications in several fields ranging from computer vision to geoscience.</s><s>This equation can be efficiently solved using the iterative Fast Sweeping (FS) methods and the direct Fast Marching (FM) methods.</s><s>However, when used for a point source, the original eikonal equation is known to yield inaccurate numerical solutions, because of a singularity at the source.</s><s>In this case, the factored eikonal equation is often preferred, and is known to yield a more accurate numerical solution.</s><s>One application that requires the solution of the eikonal equation for point sources is travel time tomography.</s><s>This inverse problem may be formulated using the eikonal equation as a forward problem.</s><s>While this problem has been solved using FS in the past, the more recent choice for applying it involves FM methods because of the efficiency in which sensitivities can be obtained using them.</s><s>However, while several FS methods are available for solving the factored equation, the FM method is available only for the original eikonal equation.</s><s>In this paper we develop a Fast Marching algorithm for the factored eikonal equation, using both first and second order finite-difference schemes.</s><s>Our algorithm follows the same lines as the original FM algorithm and requires the same computational effort.</s><s>In addition, we show how to obtain sensitivities using this FM method and apply travel time tomography, formulated as an inverse factored eikonal equation.</s><s>Numerical results in two and three dimensions show that our algorithm solves the factored eikonal equation efficiently, and demonstrate the achieved accuracy for computing the travel time.</s><s>We also demonstrate a recovery of a 2D and 3D heterogeneous medium by travel time tomography using the eikonal equation for forward modeling and inversion by Gauss-Newton.</s></p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p><s>The eikonal equation appears in many fields, ranging from computer vision <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31,</ref><ref type="bibr" target="#b32">33,</ref><ref type="bibr" target="#b10">11]</ref>, where it is used to track evolution of interfaces, to geoscience <ref type="bibr" target="#b18">[19,</ref><ref type="bibr" target="#b11">12,</ref><ref type="bibr" target="#b21">22,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b23">24]</ref> where it describes the propagation of the first arrival of a wave in a medium.</s><s>The equation has the form |∇τ | 2 = κ( x) 2 , <ref type="bibr">(1.1)</ref> where | • | is the Euclidean norm.</s><s>In the case of wave propagation, τ is the travel time of the wave and κ( x) is the slowness (inverse velocity) of the medium.</s><s>The value of τ is usually given at some sub-region.</s><s>For example, in this work we assume the wave propagates from a point source at location x 0 , for which the travel time is 0, and hence τ ( x 0 ) = 0. Equation (1.1) is nonlinear, and as such may have multiple branches in its solution.</s><s>One of these branches, which is the one of interest in the applications mentioned earlier, corresponds to the "first-arrival" viscosity solution, and can be calculated efficiently <ref type="bibr" target="#b4">[5,</ref><ref type="bibr" target="#b24">25]</ref>.</s><s>One of the ways to compute it is by using the Fast Marching (FM) methods <ref type="bibr" target="#b35">[36,</ref><ref type="bibr" target="#b29">30,</ref><ref type="bibr" target="#b30">31]</ref>, which solve it directly using first or second order schemes in O(n log n) operations.</s><s>These methods are based on the monotonicity of the solution along the characteristics.</s><s>Alternatively, (1.1) can be solved iteratively by Fast Sweeping (FS) methods, which may be seen as Gauss-Seidel method for (1.1).</s><s>First order accurate solutions of (1.1) can be obtained very efficiently in 2 d Gauss-Seidel sweeps in O(n) operations, where d is the dimension of the problem <ref type="bibr" target="#b34">[35,</ref><ref type="bibr" target="#b37">38]</ref>.</s><s>An alternative for the mentioned approaches is to use FS to solve a Lax-Friedrichs approximation for (1.1), which involves adding artificial viscosity to the original equation <ref type="bibr" target="#b9">[10]</ref>.</s><s>This approach was suggested for general Hamilton-Jacobi equations, and is simple to implement.</s><s>In <ref type="bibr" target="#b22">[23]</ref>, such Lax-Friedrichs approximation is obtained using FS up to third order accuracy using the weighted essentially non-oscillatory (WENO) approximations to the derivatives.</s><s>For a performance comparison between some of the mentioned solvers see <ref type="bibr" target="#b6">[7]</ref>.</s></p><p><s>In some cases, the eikonal equation (1.1) is used to get a geometrical-optics ansatz of the solution of the Helmholtz equation in the high frequency regime <ref type="bibr" target="#b11">[12,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b18">19,</ref><ref type="bibr" target="#b16">17]</ref>.</s><s>This is done using the Rytov decomposition of the Helmholtz solution: u( x) = a( x) exp(iωτ ( x)), where a( x) is the amplitude and τ ( x) is the travel time.</s><s>This approach involves solving (1.1) for the travel-time and solving the transport equation ∇τ • ∇a + for the amplitude <ref type="bibr" target="#b14">[15,</ref><ref type="bibr" target="#b18">19]</ref>.</s><s>The resulting approximation includes only the first arrival information of the wave propagation.</s><s>Somewhat similarly, the work of <ref type="bibr" target="#b8">[9]</ref> suggests using the eikonal solution to get a multigrid preconditioner for solving linear systems arising from discretization of the Helmholtz equation.</s></p><p><s>In many cases in seismic imaging, the eikonal equation is used for modeling the migration of seismic waves from a point source at some point x 0 .</s><s>In this case, when solving (1.1) numerically by standard finite differences methods, the obtained solution has a strong singularity at the location of the source, which leads to large numerical errors <ref type="bibr" target="#b21">[22,</ref><ref type="bibr" target="#b5">6]</ref>.</s><s>Fig. <ref type="figure" target="#fig_0">1</ref> illustrates this phenomenon by showing the approximation error for the gradient of the distance function, which is the solution of (1.1) for κ = 1.</s><s>It is clear that the largest approximation error for the gradient is located around the source point, and that its magnitude is rather large.</s><s>In addition, it is observed that although τ may have more singularities in other places, the singularity at the source is more damaging and polluting for the numerical solution <ref type="bibr" target="#b21">[22,</ref><ref type="bibr" target="#b5">6]</ref>.</s></p><p><s>A rather easy treatment to the described phenomenon is suggested in <ref type="bibr" target="#b20">[21,</ref><ref type="bibr" target="#b5">6]</ref>, and achieved using a factored version of (1.1).</s><s>That is, we define τ = τ 0 τ 1 , <ref type="bibr">(1.3)</ref> where τ 0 is the distance function, τ 0 = x − x 0 2 , from the point source-the analytical solution for (1.1) in the case where κ( x) = 1 is a constant.</s><s>Indeed, at the location of the source, the function τ 0 is non-smooth.</s><s>However, the computed factor τ 1 is expected to be very smooth at the surrounding of the source, and can be approximated up to high order of accuracy <ref type="bibr" target="#b17">[18]</ref>.</s><s>Plugging (1.3) into (1.1) and applying the chain rule yields the factored eikonal equation</s></p><formula xml:id="formula_0">τ 2 0 |∇τ 1 | 2 + 2τ 0 τ 1 ∇τ 0 • ∇τ 1 + τ 2 1 = κ( x) 2 .</formula><p><s>(1.4)</s></p><p><s>Similarly to it original version, Equation (1.4) can be solved by fast sweeping methods in first order accuracy <ref type="bibr" target="#b5">[6,</ref><ref type="bibr" target="#b15">16,</ref><ref type="bibr" target="#b17">18]</ref>, or by a Lax-Friedrichs scheme up to third order of accuracy <ref type="bibr" target="#b18">[19,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b17">18]</ref>.</s><s>The recent works <ref type="bibr" target="#b17">[18,</ref><ref type="bibr" target="#b19">20]</ref> suggest hybrid schemes where the factored eikonal is solved at the neighborhood of the source and the standard eikonal, which is computationally easier, is solved in the rest of the domain.</s></p><p><s>One geophysical tool that fits the scenario described earlier is travel time tomography.</s><s>One way to formulate it is by using the eikonal equation as a forward problem inside an inverse problem <ref type="bibr" target="#b28">[29]</ref>.</s><s>To solve the inverse problem, one should be able to solve (1.1) accurately for a point source, and to compute its sensitivities efficiently.</s><s>The works of <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b33">34]</ref> computes the tomography by FS, and require an FS iterative solution for computing the sensitivities.</s><s>The more recent <ref type="bibr" target="#b13">[14]</ref> uses the FM algorithm for forward modeling using the non-factored eikonal equation, because this way the sensitivities are obtained more efficiently by a simple solution of a lower triangular linear system.</s><s><ref type="bibr" target="#b2">[3]</ref> suggests to use FS for forward modeling using the factored equation, but also efficiently obtain the sensitivities by approximating them using FM with the non-factored eikonal equation.</s></p><p><s>In this paper, we develop a Fast Marching algorithm for the factored eikonal equation (1.4), based on <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31]</ref>.</s><s>As in <ref type="bibr" target="#b30">[31]</ref>, our algorithm is able to solve (1.4) using first order or second order schemes, in guaranteed O(n log n) running time.</s></p><p><s>When using our method for forward modeling in travel time tomography, one achieves both worlds: (1) have an accurate forward modeling based on the factored eikonal equation, and (2) obtain the sensitivities of the (factored) forward modeling efficiently, by solving lower triangular linear systems in O(n) operations.</s><s>Computationally, this is one of the most attractive ways to solve the inverse problem, since the cost of the inverse problem can be governed by the cost of applying the sensitivities.</s></p><p><s>Our paper is organized as follows.</s><s>In the next section we briefly review the FM method in <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31]</ref>, including some of its implementation details.</s><s>Next, we show our extension to the FM method for the factored eikonal equation-in both first and second order of accuracy-and provide some theoretical properties.</s><s>Following that, we discuss the derivation of sensitivities using FM and briefly present the travel time tomography problem.</s><s>Last, we show some numerical results that demonstrate the effectiveness of the method in two and three dimensions, for both the forward and inverse problems.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">The Fast Marching algorithm</head><p><s>We now review the FM algorithm of <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31]</ref> in two dimensions.</s><s>The extension to higher dimensions is straightforward.</s><s>The FM algorithm is based on the Godunov upwind discretization <ref type="bibr" target="#b24">[25]</ref> of (1.1).</s><s>In two dimensions, this discretization is given by</s></p><formula xml:id="formula_1">|∇τ | 2 ≈ max{D −x ij τ , −D +x ij τ , 0} 2 + max{D −y ij τ , −D +y ij τ , 0} 2 = κ( x ij ) 2 , x ij ∈ h ,<label>(2.5)</label></formula><p><s>where in the simplest form</s></p><formula xml:id="formula_2">D −x ij τ = τ i, j −τ i−1, j h and D +x ij τ = τ i+1, j −τ i, j h</formula><p><s>are the backward and forward first derivative operators, respectively.</s><s>In principal, one can replace these operators with ones of higher order of accuracy.</s></p><p><s>The FM algorithm solves (2.5) in a sophisticated way, exploiting the fact that the upwind difference structure of (2.5) imposes a unique direction in which the information propagates-from smaller values of τ to larger values.</s><s>Hence, the FM algorithm rests on solving (2.5) by building the solution outwards from the smallest τ value.</s><s>It assumes that some initial value of τ is given at some region of h (or a point x 0 ) and it propagates outwards from this initial region, by updating the next smallest value of τ at each step.</s></p><p><s>To apply the rule above, let us define three disjoint sets of variables: the known variables, the front variables (which are sometimes called the trial variables) and the unknown variables.</s><s>These three sets together contain all the grid points in the problem.</s><s>For simplicity, let us assume that we solve (2.5) for a point source.</s><s>That is, a source is located at point x 0 , for which τ ( x 0 ) = 0. Initially, known is chosen as an empty set, front is set to contain only x 0 , and unknown has the rest of the variables for which τ is set to infinity.</s><s>At each step we choose the point x ij in front with minimal value of τ ( x ij ) and move it to known.</s><s>Next, we move all of its neighbors which are in unknown to front, and solve (2.5) for all neighbors which are not in known.</s><s>This way, we set all variables to be in known in n steps, and the algorithm finishes.</s><s>A precise description of the algorithm is given in Algorithm 1.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Algorithm 1: Fast Marching</head><p><s>Initialize:</s></p><formula xml:id="formula_3">τ ij = ∞ for all x ij ∈ h , τ ( x 0 ) = 0, known← ∅, front← { x 0 }. while front = ∅ do 1.</formula><p><s>Find the minimal entry in front:</s></p><p><s>x imin , jmin = arg min xij {τ ij : x ij ∈front} 2. Add x imin , jmin to known and take it out of front: front←front \{ x imin , jmin } ; known←known ∪{ x imin , jmin }. 3. Add the unknown neighborhood of x imin , jmin to front:</s></p><formula xml:id="formula_4">N min = { x imin −1, jmin , x imin +1, jmin , x imin , jmin −1 , x imin , jmin +1 }\known front←front ∪ N min . 4. Foreach x ij ∈ N min</formula><p><s>Update τ ij by solving the quadratic (2.5), using only entries in known.</s><s>End end Fig. <ref type="figure" target="#fig_1">2</ref>. A minimum heap and its implementation using array.</s></p><p><s>In <ref type="bibr" target="#b29">[30]</ref> it was proved that Algorithm 1 produces a viable viscosity solution to (2.5) when using first order approximations for the first derivatives.</s><s>Furthermore, it is proved that the values of τ in the order of which the points are set to known in</s></p><p><s>Step 2 are monotonically increasing.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.">Efficient implementation using minimum heap</head><p><s>Algorithm 1 has two main computational bottlenecks in Steps 1 and 4, which are repeated n times.</s><s>For a d-dimensional problem, the set front contains a d-1 dimensional manifold of points, of size O(n</s></p><formula xml:id="formula_5">d−1 d ).</formula><p><s>To find the minimum of front efficiently, a minimum heap data structure is used <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31]</ref>.</s><s>A minimum heap is a binary tree with a property that a value at any node is less than or equal to the values at its two children.</s><s>Consequently, the root of the tree holds the minimal value.</s><s>The simplest implementation of such a tree is done by a sequential array of nodes, using the rule that if a node is located at entry k, then its two children are located at entries 2k and 2k + 1 (the first element of the array is indexed by 1, and is the root of the tree).</s><s>Equivalently, the parent of a node at entry k is located at entry k/2 .</s><s>Fig. <ref type="figure" target="#fig_1">2</ref> shows an example of a minimum heap and its implementation using array.</s><s>Generally, each element in the array can hold many properties, and one of these has to be defined as a comparable "key", which is used in the heap for sorting.</s><s>In our case, each node holds a point x in the mesh, and its value τ ( x) as a key.</s></p><p><s>In its simplest form, the minimum heap structure supports two basic operations: insert(element,key) and get-Min().</s><s>For example, this is the case in the C++ standard library implementation of the minimum heap structure.</s><s>To apply getMin(), we remove the first element in the array, and take the last element in the array and push it in the first place.</s></p><p><s>Then, to maintain the property of the heap, we repeatedly replace this value with its smaller child (the smaller of the two) until it reaches down in the tree to the point where it is smaller than its two children or it has no children.</s><s>The insert(element,key) operation first places a new element at the next empty space of the array.</s><s>Then, it propagates this element upwards, each time replacing it with its parent until it reaches a point where the element is either the root or its key is larger than its parent's key.</s><s>Both of the described operations are performed in O(log m) complexity where m is the number of elements in the heap.</s></p><p><s>In Algorithm 1, the set front is implemented using a min-heap.</s><s>Steps 1-2 are trivially implemented using getMin(), and insert(element,key) is used in Step 3.</s><s>However, Step 4 of Algorithm 1 requires updating values which are inside the heap but are not at the root.</s><s>This operation is not supported in the standard definition of either priority queue or minimum heap.</s><s>Indeed, the papers <ref type="bibr" target="#b29">[30,</ref><ref type="bibr" target="#b30">31]</ref> use a variant of a priority queue, which includes back-links from points x ij to their corresponding locations inside the heap, and a more "software-engineering friendly" implementation of this idea is suggested in <ref type="bibr" target="#b1">[2]</ref>, where those back-links are incorporated within the heap implementation, without any relation to the mesh.</s><s>However, although this way an update of a key inside the heap can still be implemented in O(log m), it requires a specialized implementation of the heap, and encumbers the operations described earlier to maintain these back-links.</s><s>In our implementation, we bypass this need for back-links, and implement Step 4 by reinserting elements to the heap if they are indeed smaller than their value in the heap.</s><s>In Step 1, we simply ignore entries which are in known already.</s><s>If the algorithm is indeed monotone, like the first order version in <ref type="bibr" target="#b29">[30]</ref>, this implementation detail will not change the result of the algorithm.</s><s>The downside of this change is that it enables front to grow more than in the back-linked version.</s><s>However, even if it grows four times compared to the back-linked version, then the heap tree is just two nodes higher, making the difference in running time insignificant.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.">Second order Fast Marching</head><p><s>Solving the eikonal equation based on a first order discretization in (2.5) provides guaranteed monotonicity and stability.</s><s>However, it also provides a less accurate solution because of the added viscosity that is associated with the first order approximation.</s><s>To get a more accurate FM method, <ref type="bibr" target="#b30">[31]</ref> suggests to use a second order upwind approximation in (2.5), e.g.</s></p><formula xml:id="formula_6">D − i τ = 3τ i − 4τ i−1 + τ i−2 2h , D + i τ = −3τ i + 4τ i+1 − τ i+2 2h . (2.6)</formula><p><s>However, in some cases, the scheme may revert to first order approximations from certain directions.</s><s>The obvious case for that is when there are not enough known points for the high order stencil.</s><s>This case occurs for example when the given initial region contains only one point.</s><s>Another condition for using second order operators is given in <ref type="bibr" target="#b30">[31]</ref>:</s></p><formula xml:id="formula_7">τ i−1 ≥ τ i−2 or τ i+1 &gt; τ i+2 , (2.7)</formula><p><s>where the left condition is used for backward operators and the right one for forward operators.</s><s>If (2.7) is not satisfied, the algorithm reverts to first order operators.</s><s>Later we show that this condition guarantees the monotonicity of the non-factored FM solution using second order scheme.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Fast Marching for the factored eikonal equation</head><p><s>Let us rewrite the factored eikonal equation (1.4) in a squared form, which is closer (1.1):</s></p><formula xml:id="formula_8">|τ 0 ∇τ 1 + τ 1 ∇τ 0 | 2 = κ( x) 2 . (3.8)</formula><p><s>This writing is the key for deriving the FM algorithm for <ref type="bibr">(1.4)</ref>.</s><s>Similarly to the Godunov upwind scheme in (2.5), we discretize (3.8) for τ 1 using a derivative operator</s></p><formula xml:id="formula_9">D instead of D max{ D−x ij τ 1 , − D+x ij τ 1 , 0} 2 + max{ D−y ij τ 1 , − D+y ij τ 1 , 0} 2 = κ( x ij ) 2 , x ij ∈ h .</formula><p><s>(3.9)</s></p><p><s>For example, the backward first order factored derivative operator is given by</s></p><formula xml:id="formula_10">D−x ij τ 1 = (τ 0 ) ij (τ 1 ) i, j − (τ 1 ) i−1, j h + (p 0 ) ij (τ 1 ) ij , (<label>3.10)</label></formula><p><s>where τ 0 and p 0 = ∂τ 0 ∂x are known.</s><s>From this point we apply the Algorithm 1 as it is.</s><s>We hold the values of τ 0 τ 1 in front, and in Step 4 we update (τ 1 ) ij with the solution of (3.9).</s></p><p><s>Initialization: For the non-factored equation, Algorithm 1 is initialized by τ ( x 0 ) = 0 at the point source.</s><s>In the factored equation, this is trivially fulfilled by definition, because at the source τ 0 ( x 0 ) = 0. Still, τ 1 ( x 0 ) should not be chosen arbitrarily since its value is used in the finite difference approximations when evaluating its neighbors.</s><s>Examining (3.8) at the source 2 , since we choose τ 0 such that |∇τ 0 | 2 = 1, independently of κ.</s><s>In some cases in the literature, i.e., <ref type="bibr" target="#b5">[6]</ref>, the value κ( x 0 ) is absorbed in τ 0 , such that |∇τ 0 | 2 = κ( x 0 ) 2 .</s><s>Then τ 1 ( x 0 ) should be chosen as 1.</s><s>This is obviously equivalent for computing τ , however, it is much more convenient to choose τ 0 independently of κ if one wants to obtain the sensitivities of the FM algorithm (for more details, see Section 4).</s></p><formula xml:id="formula_11">yields τ 1 ( x 0 ) 2 |∇τ 0 | 2 = τ 1 ( x 0 ) 2 = κ( x 0 )</formula><p><s>Second order discretization: Similarly to the non-factored equation, the second order upwind approximations (2.6) can be used in (3.9)-(3.10)</s><s>for τ 1 .</s><s>Again, we revert to the first order approximation in cases where the additional point needed for the second order approximation is not in known.</s><s>We note that unlike the non-factored case, the solution τ 1 is in most cases very smooth at the source (expected to be close to constant or linear).</s><s>So, when we initialize the algorithm with the value of τ 1 at the point source and revert to a first order approximation for the neighbors, we do not introduce large discretization errors.</s><s>In the non-factored case, the second derivative of τ is singular at the source, so using first order approximation there significantly pollutes the rest of the solution.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.">Solution of the piecewise quadratic equation</head><p><s>We now describe how to solve both the non-factored and factored piecewise quadratic equations (2.5) and (3.9) respectively.</s><s>This is required in Step 4 of Algorithm 1. Solving such an equation consists of the following four steps:</s></p><p><s>1. Determine the order of approximation for each derivative in (2.5)/(3.9)</s><s>(only required for high order schemes).</s><s>2. Determine which directions to choose (backward or forward) for each dimension (x, y or z). 3. Solve the quadratic equation in (2.5)/(3.9),</s><s>assuming all terms are positive.</s><s>4. Make sure that the solution is valid, such that all max terms in (2.5)/(3.9)</s><s>are indeed held with positive values.</s><s>If not, some terms should be dropped, and the quadratic problem with the remaining terms is solved again.</s></p><p><s>Let us first consider solving the non-factored first order (2.5), for which the Step 1 is not relevant.</s><s>In this case, Step 2 is simple: for each max{D − ij τ , −D + ij τ , 0} term, the smaller of the two values of τ from both sides (forward or backward) is guaranteed to give a higher finite difference derivative.</s><s>Furthermore, in Step 4, if some of the terms turn out negative after</s></p><p><s>Step 3, then we can drop terms from (2.5) in decreasing order of the τ values, until a valid solution is reached.</s><s>The same is true for a first order factored version in (3.9).</s><s>However, using second order schemes (selectively) imposes additional complications on the solution of the piecewise quadratic equations (2.5) and (3.9).</s><s>There are many options for order of accuracy vs directions in Steps 1-2, and in addition it is not clear in which order to drop terms in Step 4 if negative terms are detected.</s><s>Obviously, one can check all possibilities, but such an option may be costly in high dimensions.</s><s>To simplify this we follow <ref type="bibr" target="#b30">[31]</ref>, and in Step 1 we use the second order approximation if the extra point is available in known and fulfills the condition (2.7), and revert to first order approximation if not.</s><s>Then, in Step 2 we determine the choice of directions considering the non-factored first order approximation (2.5).</s></p><p><s>That is, if (τ 0 τ 1 ) i−1 &lt; (τ 0 τ 1 ) i+1 , then we choose the backward upwind direction; otherwise we choose the forward direction.</s></p><p><s>That is done correspondingly for each dimension.</s></p><p><s>Once Steps 1-2 are done, (3.9) reduces to a piecewise quadratic equation of the form</s></p><formula xml:id="formula_12">k max{α k (τ ij − β k ), 0} 2 = κ( x ij ) 2 , (<label>3.11)</label></formula><p><s>where α k ≥ 0, β k ≥ 0 are non-negative constants that are coming from the finite difference approximations.</s><s>For example, assuming that k = 1 corresponds to the x coordinate, then (3.10) would correspond to α 1 =</s></p><formula xml:id="formula_13">(τ 0 ) i, j h + (p 0 ) i, j and β 1 = (τ 0 ) i, j (τ 1 ) i−1, j hα 1</formula><p><s>. In Step 3 we simply ignore the max{•, 0} function and solve the equation assuming all terms are positive.</s></p><p><s>We solve a simple quadratic function and choose the larger one of its two solutions for τ ij .</s><s>If all chosen derivative terms are positive, the solution is valid; otherwise, we reduce the terms in <ref type="bibr">(3.11)</ref> in decreasing order of β k , each time solving <ref type="bibr">(3.11)</ref> with the remaining terms until a valid solution is reached.</s><s>In three dimensions for example, this involves at most three quadratic solves.</s><s>Algorithm 2 summarizes the solution of the piecewise quadratic equation.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.">The monotonicity of the obtained solution</head><p><s>It is known that the solution of (1.1) is monotone in the direction of the characteristics.</s><s>We now show how to enforce the monotonicity of our solution using the FM method for the factored eikonal equation.</s><s>To set the stage, we first consider the FM method for the original non-factored equation.</s></p><p><s>In <ref type="bibr" target="#b29">[30]</ref> the non-factored first order discretization (2.5) is considered.</s><s>In this case, each newly calculated value τ ij is guaranteed to be larger than its known neighbors at the time of the calculation.</s><s>To show this clearly, consider for example that the backward derivative is chosen in the x direction.</s><s>Then,</s></p><formula xml:id="formula_14">τ i−1, j = τ i, j − h τ i, j − τ i−1, j h = τ i, j − hD −x i, j τ , (<label>3.12</label></formula><p><s>) so since D −x i, j τ ≥ 0 in the solution of (2.5), we have that τ i, j ≥ τ i−1, j .</s><s>This means that τ i, j is greater or equal to its known neighbors.</s><s>This property insures the monotonicity of the solution.</s><s>The proof for this appears in <ref type="bibr" target="#b29">[30]</ref>, but here we can simplify it because unlike <ref type="bibr" target="#b29">[30]</ref>, we only calculate entries using known values.</s><s>We state the following lemma:</s></p><p><s>Lemma 1.</s><s>Let τ be the result of Algorithm 1, for solving the (non-factored) first order equation <ref type="bibr">(2.5)</ref>.</s><s>Then the values of τ are monotonically non-decreasing in the order in which they are set to known.</s></p><p><s>Proof.</s><s>Denote by x k an element that is set to known at Step 2 of the k-th iteration of Algorithm 1. Assume by contradiction that there exists two elements x p and x k , such that τ ( x p ) &gt; τ ( x k ) and p &lt; k.</s><s>Without loss of generality, assume that k is the earliest iteration that this condition is fulfilled.</s><s>Let k &lt; k be the iteration in which the value of τ ( x k ) is updated in the last time and it is entered to front.</s><s>We know that x k is a neighbor of x k .</s><s>By the algorithm, we know that at the k-th iteration x p is already set to known, otherwise x k would have been chosen to known at the p-th iteration instead of x p .</s><s>By the assumption, we know that τ ( x p ) ≤ τ ( x k), because otherwise x k would not have been the earliest element to violate the monotonicity.</s><s>By the property in (3.12), we know that τ ( x k) ≤ τ ( x k ), and hence we reach τ ( x p ) ≤ τ ( x k ), which contradicts our assumption.</s><s>2</s></p><p><s>Furthermore, the lemma above can be extended for a Fast Marching solution of any equation (2.5) such that the discretization operator D satisfies a monotonicity condition:</s></p><formula xml:id="formula_15">D −x ij τ ≥ 0 ⇒ τ ij ≥ τ i−1, j and − D +x ij τ ≥ 0 ⇒ τ ij ≥ τ i+1, j .</formula><p><s>(3.13)</s></p><p><s>The next corollary can be proved using the same arguments as in Lemma 1:</s></p><p><s>Corollary 1.</s><s>Let τ be the result of Algorithm 1, for solving the Godunov upwind equation (2.5) using operators D which satisfy <ref type="bibr">(3.13)</ref>.</s></p><p><s>Then the values of τ are monotonically non-decreasing in the order in which they are set to known.</s></p><p><s>The condition (3.13) and the corollary above is violated when the second order operators (2.6) are used in (2.5).</s><s>However, if we look at a single violation, then it is of order h 2 .</s><s>To show this, we examine the backward difference derivative using Taylor expansion:</s></p><formula xml:id="formula_16">τ i−1, j = τ i, j − h ∂τ ∂x i, j + O (h 2 ) = τ i, j − hD −x i, j τ + O (h 2 ),<label>(3.14)</label></formula><p><s>where D −x i, j is given in (2.6) (the same arguments can be derived for the forward difference derivative).</s><s>Assuming again that D −x i, j τ &gt; 0, this means that each newly calculated τ i, j is generally greater than its known neighbors, but may violate that up to magnitude O (h 2 ).</s><s>Note that if D −x i, j τ is sufficiently bounded away from zero and the second derivative</s></p><formula xml:id="formula_17">∂ 2 τ ∂x 2 is bounded in [x i−1 , x i ],</formula><p><s>then τ i, j &gt; τ i−1, j will be satisfied.</s></p><p><s>To correct this and obtain a monotone solution using (2.6), one may impose the condition (2.7) for using the second order scheme.</s><s>If it is not satisfied, the scheme reverts to the first order scheme, which satisfies (3.13).</s><s>If (2.7) is satisfied, then (2.6) does satisfy (3.13), because</s></p><formula xml:id="formula_18">2hD −x ij τ = 3τ ij − 4τ i−1, j + τ i−2, j &lt; 3τ ij − 3τ i−1, j . (3.15)</formula><p><s>Note that the condition (2.7) is suggested in <ref type="bibr" target="#b30">[31]</ref> but the monotonicity guarantee of the second order scheme is not examined.</s></p><p><s>We now examine the monotonicity of the obtained factored solution τ 0 τ 1 when using first order operators in (3.9).</s><s>Suppose that we are calculating (τ 1 ) ij using the backward operator (3.10) in the x direction in (3.9).</s><s>We again start with a Taylor expansion</s></p><formula xml:id="formula_19">(τ 0 τ 1 ) i−1, j = (τ 0 ) ij − h ∂τ 0 ∂x i, j + O (h 2 ) (τ 1 ) ij − h ∂τ 1 ∂x i, j + O (h 2 ) = (τ 0 τ 1 ) ij − h(τ 0 ) ij ∂τ 1 ∂x i, j − h(τ 1 ) ij ∂τ 0 ∂x i, j + O (h 2 ) = (τ 0 τ 1 ) ij − h D−x ij τ 1 + O (h 2 ),<label>(3.16)</label></formula><p><s>where the last equality is obtained by placing ∂τ</s></p><formula xml:id="formula_20">1 ∂x i, j = (τ 1 ) i, j −(τ 1 ) i−1, j h + O (h).</formula><p><s>This expansion shows that if the monotonicity is not obtained, i.e., (τ 0 τ 1 ) i, j −(τ 0 τ 1 ) i−1, j &lt; 0, then the non-factored derivative is negative, D −x ij (τ 0 τ 1 ) &lt; 0, while the factored derivative is non-negative D−x ij τ 1 ≥ 0 (otherwise it is not chosen in (3.9)).</s><s>This means that the monotonicity may be violated only up to an error of O (h 2 ).</s><s>This holds for both first and second order upwind approximations.</s><s>In fact, <ref type="bibr">(3.16)</ref> shows that this is a result of using the chain rule rather than the order of discretization of the operators D, since the monotonicity condition involves the value (τ 0 ) i−1, j , while it does not appear in the discretization scheme.</s><s>In any case, the magnitude of the error in the monotonicity violation is either of the same or of higher order as the error in τ 1 , using first or second order schemes.</s><s>Again, if D −x i, j τ 1 is sufficiently bounded away from zero and</s></p><formula xml:id="formula_21">∂ 2 τ 1 ∂x 2 is bounded in [x i−1 , x i ],</formula><p><s>then the monotonicity (τ 0 τ 1 ) i, j &gt; (τ 0 τ 1 ) i−1, j will be satisfied.</s></p><p><s>Nevertheless, in our algorithm we may enforce the monotonicity of the obtained solution by reverting to the non-factored operators in cases where the monotonicity is not satisfied, or, the factored and non-factored schemes do not agree in sign, for example: D−x ij τ 1 ≥ 0, but D −x ij (τ 0 τ 1 ) &lt; 0. Note that in this case the numerical derivative is approximately zero, hence the direction of the characteristic is almost parallel to the y direction.</s><s>We apply this change using the same order of derivative which the algorithm chooses to use.</s><s>That is, if the algorithm chooses a first or second order factored stencil, we revert to a standard first or second order stencil, respectively.</s><s>Following Corollary 1, this guarantees the monotonicity of the solution, because we enforce the condition (3.13) at all stages of the algorithm.</s><s>We note that experimentally, this small correction does not influence the accuracy of the solution obtained with our algorithm in both first and second order schemes in two and three dimensions.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Calculation of sensitivities and travel time tomography</head><p><s>Travel time tomography is a useful tool in some Geophysical applications.</s><s>One way to obtain it is by using the eikonal equation as a forward problem inside an inverse problem <ref type="bibr" target="#b28">[29]</ref>.</s><s>To solve the inverse problem, one should be able to solve (1.1) accurately, and to compute its sensitivities.</s><s>The works of <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b33">34]</ref> computes the tomography by FS, and require an FS iterative solution for computing the sensitivities.</s><s>When using the FM algorithm for forward modeling, those are obtained more efficiently by a simple solution of a lower triangular linear system <ref type="bibr" target="#b13">[14,</ref><ref type="bibr" target="#b2">3]</ref>.</s><s>More explicitly, let us denote by boldface all the discretized values of the mentioned functions on a grid, and suppose that we set m to be the vector of the values of κ( x) 2 on this grid.</s><s>By solving (3.9), we get a function τ 1 (m) for the values of τ 1 on the grid.</s><s>We wish to get a linearization for τ 1 (m), such that we can predict its change following a small change in m.</s><s>That is, we wish to be able to apply an approximation τ 1 (m + δm) ≈ τ 1 (m) + Jδm, <ref type="bibr">(4.17)</ref> where J is the sensitivity matrix (or Jacobian) defined by</s></p><formula xml:id="formula_22">J ij = (∇ m τ 1 ) ij = ∂(τ 1 ) i ∂m j . (<label>4</label></formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>.18)</head><p><s>To obtain the sensitivity we first rewrite (3.9) in implicit form</s></p><formula xml:id="formula_23">f(m, τ 1 ) = ( Dx τ 1 ) 2 + ( Dy τ 1 ) 2 − m = 0,<label>(4.19)</label></formula><p><s>where Dx = diag (τ 0 )D x + diag (p 0 ) and Dy = diag (τ 0 ) • D y + diag (q 0 ) are the matrices that apply the finite difference derivatives that are chosen by the FM algorithm when applied for m. p 0 and q 0 are the analytical derivatives of τ 0 with respect to x and y on the grid respectively, and diag (x) denotes a diagonal matrix whose diagonal elements are those of the vector x.</s><s>We note that in the points where no derivative is chosen in the solution of (3.9), a zero row is set in the corresponding operator D. Also, at the row of the point source, we set each of Dx and Dy to have only one diagonal non-zero element, which equals to the values of p 0 and q 0 at the source.</s><s>This way, (4.</s><s><ref type="bibr" target="#b18">19</ref>) is exactly fulfilled for Dx and Dy and τ 1 .</s></p><p><s>To obtain the sensitivity, we apply the gradient operator to both sides of (4.19), yielding (∇ τ 1 f)(∇ m τ 1 ) + ∇ m f = 0, and define <ref type="bibr" target="#b7">[8]</ref>:</s></p><formula xml:id="formula_24">J(m) = ∇ m τ 1 = −(∇ τ 1 f) −1 (∇ m f).<label>(4.20)</label></formula><p><s>This results in</s></p><formula xml:id="formula_25">J = (diag (2 Dx τ 1 ) Dx + diag (2 Dy τ 1 ) Dy ) −1 , (<label>4.21)</label></formula><p><s>following ∇ m f = −I, and since the operators D do not depend on m (we defined τ 0 and its derivatives so it does not depend on κ).</s></p><p><s>The matrix (4.21) can be multiplied with any vector efficiently given the order of variables (i, j) in which the FM algorithm set their values as known.</s><s>To apply J on an arbitrary vector x, i.e. calculate e = Jx, a linear system Ae = x can be solved with A = J −1 (note that A is a sparse matrix).</s><s>The equations of this linear system, which correspond to the rows of A, can be approached and solved sequentially in the FM order of variables.</s><s>Since the FM algorithm uses only known variables for determining each new variable, then when looking at each row i of A, the non-zero entries in that row (except i) correspond to variables that where in known when τ i was determined during the FM run.</s><s>Therefore, if all those variables are known except i, then the i-th equation has only one unknown (e i ) and can be trivially solved.</s><s>In other words, if we permute A according to the FM order, we get a sparse lower triangular matrix, and the corresponding system can be solved efficiently in one forward substitution sweep in O (n) operations.</s><s>For the non-factored equation one may use (4.21) with non-factored operators D x and D y instead of the factored ones <ref type="bibr" target="#b13">[14]</ref>.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.">Travel time tomography using Gauss-Newton</head><p><s>Assume that we have several sources and receivers set on an open surface, and for each source we have traveltime data d i obs given in the location of the receivers.</s><s>Based on these observations we wish to compute the unknown slowness model of the ground underneath.</s><s>The inverse problem for this process, called travel time tomography, may be given by min 2 + αR(m) , <ref type="bibr">(4.22)</ref> where</s></p><formula xml:id="formula_26">m L &lt;m&lt;m H φ(m) = min m L &lt;m&lt;m H n s i=1 P τ i (m) − d i obs</formula><formula xml:id="formula_27">|∇τ i | 2 = m( x) τ i ( x i ) = 0 i = 1, . . . ,n s (4.23)</formula><p><s>Here τ i is the travel time from the point source x i , and m( x) = κ( x) 2 is the squared slowness model as in <ref type="bibr">(1.1)</ref>,</s><s>only now it is unknown.</s><s>The operator P is a projection to the set of receivers that gather the wave information.</s><s>Here we assume that the information from all sources is available on all the receivers, i.e., the projection operator P does not change between sources.</s><s>R(m) is a regularization term and α &gt; 0 is its balancing parameter.</s><s>The parameters m L and m H are positive lower and upper bounds needed for keeping the slowness of the medium physical.</s><s>We note that the observations d i obs can be obtained manually from recorded seismic data or by automatic time picking-for more information see <ref type="bibr" target="#b27">[28]</ref> and references therein.</s></p><p><s>Without the regularization term R(m), the problem (4.22) is ill-posed, i.e., many solutions m may fit the predicted travel time to the measured data <ref type="bibr" target="#b36">[37,</ref><ref type="bibr" target="#b31">32]</ref>.</s><s>For this reason, in most cases we cannot expect to exactly recover the true model, but wish to recover a reasonable model by adding prior information using the regularization term R(m).</s><s>This term aims to promote physical or meaningful solutions that we may expect to see in the recovered model.</s><s>For example, in seismic exploration, one may expect to recover a layered model of the earth subsurface, hence may choose R to promote smooth or piecewise-smooth functions like the total variation regularization term <ref type="bibr" target="#b25">[26]</ref>.</s></p><p><s>There are several ways to solve (4.22), and most of them are gradient-based.</s><s>Here we focus on Gauss-Newton.</s><s>This method is computationally favorable here, since its cost is governed by the application of sensitivities, which are easy to obtain using FM.</s><s>Given an approximation m (k) at the k-th iteration, we place (4.17) into (4.22) and get min δm 1 2 <ref type="bibr">(4.24)</ref></s><s>where J i is the sensitivity of τ i 1 at m (k) .</s><s>Minimizing this approximation for δm leads to computing the gradient</s></p><formula xml:id="formula_28">n s i=1 P diag (τ i 0 ) τ i 1 (m (k) ) + J i δm − d i obs 2 + αR(m (k) + δm),</formula><formula xml:id="formula_29">∇ m φ(m (k) ) = n s i=1 (J i ) diag (τ i 0 )P P diag (τ i 0 )τ i 1 − d i obs + α∇ m R(m (k) ). (<label>4</label></formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>.25)</head><p><s>We then approximately solve the linear system Hδm = −∇ m φ(m (k) )</s></p><p><s>where k) ).</s></p><formula xml:id="formula_30">H = n i=1 (J i ) diag (τ i 0 )PP diag (τ i 0 )J i + α m R(m (</formula><p><s>The linear system is solved using the conjugate gradient method where only matrix vector products are computed.</s><s>Finally, the model is updated, m ← m + μδm where μ ≤ 1 is a line search parameter that is chosen such that the objective function is decreased at each iteration.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Numerical results: solving the eikonal equation</head><p><s>In this section we demonstrate the FM algorithm using first or second order upwind discretization for solving the factored eikonal equation <ref type="bibr">(1.4)</ref>.</s><s>We demonstrate both the accuracy of the obtained solution, and the computational cost of calculating it using the FM algorithm.</s><s>The accuracy of the algorithm is demonstrated by two error norms: one in the maximum norm l ∞ , and one is the mean l 2 norm defined by the standard l 2 norm of the error divided by the square root of the total number of variables.</s><s>Similarly to <ref type="bibr" target="#b30">[31]</ref>, we show these two measures to demonstrate the accuracy of the second order scheme.</s><s>Showing the l ∞ norm of the error for this scheme may result in only first order accuracy, because at some points our second order FM algorithm reverts to first order operators, which may be picked by the l ∞ norm.</s></p><p><s>To demonstrate the efficiency of the computation, we measure the time in which the algorithm solves each test.</s><s>We also show this timing in terms of work-units, where each work unit is defined by the time that it takes to evaluate the equation (1.1) using given central difference gradient stencils (without memory allocation time).</s><s>We note that the more reliable timings appear for the large scale examples.</s></p><p><s>We use analytical examples for media where there is a known analytical solution for a point source located at x 0 .</s><s>The first two appear in <ref type="bibr" target="#b5">[6]</ref>.</s><s>We show results for two and three dimensions.</s><s>Our code is written in Julia language <ref type="bibr" target="#b3">[4]</ref> version 0.4.5, and all our tests were calculated on a laptop machine using Windows 10 64 bit OS, with Intel core-i7 2.8 GHz CPU with 32 GB of RAM.</s><s>Our code is publicly available in https :/ /github .com</s><s>/JuliaInv /FactoredEikonalFastMarching .jl.</s><s>We do not enforce the monotonicity in the results below, but those can be enforced in our package.</s><s>The three test cases are listed below.</s><s>Test case 1: constant gradient of squared slowness In this test case we set: <ref type="bibr">(5.26)</ref></s><s>where e 1 = (1, 0) is a unit vector, and • is the standard dot product.</s><s>The parameters a, s 0 , the domain and the source location are chosen differently in 2D and 3D.</s><s>The corresponding exact solution is given by</s></p><formula xml:id="formula_31">κ 2 ( x) = s 2 0 + 2a e 1 • ( x − x 0 ),</formula><formula xml:id="formula_32">τ exact ( x) = S2 σ − 1 6 a 2 (σ 3 ), (<label>5.27)</label></formula><p><s>where</s></p><formula xml:id="formula_33">S2 ( x) = s 2 0 + a e 1 • ( x − x 0 ) (5.28) σ 2 ( x) = S2 + S4 − a 2 x − x 0 2 −1 2 x − x 0 2 .</formula><p><s>(5.29)</s></p><p><s>Figs. 3(a) and 3(d) show the model κ for this test case with the chosen parameters for 2D.</s></p><p><s>Test case 2: constant gradient of velocity In this test case we set:</s></p><formula xml:id="formula_34">κ( x) = 1 s 0 + a e 1 • ( x − x 0 ) −1 , (<label>5.30)</label></formula><p><s>where again e 1 = (1, 0), • is the dot product, and the parameters a, s 0 , the domain and the source location are chosen differently in 2D and 3D.</s><s>The exact solution is given by</s></p><formula xml:id="formula_35">τ exact ( x) = 1 a acosh 1 + 1 2 s 0 a 2 κ( x) x − x 0 2 .</formula><p><s>(5.31)</s></p><p><s>Figs. <ref type="figure" target="#fig_2">3(b</ref>) and 3(e) show the model κ for this test case with the chosen parameters for 2D.</s></p><p><s>Test case 3: Gaussian factor In this test case we choose a function for τ exact 1 and multiply it by τ 0 to get τ exact .</s><s>We choose τ 1 as a Gaussian function centered around a point x 1 :</s></p><formula xml:id="formula_36">τ exact 1 ( x) = 1 2 exp −( x − x 1 ) T ( x − x 1 ) + 1 2 , (<label>5.32)</label></formula><p><s>where is a 2 × 2 or 3 × 3 positive diagonal matrix.</s><s>As before, the parameters x 1 and , the domain and the source location x 0 are chosen differently in 2D and 3D.</s><s>Here κ( x) is defined by (3.8), with τ 0 being the distance function.</s><s>Figs.</s><s><ref type="figure" target="#fig_2">3(c</ref>) and 3(f) show the model κ for this test with the chosen parameters for 2D.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.">Two dimensional tests</head><p><s>Now we show results for the two dimensional versions of the tests mentioned above.</s><s>For all tests in 2D we choose the domain to be [0, 4] × [0, 8], while h = h x = h y varies from large to small.</s><s>Test case 1: constant gradient of squared slowness For this 2D setting, we use the parameters a = −0.4,</s><s>s0 = 2.0, and the source location is x 0 = (0, 4).</s><s>Table <ref type="table" target="#tab_1">1</ref> summarizes the results for this test.</s><s>On the first order section we see a typical first order convergence rate in both error norms.</s><s>As the mesh size increases by two in each direction, the errors drop by a factor of two.</s><s>In the second order section we see the typical behavior of the FM algorithm.</s><s>At some points, first order operators are used, and hence the error at those locations dominates the l ∞ norm.</s><s>Still, we observe much better convergence compared to the first order l ∞ , only it is not of second order.</s><s>In the mean l 2 norm we see typical second order convergence-as the mesh size increases by two in each direction, the errors drop by a factor of four.</s><s>In any case, the errors in the second order columns are much smaller than those in the first order columns.</s></p><p><s>In terms of computational cost, the 2D FM algorithm exhibits favorable timings and work counts.</s><s>Except the small cases, the cost of the algorithm is comparable to 200-300 function evaluations using standard difference stencils.</s><s>This is maintained for all the considered mesh sizes.</s><s>The difference in the computational cost between using first and second order schemes is only about 10% of execution time.</s></p><p><s>Test case 2: constant gradient of velocity For this 2D setting, we use the parameters a = 1.0, s 0 = 2.0, and the location of the source is again at x 0 = (0, 4).</s><s>Table <ref type="table" target="#tab_2">2</ref> summarizes the results for this test.</s><s>The results here are almost identical to the previous test case.</s><s>The first order columns show typical first order convergence in both error norms.</s><s>The second order columns show better convergence and exhibits second order convergence in the mean l 2 norm column.</s><s>The computational costs columns show timings which are almost identical to the previous test case.</s></p><p><s>Test case 3: Gaussian factor For this setting, we use the parameters = diag (0.1, 0.4), x 1 = (4/3, 2) (floored to the closest grid point), and the source is located in the point x 0 = (1, 2).</s><s>Table <ref type="table" target="#tab_3">3</ref> summarizes the results for this test.</s><s>Again we see first order convergence at the first order columns in both norms.</s><s>On the second order columns we again see faster convergence, and in the mean l 2 norm column we see convergence rate that is close to second order-the error decreases by a factor of about 3.9 when the mesh size increases by a factor of 2 in each dimension.</s><s>Again we see similar behavior in the computational cost columns.</s></p><p><s>We now wish to better illustrate the difference between the accuracy of the first order scheme and the second order scheme.</s><s>First, Fig. <ref type="figure">4</ref> shows contours of the exact and approximate solutions in certain regions of the domain for the second and third test cases.</s><s>It is clear that the first order approximation is less accurate than the second order one.</s><s>Next, Fig. 5 shows plots of the errors in Tables 1-3 in logarithmic scales for both h and the error norms, where the order of convergence determines the slope of the lines.</s><s>It is clear that in all cases, using the second order scheme we get second order convergence in mean l 2 norm, and a bit more than first order convergence in the l ∞ norm.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.">Three dimensional tests</head><p><s>We now show results for the same type of tests in three dimensions.</s><s>For all the 3D tests we choose the domain to be [0, 0.8] × [0, 1.6] × [0, <ref type="bibr">1.6]</ref>, and h = h x = h y = h z varies.</s></p><p><s>Test case 1: constant gradient of squared slowness For the 3D version of this test case we use the parameters a = −1.65,</s><s>and s 0 = 2.0, and the source is located at (0, 0.8, 0.8).</s><s>Table <ref type="table" target="#tab_4">4</ref> summarizes the results for this test case.</s><s>Again, like in two dimensions, the first order version of FM yields first order convergence rate in both error norms.</s><s>When using the second order scheme we get a super-linear convergence rate in the l ∞ column, and second order convergence in the mean l 2 column.</s><s>We note that in 3D the FM algorithm reverts to first order scheme on 2D manifolds, where the derivative in each dimension switches sign, and not on 1D curves as in 2D.</s></p><p><s>In terms of computational cost, it is obvious that the 3D problem is much more expensive than the 2D one.</s><s>The computational cost in seconds per grid-point in 3D is about 3 times higher than the corresponding cost in 2D.</s><s>That is because the treatment of each grid point is more expensive (more neighbors and more derivative directions), and the number of grid points that are processed inside the heap is much larger (a 2D manifold of points compared to a 1D curve).</s><s>As a result, when we normalize the timing by the cost of a 3D "work-unit" (evaluation of (1.1) in 3D), the cost grows a little when the mesh-size grows.</s><s>Still, solving the problem requires 200-500 work units.</s><s>Again, using the first and second order schemes requires similar computational effort in our 3D implementation of the FM algorithm.</s></p><p><s>Test case 2: constant gradient of velocity For the 3D version of this test case we use the parameters a = 1.0, and s 0 = 2.0, and the source is located at (0, 0.8, 0.8).</s><s>Table <ref type="table" target="#tab_5">5</ref> summarizes the results for this test case.</s><s>As in the previous case, we get first order convergence when using the first order scheme, in both error norms.</s><s>Again, when using the second order scheme we get a super-linear convergence rate in the l ∞ column, and second order convergence in the mean l 2 column.</s></p><p><s>Test case 3: Gaussian factor For this 3D test case we use the parameters = diag (0.2, 0.4, 0.1), x 1 = (0.4, 1</s><s>.6  3 , 0.4) (floored to the closest grid point), and the source is located in the point x 0 = (0.2, 0.4, 0.4).</s><s>Table <ref type="table" target="#tab_6">6</ref> summarizes the results for this    test case.</s><s>The results are similar to the previous test case in both the convergence (first/second order using l ∞ /l 2 norms) and computational costs in seconds and work units.</s><s>Again we wish to demonstrate the order accuracy of the FM approximations using the first and second order schemes.</s><s>Fig. <ref type="figure">6</ref> shows the results in Tables 4-6 in logarithmic scales.</s><s>Like in 2D, we observe second order convergence rate when the error is measure in mean l 2 norm.</s><s>However, because the second order stencil reduces to first order stencil in two dimensional manifolds, the error in l ∞ norm is higher in 3D than it is in 2D.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.">Numerical results: travel time tomography</head><p><s>In this section we demonstrate a solution of travel time tomography using synthetic travel time data d obs for a 2D and SEG/EAGE salt model given in <ref type="bibr" target="#b0">[1]</ref> and presented in Fig. <ref type="figure" target="#fig_5">7</ref>(a), using a 256 × 128 grid that represents an area of approximately 13.5 km × 4.2 km.</s><s>We choose 51 equally distanced sources locations on the open surface (that is, they are located every  that on the surface.</s><s>This is to guarantee that the first arrival rays obtained on the surface actually come from the interior but not only travel along the surface.</s><s>To d obs we add white Gaussian noise with standard deviation of 0.01 × mean(|d obs |).</s></p><p><s>To fit the model to the data, we minimize (4.22) using Gauss-Newton (we perform 10 iterations, where in each we apply 8 CG steps for the Gauss-Newton direction problem).</s><s>We use the general-propose inversion package <ref type="bibr" target="#b26">[27]</ref>, which is freely available in https :/ /github .com</s><s>/JuliaInv /jInv.jl,</s><s>together with our FM package mentioned earlier.</s><s>For that, we first generate an initial slowness model m (0) = m ref , whose velocity model shown in Fig. <ref type="figure" target="#fig_5">7(b</ref>).</s><s>This corresponds to a velocity field with a constant gradient in the y direction, similarly to the model in Fig. <ref type="figure" target="#fig_2">3(b</ref>).</s><s>To bound m from above and from below throughout the minimization, we invert for an auxiliary variable m and use the following scalar bounded bijective mapping that prevents m from being below m L or above m H :</s></p><formula xml:id="formula_37">m bound (m ) = m H − m L 2 • tanh 2 m H − m L • m − m H + m L 2 + 1 + m L .</formula><p><s>That is, instead of minimizing (4. an effect of an automatic salt flooding, which is a popular way to treat salt bodies.</s><s>We set the regularization parameter to be α = 0.5.</s><s>We note that other choices of m ref and regularization terms may definitely be suitable here, but are beyond the scope of this paper.</s><s>Fig. <ref type="figure" target="#fig_5">7</ref>(c) shows the result model of the Gauss-Newton minimization, and Fig. <ref type="figure" target="#fig_6">8</ref> presents the initial and final data and data residuals.</s><s>In particular, Fig. <ref type="bibr">8(d)</ref> shows that the final residual mostly contains the added Gaussian noise.</s><s>Fig. <ref type="figure" target="#fig_8">9</ref> shows that the misfit was indeed reduced throughout the iterations, until the reduction stalls and the misfit reflect the noise level.</s></p><p><s>To demonstrate our algorithm in 3D, we use a 3D version of the same SEG/EAGE model, presented in Fig. <ref type="figure" target="#fig_9">10</ref>(a), using a  We use the same parameters as in the 2D experiment (bound function, regularization, initial 3D model, added noise to the data, number of iterations etc.).</s><s>Fig. <ref type="figure" target="#fig_9">10</ref>(b) shows the result of the inversion.</s><s>Similarly to the 2D case, the top part of the model is recovered quite well, while a "salt flooding" effect is evident in the bottom part of the model.</s><s>We performed the inversion using a machine with two Intel(R) Xeon(R) E5-2670 v3 processors with 128 GB of RAM.</s><s>Using 24 cores, we applied the inversion in approximately 15 hours, and the highest memory footprint of the algorithm reached around 30 GB.</s></p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.">Conclusions</head><p><s>In this paper we developed a Fast Marching algorithm for the factored eikonal equation, which in many cases yields a more accurate solution of the travel time than the original equation.</s><s>Similarly to the original FM algorithm, our version solves the factored problem by exploiting the monotonicity of the solution along the characteristics.</s><s>Our algorithm is capable of solving the problem using both first and second order schemes.</s><s>The advantages of our algorithm are (1) its favorable guaranteed O (n log n) running time, and (2) the easily computed sensitivity matrices for solving the inverse (factored) eikonal equation.</s></p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc><div><p><s>Fig. 1.</s><s>The l 2 norm of the approximation error |∇τ 0 − Dτ 0 | around a source point at [0.5,0.5],</s><s>where τ 0 is the distance function and D is a central difference gradient operator on a mesh with h x = h y = 0.01.</s></p></div></figDesc><graphic coords="2,191.06,54.48,157.92,115.92" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>2 (</head><label>2</label><figDesc><div><p><s>∇τ • ∇a + ∇ • (a∇τ )) = 0 ( 1 .</s><s>2 )</s></p></div></figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 3 .</head><label>3</label><figDesc><div><p><s>Fig. 3.</s><s>The 2D slowness model κ( x) of the three test cases and the corresponding contours of the 2D solutions.</s></p></div></figDesc><graphic coords="10,38.49,54.70,460.49,180.84" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 4 .Fig. 5 .</head><label>45</label><figDesc><div><p><s>Fig. 4. Contours of small regions in the exact, first order accurate and second order accurate travel times τ using h = 0.1.</s><s>The exact solution appears in black line.</s><s>The first order approximation appears in dotted red line and the second order approximation appears in a dashed blue line mostly right with the exact solution.</s><s>(For interpretation of the references to color in this figure legend, the reader is referred to the web version of this article.)</s></p></div></figDesc><graphic coords="12,38.48,199.52,462.24,107.52" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>[ 4 .Fig. 6 .</head><label>46</label><figDesc><div><p><s>Fig.6.</s><s>The accuracy of the FM approximations in logarithmic scales for the 3D cases.</s><s>Red and blue plots are used for first and second order approximations, respectively; dotted lines for l ∞ error norm and solid for mean l 2 norm.</s><s>Black circles denote an exact second order convergence rate.</s><s>(For interpretation of the references to color in this figure legend, the reader is referred to the web version of this article.)</s></p></div></figDesc><graphic coords="13,43.27,376.27,462.24,102.88" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 7 .</head><label>7</label><figDesc><div><p><s>Fig. 7. 2D travel time tomography experiment, grid size 256 × 128.</s><s>Velocities are given in km/sec.</s></p></div></figDesc><graphic coords="14,45.48,54.48,448.56,77.76" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Fig. 8 .</head><label>8</label><figDesc><div><p><s>Fig. 8. Initial and final data and residuals in the source-receiver domain.</s></p></div></figDesc><graphic coords="14,42.98,174.90,454.08,131.20" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Pd i obs 2 + 2 (</head><label>22</label><figDesc><div><p><s>τ i (m bound (m )) − αR(m ) ,(6.33)    subject to the same constraints in(4.23).</s><s>For the regularization R use a simple discrete central-differences Laplacian, and apply it for m ; that isR(m ) = 1 m − m ref ) h (m − m ref ),where m ref is the model such that m bound (m ref ) = m ref .</s><s>For h we use Neumann boundary conditions, since those lead to</s></p></div></figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Fig. 9 .</head><label>9</label><figDesc><div><p><s>Fig. 9. Convergence history of the inversion.</s></p></div></figDesc><graphic coords="15,110.78,217.79,326.88,106.08" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Fig. 10 .</head><label>10</label><figDesc><div><p><s>Fig. 10.</s><s>3D travel time tomography experiment, grid size 256 × 256 × 128.</s><s>Velocities are given in km/sec.</s></p></div></figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1</head><label>1</label><figDesc><div><p><s>Results for 2D constant gradient of squared slowness (test case 1).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/40</cell><cell>161 × 321</cell><cell>[3.71e−03, 9.42e−04]</cell><cell>0.05 s (217)</cell><cell>[9.33e−05, 9.26e−06]</cell><cell>0.05 s (202)</cell></row><row><cell>1/80</cell><cell>321 × 641</cell><cell>[1.85e−03, 4.69e−04]</cell><cell>0.19 s (199)</cell><cell>[3.30e−05, 2.21e−06]</cell><cell>0.20 s (209)</cell></row><row><cell>1/160</cell><cell>641 × 1281</cell><cell>[9.22e−04, 2.34e−04]</cell><cell>0.85 s (217)</cell><cell>[1.14e−05, 5.32e−07]</cell><cell>0.85 s (218)</cell></row><row><cell>1/320</cell><cell>1281 × 2561</cell><cell>[4.60e−04, 1.17e−04]</cell><cell>3.89 s (266)</cell><cell>[4.06e−06, 1.28e−07]</cell><cell>3.84 s (262)</cell></row><row><cell>1/640</cell><cell>2561 × 5121</cell><cell>[2.30e−04, 5.83e−05]</cell><cell>16.4 s (278)</cell><cell>[1.47e−06, 3.12e−08]</cell><cell>17.1 s (289)</cell></row><row><cell>1/1280</cell><cell>5121 × 10241</cell><cell>[1.15e−04, 2.92e−05]</cell><cell>76.6 s (316)</cell><cell>[5.18e−07, 7.64e−09]</cell><cell>77.5 s (320)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2</head><label>2</label><figDesc><div><p><s>Results for the 2D constant gradient of velocity (test case 2).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/40</cell><cell>161 × 321</cell><cell>[2.66e−02, 1.01e−02]</cell><cell>0.05 s (205)</cell><cell>[4.86e−04, 2.90e−04]</cell><cell>0.05 s (236)</cell></row><row><cell>1/80</cell><cell>321 × 641</cell><cell>[1.32e−02, 5.05e−03]</cell><cell>0.21 s (221)</cell><cell>[1.67e−04, 7.38e−05]</cell><cell>0.20 s (206)</cell></row><row><cell>1/160</cell><cell>641 × 1281</cell><cell>[6.59e−03, 2.52e−03]</cell><cell>0.87 s (223)</cell><cell>[5.18e−05, 1.85e−05]</cell><cell>0.86 s (221)</cell></row><row><cell>1/320</cell><cell>1281 × 2561</cell><cell>[3.29e−03, 1.26e−03]</cell><cell>3.80 s (259)</cell><cell>[1.90e−05, 4.61e−06]</cell><cell>3.88 s (265)</cell></row><row><cell>1/640</cell><cell>2561 × 5121</cell><cell>[1.65e−03, 6.28e−04]</cell><cell>16.2 s (274)</cell><cell>[6.58e−06, 1.15e−06]</cell><cell>16.6 s (280)</cell></row><row><cell>1/1280</cell><cell>5121 × 10241</cell><cell>[8.22e−04, 3.14e−04]</cell><cell>73.8 s (304)</cell><cell>[2.28e−06, 2.86e−07]</cell><cell>74.6 s (307)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3</head><label>3</label><figDesc><div><p><s>Results for the 2D Gaussian factor test case (test case 3).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/40</cell><cell>161 × 321</cell><cell>[6.15e−03, 3.86e−03]</cell><cell>0.05 s (205)</cell><cell>[1.60e−04, 5.94e−05]</cell><cell>0.05 s (236)</cell></row><row><cell>1/80</cell><cell>321 × 641</cell><cell>[3.07e−03, 1.93e−03]</cell><cell>0.21 s (221)</cell><cell>[3.85e−05, 1.56e−05]</cell><cell>0.20 s (206)</cell></row><row><cell>1/160</cell><cell>641 × 1281</cell><cell>[1.54e−03, 9.67e−04]</cell><cell>0.87 s (223)</cell><cell>[1.08e−05, 4.03e−06]</cell><cell>0.86 s (221)</cell></row><row><cell>1/320</cell><cell>1281 × 2561</cell><cell>[7.68e−04, 4.83e−04]</cell><cell>3.80 s (259)</cell><cell>[3.18e−06, 1.04e−06]</cell><cell>3.88 s (265)</cell></row><row><cell>1/640</cell><cell>2561 × 5121</cell><cell>[3.84e−04, 2.42e−04]</cell><cell>16.2 s (275)</cell><cell>[9.59e−07, 2.66e−07]</cell><cell>16.6 s (280)</cell></row><row><cell>1/1280</cell><cell>5121 × 10241</cell><cell>[1.92e−04, 1.21e−04]</cell><cell>73.8 s (304)</cell><cell>[2.99e−07, 6.88e−08]</cell><cell>74.6 s (307)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4</head><label>4</label><figDesc><div><p><s>Results for the 3D constant gradient of squared slowness test case (test case 1).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/20</cell><cell>17 × 33 × 33</cell><cell>[5.41e−03, 1.46e−03]</cell><cell>0.04 s (236)</cell><cell>[5.63e−4, 1.49e−04]</cell><cell>0.04 s (234)</cell></row><row><cell>1/40</cell><cell>33 × 65 × 65</cell><cell>[2.64e−03, 7.05e−04]</cell><cell>0.30 s (230)</cell><cell>[2.00e−04, 3.52e−05]</cell><cell>0.32 s (235)</cell></row><row><cell>1/80</cell><cell>65 × 129 × 129</cell><cell>[1.30e−03, 3.46e−04]</cell><cell>2.88 s (332)</cell><cell>[6.99e−05, 7.82e−06]</cell><cell>2.90 s (334)</cell></row><row><cell>1/160</cell><cell>129 × 257 × 257</cell><cell>[6.41e−04, 1.72e−04]</cell><cell>28.7 s (427)</cell><cell>[2.51e−05, 1.68e−06]</cell><cell>29.0 s (432)</cell></row><row><cell>1/320</cell><cell>257 × 513 × 513</cell><cell>[3.19e−04, 8.55e−05]</cell><cell>264 s (481)</cell><cell>[8.78e−06, 3.53e−07]</cell><cell>272 s (497)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5</head><label>5</label><figDesc><div><p><s>Results for the 3D constant gradient of velocity test case (test case 2).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/20</cell><cell>17 × 33 × 33</cell><cell>[1.35e−02, 5.04e−03]</cell><cell>0.04 s (237)</cell><cell>[2.34e−03, 9.36e−04]</cell><cell>0.04 s (255)</cell></row><row><cell>1/40</cell><cell>33 × 65 × 65</cell><cell>[6.24e−03, 2.44e−03]</cell><cell>0.31 s (234)</cell><cell>[5.12e−04, 1.72e−04]</cell><cell>0.32 s (236)</cell></row><row><cell>1/80</cell><cell>65 × 129 × 129</cell><cell>[3.00e−03, 1.20e−03]</cell><cell>2.86 s (330)</cell><cell>[1.70e−04, 3.82e−05]</cell><cell>2.89 s (334)</cell></row><row><cell>1/160</cell><cell>129 × 257 × 257</cell><cell>[1.47e−03, 5.99e−04]</cell><cell>27.6 s (411)</cell><cell>[5.42e−05, 9.33e−06]</cell><cell>28.9 s (430)</cell></row><row><cell>1/320</cell><cell>257 × 513 × 513</cell><cell>[7.30e−04, 2.99e−04]</cell><cell>263 s (481)</cell><cell>[1.95e−05, 2.29e−06]</cell><cell>271 s (496)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6</head><label>6</label><figDesc><div><p><s>Results for the 3D Gaussian factor test case (test case 3).</s><s>The error measures are in the [l ∞ , mean l 2 ] norms.</s></p></div></figDesc><table><row><cell>h</cell><cell>n</cell><cell>1 st order</cell><cell></cell><cell>2 nd order</cell><cell></cell></row><row><cell></cell><cell></cell><cell>error in τ</cell><cell>time (work)</cell><cell>error in τ</cell><cell>time (work)</cell></row><row><cell>1/20</cell><cell>17 × 33 × 33</cell><cell>[7.53e−03, 3.26e−03]</cell><cell>0.04 s (230)</cell><cell>[3.65e−04, 1.27e−04]</cell><cell>0.04 s (229)</cell></row><row><cell>1/40</cell><cell>33 × 65 × 65</cell><cell>[3.69e−03, 1.56e−03]</cell><cell>0.33 s (245)</cell><cell>2.85e−05]</cell><cell>0.34 s (253)</cell></row><row><cell>1/80</cell><cell>65 × 129 × 129</cell><cell>[1.83e−03, 7.62e−04]</cell><cell>2.77 s (319)</cell><cell>[3.22e−05, 7.50e−06]</cell><cell>2.80 s (323)</cell></row><row><cell>1/160</cell><cell>129 × 257 × 257</cell><cell>[9.11e−04, 3.77e−04]</cell><cell>26.4 s (393)</cell><cell>[1.06e−05, 2.06e−06]</cell><cell>27.2 s (405)</cell></row><row><cell>1/320</cell><cell>257 × 513 × 513</cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">pixels on the top row), and 256 receivers (located in every pixel on the top row). We note that to have a reasonable solution using the first arrivals for the inverse problem under this setup, the velocity in the interior has to be larger than</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="256">× 256 × 128 grid that represents a volume of 13.5 km × 13.5 km × 4.2 km. We choose 144 equally distanced sources locations on the open surface, located every 23 pixels on the top surface, and 256 × 256 receivers located on the top surface.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p><s>The research leading to these results has received funding from the European Union's -Seventh Framework Programme (FP7/2007-2013) under grant agreement no 623212 -MC Multiscale Inversion.</s></p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">3-D Salt and Overthrust Models, Society of Exploration Geophysicists</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Aminzadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Jean</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Kunz</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1997">1997</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">On the implementation of fast marching methods for 3D lattices</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Baerentzen</surname></persName>
+		</author>
+		<idno>IMM-TR-2001-13</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Informatics and Mathematical Modelling</title>
+				<meeting><address><addrLine>Kgs. Lyngby</addrLine></address></meeting>
+		<imprint>
+			<publisher>Richard Petersens Plads</publisher>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="volume">321</biblScope>
+			<biblScope unit="page">2800</biblScope>
+		</imprint>
+		<respStmt>
+			<orgName>Technical University of Denmark ; DTU</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Tech. Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">First Arrival Traveltime Tomography Using the Fast Marching Method and the Adjoint State Technique</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Benaichouche</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Noble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gesret</surname></persName>
+		</author>
+		<idno type="DOI">10.3997/2214-4609.201412568</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings</title>
+				<meeting>null</meeting>
+		<imprint>
+			<publisher>EAGE Publications BV</publisher>
+			<date type="published" when="2015-06-01">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Julia: a fast dynamic language for technical computing</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bezanzon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Karpinski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Shah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Edelman</surname></persName>
+		</author>
+		<editor>Lang. NEXT</editor>
+		<imprint>
+			<date type="published" when="2012-04">Apr. 2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Viscosity solutions of Hamilton-Jacobi equations</title>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">G</forename><surname>Crandall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pierre-Louis</forename><surname>Lions</surname></persName>
+		</author>
+		<idno type="DOI">10.1090/s0002-9947-1983-0690039-8</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the American Mathematical Society</title>
+		<title level="j" type="abbrev">Trans. Amer. Math. Soc.</title>
+		<idno type="ISSN">0002-9947</idno>
+		<idno type="ISSNe">1088-6850</idno>
+		<imprint>
+			<biblScope unit="volume">277</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="42" />
+			<date type="published" when="1983">1983</date>
+			<publisher>American Mathematical Society (AMS)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Fast sweeping method for the factored eikonal equation</title>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Fomel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongkai</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jcp.2009.05.029</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational Physics</title>
+		<title level="j" type="abbrev">Journal of Computational Physics</title>
+		<idno type="ISSN">0021-9991</idno>
+		<imprint>
+			<biblScope unit="volume">228</biblScope>
+			<biblScope unit="issue">17</biblScope>
+			<biblScope unit="page" from="6440" to="6455" />
+			<date type="published" when="2009-09">2009</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Computational Study of Fast Methods for the Eikonal Equation</title>
+		<author>
+			<persName><forename type="first">Pierre</forename><forename type="middle">A</forename><surname>Gremaud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">M</forename><surname>Kuster</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/040605655</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Scientific Computing</title>
+		<title level="j" type="abbrev">SIAM J. Sci. Comput.</title>
+		<idno type="ISSN">1064-8275</idno>
+		<idno type="ISSNe">1095-7197</idno>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1803" to="1816" />
+			<date type="published" when="2006-01">2006</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Computational Methods in Geophysical Electromagnetics</title>
+		<author>
+			<persName><forename type="first">Eldad</forename><surname>Haber</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/1.9781611973808</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Methods in Geophysical Electromagnetics</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<date type="published" when="2014-12-12">2014</date>
+			<publisher>Society for Industrial and Applied Mathematics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">A fast method for the solution of the Helmholtz equation</title>
+		<author>
+			<persName><forename type="first">Eldad</forename><surname>Haber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Maclachlan</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jcp.2011.01.015</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational Physics</title>
+		<title level="j" type="abbrev">Journal of Computational Physics</title>
+		<idno type="ISSN">0021-9991</idno>
+		<imprint>
+			<biblScope unit="volume">230</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="4403" to="4418" />
+			<date type="published" when="2011-06">2011</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Lax–Friedrichs sweeping scheme for static Hamilton–Jacobi equations</title>
+		<author>
+			<persName><forename type="first">Chiu</forename><forename type="middle">Yen</forename><surname>Kao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stanley</forename><surname>Osher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jcp.2003.11.007</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational Physics</title>
+		<title level="j" type="abbrev">Journal of Computational Physics</title>
+		<idno type="ISSN">0021-9991</idno>
+		<imprint>
+			<biblScope unit="volume">196</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="367" to="391" />
+			<date type="published" when="2004-05">2004</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Computing geodesic paths on manifolds</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Kimmel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Sethian</surname></persName>
+		</author>
+		<idno type="DOI">10.1073/pnas.95.15.8431</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Proceedings of the National Academy of Sciences</title>
+		<title level="j" type="abbrev">Proc. Natl. Acad. Sci. U.S.A.</title>
+		<idno type="ISSN">0027-8424</idno>
+		<idno type="ISSNe">1091-6490</idno>
+		<imprint>
+			<biblScope unit="volume">95</biblScope>
+			<biblScope unit="issue">15</biblScope>
+			<biblScope unit="page" from="8431" to="8435" />
+			<date type="published" when="1998-07-21">1998</date>
+			<publisher>Proceedings of the National Academy of Sciences</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Eulerian Gaussian beams for high-frequency wave propagation</title>
+		<author>
+			<persName><forename type="first">Shingyu</forename><surname>Leung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Burridge</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/1.2752136</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">72</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="SM61" to="SM76" />
+			<date type="published" when="2007-09">2007</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">An Adjoint State Method for Three-Dimensional Transmission Traveltime Tomography Using First-Arrivals</title>
+		<author>
+			<persName><forename type="first">Shingyu</forename><surname>Leung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<idno type="DOI">10.21236/ada448160</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Commun. Math. Sci</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="249" to="266" />
+			<date type="published" when="2006-01-30">2006</date>
+			<publisher>Defense Technical Information Center</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">First-break traveltime tomography with the double-square-root eikonal equation</title>
+		<author>
+			<persName><forename type="first">Siwei</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Vladimirsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Fomel</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/geo2013-0058.1</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">78</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="U89" to="U101" />
+			<date type="published" when="2013-11-01">2013</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Factored singularities and high-order Lax–Friedrichs sweeping schemes for point-source traveltimes and amplitudes</title>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jcp.2011.02.043</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational Physics</title>
+		<title level="j" type="abbrev">Journal of Computational Physics</title>
+		<idno type="ISSN">0021-9991</idno>
+		<imprint>
+			<biblScope unit="volume">230</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="4742" to="4755" />
+			<date type="published" when="2011-06">2011</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Fast Sweeping Methods for Factored Anisotropic Eikonal Equations: Multiplicative and Additive Factors</title>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10915-011-9550-y</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Scientific Computing</title>
+		<title level="j" type="abbrev">J Sci Comput</title>
+		<idno type="ISSN">0885-7474</idno>
+		<idno type="ISSNe">1573-7691</idno>
+		<imprint>
+			<biblScope unit="volume">52</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="360" to="382" />
+			<date type="published" when="2012">2012</date>
+			<publisher>Springer Science and Business Media LLC</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Fast Huygens sweeping methods for Helmholtz equations in inhomogeneous media in the high frequency regime</title>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Burridge</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jcp.2014.03.066</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational Physics</title>
+		<title level="j" type="abbrev">Journal of Computational Physics</title>
+		<idno type="ISSN">0021-9991</idno>
+		<imprint>
+			<biblScope unit="volume">270</biblScope>
+			<biblScope unit="page" from="378" to="401" />
+			<date type="published" when="2014-08">2014</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">High-Order Factorization Based High-Order Hybrid Fast Sweeping Methods for Point-Source Eikonal Equations</title>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Burridge</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/120901696</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Numerical Analysis</title>
+		<title level="j" type="abbrev">SIAM J. Numer. Anal.</title>
+		<idno type="ISSN">0036-1429</idno>
+		<idno type="ISSNe">1095-7170</idno>
+		<imprint>
+			<biblScope unit="volume">52</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="23" to="44" />
+			<date type="published" when="2014-01">2014</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Higher-order schemes for 3D first-arrival traveltimes and amplitudes</title>
+		<author>
+			<persName><forename type="first">Songting</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongkai</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/geo2010-0363.1</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">77</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="T47" to="T56" />
+			<date type="published" when="2012-03">2012</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Accurate 3-D finite difference computation of traveltimes in strongly heterogeneous media</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Noble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gesret</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Belayouni</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/gji/ggu358</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Geophysical Journal International</title>
+		<idno type="ISSN">0956-540X</idno>
+		<idno type="ISSNe">1365-246X</idno>
+		<imprint>
+			<biblScope unit="volume">199</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1572" to="1585" />
+			<date type="published" when="2014-10-13">2014</date>
+			<publisher>Oxford University Press (OUP)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Fast and accurate finite‐difference solutions of the 3D eikonal equation parametrized in celerity</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Pica</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/1.1885777</idno>
+	</analytic>
+	<monogr>
+		<title level="m">SEG Technical Program Expanded Abstracts 1997</title>
+				<imprint>
+			<publisher>Society of Exploration Geophysicists</publisher>
+			<date type="published" when="1997-01">1997</date>
+			<biblScope unit="page" from="1774" to="1777" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">An adaptive finite‐difference method for traveltimes and amplitudes</title>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">W</forename><surname>Symes</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/1.1451472</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">67</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="167" to="176" />
+			<date type="published" when="2002-01">2002</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">A Fast Sweeping Method for Static Convex Hamilton–Jacobi Equations</title>
+		<author>
+			<persName><forename type="first">Jianliang</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yong-Tao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hong-Kai</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10915-006-9124-6</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Scientific Computing</title>
+		<title level="j" type="abbrev">J Sci Comput</title>
+		<idno type="ISSN">0885-7474</idno>
+		<idno type="ISSNe">1573-7691</idno>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="237" to="271" />
+			<date type="published" when="2007-03-09">2007</date>
+			<publisher>Springer Science and Business Media LLC</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Wave front evolution in strongly heterogeneous layered media using the fast marching method</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Rawlinson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sambridge</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/j.1365-246x.2004.02153.x</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Geophysical Journal International</title>
+		<idno type="ISSN">0956-540X</idno>
+		<idno type="ISSNe">1365-246X</idno>
+		<imprint>
+			<biblScope unit="volume">156</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="631" to="647" />
+			<date type="published" when="2004-03">2004</date>
+			<publisher>Oxford University Press (OUP)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">A Viscosity Solutions Approach to Shape-From-Shading</title>
+		<author>
+			<persName><forename type="first">Elisabeth</forename><surname>Rouy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Agnès</forename><surname>Tourin</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/0729053</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Numerical Analysis</title>
+		<title level="j" type="abbrev">SIAM J. Numer. Anal.</title>
+		<idno type="ISSN">0036-1429</idno>
+		<idno type="ISSNe">1095-7170</idno>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="867" to="884" />
+			<date type="published" when="1992-06">1992</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Nonlinear total variation based noise removal algorithms</title>
+		<author>
+			<persName><forename type="first">Leonid</forename><forename type="middle">I</forename><surname>Rudin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stanley</forename><surname>Osher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emad</forename><surname>Fatemi</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/0167-2789(92)90242-f</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Physica D: Nonlinear Phenomena</title>
+		<title level="j" type="abbrev">Physica D: Nonlinear Phenomena</title>
+		<idno type="ISSN">0167-2789</idno>
+		<imprint>
+			<biblScope unit="volume">60</biblScope>
+			<biblScope unit="issue">1-4</biblScope>
+			<biblScope unit="page" from="259" to="268" />
+			<date type="published" when="1992-11">1992</date>
+			<publisher>Elsevier BV</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">jInv--a Flexible Julia Package for PDE Parameter Estimation</title>
+		<author>
+			<persName><forename type="first">Lars</forename><surname>Ruthotto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eran</forename><surname>Treister</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eldad</forename><surname>Haber</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/16m1081063</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Scientific Computing</title>
+		<title level="j" type="abbrev">SIAM J. Sci. Comput.</title>
+		<idno type="ISSN">1064-8275</idno>
+		<idno type="ISSNe">1095-7197</idno>
+		<imprint>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="S702" to="S722" />
+			<date type="published" when="2016">2016</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+	<note>submitted for publication</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Automatic traveltime picking using instantaneous traveltime</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Saragiotis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tariq</forename><surname>Alkhalifah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Fomel</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/geo2012-0026.1</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">78</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="T53" to="T58" />
+			<date type="published" when="2013-03-01">2013</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Gradient calculation of the traveltime cost function without ray tracing</title>
+		<author>
+			<persName><forename type="first">Alain</forename><surname>Sei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">W</forename><surname>Symes</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/1.1822780</idno>
+	</analytic>
+	<monogr>
+		<title level="m">SEG Technical Program Expanded Abstracts 1994</title>
+				<imprint>
+			<publisher>Society of Exploration Geophysicists</publisher>
+			<date type="published" when="1994-01">1994</date>
+			<biblScope unit="page" from="1351" to="1354" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">A fast marching level set method for monotonically advancing fronts.</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Sethian</surname></persName>
+		</author>
+		<idno type="DOI">10.1073/pnas.93.4.1591</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Proceedings of the National Academy of Sciences</title>
+		<title level="j" type="abbrev">Proc. Natl. Acad. Sci. U.S.A.</title>
+		<idno type="ISSN">0027-8424</idno>
+		<idno type="ISSNe">1091-6490</idno>
+		<imprint>
+			<biblScope unit="volume">93</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1591" to="1595" />
+			<date type="published" when="1996-02-20">1996</date>
+			<publisher>Proceedings of the National Academy of Sciences</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Fast Marching Methods</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Sethian</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/s0036144598347059</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Review</title>
+		<title level="j" type="abbrev">SIAM Rev.</title>
+		<idno type="ISSN">0036-1445</idno>
+		<idno type="ISSNe">1095-7200</idno>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="199" to="235" />
+			<date type="published" when="1999-01">1999</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Statistical and Computational Inverse Problems</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Somersalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kaipio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Appl. Math. Sci</title>
+		<imprint>
+			<biblScope unit="volume">160</biblScope>
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">An efficient solution to the eikonal equation on parametric manifolds</title>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Spira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ron</forename><surname>Kimmel</surname></persName>
+		</author>
+		<idno type="DOI">10.4171/ifb/102</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Interfaces and Free Boundaries</title>
+		<title level="j" type="abbrev">Interfaces Free Bound.</title>
+		<idno type="ISSN">1463-9963</idno>
+		<imprint>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="315" to="327" />
+			<date type="published" when="2004">2004</date>
+			<publisher>European Mathematical Society - EMS - Publishing House GmbH</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">First-arrival traveltime tomography based on the adjoint-state method</title>
+		<author>
+			<persName><forename type="first">Cédric</forename><surname>Taillandier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Noble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hervé</forename><surname>Chauris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henri</forename><surname>Calandra</surname></persName>
+		</author>
+		<idno type="DOI">10.1190/1.3250266</idno>
+	</analytic>
+	<monogr>
+		<title level="j">GEOPHYSICS</title>
+		<title level="j" type="abbrev">GEOPHYSICS</title>
+		<idno type="ISSN">0016-8033</idno>
+		<idno type="ISSNe">1942-2156</idno>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="WCB1" to="WCB10" />
+			<date type="published" when="2009-11">2009</date>
+			<publisher>Society of Exploration Geophysicists</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Fast Sweeping Algorithms for a Class of Hamilton--Jacobi Equations</title>
+		<author>
+			<persName><forename type="first">Yen-Hsi Richard</forename><surname>Tsai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li-Tien</forename><surname>Cheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stanley</forename><surname>Osher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hong-Kai</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/s0036142901396533</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Numerical Analysis</title>
+		<title level="j" type="abbrev">SIAM J. Numer. Anal.</title>
+		<idno type="ISSN">0036-1429</idno>
+		<idno type="ISSNe">1095-7170</idno>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="673" to="694" />
+			<date type="published" when="2003-01">2003</date>
+			<publisher>Society for Industrial &amp; Applied Mathematics (SIAM)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Efficient algorithms for globally optimal trajectories</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">N</forename><surname>Tsitsiklis</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/9.412624</idno>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Automatic Control</title>
+		<title level="j" type="abbrev">IEEE Trans. Automat. Contr.</title>
+		<idno type="ISSN">0018-9286</idno>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">9</biblScope>
+			<biblScope unit="page" from="1528" to="1538" />
+			<date type="published" when="1995">1995</date>
+			<publisher>Institute of Electrical and Electronics Engineers (IEEE)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Computational Methods for Inverse Problems</title>
+		<author>
+			<persName><forename type="first">Curtis</forename><forename type="middle">R</forename><surname>Vogel</surname></persName>
+		</author>
+		<idno type="DOI">10.1137/1.9780898717570</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Computational Methods for Inverse Problems</title>
+				<meeting><address><addrLine>SIAM, Philadelphia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Society for Industrial and Applied Mathematics</publisher>
+			<date type="published" when="2002-01">2002</date>
+			<biblScope unit="volume">23</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">A fast sweeping method for Eikonal equations</title>
+		<author>
+			<persName><forename type="first">Hongkai</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.1090/s0025-5718-04-01678-3</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Mathematics of Computation</title>
+		<title level="j" type="abbrev">Math. Comp.</title>
+		<idno type="ISSN">0025-5718</idno>
+		<idno type="ISSNe">1088-6842</idno>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="issue">250</biblScope>
+			<biblScope unit="page" from="603" to="627" />
+			<date type="published" when="2005">2005</date>
+			<publisher>American Mathematical Society (AMS)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

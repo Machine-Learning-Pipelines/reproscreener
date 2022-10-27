@@ -18,3 +18,10 @@ ReproScreener aims to address challenges in robustness, transparency and interpr
 
 ## Case studies
 
+## References
+
+`references.bib` contains references used in this project.
+
+## Installation instructions
+
+## Run instructions
