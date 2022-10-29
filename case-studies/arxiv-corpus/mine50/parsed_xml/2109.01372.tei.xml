@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Sample Noise Impact on Active Learning</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-21">21 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Alexandre</forename><surname>Abraham</surname></persName>
+							<email>alexandre.abraham@dataiku.com</email>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Dataiku, Paris</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Léo</forename><surname>Dreyfus-Schmidt</surname></persName>
+							<email>leo.dreyfus-schmidt@dataiku.com</email>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Dataiku, Paris</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Sample Noise Impact on Active Learning</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-21">21 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">7CE30799C43C2E0481617F795CA60054</idno>
+					<idno type="arXiv">arXiv:2109.01372v2[stat.ML]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:47+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This work explores the effect of noisy sample selection in active learning strategies. We show on both synthetic problems and reallife use-cases that knowledge of the sample noise can significantly improve the performance of active learning strategies. Building on prior work, we propose a robust sampler, Incremental Weighted K-Means that brings significant improvement on the synthetic tasks but only a marginal uplift on real-life ones. We hope that the questions raised in this paper are of interest to the community and could open new paths for active learning research.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>When training machine learning models, data quality is undoubtedly the most fundamental requirement. A recent study <ref type="bibr" target="#b4">[5]</ref> has shown that pervasive errors in the test set of famous datasets could lead to selecting a suboptimal model. In active learning, where a small number of samples are selected to be labeled by an oracle, it becomes paramount as selecting samples of poor quality may worsen the model's performance.</p><p>Sample diversity in the training set is also essential and has been the main focus of recent active learning strategies. Performance improvements come from new ways of combining uncertainty and diversity in a single framework. Batch-BALD <ref type="bibr" target="#b3">[4]</ref> adds diversity by minimizing the joint mutual information between batch samples. Core-sets <ref type="bibr" target="#b5">[6]</ref> and <ref type="bibr" target="#b7">[8]</ref> use a clustering approach to scatter the selected samples across the sample space. The method proposed in <ref type="bibr" target="#b2">[3]</ref> minimizes the similarity between the samples of the batch while minimizing the similarity with already labeled samples. The most common explanation for the observed performance uplift when enforcing diversity is that a homogeneous set of samples contains much redundant information while a diverse one informs the model with several classification patterns.</p><p>Enforcing diversity entails selecting samples where uncertainty is not maximal. Therefore, the selected samples are further away from the decision boundary and easier to classify. We hypothesize that this side-effect of diversity contributes to its success. In classification, mislabeled or very ambiguous samples -like five that looks like six in MNIST -can be detrimental to the model <ref type="bibr" target="#b4">[5]</ref>. As the density of such samples is higher near the classification boundary, we increase the chances of obtaining meaningful samples by selecting samples further away. This paper proposes a metric to evaluate the quantity of such noisy samples in a dataset, and we design a query strategy to avoid them. We first validate our approach by showing the existence of these samples on a synthetic example and observe that diversity-based methods are less likely to select those. We show that our results obtained on synthetic data do not generalize well to real tasks, propose an explanation and ideas to mitigate the problem.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Sample-noise robust strategies</head><p>In the following, D designates a dataset and h a probabilistic classifier. A subscript indicates the nature of datasets: L stands for labeled samples, U unlabeled, T test, and B designates a batch of samples. Iterations are indicated with a superscript when pertinent.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">The pervasiveness of sample noise</head><p>In his seminal work on active learning, Settles <ref type="bibr" target="#b6">[7]</ref> defines the most valuable samples at iteration i as the one with the lowest maximum predicted probability among classes: lowest confidence(x) " 1 ´hi 1 pxq With h i k being the k-th probability predicted by the classifier learned at iteration i in descending order, so that h i 1 is the maximum predicted probability at iteration i. This definition assumes that each sample can reach a predicted probability of 1. The difference between 1 and the predicted probability represents the information that the model is expected to gain when the sample gets labeled.</p><p>However, classifiers do not always reach a predicted probability of 1 for all samples. Fig. <ref type="figure" target="#fig_0">1</ref> shows the distribution of predicted probabilities on various standard tasks (see details in section 3). If some datasets like LDPA present an almost uniform distribution, MNIST is very polarized towards 1 while having outliers below 0.5.</p><p>We call noisy the samples located at the boundary between two classes, which commonly have a low predicted probability for their class. Noisy samples can be due to signal noise in the data that makes them hard-to-classify, labeling errors, or to a genuine ambiguity such as a four that looks like a nine in MNIST (see Fig. <ref type="figure" target="#fig_0">1</ref>, right). Noisy samples are a challenge in active learning as they may get overly selected by uncertainty-based methods despite their low quality. At a given iteration of an active learning experiment, noisy samples occur for two reasons. First, those samples may be easy to classify, but our current classifier lacks the knowledge to do so. Labeling this sample could be useful as it would help the model determine if the ideal decision boundary is close or not. This type of uncertainty is called epistemic and can be reduced with more samples. However, it may also be that this sample is ambiguous and that an ideal classifier would not do any better. The noise is then due to aleatoric uncertainty that cannot be reduced.</p><formula xml:id="formula_0">L D P A C IF A R -1 0 0 C IF A R -1 0 C IF A R -1 0 S im C L R F a</formula><p>Let us call h 8 this ideal classifier obtained by training the model on all available training data . We use it to define the theoretical informed lowest confidence sampler (denoted by IConfidence) based on the following score:</p><p>ιpxq " h 8 pxq ´hi 1 pxq We expect this sampler to account for aleatoric uncertainty and therefore focus only on reducing epistemic uncertainty. If h 8 is unknown at experiment time, it can be estimated in a research context where all labels are known. Such an oracle can be useful in active learning research by providing a golden standard of the maximum achievable accuracy in an experiment.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Measuring sample noise</head><p>Misclassified samples are a source of sample noise, and <ref type="bibr" target="#b4">[5]</ref> proposes to identify them using human annotation. This approach can be considered a golden standard but is hard to perform because of human labeling costs.</p><p>We previously suggested that sample noise could be measured as the maximum probability predicted by a good enough classifier. In order to extend this measure to a set of samples, we propose to rely on a metric previously introduced in <ref type="bibr" target="#b0">[1]</ref> called reverse batch accuracy or RBA for short. RBA measures how easy samples are to classify by training a classifier on the test set and measuring its accuracy on sample batches. The lower the RBA score, the harder samples are to classify for the model, so the noisier are the samples.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Incremental Weighted K-Means (IWKMeans)</head><p>The goal of batch active learning strategies is to select batches of samples D B representative of the unlabeled data D B " D U . For a given notion of similarity sim between batches, this leads to the following maximization objective:</p><formula xml:id="formula_1">argmax D B simpD B , D U q (1)</formula><p>In <ref type="bibr" target="#b7">[8]</ref>, the similarity is taken as ´řuPD U dpD B , uq with d being the squared distance to the closest point in the set dpD B , uq " min bPD B }b ´u} 2 . This corresponds to the inertia objective of the K-Means clustering. The authors propose to use it in a two-step procedure called Weighted K-Means (WKMeans) where a set of samples are preselected using margin sampling, and then the final batch is selected by using K-Means.</p><p>The above objective does not consider already labeled data and can lead to suboptimal batches lying in regions of high-density of labeled samples. A natural refinement is to additionally impose that the selected batch differs from already labeled data, i.e. to minimise similarity simpD B , D L q:</p><formula xml:id="formula_2">argmax D B simpD B , D U q subject to argmin D B simpD B , D L q</formula><p>In the context of K-Means, minimizing this similarity is equivalent to preventing points close to labeled data to drag the centroids toward them. This is done by adding the labeled points in the reference set used to compute distances in the K-Means objective that becomes ´řuPD U dpD B Y D L , uq. This translates algorithmically by adding cluster centers corresponding to already labeled samples and keeping them fixed during optimization. We refer to this approach as Incremental Weighted K-Means or IWKMeans for short, and it is described in Alg. 1. IWKMeans tends to repel batch samples from already selected samples, including the noisy ones. A similar approach is proposed in <ref type="bibr" target="#b2">[3]</ref> where the values in the matrix of similarity between batch and selected samples are minimized.</p><p>Potential concerns. The fact that the method repels all selected samples and not only the noisy ones can be debated. We tested variants of this method that repels noisy samples only, or noisy and very easy to classify samples as they can also be considered detrimental <ref type="bibr" target="#b0">[1]</ref>. Since all variants had similar performances, we present here the simplest one. Another concern is the convergence of this modified version of K-Means. It is easy to imagine in two dimensions how fixed centers can prevent a moving one to reach its minimum. From our experience, the K-Means++ initialization prevents most of these problems, and Fig. <ref type="figure" target="#fig_2">2</ref> proves </p><formula xml:id="formula_3">Data: D 0 L , D 0 U Result: h n iter for i Ð 1 to</formula><formula xml:id="formula_4">D i`1 L Ð D i L Y D i B D i`1 U Ð D i U zD i B h i`1 Ð h i `Di B end</formula><p>Algorithm 1: IWKmeans algorithm the method's efficiency in a two-dimensional setting. For the sake of clarity and concision, we refer the reader to this online study of IWKMeans convergence 1 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Experiments</head><p>We perform active learning experiments on synthetic and natural datasets following the framework described in <ref type="bibr" target="#b0">[1]</ref>. Random sampling (Random) is the baseline. We use KCenterGreedy (KCenter) as a proxy for Core-sets <ref type="bibr" target="#b5">[6]</ref> since there is no open implementation available. Note that the latter uses the activation of the penultimate layer of neural networks, so we have adapted it to random forests by considering a PCA-reduced forest embedding. We compare lowest confidence sampling (Confidence) as described above to its informed counterpart IConfidence. We also compare Weighted K-Means <ref type="bibr" target="#b7">[8]</ref> (WKMeans) with β " 10 to our proposed IWKMeans. BatchBALD <ref type="bibr" target="#b3">[4]</ref> was not considered due to its prohibitive computational time of several hours compared to less than one minute for others. We run ten iterations using five repeated two-fold cross-validation for each task. Reported results include means and confidence intervals at 10th and 90th quantiles. Cifar10 and Cifar100 tasks are run on ImageNet embeddings, Cifar10 SimCLR is run on embeddings learned using contrastive learning <ref type="bibr" target="#b1">[2]</ref>, and other tasks are run using raw data. A Random Forest is used on the LDPA task, all others use a multi-layer perceptron with hidden layers of size 128 and 64. More details can be found on the code repository 2 or in <ref type="bibr" target="#b0">[1]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Synthetic problem with noisy samples</head><p>To create noisy samples, we design a task where samples from a given class are not distinguishable from those of another class. We create a 10-class task composed of spatially isolated blobs. Some blobs are composed of regular samples that all belong to the same class. Other blobs are composed of samples randomly assigned to two different classes; we call them noisy blobs since their samples are impossible to classify. We create a low-dimensional problem with 10000 samples, 2 features, 10 classes, 200 blobs, half of which are noisy. The active learning experiment uses 20 batches of 20 samples. We also create a high-dimensional problem with the same characteristics except that the data has 40 features, and we generate 90 blobs, 30 of which are noisy. We use accuracy AUC over the whole experiment to measure strategy performances. In this synthetic experiment, we know which samples are noisy by construction and therefore report the ratio of noisy samples (NSR) as a measure of sample noise instead of its proxy RBA. Note that RBA is strongly correlated (ą 0.95) with NSR. Results are reported in Fig. <ref type="figure" target="#fig_2">2</ref>.  Table <ref type="table">1</ref>. AUC and ratio of noisy samples per method. Standard deviation is in parenthesis. Best answers in terms of accuracy (higher) and Noisy Sample Ratio (lower) are in bold. In terms of performances, IWKMeans dominates all methods, which is what was expected. KCenter is closely following which is surprising since the model here is a random forest and we did not expect our quick adaptation to this model to perform well. We would have expected Confidence to select more noisy samples and perform poorly because of that. Instead, it seems to be penalized by its lack of diversity and exploration. IConfidence minimizes the number of noisy samples selected, as expected, and yet it performs as badly as Confidence for the same reasons. In the end, this experiment shows that diversity can be as crucial as sample noise, and we expect a sweet spot to exist. Overall, we also observe that IWKMeans seem to be more robust to noisy samples. More insights are available in appendix Fig. <ref type="figure" target="#fig_7">A4</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Dataset Metric Random KCenter Confidence IConfidence WKMeans IWKMeans</head><p>Table <ref type="table">2</ref>. Area under the curve for accuracy (AUC) and reverse batch accuracy (RBA) per method averaged over all repetitions. Standard deviation is in parenthesis. Bold values are statistically significantly higher than the others based on a Friedman test with Nemenyi post-hoc test which details are available in Fig. <ref type="figure">A5</ref> in appendix.</p><p>Dataset Metric Random KCenter Confidence IConfidence IWKMeans LDPA AUC 59.0 (0.5) 57.2 (0.5) 51.9 (1.1) 51.2 (0.8) 63.1 (0.3) 63.6 (0.3) LDPA RBA 67.1 (0.7) 49.3 (2.3) 51.6 (2.0) 98.9 (0.1) 67.8 (1.1) 67.6 (1.1) Cifar10 AUC 80.9 (0.2) 82.0 (0.2) 81.9 (0.2) 82.9 (0.4) 81.8 (0. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Real datasets</head><p>We now analyze the samplers behaviors on our collection of real-life datasets.</p><p>Informed lowest confidence. IConfidence is equivalent or better than confidence in all cases. It is also the best strategy for all tasks except MNIST and LDPA. Note that the RBA of this method is much higher than the other strategies. It reveals that getting too close to the decision boundary may not be required for good performance. Even more, this oracle method does not enforce diversity but yet overpowers diversity enforcing methods. This questions the fundamental hypothesis that enforcing diversity is mandatory to obtain good performances. Further work will investigate further this sampler and try to reproduce its behavior online with proxy metrics proposed in <ref type="bibr" target="#b0">[1]</ref>.</p><p>IWKMeans. WKMeans and IWKMeans bring a significant uplift against random and all other uncertainty-based or unsupervised methods in all tasks except CIFAR10 with SimCLR embeddings. IWKMeans outperforms WKMeans on LDPA only, making it hard to draw a definitive conclusion on real tasks. Further experiments are needed to investigate these behaviors. Early investigations suggest that the variation in density of noisy samples in multiclass settings can tamper with adverse-to-noise samplers. For example, a general strategy can be hard to find on the MNIST dataset where few noisy samples exist between classes zero and four, while their density is high between classes three and five.</p><p>SimCLR embedding. An unexpected conclusion of these experiments is that contrastive-based embeddings can bring an uplift significantly higher than choosing the best query sampling strategy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusion</head><p>In active learning, noisy samples that are hard to classify by the model can be detrimental to the performance. To prove this, we have designed a metric to measure them and a synthetic problem to test the robustness of query strategies to their presence. IWKmeans, the proposed noise-adverse sampling strategy, has been proven effective on synthetic data, but not on real tasks where it marginally improves WKMeans on which it is based. If IWKMeans' performance seems correlated to the number of noisy samples selected, there may be more than meets the eye in this problem, and more investigations are needed. Our study also shows that a sampler as simple as confidence sampling can outperform all other samplers if informed by a good enough classifier. Whether or not this uplift can be reproduced in real conditions using a proxy must be investigated in further work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Insights about sample noise in synthetic examples</head><p>During the whole active learning experiment, all methods keep a constant pace in the ratio of noisy samples in their training set, as shown in Fig. <ref type="figure" target="#fig_7">A4</ref>.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B Statistical significance for each method on each task</head><p>In order to determine the best methods for ech task, we rank the scores using the python package autorank. It performs a Freidman test followed by a Nemenyi post-hoc test. </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Distribution of prediction probabilities by a model in a 2-fold setting, and examples of ambiguous samples on the MNIST dataset.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 2 .</head><label>2</label><figDesc>Fig. 2. Test accuracy on synthetic problems.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>Noisy LD AUC 38.6 (1.5) 47.9 (0.5) 26.7 (2.5) 24.5 (1.4) 44.0 (1.2) 48.1 (1.0) Noisy LD NSR 50.3 (4.1) 42.4 (2.0) 38.9 (6.5) 10.1 (4.6) 43.5 (2.6) 39.3 (1.8) Noisy HD AUC 50.7 (2.1) 61.7 (1.1) 58.0 (1.2) 55.0 (1.5) 60.6 (0.9) 63.2 (0.6) Noisy HD NSR 35.0 (3.0) 24.5 (1.5) 25.6 (1.5) 3.2 (1.1) 33.4 (1.5) 26.9 (1.8)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head></head><label></label><figDesc>2) 81.6 (0.2) Cifar10 RBA 91.5 (4.8) 81.5 (10.7) 80.5 (12.6) 94.9 (3.5) 85.2 (9.0) 85.3 (9.1) Cifar10S AUC 88.8 (0.2) 89.2 (0.2) 89.5 (0.2) 89.6 (0.3) 89.4 (0.2) 89.5 (0.3) Cifar10S RBA 93.5 (1.3) 87.5 (1.8) 80.0 (3.6) 96.5 (0.8) 86.2 (2.8) 87.9 (2.3) MNIST AUC 90.9 (0.2) 91.2 (0.3) 93.5 (0.2) 93.8 (0.3) 94.2 (0.1) 94.2 (0.1) MNIST RBA 97.6 (0.2) 96.6 (0.4) 92.3 (8.1) 97.7 (2.5) 88.1 (0.4) 86.9 (0.6) Fashion AUC 82.4 (0.2) 79.3 (0.3) 83.5 (0.3) 85.0 (1.0) 84.3 (0.1) 84.3 (0.1) Fashion RBA 88.1 (0.4) 90.8 (9.7) 82.3 (15.9) 91.3 (7.3) 70.6 (0.7) 69.2 (0.7) Cifar100 AUC 48.5 (0.3) 48.3 (0.2) 46.2 (0.2) 50.8 (0.6) 48.9 (0.2) 49.0 (0.3) Cifar100 RBA 69.4 (9.2) 71.2 (14.1) 55.6 (15.6) 88.8 (5.8) 70.7 (9.2) 70.0 (9.9)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3. Results on real datasets</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Fig. A4 .</head><label>A4</label><figDesc>Fig. A4. Number of noisy samples across experiments on synthetic tasks.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>niter do Margin sampling to pre-select βk samples among the unlabeled ones:P i " arg max D i</figDesc><table><row><cell cols="2">1 ´ph i 1 pxq ´hi 2 pxqq Perform K-Means on P i with k moving and D i U L fixed centroids:</cell></row><row><cell>D i B " arg min D i B ĂP i</cell><cell>ř xPP i dpD i B Y D i L , xq</cell></row><row><cell cols="2">Update all sets and train the classifier:</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://dataiku-research.github.io/cardinal/auto_examples/plot_incr_ kmeans.html 2 https://github.com/dataiku-research/sample_noise_impact_on_active_ learning</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Rebuilding Trust in Active Learning with Actionable Metrics</title>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Abraham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Léo</forename><surname>Dreyfus-Schmidt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2020 IEEE International Conference on Data Mining Workshops</title>
+				<imprint>
+			<publisher>ICDMW</publisher>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A simple framework for contrastive learning of visual representations</title>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International conference on machine learning. PMLR. 2020</title>
+				<imprint>
+			<biblScope unit="page" from="1597" to="1607" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Exploring representativeness and informativeness for active learning</title>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Du</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE transactions on cybernetics</title>
+		<imprint>
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="14" to="26" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Batchbald: Efficient and diverse batch acquisition for deep bayesian active learning</title>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Kirsch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joost</forename><surname>Van Amersfoort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yarin</forename><surname>Gal</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.08158</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Pervasive label errors in test sets destabilize machine learning benchmarks</title>
+		<author>
+			<persName><forename type="first">Anish</forename><surname>Curtis G Northcutt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Athalye</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mueller</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2103.14749</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Active learning for convolutional neural networks: A core-set approach</title>
+		<author>
+			<persName><forename type="first">Ozan</forename><surname>Sener</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvio</forename><surname>Savarese</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1708.00489</idno>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Active learning literature survey</title>
+		<author>
+			<persName><forename type="first">Burr</forename><surname>Settles</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+		</imprint>
+		<respStmt>
+			<orgName>Department of Computer Sciences, University of Wisconsin-Madison</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Tech. rep</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Diverse mini-batch Active Learning</title>
+		<author>
+			<persName><forename type="first">Fedor</forename><surname>Zhdanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1901.05954</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

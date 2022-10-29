@@ -1,0 +1,1909 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">A MODULAR DEEP LEARNING PIPELINE FOR GALAXY-SCALE STRONG GRAVITATIONAL LENS DETECTION AND MODELING</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-25">October 25, 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Sandeep</forename><surname>Madireddy</surname></persName>
+							<email>smadireddy@anl.gov</email>
+							<affiliation key="aff1">
+								<orgName type="department">Mathematics and Computer Science Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Nesar</forename><surname>Ramachandra</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">LSST Dark Energy Science Collaboration</orgName>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="department">Computational Science Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="department">High Energy Physics Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Nan</forename><surname>Li</surname></persName>
+							<affiliation key="aff4">
+								<orgName type="institution">National Astronomical Observatories of China</orgName>
+								<address>
+									<settlement>Beijing</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">James</forename><surname>Butler</surname></persName>
+							<affiliation key="aff5">
+								<orgName type="department">Department of Statistics</orgName>
+								<orgName type="institution">University of California</orgName>
+								<address>
+									<settlement>Berkeley</settlement>
+									<region>CA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Prasanna</forename><surname>Balaprakash</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Mathematics and Computer Science Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Salman</forename><surname>Habib</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">LSST Dark Energy Science Collaboration</orgName>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="department">Computational Science Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="department">High Energy Physics Division</orgName>
+								<orgName type="institution">Argonne National Laboratory</orgName>
+								<address>
+									<settlement>Lemont</settlement>
+									<region>IL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Katrin</forename><surname>Heitmann</surname></persName>
+						</author>
+						<title level="a" type="main">A MODULAR DEEP LEARNING PIPELINE FOR GALAXY-SCALE STRONG GRAVITATIONAL LENS DETECTION AND MODELING</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-25">October 25, 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">34A3F3EC66B0FE1B11F858527F096BFF</idno>
+					<idno type="arXiv">arXiv:1911.03867v3[astro-ph.IM]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Upcoming large astronomical surveys are expected to capture an unprecedented number of strong gravitational lensing systems. Deep learning is emerging as a promising practical tool for the detection and quantification of these galaxy-scale image distortions. The absence of large quantities of representative data from current astronomical surveys motivates the development of a robust forward-modeling approach using synthetic lensing images. Using a mock sample of strong lenses created upon a stateof-the-art extragalactic catalogs, we train a modular deep learning pipeline for uncertainty-quantified detection and modeling with intermediate image processing components for denoising and deblending the lensing systems. We demonstrate a high degree of interpretability and controlled systematics due to domain-specific task modules trained with different stages of synthetic image generation. For lens detection and modeling, we obtain semantically meaningful latent spaces that separate classes of strong lens images and yield uncertainty estimates that explain the origin of misclassified images and provide probabilistic predictions for the lens parameters. Validation of the inference pipeline has been carried out using images from the Subaru telescope's Hyper Suprime-Cam camera, and LSST DESC simulated DC2 sky survey catalogues.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>1. INTRODUCTION Gravitational lensing refers to the deflection of light rays as they traverse a space curved by the presence of massive astrophysical objects. In the present era of precision cosmology, gravitational lensing has become a powerful probe in many areas of astrophysics and cosmology, from stellar to cosmological scales. Galaxy-galaxy strong lensing (GGSL) is a particular case of gravitational lensing in which the background source and the foreground lens are both galaxies, and the lensing system is sufficiently massive to distort images of sources into arcs or even closed arcs ("Einstein rings"), depending on the relative angular position of the two objects. Since the discovery of the first GGSL system <ref type="bibr" target="#b22">(Hewitt et al. 1988</ref>), many valuable scientific applications have been realized, such as studying galaxy mass density profiles <ref type="bibr" target="#b62">(Sonnenfeld et al. 2015;</ref><ref type="bibr" target="#b60">Shu et al. 2016b;</ref><ref type="bibr" target="#b37">Küng et al. 2018)</ref>, detecting the galaxy substructure <ref type="bibr" target="#b68">(Vegetti et al. 2014;</ref><ref type="bibr" target="#b24">Hezaveh et al. 2016;</ref><ref type="bibr" target="#b6">Bayer et al. 2018)</ref>, measuring cosmological parameters <ref type="bibr" target="#b12">(Collett &amp; Auger 2014;</ref><ref type="bibr" target="#b56">Rana et al. 2017;</ref><ref type="bibr" target="#b64">Suyu et al. 2017</ref>), investigating the nature of high redshift galaxies <ref type="bibr" target="#b7">(Bayliss et al. 2017;</ref><ref type="bibr" target="#b15">Dye et al. 2018;</ref><ref type="bibr" target="#b58">Sharda et al. 2018)</ref>, and constraining the properties of self-interacting dark matter candidates <ref type="bibr" target="#b59">(Shu et al. 2016a;</ref><ref type="bibr" target="#b18">Gilman et al. 2017;</ref><ref type="bibr" target="#b36">Kummer et al. 2018)</ref>.</p><p>The capabilities of next-generation surveys such as the Rubin Observatory's LSST 1 , Euclid 2 and Roman Space Telescope 3 will increase the number of known GGSLs by several orders of magnitude <ref type="bibr" target="#b11">(Collett 2015)</ref>. The forthcoming enormous datasets necessitate an analysis of GGSLs using automated procedures that operate efficiently and robustly, relying on the high uniformity and quality of the datasets. A key consideration for the analysis of GGSLs is the ability to detect a relatively small number (few hundreds to thousands) of strongly lensed galaxies from millions, if not billions of target images. The detection scheme needs to ensure a sufficiently small number of false positives so that we identify high-quality positive identifications that can be followed-up with telescopic observation for confirmation and higher-resolution studies. Given the expense of follow-up campaigns, the focus should be on the identification of "golden" candidates with a very low false positive probability rather than obtaining a large number of borderline or marginally confident cases.</p><p>To this end, several algorithms have been developed to detect GGSLs in image data by recognizing arc-like features and the presence of Einstein rings <ref type="bibr" target="#b16">(Gavazzi et al. 2014;</ref><ref type="bibr" target="#b30">Joseph et al. 2014;</ref><ref type="bibr" target="#b50">Paraficz et al. 2016;</ref><ref type="bibr" target="#b8">Bom et al. 2017)</ref>. More recently, efforts to automate GGSL detection have turned to machine learning (ML), in particular deep learning (DL) algorithms, given their strong performance in image recognition tasks. The strong gravitational lens detection challenge <ref type="bibr" target="#b45">(Metcalf et al. 2019</ref>) demonstrated the relative success of applying various ML techniques for automated detection of GGSL systems <ref type="bibr" target="#b25">(Jacobs et al. 2017;</ref><ref type="bibr" target="#b55">Petrillo et al. 2017;</ref><ref type="bibr" target="#b49">Ostrovski et al. 2017;</ref><ref type="bibr" target="#b8">Bom et al. 2017;</ref><ref type="bibr" target="#b19">Hartley et al. 2017;</ref><ref type="bibr">Lanusse et al. 2018;</ref><ref type="bibr" target="#b5">Avestruz et al. 2019</ref>) compared to traditional feature extraction techniques. <ref type="bibr" target="#b23">Hezaveh et al. (2017)</ref> and <ref type="bibr">Pearson et al. (2019)</ref> have shown the feasibility and reliability of using DL to model strong lenses as an efficient alternative to traditional parametric methods. <ref type="bibr" target="#b54">Perreault Levasseur et al. (2017)</ref> presented details on the estimation of the posteriors of constrained lensing parameters using a DL method; <ref type="bibr" target="#b47">Morningstar et al. (2018</ref><ref type="bibr" target="#b48">Morningstar et al. ( , 2019) )</ref> demonstrated the possibility of using ML and DL techniques to reconstruct source galaxies in GGSLs. More recently, works by <ref type="bibr" target="#b9">Cañameras et al. (2020)</ref>; <ref type="bibr" target="#b21">He et al. (2020)</ref>; <ref type="bibr" target="#b41">Li et al. (2020)</ref>; <ref type="bibr" target="#b69">Wagner-Carena et al. (2021)</ref>; <ref type="bibr" target="#b53">Pearson et al. (2021)</ref>; <ref type="bibr" target="#b51">Park et al. (2021)</ref> have also adopted ML and DL techniques for a variety of tasks ranging from lens detection through binary classification and lens modeling with regression approaches. These approaches were trained primarily using synthetic catalogs generated with varying degrees of fidelity in the underlying physical models.</p><p>In this paper, we address the growing need for an automated analysis of GGSLs in two steps. First, to date, only hundreds of galaxy-galaxy strong lensing systems have been confirmed by both photometry and spectroscopy <ref type="bibr" target="#b66">(Treu 2010)</ref>, which is insufficient to train and evaluate deep learning models with millions of hyperparameters. However, limited observational data of galaxygalaxy strong lensing systems cannot adequately cover the corresponding feature space. Consequently, it is necessary to expand the sample size, diversity, and complexity of strong lensing systems by adopting simulations. Therefore, we created a dataset of 120,000 simulated images (60,000 GGSLs and 60,000 non-GGSLs) using a catalog of GGSLs and a state-of-the-art synthetic catalog of galaxies (cosmoDC2; <ref type="bibr" target="#b35">Korytov et al. 2019</ref>) combined with the strong lensing simulation program PICS (Pipeline for Images of Cosmological Strong lensing) <ref type="bibr" target="#b40">(Li et al. 2016)</ref>, resulting in one of the largest mock lensing catalogs available, which includes light profiles of galaxies with two components, multiple bands of information based on semi-analytic models, and noise and PSF models derived by ray-tracing the photons from above the atmosphere through the optics and to the camera. <ref type="bibr" target="#b13">(Connolly et al. 2010)</ref>.</p><p>Second, we develop a modular deep learning pipeline for automated lens detection and modeling for GGSLs consisting of four modules: denoising, deblending, lens detection, and lens modeling. We adopt deep residual network <ref type="bibr" target="#b20">He et al. (2016)</ref> (ResNet)-based architectures to denoize the original pixelized images and remove lens light in the deblending module. Lens detection and modeling modules perform classification and regression, respectively, and are modeled with a variational information bottleneck (VIB) framework <ref type="bibr" target="#b3">(Alemi et al. 2016</ref>) that we enhanced with normalizing flow <ref type="bibr" target="#b32">Kobyzev et al. (2020)</ref>. The normalized flow-enhanced VIB provides a robust framework to enhance interpretability and generalizability using a combination of probabilistic learning and deep learning. This is crucial for real-world science applications such as the strong gravitational lensing considered in this work.</p><p>We present the synthetic catalog generation strategy in Section 2 and discuss the details of the proposed deep learning pipeline consisting of denoising, deblending, lens detection, and lens modeling in Section 3. Following this, we will present the results and insights from the synthetic catalogue in Section 4. In Section 5, we will discuss the validation performance of the presented pipeline on astonomical observations from HSC and on the LSST-DESC simulated DC2 sky survey. Finally, in Section 6 we summarize our findings and discuss potential avenues for future research and extensions.</p><p>2. DATA PREPARATION Only a few hundred GGSLs, confirmed by both photometry and spectroscopy, are available <ref type="bibr" target="#b66">(Treu 2010;</ref><ref type="bibr" target="#b27">Jaelani et al. 2020;</ref><ref type="bibr" target="#b46">More et al. 2016;</ref><ref type="bibr" target="#b26">Jacobs et al. 2019)</ref>. Considering this amount of data is insufficient to train and evaluate deep learning models to search and model many thousands of GGSLs. This difficulty is exacerbated by the need for training data for denoising and deblending. Thus, we created a synthetic GGSL dataset containing 120,000 simulated images (60,000 GGSLs and 60,000 non-GGSLs). Additionally, the diversity and complexity of the training set are critical for the applicability of the pipeline to real observations. Hence, we include a twocomponent light profile of galaxies, multiple-band information, and realistic models of noise and Point Spread Functions (PSF) to make the mock dataset realistic.</p><p>Specifically, we implement the simulations of GGSLs following seven steps: 1) create populations of lenses and sources according to the given statistical properties of GGSLs; 2) build mass and light models of foreground lenses; 3) calculate deflection fields of the lenses; 4) construct light profiles of background source galaxies; 5) run ray-tracing simulations to create strongly lensed images based on the deflection fields and light profile of sources; 6) stack the lensed images and the foreground images of lenses; and 7) add the telescope noise as well as the telescope's PSF blurring.</p><p>The populations of lenses and sources are built upon a catalog of strong lenses <ref type="bibr" target="#b11">(Collett 2015)</ref> (hereafter, Col-lett15) and a state-of-the-art extragalactic catalog <ref type="bibr" target="#b35">(Korytov et al. 2019)</ref>. Collett15 provides a mass model of Singular Isothermal Ellipsoids (SIEs <ref type="bibr" target="#b34">Kormann et al. 1994</ref>) and a light model of the Sersic profile <ref type="bibr" target="#b57">(Sersic 1968</ref>) for both lens and source galaxies, and cosmoDC2 provides a further detailed light profile for galaxies, containing bulges and disks described by the Sersic profile. To connect the mass profiles from Collett15 and light profiles from cosmoDC2, we cross-match the apparent magnitudes, axis ratios, position angles, and redshifts of the galaxies from Collett15 and CosmoDC2. Expressly, we first model a lens galaxy as a smooth Singular Isothermal Ellipsoid described completely by using lensing strength, axis ratio, and position angle (P ar 0 ). To create a balanced dataset, we sample the three parameters following flat distributions <ref type="bibr">(Pearson et al. 2019)</ref>. Some basic information (such as light models and redshifts of lenses and sources, P ar 1 ) of a GGSL can be obtained by matching the three parameters with Collett15, and then a set of detailed parameters (P ar 2 ) can be achieved by matching P ar 1 with CosmoDC2. Repeating the above process, we generate a catalog of parameters to generate mock images with PICS <ref type="bibr" target="#b40">(Li et al. 2016)</ref>. The distributions of the parameters and their origins are shown in Table <ref type="table" target="#tab_0">1</ref>.</p><p>The mass model of an individual lens galaxy, as adopted by Collett15, is taken to be a singular isothermal ellipsoid. This model is not only analytically tractable, but also consistent with individual lens models and lens statistics on length scales relevant for strong lensing <ref type="bibr" target="#b33">(Koopmans et al. 2006;</ref><ref type="bibr" target="#b17">Gavazzi et al. 2007;</ref><ref type="bibr" target="#b14">Dye et al. 2008)</ref>. Accordingly, the deflection maps can be given by the parameters of the positions, velocity dispersions, axis ratios, position angles, and redshifts of lenses, as well as the redshifts of the source galaxies, namely {x 1 , x 2 , σ v , q l , φ l , z l , z s }. Since {x 1 , x 2 } can be fixed to {0, 0} by centering the cutouts on the lens galaxies and the lensing strength (that is, the Einstein radius) can be given by θ E = 4π(σ v /c) 2 D(z l , z s )/D(z s ), the parameter array can be simplified to {θ E , q l , φ l }. Here, c is the speed of light and D(z l , z s ) and D(z s ) are the angular diameter distances from the deflector to the source and from the observer to the source, respectively.</p><p>To generate the corresponding images of the lenses and sources in a given lensing system with {θ E , q l , φ l }, we match them with Collett15 with the properties of {θ E , q l , φ l } to find the redshifts, effective radii, and apparent magnitudes in the [g, r, i]-bands of lens and source galaxies separately, namely {z l , R eff l , mag</p><formula xml:id="formula_0">[g,r,i] l } and {z s , R eff s , mag [g,r,i] s</formula><p>}. By extracting information from cosmoDC2, we include morphological properties of bulges and disks of galaxies in Collett15. A process of cross-matching between {z, R eff , mag [g,r,i] } of the galaxies in Collett15 and cosmoDC2 is implemented to assign the properties of bulges and disks to the corresponding galaxies. Furthermore, the projected positions of the sources in the lensing system are randomly chosen in the area where the lensing magnifications are greater than 5 in the source plane. Based on the matched information, we first generate strong lensing images without noise and PSF blurring, and the pixel size of the images is (20/512)arcsec, about one fourth of the pixel size (0.18arcsec) of the final mock. Where 20arcsec is the size of the stamp and 512 is the number of pixels per side of the stamp.</p><p>Noise and PSF modeling are used to make the images realistic using the models of a ground-based telescope from <ref type="bibr" target="#b11">Collett (2015)</ref> and <ref type="bibr" target="#b13">Connolly et al. (2010)</ref>. For mimicking the noise behavior of the 10-year stacked LSST data, we design a noise model mixed between read noise, which is Gaussian-like, and shot noise, which is Poisson-like noise that can be calculated from the flux in the pixelized images. The PSF model is also a Gaussian function with different full width at half maximum in the [g, r, i]-bands, i.e., F W HM [g,r,i] = [0.811012, 0.769839, 0.754780] arcsec. Examples of the mock data are shown in Fig. <ref type="figure">2</ref>. The non-lensing systems are generated in the same way except that the strong lensing effects have been removed by setting the deflection angles to zero.</p><p>The generated catalogue includes 60k GGSLs and 60k non-GGSLs. Of these, 54k GGSLs and 54k non-GGSLs are randomly sampled and used as training data, and the other 12k images are used as test data to quantify the generalization performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">DEEP LEARNING PIPELINE FOR TRAINING AND INFERENCE</head><p>The DL pipeline proposed in this work consists of four modules-denoising, source separation (deblending), lens detection (classification), and lens modeling (regression)-as shown in Fig. <ref type="figure">1</ref>. A typical noisy observation from a telescope would be the input to this pipeline. The denoising module aims to remove the noise without affecting the background galaxy or the foreground lensed light. The denoised images are then passed through the deblending module to remove the foreground lensed light and output the image with just the background galaxy. This background galaxy image is then passed through the lens detection module, which determines whether an image contains a lensed or an unlensed galaxy. All galaxies labeled as lensed are then passed through the lens modeling module to identify their characteristics. The modular nature of the framework is necessary because each module is complex enough in itself to need separate validation. Moreover, having individual modules is critical for interpretability and provides flexibility to incorporate different hierarchies of domain knowledge into each module's model training without affecting other modules. We describe each of the four modules below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.">Denoising and Deblending</head><p>Denoising is an image restoration approach used to recover a clean image from a noisy observation. Traditionally, image denoising has been posed as an inverse problem, where optimization approaches and special-purpose regularizers (known as image priors) have been used <ref type="bibr" target="#b4">(Anwar et al. 2019)</ref>. Recently, deep learning-based approaches have been increasingly adopted and are emerging as state-of-the-art algorithms <ref type="bibr" target="#b42">(Lim et al. 2017;</ref><ref type="bibr" target="#b73">Zhang et al. 2018</ref>) for image denoising. We adopt a deep 1</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Ground truth Noiseless</head><p>Ground truth separated source</p><p>Ground truth lensed systems</p><formula xml:id="formula_1">! ! " " ! " " # ! # " $ " % ! # Ground truth lens parameters ! % Ground truth labels ! $ Fig. 1.</formula><p>-Deep learning analysis pipeline for analysis of galaxy-scale strong lensed systems.</p><p>residual network-based enhanced deep super-resolution (EDSR) architecture <ref type="bibr" target="#b42">(Lim et al. 2017)</ref>, which was developed for a specific type of image restoration. Since the inputs and outputs for denoising have the same resolution, we removed the upsampling layer from the EDSR architecture. This layer consisted of residual blocks 16, each of which contained two convolutional layers and a nonlinear activation function ReLU . The convolution layers use 3x3 kernels and 256 feature channels.</p><p>The deblending module serves to decouple the lensed light and the source galaxy from the observations. This module adopts the same modified EDSR architecture as that used for the denoising module. The reason is that source separation is also an image-to-image task that takes the images with coupled source and the foreground galaxies as input and outputs the corresponding lensed or unlensed source galaxy that is separated from the foreground lens.</p><p>The denoising and deblending modules essentially preprocess the images in the pipeline to enhance the downstream lens searching and modeling tasks. The performance of these modules, especially when they are used for inference, is codependent: the output of one feeds as the input to the next module. We evaluated three different training strategies: (1) End-to-end training, where a single model is trained so that its input is the noisy blended image and its output is the deblended image from the simulation data; (2) Modular training, where the denoising and deblending models are trained separately; and</p><p>(3) Joint training, where the denoising and deblending models are trained jointly by passing the output of the denoising model as input to the deblending model. Here, the loss function is a weighted combination of their individual losses.</p><p>The three strategies start with the same input. In modular and joint training, the input images to the deblending module were simulated noiseless blended images and predicted noiseless blended images, respectively. Endto-end training does not have this stage because it takes noisy blended images and directly outputs the noiseless deblended images. We use the L1 loss to train the denoising and deblending models, then employ the peak signalto-noise ratio (PSNR) to evaluate the denoising and deblending accuracy; higher PSNR is better, with a maximum value typically close to 50 for 8bit images <ref type="bibr" target="#b61">Sonka et al. (2014)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.">Lens Detection</head><p>The lens detection module is a classification module that is used to detect lensing systems from sourceseparated images. In particular, each of the observed images needs to be classified as either a lensed or an unlensed system. We use the VIB approach to classification, which provides a unified framework for representation learning and predictive modeling, and compare its performance with the Resnet-50 model. We evaluated the classification model using the commonly used mean classification accuracy metric (mean over the two classes), the area under the receiver operating characteristic curve (AU-ROC), and the precision and recall metrics. The uncertainty in classifier predictions is quantified by using the entropy and conditional joint likelihood metrics <ref type="bibr" target="#b2">(Alemi et al. 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3.">Lens modeling</head><p>The lens modeling module is a regression module that takes the source-separated galaxy and predicts its characteristics: Einstein radius, axis ratio, and position angle. We transform the axis ratio and position angle to two components of complex ellipticity because of the degeneracy between the axis ratio and position angle of a given lens. For example, combinations of {q, φ} and {1/q, φ + π/2} have the same morphology as an ellipsoid, leading to unreasonable scatters in modeling GGSLs with CNNs. Complex ellipticities e 1 and e 2 also avoid problems due to the periodicity of position angles.</p><p>The ability to quantify prediction uncertainty in addition to the point estimate is critical for validation purposes, in order to understand the impact of error sources (degraded quality of input data due to PSF, fore-ground objects, atmospheric conditions, detector noise) and modeling uncertainties (insufficient size, quality, and biases in the training samples and uncertainties associated with the network). We adopt and evaluate two strategies for lens modeling: VIB and a Resnet-101 model whose last dense layer is replaced by a stochastic denseFlipout <ref type="bibr">Wen et al. (2018)</ref> layer (R101+DF).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3.1.">Variational Information Bottleneck</head><p>The VIB approach is a variational approximation of the information bottleneck principle (IB) <ref type="bibr" target="#b65">(Tishby et al. 2000)</ref> proposed by <ref type="bibr" target="#b3">Alemi et al. (2016)</ref>. Taking into account the joint distribution P (X, Y ) of the input variable X and the corresponding target variable Y , the IB principle defines an objective function that seeks to learn a latent encoding Z that is maximally expressive about Y while being maximally compressive about X. This can be formally written as a minimization problem:</p><formula xml:id="formula_2">min θ I(Z, Y ; θ) − β I(X, Z; θ) = L,<label>(1)</label></formula><p>where I(., .; .) is mutual information and β ≥ 0 is the Lagrange multiplier that controls the trade-off between compressiveness and expressiveness of the model. For this reason, several studies have shown that latent encoding using this approach leads to a better generalization capability <ref type="bibr" target="#b3">(Alemi et al. 2016;</ref><ref type="bibr" target="#b1">Achille &amp; Soatto 2018)</ref>.</p><p>The variational approximation of this objective can be written as follows.</p><formula xml:id="formula_3">L ≥ 1 N N n=1 dzp(z|x n ) log q(y n |z)−βp(z|x n ) log p(z|x n ) r(z) ,</formula><p>where p(z|x n ) can be modeled using an encoder and q(y n |z) by a decoder and r(z) is the prior distribution in z, x n ∈ X is the n th input data. Following the standard convention of choosing the variational distribution of the latent variable to be a Gaussian distribution family and a standard Gaussian prior, we end up with the familiar objective function seen with standard variational autoencoders but with an additional β factor. This objective can be maximized by using backpropagation using the reparameterization trick <ref type="bibr" target="#b31">(Kingma &amp; Welling 2013)</ref>:</p><formula xml:id="formula_4">L ≥ 1 N N n=1 E ∼p( ) − log q(y n |f (x n , )) + βKL[p(Z|x n ), r(Z)].</formula><p>where, f (x n , ) is the reparametrization and KL is the Kullback-Leibler divergence between distributions. We note that this approach combines representation learning and supervised learning in a single trainable framework and that the latent space can provide further insight into the model learning process to predict conditional distributions P (Y |X), enhancing interpretability. In addition, VIB is a doubly stochastic approach in the sense that both the latent variable (Z) and the target variable (Y) are treated as random variables <ref type="bibr" target="#b2">(Alemi et al. 2018</ref>) as opposed to deterministic approaches where only the latter is treated as a random variable. Therefore, this approach can be used to obtain uncertainty estimates of the predictions.</p><p>For the lens detection task, the input variable X corresponds to the source-separated galaxy represented as an image, while the target variable Y is the binary class that indicates whether the image is of a lensed or unlensed galaxy. For the lens modeling task, the input variable X corresponds to the source-separated galaxy represented as an image, while the target variable Y corresponds to the three lens parameters (Einstein radius, axis ratio, and position angle). Details about the encoder and decoder architectures, as well as the latent space dimensions used in this work, are described in Section 4.3.</p><p>The conditional joint likelihood metric <ref type="bibr" target="#b2">(Alemi et al. 2018</ref>) used to assess the uncertainty in the class label prediction for VIB is defined as</p><formula xml:id="formula_5">p(Y, Z|X) = dXp(X)p(Z|X)q(Y |Z) ≈ r(Z)q(Y |Z).</formula><p>To quantify the uncertainty in lens detection VIB model predictions, the conditional joint likelihood metric and entropy are used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4.">Training and Inference Setup Details</head><p>The simulation model used to generate the synthetic catalog provides five forms of data that were used to train the modules in the pipeline: noisy-blended galaxy images (S 1 ), which represent the noisy observations from the telescope; noiseless-blended galaxy images (S 2 ), which represent the scenario where the observed noise is perfectly removed from S 1 ; noiseless-deblended images (S 3 ), where the background source galaxy is perfectly separated from the foreground lens light; data labels (S 4 ), which indicate whether an image in S 3 is lensed or unlensed; and lens parameters (S 5 ), which describe the properties of lensed galaxies. Our goal is to train the denoising, deblending, lens detection, and lens modeling modules of the pipeline separately using different forms of simulation data (and to evaluate the corresponding test data splits, referred to as component-wise inference modality) and then use the trained models to predict lens parameters directly from noisy and blended galaxy images S 1 (referred to as end-to-end inference modality).</p><p>To evaluate the pipeline, we split the 120K images into 108K (90%) for training and use the remaining 12K images (10%) to evaluate both component-wise and endto-end inference modalities. We refer to the predicted outputs from the pipeline during component-wise and end-to-end inference modality as T i | i ∈ {2, 3, 4, 5} and I i | i ∈ {2, 3, 4, 5}, respectively, where i represents the successive components in the pipeline. Separate terminology is required to differentiate the predicted outputs from the modules during component-wise and end-to-end inference. Some examples of these images are shown in Figure <ref type="figure">2</ref>. Finally, we validated the inference pipeline using images from the HSC catalog, obtained from real astronomical observations.</p><p>We adapt an open-source implementation of EDSR <ref type="bibr" target="#b42">(Lim et al. 2017)</ref> written in PyTorch <ref type="bibr" target="#b52">(Paszke et al. 2017)</ref> for denoising and deblending. VIB was implemented for lens detection and lens modeling in PyTorch by modifying the open source beta-tcvae implementation. ResNet architectures for lens detection and modeling are implemented in TensorFlow <ref type="bibr" target="#b0">(Abadi et al. 2016)</ref>. All models were trained on a single compute node with a NVIDIA Tesla V100 GPU. Note that we have not used any additional data augmentation while training these models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">RESULTS AND DISCUSSION</head><p>In this section, we present the training and inference results for each of the modules. 4.1. Noise reduction and source separation Models used in the joint training strategy used the same set of hyperparameter values as in the original EDSR paper <ref type="bibr" target="#b42">(Lim et al. 2017</ref>). The number of epochs was set to 200. Since EDSR trains by randomly extracting patches from the full image, it can learn to perform denoising and deblending from a smaller dataset. We used a subset of 18, 000 images (9, 000 lensed, 9, 000 unlensed), randomly selected from the 108K training split to reduce the computational cost of training the model. We found that the joint training strategy (see Section 3.1) achieves higher accuracy and better stability compared to modular and end-to-end training. Modular training with different denoising and deblending models led to artifacts in the deblending model due to a discrepancy in the prediction of the denoised model (albeit very small). However, the joint training strategy led the deblending model to become robust to this discrepancy. For the end-to-end training strategy, the model quickly diverged and its prediction results were poor.</p><p>The accuracy metrics for the joint training strategy are shown in Table <ref type="table">?</ref>?. In the case of denoising, we first calculate the PSNR value of the difference between S 1 and S 2 , whose mean value in the test data split is 22.89. The low value of PSNR demonstrates the significant difference between noisy and noiseless simulation data. This motivates the need to train a model to remove this noise. To this end, we compared the denoising model prediction (T 2 ) with the same ground truth (S 2 ) in the test data split and found that the PSNR value was 45.66. This demonstrates that the denoising model has learned to remove noise.</p><p>Similarly, for the deblending case, we compared S 2 with S 3 , whose mean value in the test data split is seen to be 13.63. The low PSNR value indicates a significant difference between the blended and deblended images, which is expected, since the latter contains only the background galaxy in the image. We also compared the deblending module prediction (T 3 ) with the same ground truth (S 3 ) and found that the PSNR value in the test data split is 32.69. This indicates a good recovery of the source galaxy by deblending.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2.">Identification of strong lenses</head><p>As discussed in Section 3.2, we adopted the VIB approach for lens detection. The encoder in the VIB model consists of 6 convolutional layers with batch normalization between each of the layers, with the output of the last layer corresponding to twice the latent dimension (to model the mean and standard deviation) of the latent space, which is modeled as 10-dimensional mean field Gaussian distribution. We used factorial normalizing flow (FNF) <ref type="bibr" target="#b10">Chen et al. (2018)</ref> on top of this as a flexible prior, where each dimension is a normalizing flow of depth 32. The FNF can fit multimodal distributions and is therefore ideal for the classification module. The decoder, on the other hand, consists of four fully connected neural network layers that take a 10-dimensional input from the latent space to a Bernoulli distribution with a logit parameterization for the binary class prediction. The hyperparameters in the model closely follow those of <ref type="bibr" target="#b10">Chen et al. (2018)</ref> (learning rate of 1e − 3 and batch size of 2048, as we adopted minibatch-weighted sampling from Chen et al. ( <ref type="formula">2018</ref>)) except that the number of epochs and β terms from Equation 1 were set at 300 and 0.5, respectively, based on a simple grid search on both these parameters.</p><p>As a baseline, we trained a ResNet50 model (similar the model choice of <ref type="bibr">Lanusse et al. (2018)</ref>) to predict the label directly from the noisy blended simulation images (S 1 ) and evaluated the metrics on the same test data. The model was trained with a batch size of 512 (the maximum batch size that we could fit into the GPU memory) and 150 epochs (since we saw that the model converged and was not improving) with the rest of the hyperparameters matching the VIB model. Both models were trained on the 108K image training data and tested on the rest of the 12K image test data. The mean classification accuracy (over two classes) as well as AU-ROC, precision, and recall metrics on the test data were used to measure the accuracy of the classification model (Table <ref type="table">?</ref>?). In component-wise inference modality, the mean accuracy was 0.82. The model trained with S 3 as input gave a mean accuracy of 0.99 with ResNet50 and 0.99 with VIB and, for the two models, AU-ROC of 0.99 and precision and recall of 0.99 and 0.99, respectively, showing a significant improvement over the baseline. For end-to-end inference modality, the lens detection module was fed the output of the deblending module I 3 as input to predict I 4 . For the two models (ResNet50, VIB), we obtained a mean accuracy of (0.93, 0.94), AU-ROC of (0.96, 0.97), precision of (0.93, 0.94) and recall of (0.92, 0.93), respectively.</p><p>The VIB model provides additional insights into the decision-making strategy by visualizing the latent space and calculating the uncertainty metrics of entropy and conditional joint likelihood. Figure <ref type="figure" target="#fig_2">4</ref>(a) shows the two dimensional T-SNE projection of the latent space for the 12k test data split of S 3 images used as input to the model on top and I 3 input on bottom. There is a clear separation between the two classes in the latent space for S 3 ; with I 3 as inputs, there is no clear separation, but a small overlap, since the class assignments are sensitive to the learned denoising and deblending models. In addition, we note that the misclassified ones are at the intersection of the modes. To determine the reason for this misclassification, we calculate the conditional joint likelihood metric for the end-to-end inference modality (Figure <ref type="figure" target="#fig_2">4</ref>(b)) and found that for the left cluster (that corresponds to the true lensed data), the images falsely classified as lensed correspond, in fact, to low values of conditional joint likelihood, showing a higher uncertainty in the model predictions. Further inspection revealed that these points correspond to low magnification and low signal-to-noise ratios, which are difficult for the deblending model to predict. The entropy metric shows that the model is more uncertain about the images right at the intersection of the two classes. A few false positive and false negatives from the inference pipeline are</p><formula xml:id="formula_6">! " ! # $ # ! % $ % Fig. 2.</formula><p>-First row: noisy blended simulation data (S 1 ); Second row: noiseless blended simulation data (S 2 ); Third row: output from the denoising module at inference (I 2 ); Fourth row: noiseless deblended simulation data (S 3 ); Fifth row: output from the deblending model (I 3 ); illustrated in Fig. <ref type="figure" target="#fig_0">3</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3.">Estimation of lens parameters</head><p>For lens modeling, we again used the VIB approach. Only the lensed images in the deblended simulation data S 3 were used to train the regression model. Therefore, a total of 54, 000 was used for training and 6, 000 for testing. The encoder and decoder in the VIB model for lens modeling were similar to those used for lens detection, except that the decoder outputs a three-dimensional vector to predict the lens parameters with the likelihood chosen to be a Gaussian distribution. Similarly to the VIB lens detection model, the hyperparameters closely follow those in <ref type="bibr" target="#b10">Chen et al. (2018)</ref>, except that the number of epochs and terms β were set at 300 and 3, respectively, based on an empirical study. A thorough hyperparameter search will be considered in future work.</p><p>For comparison, we used an additional architecture for the regression module, where we implemented a Resnet-101 model for parameter estimation, but with a densely connected layer class with Flipout estimator <ref type="bibr">(Wen et al. 2018)</ref> which is a variational inference approach that approximated the models weights (kernels and bias) with Gaussian distributions to transform it into a stochastic one. Furthermore, Flipout estimator improves the variational inference by decorrelating the gradients within a mini-batch by implicitly sampling pseudo-independent weight perturbations which helps in better variance reduction and hence faster and more stable training. As a baseline, we trained a deterministic ResNet101 model to predict lens parameters directly from noisy blended simulation images (S 1 ) (similar to <ref type="bibr">Pearson et al. (2019)</ref>), and evaluated metrics on the same test data split. All of them were trained with the same hyperparameters as VIB except that the batch size was 512 (maximum batch size given the memory of the GPU).</p><p>The regression accuracy was measured by using the mean absolute error (MAE) in normalized coordinates ([0,1] with respect to the maximum and minimum of the training data), as shown in Table <ref type="table">?</ref>?. The plots comparing the observed and predicted data are shown in Fig. <ref type="figure" target="#fig_4">7</ref>. The MAE on the test data split for component-wise inference modality using the VIB model was 0.01, which indicates a very good agreement with the ground truth. The corresponding accuracy for ResNet-101 with the Flipout estimator was much lower (MAE = 0.09). This result indicates a superior performance with the VIB model. The baseline model trained on the S 1 data also had a higher MAE (0.08) in the test data split.</p><formula xml:id="formula_7">3 ! # (Lensed) " # (Lensed) ! # (Unlensed) " # (Unlensed) ! $ (Unlensed) ! $ (Lensed)</formula><p>To gain additional insight into the VIB model, we visualized its latent space. Figure <ref type="figure" target="#fig_3">6</ref> shows a 2D t-SNE projection of the 10-dimensional latent space where every sample of the latent space is labeled with the corresponding input image. The trend in the data can be analyzed by visualizing the characteristics of the images close together in this projected space. We can see that similarly shaped lenses are grouped together with the solid dots on the far left; these gradually change to hollow circles as we move right, and they change to arcs as we move to the bottom. To perform a quantitative analysis, we colored the latent samples with the value of the target variable (three in our case) as seen in Fig. <ref type="figure">5(a)</ref>. The results show that the projection of the latent space admits a gradual change in the Einstein radius from left to right and a complex ellipticity from bottom to top. The ability to obtain a good latent representation amenable to the regression task is a particularly important feature of the VIB model, enabling the model to obtain good regression accuracy, albeit with a shallower network and less training time. In Fig. <ref type="figure">5</ref>(b) we show a similar 2D projection of the 10-dimensional latent space obtained when we reconstruct the input image instead of predicting the lens parameters (a common exercise for representation learning using variational auto encoders). We see that although the gradual change in the Einstein radius is admitted in the latent space, the other two variables do not have a trend. These results highlight an important point  about the need to custom train the latent space for a given task in order to make the best use of the model.</p><p>For the end-to-end inference modality, we found that the regression accuracy in the 6000 images is slightly lower (MAE of 0.06) than the accuracies obtained with the component-wise inference modality due to the propagation of errors from previous modules in the pipeline, but end-to-end inference modality with VIB models outperform the baseline of 0.08. The Resnet101 model with  dense Flipout layer has a lower regression accuracy with MAE of 0.11.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">VALIDATION WITH REAL AND SYNTHETIC SKY IMAGES 5.1. Tests on Hyper Suprime-Cam Data</head><p>We use observational data from the Hyper Suprime-Cam (HSC) 4 , a digital camera on the Subaru telescope built by the National Astronomical Observatory of Japan. Recent gravitational lenses as part of the Survey of Gravitationally-lensed in HSC Imaging (SuG-OHI 5 ) are identified by a combination of an arc-finding algorithm YATTALENS and visual inspection <ref type="bibr" target="#b63">(Sonnenfeld et al. 2018)</ref>.</p><p>The default images from the HSC TABLE 2 Accuracy metrics for component-wise and end-to-end inference. S 1 ,S 2 ,S 3 : Noisy blended, noiseless blended, and noiseless deblended simulation data; S 4 : Data labels that indicate whether S 3 is lensed or unlensed; S 5 : Lens parameters that describe the properties of the lensed galaxies; T 2 ,T 3 : output from the denoising and deblending module respectively in the component-wise inference modality; T 4 , I 4 : data labels predicted by the lens detection module in the component-wise and end-to-end inference modality respectively; T 5 , I 5 : Lens parameters predicted by the lens modeling module in the component-wise and end-to-end inference modality respectively.</p><p>(a) PSNR metrics for denoising and deblending on 12000 test split images (the component-wise and end-to-end modality is same in this case because we adopted the joint training stategy for denoising and deblending).</p><p>Component catalog are centered around the primary source, similar to our synthetic catalog. In an effort to minimize the contamination of unlensed images of galaxies on the line-of-sight, we cropped it to extract a central <ref type="bibr">(111,</ref><ref type="bibr">111)</ref> dimensional patch (which matches synthetic data), and then applied a blob detection algorithm <ref type="bibr" target="#b43">Lowe (2004)</ref> from Scikit-image van der Walt et al. ( <ref type="formula">2014</ref>) to find a circular mask that contains the primary source as seen in Fig. <ref type="figure" target="#fig_5">8</ref>. Each of the preprocessed images is then passed through our inference pipeline to obtain the denoised, deblended images, as well as the classification labels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.1.">HSC strong lens catalog</head><p>Based on the confidence level of domain experts, the final catalog consists on galaxy-scaled strong lenses with categories grades A (definite lenses), B (probable lenses), and C (possible lenses), <ref type="bibr" target="#b72">(Wong et al. 2018)</ref>. Within this catalog, we 'blindly' (i.e., without analyzing through the network) select a subset of fifty clean images for testing. Discarded samples include lensing systems with images of galaxies on the line-of-sight and off-centered images. We found that 40 of the 50 images were correctly classified (for example, see Figure <ref type="figure" target="#fig_6">9(a,b</ref>)) as being lensed while the remaining were incorrectly classified (for example, see Figure <ref type="figure" target="#fig_6">9(c,d,e</ref>)). We note that all incorrectly classified images belonged only to class C. Further analysis of the incorrectly classified images revealed that the arc sizes of these images were too small compared to the synthetic catalog (see the typical arc sizes of the training sample shown in Figure <ref type="figure">2</ref>). To mitigate this, we extracted a central (50, 50) patch from the wrongly classified images and upscaled it to increase the size of the arc. This led to a correct classification of seven of these images (for example, see Figure <ref type="figure" target="#fig_6">9(c,d</ref>)), thus bringing the classification accuracy to 94%. However, three "wrongly" classified images, although labeled lensed, looked ambiguous (for example, see Figure <ref type="figure" target="#fig_6">9</ref>(e)). The conditional joint likelihood metric, in fact, confirms this intuition by placing greater uncertainty on these observations. Furthermore, these three observations were also placed at one end of the (2D t-SNE projection of) latent space, separately from other images, further confirming the difference in features. This strategy of upscaling the images can be generalized in observational analyses, where testing images are scaled at multiple levels while forward propagating through Deep learning frameworks. Such a multi-scale approach not only increases the completeness in the strong lensing sample, but also provides a consistency check. Alternatively, the range of arc sizes in the training sample could also be enhanced via data augmentation strategies that are calibrated against survey specifications.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.2.">Mix of lensed, unlensed and ambiguous cases</head><p>Additionally, we collected data from the HSC catalog that were ambiguous for the human eye to classify into lensed or unlensed categories. All images in this dataset were manually assigned the probability of being lensed by a group of human observers. Images with probability less than 0.5 are those that are "most probably unlensed", while those with probability greater than 0.5 are "most probably lensed".</p><p>All these images are passed through the inference pipeline, as previously stated. However, to gain further insight into why our pipeline fails to follow the humanlabeled classes in few cases, we partition the misclassified images into the following five categories: (1) Missed capturing arc in the mask; (2) Extra images of unlensed galaxies in the light cone captured in the mask; (3) Correct mask but wrong prediction; (4) Correct mask but wrong prediction flipped to correct after zooming in; (5) Image is significantly different from training data (out of distribution). This particular categorization is intended to aid in the performance characterization of our mask extraction in the pipeline (to remove the images of lineof-sight galaxies) and to identify areas of potential improvement.</p><formula xml:id="formula_8">(") ($) (%) (&amp;) (')</formula><p>For the "most probably lensed" cases (with a labeled probability greater than 0.5), a total of 14 out of 50 were misclassified as an unlensed galaxy. Of 14, there were 1, 3, 6, 3, 1 images attributed to each of the five categories, respectively; representative examples of each of these five categories for this case are shown in Figure <ref type="figure">10</ref>. When we remove a small set of images where mask extraction was difficult (category 1, 2, 5) and consider the images correctly classified after zooming in (category 4), we have a total of 37 of 43 correctly classified, which is an accuracy rate of 86%. The same analysis for "most probably unlensed" cases (with labeled probability less than 0.5) found that a total of 16 of 27 were misclassified. A further categorization of these images showed 0, 5, 3, 4, 4, respectively, in each category; representative examples from each of these five categories for this case are shown in Figure <ref type="figure">11</ref>. A general observation highlighted by this subcategorization is that it is comparatively harder to separate unlensed images of galaxies on the line-of-sight and unlensed source galaxies in the unlensed mocks, resulting in more numbers (5 out of 16) of images that capture line-of-sight galaxies in the mask. Additionally, we found that there are quite a few out-of-distribution examples (4). After removing the category 1, 2, 5 we observe that 15 of 18 are correctly classified, leading to an accuracy of 83%. The above findings highlight the difficulty in clean separation of secondary sources, which could potentially be overcome by utilizing data with secondary sources as part of the training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.">Tests on DC2 synthetic sky data</head><p>The vast majority of objects observed by LSST will be unlensed. Hence, it is important to benchmark a strong lensing pipeline against a large number of unlensed images, to quantify the number of false negatives (i.e., unlensed objects wrongly classified as lensed). This test is especially crucial for corner cases or the 'lens imposters', like edge-on galaxies or disk galaxies. To validate our model against a large number of unlensed objects similar to LSST, we used simulated sky survey data, DC2 (LSST Dark Energy Science Collaboration (LSST DESC) et al. 2021; <ref type="bibr" target="#b35">Korytov et al. 2019)</ref>.</p><p>We used the Run 2.2i DR6 Wide-Fast-Deep dataset (explained in LSST Dark Energy Science Collaboration (LSST DESC) et al. ( <ref type="formula">2021</ref>)) of the DC2 mock catalog that emulates 300 square degrees of LSST imaging over a 10-year campaign in 6 filters. The object data are extracted using the Generic Catalog Reader(GCR), a custom Python package originally developed as part of the DESCQA framework <ref type="bibr" target="#b44">(Mao et al. 2018)</ref>. The images are extracted from Butler (a middleware component for retrieving image datasets and executing pipelines for the Vera C. Rubin Observatory <ref type="bibr" target="#b28">Jenness et al. (2019</ref><ref type="bibr" target="#b29">Jenness et al. ( , 2022))</ref>) in the g, r, and i bands. To match the GGSL input requirements, the postage stamps of 111x111 are created around the galaxy centers read from the GCR, and the band information is rescaled.</p><p>In this particular catalogue, we observed significantly more unlensed images of galaxies on the line-of-sight and a more diffuse foreground source compared to the previous validation scenarios considered. This is primarily due to the design of the DC2 with up to magnitude depth of 28 in the LSST r-band. In addition, the combination of bulge and disk Sérsic profiles in DC2 synthetic sky may be too simplistic for our framework -a shared issue with deblending and shape measurement pipelines in the LSST analysis pipelines LSST Dark Energy Science Collaboration (LSST DESC) et al. <ref type="bibr">(2021)</ref>. For this reason, a mask extracted with the blob detection algorithm (adopted for the previously mentioned datasets) intersected with the sources, and therefore we were to easily remove the line-of sight-images to a desired level. This led to poor lens-finding accuracy for this particular dataset. The extracted dataset, extracted, as well as the predicted models denoised and deblended in this dataset, are illustrated in Figure <ref type="figure">12</ref>. In all the illustrated cases, we show the denoised and deblended maps with and without the upscaling operation. Similar to the HSC data, the effect of secondary sources seems to decrease the overall classification accuracy, and thus including them as part of the training data can further improve this accuracy </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.">SUMMARY AND CONCLUSIONS</head><p>The combination of high-fidelity simulation data and a systematic machine learning pipeline is crucial to develop fast and accurate GGSL analysis techniques for future cosmological surveys. To this end, we generated a dataset of 120,000 synthetic images (60,000 GGSLs and 60,000 non-GGSLs), which we used to develop a deep learning pipeline with separate modules for denoising, deblending, lens detection, and modeling and validated it using real observations from the HSC catalog and DC2 catalogues. The modular nature of our pipeline allowed us to train, test, and evaluate each component in isolation and helped us understand its efficacy.</p><p>We adopted the EDSR model for the denoising and deblending modules that provided a good recovery (PSNR of 45.66 and 32.69, respectively) of ground truth for both modules trained on the simulated data. For lens detection and lens modeling, we adopted the variational information bottleneck (VIB) approach and enhanced it with a normalizing flow that provided a superior accuracy (12% improvement for lens detection and 25% for lens modeling) over baseline and other deep ResNet architectures with only a small fraction of layers. The VIB approach also provides model interpretability by visualizing the latent space. The lens detection model produces a latent space that perfectly separates the two classes, thus demonstrating good representation learning ability when tested on the simulation inputs. With the inference pipeline, the higher-uncertainty images correspond to the misclassified images, which in turn belong to the low-magnification, low signal-to-noise ratio region, which is known to have difficulty in deblending. For lens modeling, we also find that the learned latent space with VIB -Prediction of denoising and deblending in DC2 validation data (Columns: Input, Denoised, and Deblended). Each of a,b,c shows the denoised and deblended maps with and without upscaling. For a,b, we observed that the classifier incorrectly predicted that the snapshot was lensed in both the original and upscaled cases. For c, the classification label changes from lensed to unlensed after upscaling. Note that the DC2 catalogue does not contain lenses and is specifically used to study the false positive rates from our model.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Upscaled</head><p>has more semantic meaning compared to VAE.</p><p>In order to validate our pipeline and evaluate it's accuracy and utility in real-world scenarios, we consider the observations from the Hyper Suprime-Cam (HSC) and LSST-DESC simulated DC2 sky survey catalogues. In the HSC case, we considered two different scenarios; the first is a lensed catalog, where the human observers categorized the observations to be strong lensed with high confidence. In the second scenario, we considered a catalog with observations that are classified by human observers with a higher level of ambiguity, thus we have the "most probably lensed" and "most probably unlensed" cases. Next, to validate against LSST-like observations, we generated a catalog of unlensed images by extracting cutouts from the LSST-DESC simulated DC2 sky survey. In the first scenario of HSC data, we found that our pipeline provided an accuracy of 94%, while in the second scenario for HSC, we observed an accuracy of 86% and 83% in the cases of "most probably lensed" and "most probably unlensed" after removing the cases where mask extraction was difficult. In the DC2 dataset, we observed significantly more line-of-sight galaxies and a more diffused lens galaxy in general, so the images of line-of-sight galaxies were not effectively removed using the mask extraction adopted in the validation datasets previously used, leading to a poorer validation accuracy.</p><p>One limitation of this work is that relatively simple models of mass and light profiles of lens and source galaxies were used in the simulations that generated the training data. These choices lead to underestimated contamination from substructures in the context of both mass and light distributions of galaxies in the cutouts, in turn leading to either miscounted images or to introduce additional artifacts in the procedures of all modules. The issue is hardly noticeable in the data from ground-based surveys due to the large pixel size and spread of the PSF. However, it becomes significant in the data from spacebased surveys with much higher spatial resolutions. To widen the scope of our pipeline, we plan to employ more realistic mass and light models, as well as to create a larger image dataset. Eventually, we intend to utilize the pipeline for real-time lens detection and modeling with data from next-generation large-scale sky surveys, including ground-and space-based telescopes such as Euclid, LSST, and Roman Space Telescope, where fast and automated methods of detecting and characterizing astronomical objects become a necessity.</p><p>The mask extraction was a primary part of the validation procedure because the data used to train the pipeline only consisted of the postage stamp data without the presence of substructures in the main lenses and secondary lenses on the line-of-sight, while the validation data from observations include the lensing effects from substructures and secondary lenses. Although the mask generation approach was successful in removing lens light in most cases, there were scenarios that the module can not deal with the perturbations on the lensed arcs due to the lensing effects beyond the smooth main lenses, such as the lensing systems involve significant lensing effects of substructures and secondary lenses. Similarly, the images of galaxies on the line-of-sight decrease the effectiveness of our mask extraction module, since they mimic multiply lensed images or/and bring blending effects in the scales smaller than the Einstein radius of the lens galaxy. To overcome these limitations, we have generated a synthetic catalog of lenses that includes substructures and secondary lenses. The light and mass of the substructures and secondary lenses are involved in the simulation, since the correlation between the light distribution of the substructures / secondary lenses and the lensing effects due to the substructures and secondary lenses would be helpful for high-quality extractions in the context of a low signal-to-noise ratio and small-scale perturbations for real observations.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3.-First row: noiseless deblended simulation data that are true lensed (S 3 ); second row: output from the deblending model (I 3 ) that are false negatives from classifier; Third row: noiseless deblended simulation data that are true unlensed (S 3 ); Fourth row: output from the deblending model (I 3 ) that are false positives from classifier.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>(a) Latent space comparison for the test data split in componentwise (left) and end-to-end inference (right) modalities. The left (red) cluster corresponds to (true) lensed and (blue) right cluster corresponds to (true) unlensed. A clear separation exists between the two classes in the latent space for the former while the misclassified data are at the intersection of the clusters for the latter.(b) Conditional joint likelihood metric for end−to−end inference modality (colorbar on the right shows this metric value). The misclassified lensed data correspond to low metric value and hence high uncertainty.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 4 .</head><label>4</label><figDesc>Fig. 4.-Latent space for the lens detection VIB model.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 6 .</head><label>6</label><figDesc>Fig. 6.-Visualization of the latent space with the corresponding input images in VIB regression. Four zoomed-in panels show qualitatively different types of strong lenses.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 7 .</head><label>7</label><figDesc>Fig. 7.-Comparison of the observed (S 5 ) and predicted (T 5 ) data (and the error bars of one standard deviation) corresponding to the testing data for lens modeling (regression) in the training modality using VIB.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 8 .</head><label>8</label><figDesc>Fig. 8.-Pre-processing of HSC observation by extracting the central (111, 111) patch (left panel) and then applying a blob detection algorithm to extract the primary source in the center. The masked image (top right) is subsequently passed through the inference pipeline for denoising (middle right) and deblending (bottom right).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Fig. 9 .</head><label>9</label><figDesc>Fig.9.-The deblending output from the inference pipeline for preprocessed HSC images. (Row 1:) is the central (111, 111) patch, (Row 2:) is the corresponding deblended image, and (Row 3:) is the deblended output of the upscaled images. In (a,b), the images were correctly classified as lensed, while in (c,d) they were initially classified as unlensed but changed to lensed after upscaling. (e) Denotes the case where the upscaling did not affect the lens finding.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head></head><label></label><figDesc>Fig. 10.-Five categories in the "most probably lensed" case (columns: Input, Mask, Denoised, and Deblended)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head></head><label></label><figDesc>Fig.11.-Four categories in the case "most probably unlensed" case (since category 1 doesnt exist for the unlensed case) (columns: Input, Mask, Denoised, and Deblended).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head></head><label></label><figDesc> Denoised, and Deblended). Each of a,b,c shows the denoised and deblended maps with and without upscaling. For a,b, we observed that the classifier incorrectly predicted that the snapshot was lensed in both the original and upscaled cases. For c, the classification label changes from lensed to unlensed after upscaling. Note that the DC2 catalogue does not contain lenses and is specifically used to study the false positive rates from our model.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>TABLE 1</head><label>1</label><figDesc>Distributions and origins of the input parameters in the synthetic dataset. U (a, b) denotes a uniform distribution with bounds a and b. R(µ &gt; 5) stands for choosing positions randomly from the area in the source plane where the magnification of the lens is greater than 5.</figDesc><table><row><cell>Parameter</cell><cell>Distribution/Origin</cell></row><row><cell>Lens galaxy</cell><cell></cell></row><row><cell>SIE model</cell><cell></cell></row><row><cell>Lens center ( )</cell><cell>(0.0, 0.0)</cell></row><row><cell>Einstein radius ( )</cell><cell>θ E ∼ U (0.5, 3.0)</cell></row><row><cell>Axis ratio</cell><cell>q lens ∼ U (0.2, 1.0)</cell></row><row><cell>Orientation angle</cell><cell>φ lens ∼ U (−π/2, π/2)</cell></row><row><cell>Lens redshift</cell><cell>Collett15</cell></row><row><cell>Source redshift</cell><cell>Collett15</cell></row><row><cell>Two-component Elliptical Sersic light</cell><cell></cell></row><row><cell cols="2">Total Apparent Magnitudes in [g, r, i] Collett15</cell></row><row><cell>Total Half-light radius</cell><cell>Collett15</cell></row><row><cell>Total Axis ratio</cell><cell>Collett15</cell></row><row><cell>Orientation angle</cell><cell>Collett15</cell></row><row><cell>Bulge to Total Fraction</cell><cell>CosmoDC2</cell></row><row><cell>Half-light radius of the bulge</cell><cell>CosmoDC2</cell></row><row><cell>Axis ratio of the bulge</cell><cell>CosmoDC2</cell></row><row><cell>Orientation angle of the bulge</cell><cell>CosmoDC2</cell></row><row><cell>Sersic index of the bulge</cell><cell>CosmoDC2</cell></row><row><cell>Half-light radius of the disk</cell><cell>CosmoDC2</cell></row><row><cell>Axis ratio of the disk</cell><cell>CosmoDC2</cell></row><row><cell>Orientation angle of the disk</cell><cell>CosmoDC2</cell></row><row><cell>Sersic index of the disk</cell><cell>CosmoDC2</cell></row><row><cell>Environment</cell><cell></cell></row><row><cell>External shear modulus</cell><cell>CosmoDC2</cell></row><row><cell>Orientation angle</cell><cell>CosmoDC2</cell></row><row><cell>Source galaxy</cell><cell></cell></row><row><cell>Tow-component Elliptical Sersic light</cell><cell></cell></row><row><cell>Source center for non-lenses ( )</cell><cell>U (−7.5, 7.5)</cell></row><row><cell>Source center for lenses ( )</cell><cell>R(µ &gt; 5)</cell></row><row><cell cols="2">Total Apparent Magnitudes in [g, r, i] Collett15</cell></row><row><cell>Total Half-light radius</cell><cell>Collett15</cell></row><row><cell>Total Axis ratio</cell><cell>Collett15</cell></row><row><cell>Orientation angle</cell><cell>Collett15</cell></row><row><cell>Bugle to Total Fraction</cell><cell>cosmoDC2</cell></row><row><cell>Half-light radius of bulge</cell><cell>CosmoDC2</cell></row><row><cell>Axis ratio of bulge</cell><cell>CosmoDC2</cell></row><row><cell>Orientation angle of bulge</cell><cell>CosmoDC2</cell></row><row><cell>Sersic index of bulge</cell><cell>CosmoDC2</cell></row><row><cell>Half-light radius of disk</cell><cell>CosmoDC2</cell></row><row><cell>Axis ratio of disk</cell><cell>CosmoDC2</cell></row><row><cell>Orientation angle of disk</cell><cell>CosmoDC2</cell></row><row><cell>Sersic index of disk</cell><cell>CosmoDC2</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">https://www.naoj.org/Projects/HSC/ 5 Catalog of gravitational lenses from the SuGOHI lenses are publicly available here: http://www-utap.phys.s.u-tokyo.ac.jp/ ~oguri/sugohi/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>ACKNOWLEDGMENTS</head><p>The authors thank Anupreeta More for providing HSC data for the mix of lenses, unlensed, and ambiguous cases. The authors also thank Javier Sanchez for helping to extract DC2 postage stamps for synthetic data testing. This work has undergone internal review from the LSST Dark Energy Science Collaboration (LSST-DESC); we thank Camille Avestruz, Xiaosheng Huang, Ji Won Park and the LSST-DESC Publication board for the helpful comments during the internal review.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Author Contribution Statement: -Sandeep Madireddy formulated the machine learning approach and developed the corresponding software, conducted the learning experiments and lead the manuscript writing. Nesar Ramachandra contributed to the data preparation, code development and manuscript writing. Nan Li developed the lensing simulation code, generated mock data, and contributed to manuscript writing. James Butler conducted experiments with the baseline machine learning approaches. Prasanna Balaprakash advised on the formulation of the machine learning pipeline and contributed to the manuscript writing. Salman Habib advised on the conceptualization of the developed approach as well as on analysis of model predictions both in training and validation experiments. Katrin Heitmann provided the underlying simulation for the paper, including generated data products.</p><p>This paper was built using the Open Journal of Astrophysics L A T E X template. The OJA is a journal which provides fast and easy peer review for new papers in the astro-ph section of the arXiv, making the reviewing process simpler for authors and referees alike. Learn more at http: //astro.theoj.org.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Abadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Barham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chen</surname></persName>
+		</author>
+		<title level="m">12th {USENIX} Symposium on Operating Systems Design and Implementation</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="265" to="283" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Achille</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Soatto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="page">1947</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Alemi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Fischer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">V</forename><surname>Dillon</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1807.00906</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Alemi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Fischer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">V</forename><surname>Dillon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Murphy</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1612.00410</idno>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Anwar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Khan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Barnes</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1904.07523</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">C</forename><surname>Avestruz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">877</biblScope>
+			<biblScope unit="page">58</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bayer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chatterjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">V E</forename><surname>Koopmans</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.05952</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">ArXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">B</forename><surname>Bayliss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sharon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Acharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">845</biblScope>
+			<biblScope unit="page">L14</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">R</forename><surname>Bom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Makler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">P</forename><surname>Albuquerque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">H</forename><surname>Brandt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">A&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">597</biblScope>
+			<biblScope unit="page">A135</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Cañameras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Schuldt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Suyu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Astronomy &amp; Astrophysics</title>
+		<imprint>
+			<biblScope unit="volume">644</biblScope>
+			<biblScope unit="page">A163</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">Q</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">B</forename><surname>Grosse</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">K</forename><surname>Duvenaud</surname></persName>
+		</author>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="2610" to="2620" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">E</forename><surname>Collett</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">811</biblScope>
+			<biblScope unit="page">20</biblScope>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">E</forename><surname>Collett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">W</forename><surname>Auger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">443</biblScope>
+			<biblScope unit="page">969</biblScope>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">J</forename><surname>Connolly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Peterson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">G</forename><surname>Jernigan</surname></persName>
+		</author>
+		<idno type="DOI">10.1117/12.857819</idno>
+	</analytic>
+	<monogr>
+		<title level="j">SPIE</title>
+		<imprint>
+			<biblScope unit="page">7738</biblScope>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Dye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">W</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Belokurov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Warren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hewett</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">388</biblScope>
+			<biblScope unit="page">384</biblScope>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Dye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Furlanetto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Dunne</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">476</biblScope>
+			<biblScope unit="page">4383</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gavazzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">J</forename><surname>Marshall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sonnenfeld</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">785</biblScope>
+			<biblScope unit="page">144</biblScope>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gavazzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">D</forename><surname>Rhodes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">667</biblScope>
+			<biblScope unit="page">176</biblScope>
+			<date type="published" when="2007">2007</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><surname>Gilman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Birrer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">R</forename><surname>Keeton</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1712.04945</idno>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">ArXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hartley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Flamary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Jackson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Tagore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">B</forename><surname>Metcalf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">471</biblScope>
+			<biblScope unit="page">3378</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sun</surname></persName>
+		</author>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="770" to="778" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Z</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Er</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Long</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Monthly Notices of the Royal Astronomical Society</title>
+		<imprint>
+			<biblScope unit="volume">497</biblScope>
+			<biblScope unit="page">556</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">N</forename><surname>Hewitt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">L</forename><surname>Turner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">P</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">F</forename><surname>Burke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">I</forename><surname>Langston</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">333</biblScope>
+			<biblScope unit="page">537</biblScope>
+			<date type="published" when="1988">1988</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">D</forename><surname>Hezaveh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Perreault Levasseur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">J</forename><surname>Marshall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">548</biblScope>
+			<biblScope unit="page">555</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">D</forename><surname>Hezaveh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Dalal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">P</forename><surname>Marrone</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">823</biblScope>
+			<biblScope unit="page">37</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">C</forename><surname>Jacobs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Glazebrook</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Collett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>More</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Mccarthy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">471</biblScope>
+			<biblScope unit="page">167</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">C</forename><surname>Jacobs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Collett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Glazebrook</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">484</biblScope>
+			<biblScope unit="page">5330</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">T</forename><surname>Jaelani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>More</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Oguri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">495</biblScope>
+			<biblScope unit="page">1291</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><surname>Jenness</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bosch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Schellart</surname></persName>
+		</author>
+		<title level="m">Astronomical Society of the Pacific Conference Series</title>
+				<editor>
+			<persName><forename type="first">P</forename><forename type="middle">J</forename><surname>Teuben</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><forename type="middle">W</forename><surname>Pound</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">B</forename><forename type="middle">A</forename><surname>Thomas</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">&amp;</forename><forename type="middle">E M</forename><surname>Warner</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="volume">523</biblScope>
+			<biblScope unit="page">653</biblScope>
+		</imprint>
+	</monogr>
+	<note>Astronomical Data Analysis Software and Systems XXVII</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">T</forename><surname>Jenness</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">F</forename><surname>Bosch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">B</forename><surname>Lust</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2206.14941</idno>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Courbin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">B</forename><surname>Metcalf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">A&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">566</biblScope>
+			<biblScope unit="page">A63</biblScope>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">P</forename><surname>Kingma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Welling</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1312.6114</idno>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<author>
+			<persName><forename type="first">I</forename><surname>Kobyzev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Prince</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Brubaker</surname></persName>
+		</author>
+		<title level="m">IEEE transactions on pattern analysis and machine intelligence</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="page">3964</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">V E</forename><surname>Koopmans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Bolton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Burles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">A</forename><surname>Moustakas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">649</biblScope>
+			<biblScope unit="page">599</biblScope>
+			<date type="published" when="2006">2006</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Kormann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bartelmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">A&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">284</biblScope>
+			<biblScope unit="page">285</biblScope>
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><surname>Korytov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Hearin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Kovacs</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.06530</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kummer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Kahlhoefer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Schmidt-Hoberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">474</biblScope>
+			<biblScope unit="page">388</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Küng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Ferreras</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">474</biblScope>
+			<biblScope unit="page">3700</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">F</forename><surname>Lanusse</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Monthly Notices of the Royal Astronomical Society</title>
+		<imprint>
+			<biblScope unit="volume">473</biblScope>
+			<biblScope unit="page">3895</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">F</forename><surname>Lanusse</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">473</biblScope>
+			<biblScope unit="page">3895</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">D</forename><surname>Gladders</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">M</forename><surname>Rangel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">828</biblScope>
+			<biblScope unit="page">54</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Napolitano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Tortora</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Astrophysical Journal</title>
+		<imprint>
+			<biblScope unit="volume">899</biblScope>
+			<biblScope unit="page">30</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<author>
+			<persName><forename type="first">B</forename><surname>Lim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Son</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Nah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Lee</surname></persName>
+		</author>
+		<title level="m">Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops</title>
+				<meeting>the IEEE Conference on Computer Vision and Pattern Recognition Workshops</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="136" to="144" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">G</forename><surname>Lowe</surname></persName>
+			<affiliation>
+				<orgName type="collaboration">LSST Dark Energy Science Collaboration</orgName>
+			</affiliation>
+		</author>
+		<author>
+			<persName><surname>Lsst Desc)</surname></persName>
+			<affiliation>
+				<orgName type="collaboration">LSST Dark Energy Science Collaboration</orgName>
+			</affiliation>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Abolfathi</surname></persName>
+			<affiliation>
+				<orgName type="collaboration">LSST Dark Energy Science Collaboration</orgName>
+			</affiliation>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Alonso</surname></persName>
+			<affiliation>
+				<orgName type="collaboration">LSST Dark Energy Science Collaboration</orgName>
+			</affiliation>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of computer vision</title>
+		<imprint>
+			<biblScope unit="volume">60</biblScope>
+			<biblScope unit="page">31</biblScope>
+			<date type="published" when="2004">2004. 2021</date>
+		</imprint>
+	</monogr>
+	<note>ApJS</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Y.-Y</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Kovacs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Heitmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJS</title>
+		<imprint>
+			<biblScope unit="volume">234</biblScope>
+			<biblScope unit="page">36</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">B</forename><surname>Metcalf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">A&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">625</biblScope>
+			<biblScope unit="page">A119</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>More</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">J</forename><surname>Marshall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">455</biblScope>
+			<biblScope unit="page">1191</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">R</forename><surname>Morningstar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">D</forename><surname>Hezaveh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Perreault Levasseur</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1808.00011</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">R</forename><surname>Morningstar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Perreault Levasseur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">D</forename><surname>Hezaveh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">883</biblScope>
+			<biblScope unit="page">14</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ostrovski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">465</biblScope>
+			<biblScope unit="page">4325</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">D</forename><surname>Paraficz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Courbin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Tramacere</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">A&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">592</biblScope>
+			<biblScope unit="page">A75</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W</forename><surname>Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wagner-Carena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Birrer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Astrophysical Journal</title>
+		<imprint>
+			<biblScope unit="volume">910</biblScope>
+			<biblScope unit="page">39</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Paszke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Gross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chintala</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<editor>Autodiff Workshop Pearson, J., Li, N., &amp; Dye, S</editor>
+		<imprint>
+			<biblScope unit="volume">488</biblScope>
+			<biblScope unit="page">991</biblScope>
+			<date type="published" when="2017">2017. 2017. 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pearson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Maresca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Dye</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Monthly Notices of the Royal Astronomical Society</title>
+		<imprint>
+			<biblScope unit="volume">505</biblScope>
+			<biblScope unit="page">4362</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">L</forename><surname>Perreault Levasseur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">D</forename><surname>Hezaveh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">H</forename><surname>Wechsler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">850</biblScope>
+			<biblScope unit="page">L7</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">E</forename><surname>Petrillo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Tortora</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chatterjee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">472</biblScope>
+			<biblScope unit="page">1129</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mahajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mukherjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">F L</forename><surname>Holanda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Cosmology Astropart. Phys</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page">10</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">L</forename><surname>Sersic</surname></persName>
+		</author>
+		<title level="m">Atlas de Galaxias Australes</title>
+				<imprint>
+			<date type="published" when="1968">1968</date>
+		</imprint>
+		<respStmt>
+			<orgName>Universidad Nacional de Cordoba</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">P</forename><surname>Sharda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Federrath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Da Â Cunha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">M</forename><surname>Swinbank</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Dye</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">477</biblScope>
+			<biblScope unit="page">4380</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Bolton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">A</forename><surname>Moustakas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">820</biblScope>
+			<biblScope unit="page">43</biblScope>
+			<date type="published" when="2016">2016a</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Bolton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">833</biblScope>
+			<biblScope unit="page">264</biblScope>
+			<date type="published" when="2016">2016b</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<monogr>
+		<title level="m" type="main">Image processing, analysis, and machine vision</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sonka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Hlavac</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Boyle</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<publisher>Cengage Learning</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sonnenfeld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">J</forename><surname>Marshall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">800</biblScope>
+			<biblScope unit="page">94</biblScope>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sonnenfeld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">H H</forename><surname>Chan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Shu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PASJ</title>
+		<imprint>
+			<biblScope unit="volume">70</biblScope>
+			<biblScope unit="page">S29</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">H</forename><surname>Suyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Bonvin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Courbin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">468</biblScope>
+			<biblScope unit="page">2590</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">N</forename><surname>Tishby</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">C</forename><surname>Pereira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Bialek</surname></persName>
+		</author>
+		<idno>arXiv preprint physics/0004057</idno>
+		<imprint>
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ARA&amp;A</title>
+		<imprint>
+			<biblScope unit="volume">48</biblScope>
+			<biblScope unit="page">87</biblScope>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Van Der Walt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">L</forename><surname>Schönberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nunez-Iglesias</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PeerJ</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">e453</biblScope>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Vegetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">V E</forename><surname>Koopmans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">W</forename><surname>Auger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Treu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Bolton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">MNRAS</title>
+		<imprint>
+			<biblScope unit="volume">442</biblScope>
+			<date type="published" when="2014">2014. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wagner-Carena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W</forename><surname>Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Birrer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">909</biblScope>
+			<biblScope unit="page">187</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Vicol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Grosse</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.04386</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Vicol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Grosse</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.04386</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">C</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sonnenfeld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">H H</forename><surname>Chan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ApJ</title>
+		<imprint>
+			<biblScope unit="volume">867</biblScope>
+			<biblScope unit="page">107</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Zhong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Fu</surname></persName>
+		</author>
+		<title level="m">Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="2472" to="2481" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

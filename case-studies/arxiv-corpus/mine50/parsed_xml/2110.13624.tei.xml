@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">TECHNOLOGY FITNESS LANDSCAPE FOR DESIGN INNOVATION: A DEEP NEURAL EMBEDDING APPROACH BASED ON PATENT DATA</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-21">21 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Shuo</forename><surname>Jiang</surname></persName>
+							<email>shuojiangcn@gmail.com</email>
+						</author>
+						<author>
+							<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+							<email>luo@sutd.edu.sg</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">Shanghai Jiao Tong University</orgName>
+								<address>
+									<addrLine>800 Dongchuan Road</addrLine>
+									<postCode>200240</postCode>
+									<settlement>Shanghai</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Singapore University of Technology and Design</orgName>
+								<address>
+									<addrLine>8 Somapah Road</addrLine>
+									<postCode>487372</postCode>
+									<settlement>Singapore</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">TECHNOLOGY FITNESS LANDSCAPE FOR DESIGN INNOVATION: A DEEP NEURAL EMBEDDING APPROACH BASED ON PATENT DATA</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-21">21 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">6AD660EF767E959364514C26516740F1</idno>
+					<idno type="arXiv">arXiv:2110.13624v3[cs.LG]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Technology Fitness Landscape</term>
+					<term>Design Innovation</term>
+					<term>Deep Learning</term>
+					<term>Neural Embedding</term>
+					<term>Patent</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Technology is essential to innovation and economic prosperity. Understanding technological changes can guide innovators to find new directions of design innovation and thus make breakthroughs. In this work, we construct a technology fitness landscape via deep neural embeddings of patent data. The landscape consists of 1,757 technology domains and their respective improvement rates. In the landscape, we found a high hill related to information and communication technologies (ICT) and a vast low plain of the remaining domains. The landscape presents a bird's eye view of the structure of the total technology space, providing a new way for innovators to interpret technology evolution with a biological analogy, and a biologically-inspired inference to the next innovation.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In the past decade, artificial intelligence, cloud computing, quantum computing, and 5G communication technologies undergo rapid advances. Meanwhile, tremendous innovations also emerge and gain momentum in traditional technological domains, such as autonomous vehicles <ref type="bibr" target="#b0">[1]</ref>, drug discovery <ref type="bibr" target="#b1">[2]</ref>, and protein structure prediction <ref type="bibr" target="#b2">[3]</ref>. Such contemporary innovation phenomena call for new theories and frameworks to explain them, understand the driving forces, and inform future innovation.</p><p>Many contemporary design innovations share one characteristic in common: they are based on the synthesis and fusion of different technological domains, which used to be unrelated and separately developed, e.g., artificial intelligence and automobile. The rise of such innovations has ambiguated the boundaries of technological domains and industries. For instance, should an autonomous vehicle <ref type="bibr" target="#b0">[1]</ref> be classified as an automotive or an artificial intelligence product? Should DNA data storage <ref type="bibr" target="#b3">[4]</ref> be defined as biological or information technology? Should ancient DNA analysis <ref type="bibr" target="#b4">[5]</ref> be classified as anthropology or molecular biology technology? More holistic assessment of technological domains in one integrated space is demanded to help interpret their evolution and find directions for design innovation.</p><p>In this study, we apply deep learning-based neural embedding techniques on multimodal patent data to train a unified embedding vector space for 1,757 technology domains, which covers more than 97% of the whole US patent system. The training encodes both the internal semantic features of patent texts in individual domains and external interdependent information of patent citations across different domains. We further map the estimated technological improvement rates for all domains in the space to construct a technology fitness landscape. The shape of the technology fitness landscape allows for a holistic understanding of the structure and evolution dynamics of the total technology space and a context-aware understanding of the evolution prospects of individual technological domains. This was not previously possible as the technology domains were then analyzed discretely or associated in a single-or low-dimensional space (e.g., citation information only).</p><p>Our technology fitness landscape creation draws analogical inspiration from Kauffman's NK biological fitness landscape for assessing the evolution of genotypes <ref type="bibr" target="#b5">[6]</ref>. It inspired us to link the domain structure of the entire technology space to the genetic structure of the organism, and the adaptive evolution process of technology to the mutation of the genotypes. The NK model has also been successfully used to study the evolution of firms <ref type="bibr" target="#b6">[7]</ref> and innovation networks <ref type="bibr" target="#b7">[8]</ref>. In our study, a specific technological domain was found to be analogous to a genotype. The high-dimensional embedding vector of a technological domain is analogous to a DNA sequence. The improvement rate of a technology domain is analogous to the fitness (or replication rate) of a genotype in an organism. Overall, the technology fitness landscape is analogous to the genome fitness landscape.</p><p>Within the technology fitness landscape, we find that the fastest domains of today's technological world gather closely in one region of the entire space. That is, the technology fitness landscape shows a single high hill, which is related to information and communication technologies (ICT). The hill is steep. The improvement rates drop rapidly from the global peak to the low plain. Most regions of the total technology embedding space are in a vast low-flat plain in terms of improvement rates. The entire landscape map can inform innovators within specific domains about their embeddedness in the total space and guide them to mutate their designs or technologies for innovation toward the direction of interest.</p><p>This study contributes to the growing studies of design innovation <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b9">10]</ref>, computer-aided innovation (CAI) <ref type="bibr" target="#b10">[11,</ref><ref type="bibr" target="#b11">12,</ref><ref type="bibr" target="#b12">13]</ref>, and data-driven innovation (DDI) <ref type="bibr" target="#b13">[14,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b15">16]</ref>. The remainder of this paper is organized as follows. Section 2 describes the method and data that we used to create the technology fitness landscape. Section 3 presents the results with our analysis and discussion. Section 4 discusses the findings and applications. Finally, Section 5 concludes the paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">The Creation of the Technology Fitness Landscape 2.1 Method</head><p>To construct the 'map of technologies', previous studies leveraged the information in patent data to capture the relationships among different technological domains in the form of networks <ref type="bibr" target="#b16">[17,</ref><ref type="bibr" target="#b17">18,</ref><ref type="bibr" target="#b18">19]</ref>. However, these existing maps only analyze the citation information of patents to capture the interdependencies or interactions among technological domains while ignoring the intrinsic features of technologies within them. In this research, we leverage deep learning techniques to create a compact, dense, and continuous vector space in high dimensions to represent all technologies based on multimodal information (both texts and citations of patents). Both the internal (semantic) and external (connective) information of technological domains are utilized for neural embedding model training, aiming to capture both the explicit and implicit features of technological domains. The trained technology embedding space is more holistic and informative than the previously created maps because such a space is created from a distributed highdimensional representation of items. The representation learning process based on the graph neural network is more flexible and robust than feature engineering <ref type="bibr" target="#b19">[20]</ref>. Specifically, our proposed neural embedding method builds on the GraphSAGE model, a framework for inductive representation learning on large graphs <ref type="bibr" target="#b20">[21]</ref>. GraphSAGE generates vector representations for nodes and is especially useful for graphs with rich node attribute information. In the GraphSAGE model, node embeddings are learned by solving a simple classification task: given a large set of 'positive' (target, context) node pairs generated from random walks performed on the graph (i.e., node pairs that co-occur within a certain context window in random walks), and an equally large set of 'negative' node pairs that are randomly selected from the graph according to a certain distribution, the model can be trained as a binary classifier to predict whether arbitrary node pairs are likely to co-occur in a random walk performed on the graph. Through learning this simple binary node-pair-classification task, the model automatically learns an inductive mapping from attributes of nodes and their neighbors to node embeddings in a high-dimensional vector space, which preserves structural and feature similarities of the nodes. It is noteworthy that this neural embedding method is an unsupervised learning algorithm that does not require any node class label data for training.</p><p>Algorithm 1 describes the GraphSAGE neural embedding method. The spirit behind this algorithm is that as the nodes learn features from their local neighbors, they would incrementally obtain an increasing amount of information from further reaches of the whole graph.</p><p>Algorithm 1: GraphSAGE neural embedding algorithm from <ref type="bibr" target="#b20">[21]</ref> Input :Graph G(V, E); input features{x v , ∀v ∈ V}; depth K; weight matrices W k , ∀k ∈ {1, ..., K}; non-linearity σ; differentiable aggregator functions AGGREGATE k , ∀k ∈ {1, ..., K};</p><formula xml:id="formula_0">neighborhood function N : v → 2 V Output :Vector representations z v for all v ∈ V h 0 v ← x v , ∀v ∈ V for k = 1...K do for v ∈ V do h k N (v) ← AGGREGATE k ({h k−1 u , ∀u ∈ N (v)}); h k v ← σ W k • CONCAT(h k−1 v , h k N (v) ) end h k v ← h k v / h k v 2 , ∀v ∈ V end z v ← h K v , ∀v ∈ V</formula><p>In the experimental setting, we use the domain-level citation network with normalized weights as the input graph G.</p><p>Formally, an entry in matrix W N ×N from a citing domain n (row) to a cited domain n (column) is:</p><formula xml:id="formula_1">w n→n = C n→n N K=1 C n→k</formula><p>where C n→n represents the citations from domain n to domain n . Thus, the normalized weight matrix represents interdomain interactions.</p><p>For intrinsic characteristics of patents, we use semantic vectors of domains as input node features derived from the Doc2Vec model <ref type="bibr" target="#b21">[22]</ref>. The model is first trained on the text of the title and abstract of all patents in our dataset. Using the trained model, for any given patent document, we can obtain its semantic vector using its textual content. Then, the domain semantic vectors are calculated by averaging all the obtained semantic vectors of patents that belong to the corresponding domains. As for the parameters of the GraphSAGE model, we implemented the settings as suggested in the original GraphSAGE paper: non-linearity σ = sigmoid function; aggregator function = Mean; Depth K = 2 with neighborhood sample sizes = 32. Thus, the derived multimodal domain embeddings can effectively encode both the internal semantic and the external connectivity characteristics of patent domains.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Data</head><p>The dataset contains 4,988,929 patents with 54,798,218 citations issued by the USPTO from 1976 to 2015, which covers 97.2% of the entire US patent system during the period. Detailed patent information, including semantic information (titles and abstracts) and connective information (forward and backward citations) of patents, can be downloaded from the PatentsView website (https://www.patentsview.org/).</p><p>According to Singh et al.'s prior work <ref type="bibr" target="#b22">[23]</ref>, all patents had been assigned to a set of 1,757 technology domains via the extended classification overlap method <ref type="bibr" target="#b23">[24]</ref>. They also statistically estimated the yearly rates of performance improvement for all domains utilizing the centrality measure <ref type="bibr" target="#b24">[25]</ref>. On this basis, we applied our multimodal neural embedding method to a citation network of 1,757 domains with their semantic features. As a result, we obtained a 32-dimension vector for each of the 1,757 technological domains. We call the unified vector space the technology embedding space. The technology fitness landscape is built on the technology embedding space and technology improvement rates of all domains.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Model Training and Validation</head><p>In the training process, we trained our neural network model with the following settings. First, we built a 2-layer GraphSAGE model, and the size of the GraphSAGE layer is set to 32. We stacked the GraphSAGE and prediction layers and defined the binary cross-entropy as the loss function. The entire model is trained end-to-end by minimizing  To assess the trained model, we used the distribution of cosine similarities to validate the derived embedding space (Figure <ref type="figure" target="#fig_0">1</ref>) and show the difference among alternative representation methods, including the Node2Vec embedding, the Doc2Vec embedding, and the citation weight embedding. The experimental settings of Node2Vec and Doc2Vec models are the same as the corresponding parts of the GraphSAGE model, and the dimension values of the representations are all set to 32-d. The citation weight embedding represents each domain as a 1,757-d vector and the value of each dimension means the citation count from that domain to the chosen domain.</p><p>We randomly sampled six groups of 100,000 domain pairs and then filtered out the duplicated ones for further calculation 2 : (1) random pairs, (2) cross IPC-1 group pairs, (3) within IPC-1 group pairs, (4) within IPC-3 class pairs, (5) within IPC-4 subclass pairs, (6) within UPC category pairs. The sparse embeddings (citation weight representation) put most pairs at 0 and are not informative as the other three dense embeddings, which better capture both similarities and differences among domains. The Node2Vec and Doc2Vec embeddings show similar patterns: compared to random pairs, both mean values and distributions of the other 5 groups shift more dramatically to the right. Compared to Node2Vec and Doc2Vec, GraphSAGE embedding shows it can better distinguish the fine-grained technology domain pairs.</p><p>In addition, we used the t-SNE method to visualize and compare different representations, as shown in Figure <ref type="figure" target="#fig_1">2</ref>. Different color denotes one of eight IPC-1 groups. The results also show that the visualization map of the GraphSAGE embedding has a clearer clustering pattern for IPC-1 groups than other embedding methods. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Results and Analysis</head><p>Figure <ref type="figure" target="#fig_2">3A</ref> shows a two-dimensional (2D) representation of the technology embedding space using the t-SNE method, where the node color intensity corresponds to the improvement rate of the represented domain. Figure <ref type="figure" target="#fig_2">3B</ref> presents the technology embedding space with domain improvement rates as a contour map. The 3D-meshgrid function of MATLAB is used to fit the contour and landscape maps. Both scatter and contour maps reveal a single cluster of the fastest domains, or, the fastest domains tend to gather in a small cohesive region of the total technology embedding space. In other words, our neural embedding space mapping captures the fastest domains within a cluster, including the following domains as the top five:719G06F (dynamic information exchange and support systems integrating multiple channels), 709G06F (network management specifically client-server applications), 709G06Q (network messaging system including advertisement), 709H04L (network address and access management), and 726H04L (securing enterprise networks by system architecture). The codes of domains are UPC-IPC pairs <ref type="bibr" target="#b22">[23]</ref>.</p><p>We further developed a web-based interactive visualization for public users to explore the space available at: https://ddi.sutd.edu.sg/technology-fitness-landscape. Figure <ref type="figure">4</ref> presents the technology fitness landscape map, in which the heights of the domains correspond to their respective improvement rates. The landscape is not very rugged and has a small number of hills. The landscape is characterized by a conspicuous highest hill (the global peak), together with a vast low plain occupying most of the total technology space. In Figure <ref type="figure">4</ref>, we annotate several fastest domains in each hill according to their descriptions. We find that the highest hill is highly related to the information, electronics, and electrical technology domains 3 . The slope from the peak of the highest hill to the low-flat plain is steep.</p><p>Figure <ref type="figure">4</ref>: Technology fitness landscape. The location of each domain is aligned to the 2D embedding map (Figure <ref type="figure" target="#fig_2">3A</ref>), and the color represents the rate. The heights correspond to the improvement rates of different domains.</p><p>Figure <ref type="figure" target="#fig_3">5</ref> presents the average improvement rates of each 10-quantiles group of domains by their Euclidean distance to the centroid of the N (=1, 5, or 10) domains surrounding the global peak. The results confirm that, in the near field surrounding the global peak, the improvement rates decline rapidly from the hill peak to the low plain of many slow domains. To demonstrate different domains' varying distances to the global peak, we mapped all technological domains into one of the 37 NBER subcategories <ref type="bibr" target="#b25">[26]</ref>. These 37 subcategories belong to six categories: (1) computers and communications, (2) electrical and electronic, (3) mechanical, (4) drugs and medical, (5) chemical, and ( <ref type="formula">6</ref>) other. Figure <ref type="figure" target="#fig_4">6</ref> presents the constitution of each category regarding their distances to the global peak (the centroid of the 10 fastest domains). Each item in the matrix represents the number of domains belonging to the corresponding subcategories. The matrix was normalized by column (the sum of each column equals 1). This reveals a clear pattern of technological theme shifts from the global peak to the low plain. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Discussion</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Discussion on findings and implications for innovation</head><p>The creation of the technology fitness landscape was inspired by Kauffman's NK genome fitness landscape for assessing the evolution of genotypes. The genome fitness landscape comprises genotypes similar or dissimilar to each other to different degrees, and the height of an area corresponds to the fitness (or replication rate) of a particular genotype. In the genome fitness landscape, each genotype is composed of several nucleotides (DNA sequences, which can be viewed as 4-d vectors), and each position in a DNA sequence can be occupied by four alternative bases: adenine (A), thymine (T), guanine (G), and cytosine (C). By analogy, the technology domains in the total technology fitness landscape are similar to the genotypes. The domain features can be viewed as the nucleotides in the DNA sequence of the technological domain and are now characterized by our 32-dimensional vectors trained on multimodal data.</p><p>Therefore, technological changes or innovations in a domain are analogous to the mutations of a genotype. In the biological evolution process, mutations in a DNA sequence, which substitute, insert, or delete a single nucleotide, will lead to movements in the genotype landscape and the fitness-increasing mutations can lead to movements to higher areas of the genome fitness landscape. By analogy, the mutations of domain features lead to movements in the technology landscape, and innovations that are those performance-improving mutations can lead to movements from the lower to higher domains in our technology fitness landscape.</p><p>Prior studies have pointed out that technological improvement or novelty arises from the recombination or synthesis of existing technologies <ref type="bibr" target="#b26">[27,</ref><ref type="bibr" target="#b27">28]</ref>, which, in our cases, can be viewed as such mutations of the technological genotype. Following the analogy framework, the latest innovations in autonomous vehicles have changed the genotype of automobiles and increased the values of automobiles by fusing artificial intelligence to assist or automate driving and battery-powered electric powertrain to replace combustion engines. Similarly, recent progress on the structure prediction component of the 'protein folding problem' achieved by DeepMind also presents the power of incorporating deep learning techniques (AlphaFold) into traditional biological domains <ref type="bibr" target="#b2">[3]</ref>. In the past, it would take biologists six months to predict a protein structure, while now it takes only a couple of minutes using AI. Speaking in biological evolution terms, these domains' genotypes have been mutated with increased fitness in the total technological space. The new genotype is positioned closer to the global peak in the technology fitness landscape.</p><p>Another interesting example of such disruptive technology is DNA data storage, which uses synthetic DNA as a medium to store massive quantities of digital information at very high density in the long term <ref type="bibr" target="#b3">[4]</ref>. Theoretically, a coffee mug full of synthetic DNA could store the data of the entire world <ref type="bibr" target="#b28">[29]</ref>. In our technology fitness landscape, the emergence of DNA data storage has also changed the genotype of the traditional information storage domains by involving advanced synthetic biology technologies and DNA sequencing, bringing a breakthrough in their performance. Such a biologically inspired analysis suggests the need to continually update the classification of technologies, embrace new domain definitions, and redefine the boundaries of technologies.</p><p>For the innovators in presently slow-pacing domains, they may use our fitness landscape map as a guide to mutate their technologies (e.g., innovation) for targeted movements toward the high hill. For the innovators in the fast-pacing domains, they may also use our map to identify slow-paced domains as targets to empower by applying their fastimproving technologies over these. Both ways create value despite different starting points. The success of such mutations might be conditioned by the innovators' starting positions and neighboring domains in the total space. Making long jumps require learning distant technologies and thus are difficult, while they can often increase the possibility of making huge breakthroughs <ref type="bibr" target="#b10">[11]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Limitations</head><p>This study has several limitations. First, the visualization and analysis in this study rely on the results and domain classifications, and estimated improvement rates. Researchers focusing on the different granularities of technological domains can leverage our method to retrain the model and generate a new landscape based on their dataset. Second, although our neural embedding method learns both intrinsic and connective features from domains and can be more holistic than unimodal spaces, other types of knowledge of domains exist, such as affiliation information and visual images. A desirable multimodal space should consider an even broader range of features.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>In this work, we leveraged neural embedding techniques to build a technology fitness landscape based on US patent data to boost design innovation. The technology fitness landscape shows that the fastest domains gather closely in the total technology embedding space, while most regions of the space constitute a low plain in terms of improvement rates.</p><p>A global peak was identified in the landscape with the themes of information and communication technologies. Such a technology fitness landscape provides us with a birds-eye view of the evolution prospects of individual technological domains. The landscape also allows for a biological analogy to understand technological innovation and evolution and to guide innovators in the search for future opportunities and directions of design innovation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Disclosure statement</head><p>No potential conflict of interest was reported by the author(s).</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Cosine similarity distribution of domain pairs within different embedding spaces</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: 2D Visualization of different embedding spaces via the t-SNE method</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Technology embedding space with improvement rates of all domains. A) Each dot denotes a domain, and its color denotes the domain's performance improvement rate. The darker dots represent faster domains. B) The lighter areas represent faster domains.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: Distance to the global peak (the center of the fastest M domains, M=1, 5, 10) and improvement rates of each group of domains.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 6 :</head><label>6</label><figDesc>Figure 6: The shift of technological themes of domains in NBER subcategories regarding their distances to the global peak.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1</head><label>1</label><figDesc>presents the hyperparameters of the model.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Hyperparameters of the model</figDesc><table><row><cell>Hyperparameters</cell><cell>Setting values</cell></row><row><cell>Number of walks per node</cell><cell>200</cell></row><row><cell>Walk length</cell><cell>5</cell></row><row><cell>Batch size</cell><cell>50</cell></row><row><cell>Training epochs</cell><cell>10</cell></row><row><cell>Size of GraphSAGE layer</cell><cell>32</cell></row><row><cell>Learning rate of SGD optimizer</cell><cell>1e-3</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">IPC denotes the International Patent Classification scheme, and UPC denotes the United States Patent Classification scheme.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">We also performed a Non-negative Matrix Factorization topic modeling on the domains of the global peak to examine its theme. Results show that all of the identified topics are about information, electronics, and electrical technologies, as shown in Figure7.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This work was supported by the SUTD-MIT International Design Center, SUTD Data-Driven Innovation Laboratory (DDI, https://ddi.sutd.edu.sg/), and Shanghai Jiao Tong University under the grant of the National Natural Science Foundation of China (52035007, 51975360), Special Program for Innovation Method of the Ministry of Science and Technology, China (2018IM020100), and National Social Science Foundation of China (17ZDA020).</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix Topic modeling for themes of the domains of the global peak</head><p>We apply a topic modeling algorithm named Non-negative Matrix Factorization (NMF) <ref type="bibr" target="#b29">[30]</ref> to further analyze the essential topics of the domains of the global peak. The NMF method learns topics by directly decomposing the term-document matrix, which is a bag-of-word matrix representation of a text corpus, into two low-rank factor matrices: a topic-document matrix and a term-topic matrix. Specifically, we fed the abstracts and titles of all patents belonging to the global peak as a corpus into the NMF model to learn topics. We set the number of topics as 10, corresponding to the number of domains. Figure <ref type="figure">7</ref> reports the topic summary for the global peak, each represented as a bar plot using the top 10 words based on their associated weightage contribution to the topics. As we can clearly see, all of the identified topics are about information, electronics, and electrical technologies. For example, Topic #1 shows terms associated with information processing and related apparatus, as evident with the terms 'information', 'processing', and 'apparatus'. </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Autonomous vehicles: No driver. . . no regulation?</title>
+		<author>
+			<persName><forename type="first">Joan</forename><surname>Claybrook</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shaun</forename><surname>Kildare</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">361</biblScope>
+			<biblScope unit="page" from="36" to="37" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Applications of machine learning in drug discovery and development</title>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Vamathevan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominic</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Czodrowski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Reviews Drug Discovery</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="page" from="463" to="477" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Highly accurate protein structure prediction with alphafold</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Jumper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Pritzel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="11" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Next-generation digital information storage in dna</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuan</forename><surname>Church</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sriram</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kosuri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">337</biblScope>
+			<biblScope unit="page">1628</biblScope>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">ancient dna</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Hofreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Serre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hendrik</forename><forename type="middle">N</forename><surname>Poinar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Melanie</forename><surname>Kuch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svante</forename><surname>Pääbo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Reviews Genetics</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="353" to="359" />
+			<date type="published" when="2001">2001</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">The origins of order: Self-organization and selection in evolution</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Stuart</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kauffman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1993">1993</date>
+			<publisher>Oxford University Press</publisher>
+			<pubPlace>USA</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Adaptation on rugged landscapes</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Daniel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Levinthal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Management science</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="page" from="934" to="950" />
+			<date type="published" when="1997">1997</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Nk model as a representation of innovative search</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Ganco</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Research Policy</title>
+		<imprint>
+			<biblScope unit="volume">46</biblScope>
+			<biblScope unit="page" from="1783" to="1800" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Product innovation concept generation based on deep learning and kansei engineering</title>
+		<author>
+			<persName><forename type="first">Xiong</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianning</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhipeng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruisheng</forename><surname>Bai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Engineering Design</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="559" to="589" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Novelty metrics in engineering design</title>
+		<author>
+			<persName><forename type="first">Lorenzo</forename><surname>Fiorineschi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Federico</forename><surname>Rotini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Engineering Design</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="590" to="620" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">Guiding data-driven design ideation by knowledge distance. Knowledge-Based Systems</title>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Serhad</forename><surname>Sarica</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristin</forename><forename type="middle">L</forename><surname>Wood</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="volume">218</biblScope>
+			<biblScope unit="page">106873</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">A computational tool for creative idea generation based on analogical reasoning and ontology</title>
+		<author>
+			<persName><forename type="first">Ji</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feng</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liuqing</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter R N</forename><surname>Childs</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence for Engineering Design</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="462" to="477" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note>Analysis and Manufacturing. the retriever</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">An integrated approach for automated physical architecture generation and multi-criteria evaluation for complex product design</title>
+		<author>
+			<persName><forename type="first">Ruirui</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yusheng</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongri</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianjun</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaoping</forename><surname>Ye</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Engineering Design</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="63" to="101" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Data-driven innovation : What is it ?</title>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Engineering Management</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="19" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Data-driven design-by-analogy: State-of-the-art and future directions</title>
+		<author>
+			<persName><forename type="first">Shuo</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jie</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristin</forename><forename type="middle">L</forename><surname>Wood</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ASME Journal of Mechanical Design</title>
+		<imprint>
+			<biblScope unit="volume">144</biblScope>
+			<biblScope unit="page">20801</biblScope>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Patent data for engineering design: A critical review and future directions</title>
+		<author>
+			<persName><forename type="first">Shuo</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Serhad</forename><surname>Sarica</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Binyang</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jie</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computing and Information Science in Engineering</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="page">60902</biblScope>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Total technology space map as a digital platform</title>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd Hawaii International Conference on System Sciences</title>
+				<meeting>the 52nd Hawaii International Conference on System Sciences</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="6331" to="6338" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Innovation network</title>
+		<author>
+			<persName><forename type="first">Daron</forename><surname>Acemoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ufuk</forename><surname>Akcigit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">R</forename><surname>Kerr</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Proceedings of the National Academy of Sciences of the United States of America</title>
+		<idno type="ISSN">10916490</idno>
+		<imprint>
+			<biblScope unit="volume">113</biblScope>
+			<biblScope unit="page" from="11483" to="11488" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Science as a map in technological search</title>
+		<author>
+			<persName><forename type="first">Lee</forename><surname>Fleming</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olav</forename><surname>Sorenson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Strategic management journal</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="page" from="909" to="928" />
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Improving distributional similarity with lessons learned from word embeddings</title>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the association for computational linguistics</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="211" to="225" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Inductive representation learning on large graphs</title>
+		<author>
+			<persName><forename type="first">Rex</forename><surname>William L Hamilton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jure</forename><surname>Ying</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Leskovec</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1025" to="1035" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Distributed representations of sentences and documents</title>
+		<author>
+			<persName><forename type="first">Quoc</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page" from="1188" to="1196" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Technological improvement rate predictions for all technologies: Use of patent data and an extended domain description</title>
+		<author>
+			<persName><forename type="first">Anuraag</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giorgio</forename><surname>Triulzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher L</forename><surname>Magee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Research Policy</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page">104294</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Technology structural implications from the extension of a patent search method</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher L</forename><surname>Benson</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Magee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Scientometrics</title>
+		<imprint>
+			<biblScope unit="volume">102</biblScope>
+			<date type="published" when="1965">1965-1985, 2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Estimating technology performance improvement rates by mining patent data</title>
+		<author>
+			<persName><forename type="first">Giorgio</forename><surname>Triulzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeff</forename><surname>Alstott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher L</forename><surname>Magee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Technological Forecasting and Social Change</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The nber patent citation data file: Lessons, insights and methodological tools</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Bronwyn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><forename type="middle">B</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuel</forename><surname>Jaffe</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Trajtenberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NBER Working Paper</title>
+		<imprint>
+			<biblScope unit="volume">8498</biblScope>
+			<date type="published" when="2001">2001</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">The novelty &apos;sweet spot&apos;of invention</title>
+		<author>
+			<persName><forename type="first">Yuejun</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Design Science</title>
+		<imprint>
+			<biblScope unit="page">3</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Mining and representing the concept space of existing ideas for directed ideation</title>
+		<author>
+			<persName><forename type="first">Yuejun</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haowen</forename><surname>Bradley Camburn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianxi</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wood</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Mechanical Design</title>
+		<imprint>
+			<biblScope unit="volume">141</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Dna fountain enables a robust and efficient storage architecture</title>
+		<author>
+			<persName><forename type="first">Yaniv</forename><surname>Erlich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Zielinski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">355</biblScope>
+			<biblScope unit="page" from="950" to="954" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Learning the parts of objects by non-negative matrix factorization</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Daniel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sebastian Seung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">401</biblScope>
+			<biblScope unit="page" from="788" to="791" />
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

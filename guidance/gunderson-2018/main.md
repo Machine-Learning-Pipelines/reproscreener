@@ -19,7 +19,9 @@
 	- Experiment source code: Is the experiment code open sourced?
 - Miscellaneous (4)
 	- Research type: Experimental (E) or theoretical (T)
+    	- (if data exists?)
 	- Research outcome: Is the paper reporting a positive or a negative result (positive=1 and negative=0)
 	- Affiliation: The affiliation of the authors 
 		- Academia (0), collaboration (1) or industry (2)
+    		- (edu/else)
 		- Contribution*: Contribution of the research

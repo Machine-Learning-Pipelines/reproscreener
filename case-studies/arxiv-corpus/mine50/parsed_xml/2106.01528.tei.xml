@@ -1,0 +1,1086 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Normalizing Flows for Knockoff-free Controlled Feature Selection</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Derek</forename><surname>Hansen</surname></persName>
+							<email>dereklh@umich.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Statistics</orgName>
+								<orgName type="institution">University of Michigan</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Brian</forename><surname>Manzo</surname></persName>
+							<email>bmanzo@umich.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Statistics</orgName>
+								<orgName type="institution">University of Michigan</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jeffrey</forename><surname>Regier</surname></persName>
+							<email>regier@umich.edu</email>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Statistics</orgName>
+								<orgName type="institution">University of Michigan</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Normalizing Flows for Knockoff-free Controlled Feature Selection</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">5FEDB4E44E5464AB5FDCD50E7CFCE5E9</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Controlled feature selection aims to discover the features a response depends on while limiting the false discovery rate (FDR) to a predefined level. Recently, multiple deep-learning-based methods have been proposed to perform controlled feature selection through the Model-X knockoff framework. We demonstrate, however, that these methods often fail to control the FDR for two reasons. First, these methods often learn inaccurate models of features. Second, the "swap" property, which is required for knockoffs to be valid, is often not well enforced. We propose a new procedure called FLOWSELECT to perform controlled feature selection that does not suffer from either of these two problems. To more accurately model the features, FLOWSELECT uses normalizing flows, the state-of-the-art method for density estimation. Instead of enforcing the "swap" property, FLOWSELECT uses a novel MCMC-based procedure to calculate p-values for each feature directly. Asymptotically, FLOWSELECT computes valid p-values. Empirically, FLOWSELECT consistently controls the FDR on both synthetic and semi-synthetic benchmarks, whereas competing knockoff-based approaches do not. FLOWSELECT also demonstrates greater power on these benchmarks. Additionally, FLOWSELECT correctly infers the genetic variants associated with specific soybean traits from GWAS data.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Researchers in machine learning have made much progress in developing regression and classification models that can predict a response based on features. In many application areas, however, practitioners need to know which features drive variation in the response, and they need to do so in a way that limits the number of false discoveries. For example, in genome-wide association studies (GWAS), scientists must consider hundreds of thousands of genetic markers to identify variants associated with a particular trait or disease. The cost of false discoveries (i.e., selecting variants that are not associated with the disease) is high, as a costly follow-up experiment is often conducted for each selected variant. Another example where controlled feature selection matters is analyzing observational data about the effectiveness of educational interventions. In this case, researchers may want to select certain educational programs to implement on a larger scale and require confidence that their selection does not include unacceptably many ineffective programs. As a result, researchers are interested in methods that model the dependence structure of the data while providing an upper bound on the false discovery rate (FDR).</p><p>Model-X knockoffs <ref type="bibr" target="#b7">(Candès et al., 2018)</ref> is a popular method for controlled variable selection, offering theoretical guarantees of FDR control and the flexibility to use arbitrary predictive models. However, even with knowledge of the underlying feature distribution, the Model-X knockoffs method is not feasible unless the feature distribution is either a finite mixture of Gaussians <ref type="bibr" target="#b13">(Gimenez et al., 2019)</ref> or has a known Markov structure <ref type="bibr" target="#b2">(Bates et al., 2020)</ref>. Hence, a body of research explores the use of empirical approaches that use deep generative models to estimate the distribution of X and 36th Conference on Neural Information Processing Systems (NeurIPS 2022). arXiv:2106.01528v3 [stat.ML] 21 Oct 2022 sample knockoff features <ref type="bibr" target="#b15">(Jordon et al., 2019;</ref><ref type="bibr" target="#b18">Liu &amp; Zheng, 2018;</ref><ref type="bibr" target="#b23">Romano et al., 2020;</ref><ref type="bibr" target="#b27">Sudarshan et al., 2020)</ref>.</p><p>The ability of these methods to control the FDR is contingent on their ability to correctly model the distribution of the features. By itself, learning a sufficiently expressive feature model can be challenging. However, the knockoff procedure requires learning a knockoff distribution that satisfies the swap property, which is a much stronger requirement. Formally, let X ∈ R D be a sample from the feature distribution and X ∈ R D be a sample from the knockoff distribution conditioned on X. The swap property stipulates that the joint distribution (X, X) ∈ R 2D must be invariant to swapping the positions of any subset of features S ∈ {1, . . . , D}:</p><formula xml:id="formula_0">(X, X) swap(S) D = (X, X)<label>(1)</label></formula><p>Here, swap(S) means exchanging the positions of X j and Xj for all j ∈ S. For example, in the case D = 3 and S = {1, 3}, the joint distribution is (X, X) = (X 1 , X 2 , X 3 , X1 , X2 , X3 ), and the swapped joint distribution is (X, X) swap(S) = ( X1 , X 2 , X3 , X 1 , X2 , X 3 ). Note that, for S = {1, . . . , D}, the swap property implies that X D = X. See <ref type="bibr" target="#b7">Candès et al. (2018)</ref> for a more detailed description of the swap property.</p><p>Even if a distribution were found satisfying the swap property, it may not provide enough power to make discoveries. For example, both properties are trivially satisfied by constructing exact copies of the features as knockoffs, but the resulting procedure has no power.</p><p>In situations where a valid knockoff distribution is available to sample from, knockoffs are computationally appealing because they require only one sample from a knockoff distribution to assess the relevance of all p features. However, in situations where the joint density of the features is unknown, we show that empirical approaches to knockoff generation <ref type="bibr" target="#b15">(Jordon et al., 2019;</ref><ref type="bibr" target="#b18">Liu &amp; Zheng, 2018;</ref><ref type="bibr" target="#b23">Romano et al., 2020;</ref><ref type="bibr" target="#b27">Sudarshan et al., 2020)</ref> fail to characterize a valid knockoff distribution and therefore do not control the FDR. We further show that even with a known covariate model, it is not straightforward to construct a valid knockoff distribution unless a specific model structure is known.</p><p>We propose a new feature selection method called FLOWSELECT (Section 3), which does not suffer from these problems. FLOWSELECT uses normalizing flows to learn the joint density of the covariates. Normalizing flows is a state-of-the-art method for density estimation; asymptotically, it can approximate any distribution arbitrarily well <ref type="bibr" target="#b22">(Papamakarios et al., 2021;</ref><ref type="bibr" target="#b16">Kobyzev et al., 2020;</ref><ref type="bibr" target="#b14">Huang et al., 2018)</ref>. Additionally, FLOWSELECT circumvents the need to sample a knockoff distribution by instead applying a fast variant of the conditional randomization test (CRT) introduced in <ref type="bibr" target="#b7">Candès et al. (2018)</ref>. Samples from the complete conditionals are drawn using MCMC, ensuring they are unbiased with respect to the learned data distribution.</p><p>Asymptotically, FLOWSELECT computes correct p-values to use for feature selection (Section 4). Our proof assumes the universal approximation property of normalizing flows and the convergence of MCMC samples to the Markov chain's stationary distribution. Under the same assumptions as the CRT, which includes a multiple-testing correction as in <ref type="bibr" target="#b3">Benjamini &amp; Hochberg (1995)</ref>, a selection threshold can be picked which controls the FDR at a pre-defined level. Empirically, on both synthetic (Gaussian) data and semi-synthetic data (real predictors and a synthetic response), FLOWSELECT controls the FDR where other deep-learning-based knockoff methods do not. In cases in which competing methods do control the FDR, FLOWSELECT shows higher power (Section 5). Finally, in a challenging real-world problem with soybean genome-wide association study (GWAS) data, FLOWSELECT successfully harnesses normalizing flows for modeling discrete and sequential GWAS data, and for selecting genetic variants the traits depend on (Section 5.4).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Background</head><p>FLOWSELECT brings together four existing lines of research, which we briefly introduce below.</p><p>Normalizing flows Normalizing flows is a general framework for density estimation of a multidimensional distribution with arbitrary dependencies <ref type="bibr" target="#b22">(Papamakarios et al., 2021)</ref>. A normalizing flow starts with a simple probability distribution (e.g., Gaussian or uniform), which is called the base distribution and denoted Z, and transforms samples from this base distribution through a series of invertible and differentiable transformations, denoted G, to define the joint distribution of X ∈ R D ∼ P X . A normalizing flow with enough transformations can approximate any multivariate density, subject to regularity conditions detailed by <ref type="bibr" target="#b16">Kobyzev et al. (2020)</ref>. Compared to other densityestimation methods, normalizing flows are computationally efficient. Details about the specific normalizing flow architecture used in FLOWSELECT are provided in Appendix A.</p><p>Controlled feature selection Consider a response Y which depends on a vector of features X ∈ R D . Depending on how the features are chosen, it is plausible that only a subset of the features contains all relevant information about Y . Specifically, conditioned on the relevant features in X, Y is independent of the remaining features in X (i.e. the null features). The goal of the controlled feature selection procedure is to maximize the number of relevant features selected while limiting the number of null features selected to a predefined level. If we denote the total number of selected features R, then we can decompose R into V , the number of relevant features selected, and S, the number of null features selected.</p><p>Conditional randomization test Controlled feature selection can be seen as a multiple hypothesis testing problem where there are p null hypotheses, each of which says that feature X j is conditionally independent of the response Y given all the other features X −j . Explicitly, the test of the following hypothesis is conducted for each feature j = {1, . . . , D}:</p><formula xml:id="formula_1">H 0 : X j ⊥ Y |X −j versus H 1 : X j ⊥ Y |X −j .</formula><p>(2)</p><p>To test these hypotheses, one can use a conditional randomization test (CRT) <ref type="bibr" target="#b7">(Candès et al., 2018)</ref>.</p><p>For each feature tested in a conditional randomization test, a test statistic T j (e.g., the LASSO coefficient or another measure of feature importance) is first computed on the data. Then, the null distribution of T j is estimated by computing its value Tj based on samples Xj drawn from the conditional distribution of X j given X −j . Finally, the p-value is calculated based on the empirical CDF of the null test statistics, and features whose p-values fall below the threshold set by the Benjamini-Hochberg procedure <ref type="bibr" target="#b3">(Benjamini &amp; Hochberg, 1995)</ref>  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Methodology</head><p>FLOWSELECT implements the CRT for arbitrary feature distributions by using a normalizing flow to fit the feature distribution and Markov chain Monte Carlo (MCMC) to sample from each complete conditional distribution. Performing controlled feature selection with FLOWSELECT consists of the three steps below.</p><p>Step 1: Model the predictors with a normalizing flow Starting with the observed samples of the features X 1 , . . . , X N ∼ P X , we fit the parameters of a normalizing flow G θ to maximize the log likelihood of the data with respect to a base distribution p Z :</p><formula xml:id="formula_2">θ = arg max θ N i=1 log p θ (X i ) where p θ (X i ) = p Z (G θ (X)) det ∂G θ (X) ∂X .</formula><p>(3)</p><p>The resulting density p θ is a fitted approximation to the true density P X . The specific normalizing flow architecture we use in our first two experiments consists of a single Gaussianization layer <ref type="bibr" target="#b20">(Meng et al., 2020)</ref> followed by a masked autoregressive flow (MAF) <ref type="bibr" target="#b21">(Papamakarios et al., 2017)</ref>. The first layer can learn complex marginal distributions for each covariate, while the MAF learns the dependencies between them. More detail on normalizing flows and on this particular architecture can be found in Appendix A.</p><p>Step 2: Sample from the complete conditionals with MCMC</p><p>For each feature j, we aim to sample corresponding null features Xi,j,k for all k ∈ {1, . . . , K} that are equal in distribution to p θ (X i,j |X i,−j ), but independent of Y i . However, directly sampling from this conditional distribution is intractable. Instead, we implement an MCMC algorithm that admits it as a stationary distribution. The samples drawn from MCMC are autocorrelated, but any statistic calculated over these samples will converge almost surely to the correct value. The choice of the MCMC proposal distribution q j is flexible. Because each Markov chain is only one-dimensional, a Metropolis-Hastings Gaussian random walk with the standard deviation set based on the covariance can be expected to mix rapidly. Alternatively, information from p θ , such as higher-order derivatives, could be used to construct a more efficient proposal. Algorithm 1 details how to implement step 2.</p><p>Step 3: Test for significance with the HRT As in the CRT, feature j has high evidence of being significant if, under the assumption that j is a null feature, the probability of realizing a test statistic greater than the observed T j (X) is low. Formally, letting [ Xj , X −j ] be the observed feature matrix with the observed feature X j swapped out with the null feature Xj , we can write this as a p-value α j :</p><formula xml:id="formula_3">α j ≡ P Xj |X−j T j (X) &lt; T j ([ Xj , X −j ]) .<label>(4)</label></formula><p>However, the above p-value α j is not tractable. For each sample X•,j,k drawn using MCMC, we calculate the corresponding feature statistic and compare it to the real feature statistic, leading to an</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Algorithm 1</head><p>Step 2 of the FLOWSELECT procedure for drawing K null features Xi,j |X i,−j for feature j at observation i.</p><formula xml:id="formula_4">Input: Feature matrix X ∈ R N ×D , observation index i, feature index j, number of samples K, fitted normalizing flow p θ , MCMC proposal q j Output: Null features Xi,j,k for k = 1, . . . , K for k = 1, . . . , K do Propose: X i,j,k ∼ q j (•| Xi,j,k−1 , X i,−j ) r i,j,k ← p θ (X i,j,k ,Xi,−j )qj ( Xi,j,k−1 |X i,j,k ,Xi,−j ) p θ ( Xi,j,k−1 ,Xi,−j )qj (X i,j,k | Xi,j,k−1 ,Xi,−j ) Sample: U i,j,k ∼ Bernoulli(r i,j,k ∧ 1) if U i,j,k = 1 then Xi,j,k ← X i,j,k else Xi,j,k ← Xi,j,k−1 end if end for approximated p-value αj : αj ≡ 1 K + 1 (1 + K k=1 1[T j (X) &lt; T j ([ Xj,k , X −j ])).<label>(5)</label></formula><p>To control the FDR, we use the Benjamini-Hochberg procedure to establish a threshold for the observed p-values. Specifically, we set the threshold to s(γ) max j {α j : αj ≤ j D γ}, and select all features j such that α j ≤ s(γ).</p><p>The Benjamini-Hochberg correction only guarantees FDR control provided that the p-values have either positive or zero correlation. Thus, the FDR control of FLOWSELECT depends on these assumptions being met. A more conservative correction from <ref type="bibr" target="#b4">Benjamini &amp; Yekutieli (2001)</ref> allows for arbitrary dependencies in p-values, but it suffers from low power. The Benjamini-Hochberg correction is widely used and empirically robust <ref type="bibr" target="#b28">(Tansey et al., 2021)</ref>, so we report results using it. Across our synthetic and semi-synthetic benchmarks in Section 5, we also find that FLOWSELECT maintains empirical FDR control.</p><p>Provided that the Benjamini-Hochberg assumptions are met, the FDR will be controlled, but the power of the test depends on T j being higher when j is a significant feature. For example, if Y is expected to vary approximately linearly with respect to X, T j (X) could be the absolute estimated regression coefficient | βj | for the linear model Y = Xβ + . Another choice is the HRT feature statistic described earlier.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Asymptotic results</head><p>The ability of FLOWSELECT to control the FDR relies on its ability to produce estimated p-values that converge to the correct p-values for the hypothesis test in Equation ( <ref type="formula">2</ref>). Theorem 1. Let X ∈ R N ×D be a random feature matrix, where each row X i,• is independent and identically distributed; x ∈ R N ×D be the observed feature matrix; and α j be the p-value as defined in Equation (4) with test statistic T j (X). Suppose there exists a sequence of functions (G n ) ∞ n=1 and a base random variable Z satisfying the following conditions:</p><p>1. Each G n is continuously differentiable and invertible.</p><p>2. G n → G pointwise for some map G that is triangular, increasing, continuously differentiable, and satisfies G(X i,• )</p><formula xml:id="formula_5">D = Z.</formula><p>For n = 1, 2, . . . , let X n be the random feature matrix where each row i is independent and has distribution</p><formula xml:id="formula_6">X n i,• = (G n ) −1 (Z).</formula><p>Then, the p-value in Equation (5) calculated using K MCMC samples targeting X n •,j | X n •,−j = x •,−j converges to the correct p-value α j with probability 1.</p><p>Here we sketch the proof. A full proof can be found in Appendix B. First, by construction each G n defines a distribution</p><formula xml:id="formula_7">X n i,• D = (G n ) −1 (Z) that in turn implies a conditional distribution X n •,j |X n •,−j = x •,−j .</formula><p>We show these conditional distributions converge to the true conditional distribution of X •,j given X •,−j = x •,−j . Consequently, the probability of observing a higher test statistic under the approximated null distribution Xn</p><formula xml:id="formula_8">•,j D = X n</formula><p>•,j , written α n j , will converge to the probability under the true null distribution X•,j |X •,−j = x •,−j , i.e. α j . Next, the Cesaro average of K samples from an MCMC algorithm targeting Xn</p><p>•,j |X •,−j = x •,−j , written αj,K,n will converge to α n j with probability 1 as K → ∞. Combining these two convergences leads to the stated result.</p><p>Assuming the limiting p-values {α j } satisfy the chosen multiple-hypothesis-testing assumptions, Theorem 1 specifies additional conditions that are sufficient for FDR control. These conditions are not strictly fewer than those required for empirical model-X knockoff-based methods to control FDR, but they may be easier to satisfy adequately in practice. For example, the condition that there exists a sequence (G n ) ∞ n=1 converging to the true mapping G is satisfied asymptotically by many flow architectures that are universal distribution approximators, including the Gaussianization Flows and Masked Autoregressive Flows used in our experiments <ref type="bibr" target="#b14">(Huang et al., 2018;</ref><ref type="bibr" target="#b20">Meng et al., 2020;</ref><ref type="bibr" target="#b16">Kobyzev et al., 2020)</ref>. In practice, it is unlikely that an exact mapping G will be learned, as doing so Figure <ref type="figure">1</ref>: A density plot of the feature distribution with coordinate j = 1 on the x-axis and coordinate j = 2 on the y-axis. The ground truth density is compared to the normalizing flow fitted within FLOWSELECT and the distribution of each knockoff method (DeepKnockoff, KnockoffGAN, MASS, and DDLK). To have FDR control, each distribution should match the distribution of the features. could require infinite training data, infinitely deep transformations, and exact nonconvex optimization. Nonetheless, normalizing flows work extremely well in practice; Theorem 1 gives intuition for the good performance of FLOWSELECT that we observe empirically.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Experiments</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Synthetic experiment with a mixture of highly correlated Gaussians</head><p>We compare FLOWSELECT to the aforementioned knockoff methods with synthetic data drawn from a mixture of three highly correlated Gaussian distributions with dimension D = 100. 1 For each knockoff method, we use the exact implementation described in their respective papers, and we utilize the code made publicly available by the authors (c.f. Appendix D.3 for further details). For further comparison, we also implement the MASS knockoff procedure from <ref type="bibr" target="#b13">Gimenez et al. (2019)</ref> and the RANK knockoff procedure from <ref type="bibr" target="#b10">Fan et al. (2020)</ref>. These methods estimate the unknown feature distribution using either a mixture of Gaussians (MASS) or a sparse precision matrix (RANK), and then sample the knockoffs directly as in <ref type="bibr" target="#b7">Candès et al. (2018)</ref>.</p><p>To generate the data, we draw N = 100, 000 highly correlated samples. For i = 1, . . . , N , we sample</p><formula xml:id="formula_9">X i i.i.d ∼ 3 m=1 π m p N (X i ; µ m , Σ m ),<label>(6)</label></formula><p>with mixing weights π = (0.371, 0.258, 0.371), mean vector µ = (0, 20, 40), and covariance matrices Σ m . Each covariance Σ m follows an AR(1) pattern such that (Σ m ) i,j = ρ |i−j| m where ρ = (0.982, 0.976, 0.970). The response Y i is linear in f i (X i ) for some function f i and coefficient vector β i.e., Y i = f i (X i )β + i . Each coefficient β j equals 100 √ N B j , where B j = 0 with probability 0.8, B j = 1 with probability 0.1, and B j = −1 with probability 0.1. We consider two different schemes for the f i that connect the features to the response. In our linear setting, f i is equal to the identity function. In our nonlinear setting, f i (x) is set equal to sin(5x) for odd i and f i (x) = cos(5x) for even i.</p><p>The experimental setting we have described so far is adapted from <ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref>. However, we found that the N = 2000 they used was too few observations for any of the methods to do well in a general non-linear setting. Moreover, in many situations where controlled feature selection is deployed, neighboring features will be highly correlated. To reflect this, we also increased the base correlation between features within each mixture to create a more challenging example. We show results under the original settings of <ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref> in Appendix K.</p><p>For each model, we use 90% of the data for training to generate null features and the remaining 10% for calculating the feature statistics. To define the feature statistics, we use the holdout randomization test (HRT) described at the end of Section 2. For the HRT, we employ different predictive models for each response type ("linear" and "nonlinear"). Specifically, for the linear response, we use the predictive log-likelihood from the LASSO <ref type="bibr" target="#b29">(Tibshirani, 1996)</ref>, and for the nonlinear response, we use the predictive negative mean-squared error from a random forest regressor <ref type="bibr" target="#b6">(Breiman, 2001)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Mixture-of-Gaussians scRNA-seq</head><p>Figure <ref type="figure">2</ref>: Comparison of power and false discovery rate (FDR) control of FLOWSELECT to knockoff methods on the Mixture-of-Gaussians dataset (left) and the scRNA-seq dataset (right) at targeted FDRs of 0.05, 0.1, and 0.25 (indicated by the dashed lines). Each point indicates the mean power and FDR across 20 replications and the error bars span one standard deviation either direction. In the top row, the response depends linearly on the features, and the feature statistics are calculated using the HRT with the LASSO. In the bottom row, the response depends non-linearly on the features, and the feature statistics are calculated using the HRT with random forest regression.</p><p>First, we look at how each procedure models the covariate distribution in Figure <ref type="figure">1</ref>. In order to be valid knockoffs, the distribution of two knockoff features needs to be equal to that of the covariates. In this challenging example, each of the empirical knockoff methods fails to match the ground truth. In particular, DDLK and DeepKnockoffs are over-dispersed, while KnockoffGAN suffers from mode collapse. These findings for DeepKnockoffs and KnockoffGAN are similar to those reported by <ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref>. Other than MASS, which directly fits a mixture of Gaussians, FLOWSELECT is the only method that matches the basic structure of the ground truth.</p><p>Figure <ref type="figure">2</ref> shows that the empirical knockoff procedures fail to control the FDR for both linear and nonlinear responses. One explanation for this lack of FDR control is the inability of the deeplearning-based methods to accurately model a knockoff distribution (c.f., Figure <ref type="figure">1</ref>). As a result, the assumptions for the knockoff procedure will not hold, and FDR control is not guaranteed.</p><p>The effects of misspecification are clearly visible in the case of RANK, which approximates the mixture-of-Gaussians data with a multivariate Gaussian. However, even MASS, when given access to the correct data distribution, does not achieve across-the-board FDR control. This highlights the potential sensitivity of knockoffs to parameter misfit even when the underlying distributional family of the features is known. This is confirmed by the fact that, when provided with the true parameters, the oracle Model-X maintains FDR control, though with significantly less power than FLOWSELECT. (c.f. Appendix H).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Semi-synthetic experiment with scRNA-seq data</head><p>In this experiment, we use single-cell RNA sequencing (scRNA-seq) data from 10x Genomics (10x Genomics, 2017). Each variable X n,g is the observed gene expression of gene g in cell n. These data provide an experimental setting that is both realistic and, because gene expressions are often highly correlated, challenging. More background information about scRNA-seq data can be found in <ref type="bibr" target="#b1">Agarwal et al. (2020)</ref>.</p><p>We normalize the gene expression measurements to lie in [0, 1], and we add a small amount of Gaussian noise so that the data is not zero-inflated. As in the semi-synthetic experiment from <ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref>, we pick the 100 most correlated genes to provide a challenging, yet realistic example. We simulate responses that are both linear and nonlinear in the features. Figure <ref type="figure">2</ref> shows that FLOWSELECT maintains FDR control across multiple FDR target levels, feature statistics, and generated responses. In cases in which the knockoff methods control FDR successfully, FLOWSELECT has higher power in discovering the features the response depends on.</p><p>An advantage of knockoffs over CRT-based methods like FLOWSELECT is that the predictive model only needs to be evaluated once. Hence, while FLOWSELECT has a faster runtime than DDLK for this experiment, it is slower than DeepKnockoff and KnockoffGAN. However, Figure <ref type="figure">2</ref> shows that these two models fail to reliably control FDR and have much less power than FLOWSELECT; it is not clear how additional computational resources could be leveraged to improve the performance of these competing methods. A full table of runtimes on the scRNA-seq dataset can be found in Appendix F.</p><p>The need to compute a different predictive model for each feature within the CRT is mitigated by using efficient feature statistics such as the HRT <ref type="bibr" target="#b28">(Tansey et al., 2021)</ref> and the distilled CRT <ref type="bibr" target="#b17">(Liu et al., 2020)</ref>. These methods fit a larger predictive model once, then evaluate either the residuals or test mean-squared-error for each feature individually. Moreover, the ability to scale to large feature dimensions D is more limited by fitting the feature distribution than computational burden, a trait shared by both knockoff-and CRT-based methods.</p><p>FLOWSELECT provides asymptotic guarantees of FDR control assuming sufficient MCMC samples have been drawn for the p-values to converge. In this experiment, the consequence of terminating MCMC sampling before convergence is low power, rather than loss of FDR control (see Figure <ref type="figure" target="#fig_3">7</ref> in Appendix J). Even for small numbers of MCMC samples, the FDR stabilizes below the target rate, while the power steadily increases with the number of samples. Because the MCMC run is initialized at the true features, we speculate that the sampled features will be highly correlated with the true features in the beginning of the run, making it harder to reject the null hypothesis that a feature is unimportant.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Ablation Study</head><p>FLOWSELECT differs from the competing knockoff-based approaches in two ways: using normalizing flows with MCMC to model the feature distribution for sampling null features and using the CRT for feature selection. To illustrate the impact of each of these components separately, we compare to the procedure used in <ref type="bibr" target="#b28">Tansey et al. (2021)</ref>, which uses mixture density networks (MDNs) to model the complete conditional distribution of each feature P(X j |X − j) separately. They then sample null features from these learned distributions directly and use the HRT for feature selection. Since both FLOWSELECT and this procedure utilize the HRT, this allows us to evaluate whether the performance improvement of FLOWSELECT over empirical knockoffs is solely due to use of the HRT.</p><p>We compare the MDN-based approach to FLOWSELECT on the mixture-of-Gaussians (Section 5.1) and scRNA-seq (Section 5.2) datasets. A plot of this comparison can be found in Appendix G. While the MDN-based approach was able to match the performance of FLOWSELECT on the scRNAseq dataset, it failed to control FDR at any level on the Mixture-of-Gaussians dataset, indicating that MDNs are less flexible than normalizing flows. In aggregate, these results show that both the normalizing flows paired with MCMC and the use of the HRT for significance testing are key to the performance of FLOWSELECT.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Real data experiment: soybean GWAS</head><p>Genome-wide association studies are a way for scientists to identify genetic variants (single-nucleotide polymorphisms, or SNPs) that are associated with a particular trait (phenotype). We tested FLOWSE-LECT on a dataset from the SoyNAM project <ref type="bibr">(Song et al., 2017)</ref>, which is used to conduct GWAS for soybeans. Each feature X j takes on one of four discrete values, indicating whether a particular SNP is homozygous in the non-reference allele, heterozygous, homozygous in the reference allele, or missing. A number of traits are included in the SoyNAM data; we considered oil content (percentage in the seed) as the phenotype of interest in our analysis. There are 5,128 samples and 4,236 SNPs in total.</p><p>To estimate the joint density of the genotypes, we used a discrete flow <ref type="bibr" target="#b30">(Tran et al., 2019)</ref>. Modeling of genomic data is typically done with a hidden Markov model <ref type="bibr" target="#b32">(Xavier et al., 2016)</ref>; however, such a model may fail to account for long range dependence between SNPs, which a normalizing flow is better suited to handle. Having a more flexible model of the genome enables FLOWSELECT to provide better FDR control for assessing genotype/phenotype relationships. For the predictive model, we used a feed-forward neural network with three hidden layers. Additional details of training and architecture are presented in Appendix E.  <ref type="bibr" target="#b31">(Turner, 2018)</ref>. p is the estimated p-value from the FLOWSELECT procedure, and the blue line indicates the rejection threshold for a nominal FDR of 20%.</p><p>A graphical representation of our results is shown as a Manhattan plot in Figure <ref type="figure" target="#fig_0">3</ref>, which plots the negative logarithm of the estimated p-values for each SNP. At a nominal FDR of 20%, we identified seven SNPs that are associated with oil content in soybeans. We cross-referenced our discoveries with other publications to identify SNPs that have been previously shown to be associated with oil content in soybeans. For example, FLOWSELECT identifies one SNP on the 18th chromosome, Gm18_1685024, which is also selected in <ref type="bibr" target="#b19">Liu et al. (2019)</ref>. FLOWSELECT also selects a SNP on the 5th chromosome, Gm05_37467797, which is near two SNPs (Gm05_38473956 and Gm05_38506373) identified in <ref type="bibr" target="#b8">Cao et al. (2017)</ref> but which are not in the SoyNAM dataset. <ref type="bibr" target="#b25">Sonah et al. (2014)</ref> identifies eight SNPs near the start of the 14th chromosome, and we select multiple SNPs in a nearby region on the 14th chromosome (seen in the peak of dots on chromosome 14 in Figure <ref type="figure" target="#fig_0">3</ref>). However, the dataset in <ref type="bibr" target="#b25">Sonah et al. (2014)</ref> is much larger (≈ 47, 000 SNPs), which prevents an exact comparison. A list of all SNPs selected by our method is provided in Appendix E. For this experiment, FLOWSELECT tests over 4000 features in 10 hours using a single GPU. None of the empirical knockoff procedures <ref type="bibr" target="#b27">(Sudarshan et al., 2020;</ref><ref type="bibr" target="#b15">Jordon et al., 2019;</ref><ref type="bibr" target="#b23">Romano et al., 2020)</ref> tested more than 387 features. This shows the potential for FLOWSELECT for high-dimensional feature selection with FDR control in a reasonable amount of time. Additional details about this experiment are available in Appendix E.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>FLOWSELECT enables scientists and other practitioners to discover features a response depends on while controlling false discovery rate, using an arbitrary predictive model; even large-scale nonlinear machine learning models can be utilized. By making fewer false discoveries for a fixed sensitivity level, FLOWSELECT can reduce the cost of follow-up experiments by limiting the number of irrelevant features considered. In contrast to the original model-X knockoffs method, FLOWSELECT does not require the feature distribution to be known a priori, nor does it require the feature distribution to have a particular form (e.g., Gaussian). Neither of these conditions are often satisfied in practice.</p><p>One limitation shared by both the conditional randomization test (CRT) and knockoffs is low power in cases in which important features are highly correlated with other important features. To mitigate this limitation, the CRT can be applied to test the significance of groups of correlated features rather than individual features. Within the FLOWSELECT framework, this entails modifying the MCMC step to draw null samples of groups of features conditioned on the others. The group's p-value can then be calculated with the same holdout randomization test (HRT) statistic used for testing individual features. Group feature selection has also been explored for knockoffs <ref type="bibr" target="#b9">(Dai &amp; Barber, 2016;</ref><ref type="bibr" target="#b17">Liu et al., 2020)</ref>.</p><p>Another limitation of FLOWSELECT stems from its reliance on normalizing flows. The flexibility of normalizing flows, though often beneficial, comes at a cost: sufficient training examples are needed to learn the feature distribution, limiting applicability in data-starved regimes. Fortunately, as we show in Appendix K, FLOWSELECT fares no worse than competing methods in low-data settings. In these regimes, FLOWSELECT could also use other density estimation techniques such as autoregressive models.</p><p>Furthermore, learning the feature distribution (potentially from limited data) is not the sole difficulty that the deep-learning-based knockoff methods face. To demonstrate that there are additional sources of difficult for knockoff-based methods, we gave DDLK, which typically fits the data distribution as part of its training procedure, access to the the exact joint density; neither the empirical FDR nor the power improved significantly (c.f. Appendix I). This result points to a failure of DDLK to enforce the swap property, which is a challenging task as the number of swaps grows exponentially with the number of features. FLOWSELECT, on the other hand, achieves FDR control under a different set of conditions that often are simpler to satisfy adequately in practice. Licensing All of the data used is available for personal use. Terms for the scRNA-seq data can be found here: https://www.10xgenomics.com/terms-of-use. The scRNA-seq data was accessed using scvi-tools <ref type="bibr">(Gayoso et al., 2021)</ref>, distributed under the BSD 3-Clause license. The soybean data is part of the SoyNAM R package <ref type="bibr" target="#b33">(Xavier et al., 2019)</ref>, distributed under the GPL-3 license.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C Feature datasets</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D Architecture and training details for synthetic experiments D.1 FlowSelect</head><p>For FLOWSELECT, the joint distribution was fitted with a GaussMAF normalizing flow as described in Appendix A. The first Gaussianization layer consisted of M = 6 clusters, followed by 5 layers of MAF. Within each MAF layer, the neural network consisted of three masked fully connected residual layers with 100 hidden units, followed by a BatchNorm layer.</p><p>We trained the Gaussianization layer first with 100 epochs and learning rate 1 × 10 −3 within the ADAM optimizer. This allowed the Gaussianization layer to learn the marginal distribution of each feature. Then, we jointly trained the whole architecture with 100 epochs and learning rate 1 × 10 −3 using ADAM.</p><p>MCMC We draw 1000 samples using a Metropolis-Hastings procedure. The proposal distribution is a random walk:</p><formula xml:id="formula_10">X * i,j,k ∼ N ( Xi,j,k−1 , σ2 j )</formula><p>, where σ2 j is the sample conditional variance:</p><formula xml:id="formula_11">σ2 j = Σj,j − Σj,−j Σ−1 −j,−j ΣT j,−j</formula><p>where Σj = Var(X)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D.2 Variable selection methods</head><p>Linear For the linear response, we estimate a linear model with an L1 penalty (aka the LASSO) on training data:</p><formula xml:id="formula_12">β = arg min β 1 N Xβ − Y 2 2 + λ D j=1 |β j |<label>(12)</label></formula><p>The penalization term λ is selected via 5-fold cross-validation.</p><p>Nonlinear For the nonlinear response, we fit a random forest on the training data. The hyperparameters are the defaults in the scikit-learn implementation.</p><p>Feature statistic If f (X) is the fitted regression function, then the feature statistic is the negative mean-squared error:</p><formula xml:id="formula_13">T (X, Y ) = − 1 N f (X) − Y 2 2 .</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D.3 Competing methods</head><p>For DDLK <ref type="bibr" target="#b27">(Sudarshan et al., 2020)</ref>, KnockoffGAN <ref type="bibr" target="#b15">(Jordon et al., 2019)</ref>, and DeepKnockoffs, <ref type="bibr" target="#b23">(Romano et al., 2020)</ref>, we used the exact architecture and hyperparameter settings from their respective papers. For the ablation study in Section 5.3, we use the exact implementation in <ref type="bibr" target="#b28">Tansey et al. (2021)</ref>.</p><p>For these methods, we used the code that the researchers graciously made publicly available:</p><p>Method Link DDLK https://github.com/rajesh-lab/ddlk/ DeepKnockoffs https://github.com/msesia/deepknockoffs/ HRT (MDN) https://github.com/tansey/hrt/ KnockoffGAN https://github.com/firmai/tsgan/tree/master/alg/knockoffgan For MASS <ref type="bibr" target="#b13">(Gimenez et al., 2019)</ref>, we followed their described procedure and fit a mixture of Gaussians to the feature distribution using scikit-learn, selecting the number of components via the Akiake Information Criterion (AIC). We then used the knockoffs R package, available on CRAN, to sample knockoffs using the estimated parameters for each component.</p><p>For RANK <ref type="bibr" target="#b10">(Fan et al., 2020)</ref>, we estimate the sparse precision matrix using the Graphical LASSO <ref type="bibr" target="#b11">(Friedman et al., 2008)</ref> implemented in sci-kit learn, using cross-validation to tune the regularization parameter. We then use the knockoffs R package to sample the knockoffs with this covariance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>E Architecture and training details for soybean GWAS</head><p>Discrete flows For the discrete flows in the soybean example, we use a single layer of MADE which outputs a dimension of size 4. µ is then set equal to the argmax of this output.</p><p>For training the flows, we use a relaxation of argmax with temperature equal to 0.1.</p><p>Discrete MCMC Each feature has K = 4 values, so we can enumerate all four possible states for each proposal and sample in proportional to these probabilities via a Gibbs Sampling procedure. Setting the probabilities leads to an acceptance rate of 1, and the samples are uncorrelated since the previous sample doesn't enter into the proposal distribution Predictive model For the predictive model of each trait conditional on the SNPs, we use a fully connected neural network. This network has three hidden layers of size 128, 256, and 128. ReLU activations are used between each fully connected layer. Dropout is used on both the input layer and after each hidden layer with p = 0.2. The learning rate in ADAM was set to 1 × 10 −5 , with early stopping implemented using a held-out validation set.</p><p>The feature statistic for each sample is the negative mean-squared error (MSE) for each observation.</p><p>Runtime To obtain sufficient resolution on roughly 4200 simultaneous tests, we drew 100,000 samples from our model. The runtime was 10 hours using a single NVIDIA 2080 Ti. H Oracle Model-X  J Observed Power and FDR control for given number of MCMC samples   <ref type="formula">2020</ref>), all competing knockoff-based methods (i.e., DDLK, KnockoffGAN, and DeepKnockoff) as well as FlowSelect control the FDR at 5%, 10% and 25% levels and achieve a power of about 0.75. In the non-linear response setting, none of the methods control FDR, except for DeepKnockoffs which had nearly zero power. The good performance in the linear setting can be explained by the LASSO feature statistic shrinking most null features to zero since they have relatively low correlation. Since FDR control should hold for any response setting, these findings suggest that none of the methods do well in modeling the underlying distribution with N = 2000 observations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Selected SNPs</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I DDLK with true joint distribution</head><p>L Learned normalizing flow mapping on mixture-of-Gaussians and scRNA-seq datasets </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 3 :</head><label>3</label><figDesc>Figure3: Manhattan plot for oil content in soybean GWAS experiment<ref type="bibr" target="#b31">(Turner, 2018)</ref>. p is the estimated p-value from the FLOWSELECT procedure, and the blue line indicates the rejection threshold for a nominal FDR of 20%.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: FDR control and power of Oracle Model-X knockoffs on the mixture-of-Gaussians dataset (compare to Figure 2).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 6 :</head><label>6</label><figDesc>Figure 6: FDR control and power of DDLK on the mixture-of-Gaussians dataset using the ground truth feature density in training (compare to Figure 2).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 7 :</head><label>7</label><figDesc>Figure 7: Power and FDR control of FLOWSELECT on the scRNA-seq dataset as a function of the number of MCMC samples at targeted FDRs of 0.05, 0.1, and 0.25 (indicated by the dashed lines).This suggests that the consequence of terminating the MCMC chain prematurely leads to a drop in power but FDR control is still maintained.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 8 :</head><label>8</label><figDesc>Figure8: Mixture-of-gaussians setup with ρ = (0.6, 0.4, 0.2) and N = 2000 to match the settings in<ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref>. In the linear response setting, which matches the data-generating process of<ref type="bibr" target="#b27">Sudarshan et al. (2020)</ref>, all competing knockoff-based methods (i.e., DDLK, KnockoffGAN, and DeepKnockoff) as well as FlowSelect control the FDR at 5%, 10% and 25% levels and achieve a power of about 0.75. In the non-linear response setting, none of the methods control FDR, except for DeepKnockoffs which had nearly zero power. The good performance in the linear setting can be explained by the LASSO feature statistic shrinking most null features to zero since they have relatively low correlation. Since FDR control should hold for any response setting, these findings suggest that none of the methods do well in modeling the underlying distribution with N = 2000 observations.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 9 :</head><label>9</label><figDesc>Figure9: Plot of features mapped to flow space by the learned normalizing flow within FLOWSELECT with j = 1 on the x-axis and j = 2 on the y-axis. Mapped features are shown for the mixture-of-Gaussians and scRNA-seq datasets, and they are compared to samples from a true standard Gaussian distribution.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>For example, T , could be the predictive likelihood P θ (Y test |X test ) or the predictive score R 2 . To use the HRT, first fit model parameters θ based on the training data. Next, for each covariate j, calculate the test statistic T * j ← T (X test , Y test , θ). Then, generate k null samples and compute T j,k ← T (X test (j←j k ) , Y test , θ), where X test (j←j k ) replaces the j-th covariate with the k-th generated null sample. Finally, calculate the p-value as in the CRT, based on the empirical CDF of the null test statistics.</figDesc><table><row><cell>are selected. Though the CRT is</cell></row><row><cell>introduced as a computationally inefficient alternative to knockoffs, the CRT nonetheless has appeal</cell></row><row><cell>because it requires only knowledge of the feature distribution, which can be learned empirically by</cell></row><row><cell>maximum likelihood.</cell></row><row><cell>Holdout randomization test The holdout randomization test (HRT) (Tansey et al., 2021) is a fast</cell></row><row><cell>variant of the CRT; it uses a test statistic that requires fitting the model only once. Let θ represent</cell></row><row><cell>the parameters of the chosen model, and let T (X, Y, θ) be an importance statistic calculated from</cell></row><row><cell>the model with input data.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Table1shows the SNPs selected by FLOWSELECT that are associated with oil content in soybeans. Selected SNPs for soybean GWAS experiment.</figDesc><table><row><cell cols="2">Chromosome SNP</cell><cell>p-value</cell></row><row><cell>4</cell><cell cols="2">Gm04_42203141 1.60e-04</cell></row><row><cell>5</cell><cell cols="2">Gm05_37467797 1.90e-04</cell></row><row><cell>8</cell><cell cols="2">Gm08_15975626 2.10e-04</cell></row><row><cell>14</cell><cell>Gm14_1753922</cell><cell>9.00e-05</cell></row><row><cell>14</cell><cell>Gm14_1799390</cell><cell>1.60e-04</cell></row><row><cell>14</cell><cell>Gm14_1821662</cell><cell>2.90e-04</cell></row><row><cell>18</cell><cell>Gm18_1685024</cell><cell>5.00e-05</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Software to reproduce our experiments is available at https://github.com/dereklhansen/flowselect.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments and Disclosure of Funding</head><p>Derek Hansen acknowledges support from the National Science Foundation Graduate Research Fellowship Program under grant no. 1256260. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Normalizing flows</head><p>Normalizing flows <ref type="bibr" target="#b22">(Papamakarios et al., 2021)</ref> represent a general framework for density estimation of a multi-dimensional distribution with arbitrary dependencies. Briefly, suppose X ∼ P X is a random variable in R d . Now, let Z ∼ N (0, I d ) be a multivariate standard normal distribution. We assume there exists a mapping G that is triangular, increasing, and differentiable such that</p><p>A formal treatment of when such a G exists can be found in <ref type="bibr" target="#b5">Bogachev et al. (2005)</ref>. However, a sufficient condition is that the density of X is greater than 0 on R d and the cumulative function of X j , conditional on the previous components X ≤j , is differentiable with respect to X j , X ≤j <ref type="bibr" target="#b22">(Papamakarios et al., 2021)</ref>:</p><p>From this construction, each U i is independent of all previous U i and has distribution Unif[0, 1].</p><p>From there, we simply set</p><p>where Φ is the CDF of the standard normal.</p><p>Since G i (X) depends only on the elements in X up to i, it is triangular. Because p X &gt; 0, the conditional cdfs are strictly increasing, so G is an increasing map. Finally, since each cdf is differentiable, the entire map G is differentiable, and its Jacobian is non-zero.</p><p>Because of the inverse mapping theorem, G is invertible and we can write</p><p>Normalizing flows are a collection of distributions that parameterize a family of invertible, differentiable transformations G θ from a fixed base distribution Z to an unknown distribution X. Using the change-of-variables theorem, we can express the distribution of X in terms of the base distribution density p Z and the transformation G θ :</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>∂X</head><p>is the Jacobian of G. The goal is to find a parameter value θ that maximizes the likelihood of the observed X: θ = arg max θ p θ (X).</p><p>A key feature of normalizing flows is that they are composable.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A.1 Flow Architecture</head><p>In experiments, the first layer G is a Gaussianization flow <ref type="bibr" target="#b20">(Meng et al., 2020)</ref> applied elementwise:</p><p>where Φ −1 is the standard normal inverse CDF. With sufficiently large M , this Gaussianization layer can approximate any univariate distribution. This is composed with a Masked Autoregressive Flow (MAF) F <ref type="bibr" target="#b21">(Papamakarios et al., 2017)</ref>, which consists of MADE layers interspersed with batch normalization and reverse permutation layers:</p><p>Here, f µj and f αj are fully connected neural networks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B Proof of convergence</head><p>Theorem 1. Let X ∈ R N ×D be a random feature matrix, where each row X i,• is independent and identically distributed; x ∈ R N ×D be the observed feature matrix; and α j be the p-value as defined in Equation (4) with test statistic T j (X). Suppose there exists a sequence of functions (G n ) ∞ n=1 and a base random variable Z satisfying the following conditions:</p><p>1. Each G n is continuously differentiable and invertible.</p><p>2. G n → G pointwise for some map G that is triangular, increasing, continuously differentiable, and satisfies G(X i,• )</p><p>For n = 1, 2, . . . , let X n be the random feature matrix where each row i is independent and has distribution</p><p>Then, the p-value in Equation (5) calculated using K MCMC samples targeting X n •,j | X n •,−j = x •,−j converges to the correct p-value α j with probability 1.</p><p>Proof of Theorem 1. Without loss of generality, we consider the first feature, which is indexed by j = 1. Let p X be the density of each row of the matrix X i,• and p Z the density of the base variable Z. For each i.i.d observation at i = 1, . . . , N , we define F to be the cumulative distribution function of X i,1 conditional on the other features X i,−1 = x i,−1 :</p><p>For a particular mapping G n , we define F n analogously:</p><p>Since G n and G are continuously differentiable,</p><p>Then, by the dominated convergence theorem, F n → F pointwise.</p><p>Let X n i,1 ∼ F n . Since F n → F pointwise, and F is a distribution function, X n i,1 converges in distribution to X i,1 | X i,−1 = x i,−1 . Likewise, the joint distribution across all independent observations, written</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Now, let Xn</head><p>•,1 be equal in distribution to X n •,1 , but sampled such that it is independent of the outcome Y . It follows from the reasoning above that Xn</p><p>•,1 converges to the desired null distribution X•,1</p><p>With the regularity condition that T 1 is discontinuous on a set of measure zero, the expectation converges:</p><p>The Cesaro average of g calculated over MCMC samples that target the distribution of Xn •,1 under the probability law of G n converges almost surely to E Xn •,1 (g 1 ) <ref type="bibr" target="#b24">(Smith &amp; Roberts, 1993)</ref>. That is,</p><p>Combining Equation (10) and Equation ( <ref type="formula">11</ref>) gives the desired result.  <ref type="table">2</ref>: The median runtime for each method on the scRNA-seq data with D = 100 features and N = 100, 000 observations. All experiments were implemented using PyTorch, except for KnockoffGAN, which was implemented in Tensorflow, and MASS, which we implemented using scikit-learn and the knockoffs R package. The experiments were conducted using an Intel Xeon Gold 6130 CPU and an NVIDIA GeForce RTX 2080 Ti GPU.</p><p>G Comparison to Holdout Randomization Test of <ref type="bibr" target="#b28">Tansey et al. (2021)</ref> Mixture-of-Gaussians scRNA-seq </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">single cell dataset is ready to download</title>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Data denoising and post-denoising corrections in single cell rna sequencing</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Statistical Science</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="112" to="128" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Metropolized knockoff sampling</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bates</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Candès</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Janson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wang</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename></persName>
+		</author>
+		<idno type="DOI">10.1080/01621459.2020.1729163</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Statistical Association</title>
+		<idno type="ISSN">0162-1459</idno>
+		<imprint>
+			<biblScope unit="page" from="1537" to="274X" />
+			<date type="published" when="2020-03">March 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Controlling the false discovery rate: A practical and powerful approach to multiple testing</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Benjamini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Hochberg</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/j.2517-6161.1995.tb02031.x</idno>
+		<ptr target="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the Royal Statistical Society: Series B</title>
+		<imprint>
+			<biblScope unit="volume">57</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="289" to="300" />
+			<date type="published" when="1995">1995</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">The control of the false discovery rate in multiple testing under dependency</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Benjamini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yekutieli</surname></persName>
+		</author>
+		<idno type="DOI">10.1214/aos/1013699998</idno>
+	</analytic>
+	<monogr>
+		<title level="j">The Annals of Statistics</title>
+		<idno type="ISSN">0090-5364</idno>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="2168" to="8966" />
+			<date type="published" when="2001-08">August 2001</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Triangular transformations of measures</title>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">I</forename><surname>Bogachev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">V</forename><surname>Kolesnikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">V</forename><surname>Medvedev</surname></persName>
+		</author>
+		<idno>doi: 10.1070</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Sbornik: Mathematics</title>
+		<idno type="ISSN">1064-5616</idno>
+		<imprint>
+			<biblScope unit="volume">196</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page">309</biblScope>
+			<date type="published" when="2005-04">April 2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Random forests</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Breiman</surname></persName>
+		</author>
+		<idno type="DOI">10.1023/A%3A1010933404324</idno>
+		<ptr target="http://dx.doi.org/10.1023/A%3A1010933404324" />
+	</analytic>
+	<monogr>
+		<title level="m">Machine Learning</title>
+				<imprint>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="page" from="5" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Panning for gold: &apos;model-X&apos; knockoffs for high dimensional controlled variable selection</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Candès</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Janson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lv</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/rssb.12265</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the Royal Statistical Society: Series B</title>
+		<idno type="ISSN">1467-9868</idno>
+		<imprint>
+			<biblScope unit="volume">80</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="551" to="577" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Identification of major quantitative trait loci for seed oil content in soybeans by combining linkage and genome-wide association mapping</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="DOI">10.3389/fpls.2017.01222</idno>
+		<ptr target="https://doi.org/10.3389/fpls.2017.01222" />
+	</analytic>
+	<monogr>
+		<title level="j">Frontiers in Plant Science</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<date type="published" when="2017-07">July 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">The knockoff filter for FDR control in group-sparse and multitask regression</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Barber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 33rd International Conference on Machine Learning</title>
+				<meeting>The 33rd International Conference on Machine Learning</meeting>
+		<imprint>
+			<publisher>PMLR</publisher>
+			<date type="published" when="2016-06">June 2016</date>
+			<biblScope unit="page" from="1851" to="1859" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">RANK: Large-Scale Inference With Graphical Nonlinear Knockoffs</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Demirkaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lv</surname></persName>
+		</author>
+		<idno type="DOI">10.1080/01621459.2018.1546589</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Statistical Association</title>
+		<idno type="ISSN">0162-1459</idno>
+		<imprint>
+			<biblScope unit="volume">115</biblScope>
+			<biblScope unit="issue">529</biblScope>
+			<biblScope unit="page" from="362" to="379" />
+			<date type="published" when="2020-01">January 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Sparse inverse covariance estimation with the graphical lasso</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Friedman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Hastie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Tibshirani</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/biostatistics/kxm045</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Biostatistics</title>
+		<idno type="ISSN">1465-4644</idno>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="432" to="441" />
+			<date type="published" when="2008-07">July 2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">scvi-tools: a library for deep probabilistic analysis of single-cell omics data</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gayoso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Lopez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Xing</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Boyeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Jayasuriya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Mehlman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Langevin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Samaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Misrachi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nazaret</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Clivio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Ashuach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lotfollahi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Svensson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Da Veiga Beltrame</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Talavera-Lopez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Pachter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">J</forename><surname>Theis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Streets</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">I</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Regier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yosef</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename></persName>
+		</author>
+		<idno type="DOI">10.1101/2021.04.28.441833</idno>
+		<ptr target="https://www.biorxiv.org/content/early/2021/04/29/2021.04.28.441833" />
+	</analytic>
+	<monogr>
+		<title level="j">bioRxiv</title>
+		<imprint>
+			<biblScope unit="page">2021</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Knockoffs for the mass: New feature importance statistics with false discovery guarantees</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">R</forename><surname>Gimenez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ghorbani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zou</surname></persName>
+		</author>
+		<ptr target="http://proceedings.mlr.press/v89/gimenez19a.html" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty-Second International Conference on Artificial Intelligence and Statistics</title>
+				<meeting>the Twenty-Second International Conference on Artificial Intelligence and Statistics</meeting>
+		<imprint>
+			<date type="published" when="2019-04-18">16-18 Apr 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Neural autoregressive flows</title>
+		<author>
+			<persName><forename type="first">C.-W</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Krueger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lacoste</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Courville</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2018-07">July 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Generating knockoffs for feature selection using generative adversarial networks</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Jordon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yoon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Van Der Schaar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Knockoffgan</surname></persName>
+		</author>
+		<ptr target="https://openreview.net/forum?id=ByeZ5jC5YQ" />
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Normalizing flows: An introduction and review of current methods</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Kobyzev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Prince</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Brubaker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Pattern Analysis and Machine Intelligence</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Fast and Powerful Conditional Randomization Testing via Distillation</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Katsevich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Janson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ramdas</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2006.03980</idno>
+		<imprint>
+			<date type="published" when="2020-07">July 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Auto-Encoding Knockoff Generator for FDR Controlled Variable Selection</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Zheng</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1809.10765</idno>
+		<imprint>
+			<date type="published" when="2018-09">September 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Phenotype prediction and genome-wide association study using deep convolutional neural network of soybean</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Xu</surname></persName>
+		</author>
+		<idno type="DOI">10.3389/fgene.2019.01091/full</idno>
+		<ptr target="https://www.frontiersin.org/articles/10.3389/fgene.2019.01091/full" />
+	</analytic>
+	<monogr>
+		<title level="j">Frontiers in Genetics</title>
+		<idno type="ISSN">1664-8021</idno>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Gaussianization flows</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ermon</surname></persName>
+		</author>
+		<ptr target="http://proceedings.mlr.press/v108/meng20b.html" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty Third International Conference on Artificial Intelligence and Statistics</title>
+				<meeting>the Twenty Third International Conference on Artificial Intelligence and Statistics</meeting>
+		<imprint>
+			<date type="published" when="2020-08-28">26-28 Aug 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Masked autoregressive flow for density estimation</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Papamakarios</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pavlakou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Murray</surname></persName>
+		</author>
+		<ptr target="https://proceedings.neurips.cc/paper/2017/file/6c1da886822c67822bcf3679d04369fa-Paper.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">30</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Normalizing flows for probabilistic modeling and inference</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Papamakarios</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Nalisnick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">J</forename><surname>Rezende</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mohamed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Lakshminarayanan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">57</biblScope>
+			<biblScope unit="page" from="1" to="64" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Deep knockoffs</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Romano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sesia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Candès</surname></persName>
+		</author>
+		<idno type="DOI">10.1080/01621459.2019.1660174</idno>
+		<ptr target="https://doi.org/10.1080/01621459.2019.1660174" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Statistical Association</title>
+		<imprint>
+			<biblScope unit="volume">115</biblScope>
+			<biblScope unit="issue">532</biblScope>
+			<biblScope unit="page" from="1861" to="1872" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Bayesian Computation Via the Gibbs Sampler and Related Markov Chain Monte Carlo Methods</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">F M</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">O</forename><surname>Roberts</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/j.2517-6161.1993.tb01466.x</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the Royal Statistical Society: Series B (Methodological)</title>
+		<idno type="ISSN">2517-6161</idno>
+		<imprint>
+			<biblScope unit="volume">55</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="3" to="23" />
+			<date type="published" when="1993">1993</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Identification of loci governing eight agronomic traits using a GBS-GWAS approach and validation by QTL mapping in soya bean</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Sonah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>O'donoughue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Cober</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Rajcan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Belzile</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/pbi.12249</idno>
+		<ptr target="https://doi.org/10.1111/pbi.12249" />
+	</analytic>
+	<monogr>
+		<title level="j">Plant Biotechnology Journal</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="211" to="221" />
+			<date type="published" when="2014-09">September 2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Genetic characterization of the soybean nested association mapping population</title>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Quigley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">D</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Fickus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Schroeder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B.-H</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y.-Q</forename><surname>Charles An</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hyten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Nelson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Rainey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">D</forename><surname>Beavis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Specht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Diers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Cregan</surname></persName>
+		</author>
+		<idno type="DOI">10.3835/plantgenome2016.10.0109</idno>
+		<ptr target="https://doi.org/10.3835/plantgenome2016.10.0109.URLhttps://acsess.onlinelibrary.wiley.com/doi/abs/10.3835/plantgenome2016.10.0109" />
+	</analytic>
+	<monogr>
+		<title level="j">The Plant Genome</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">2017</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Deep direct likelihood knockoffs</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sudarshan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Tansey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ranganath</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">33</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">The holdout randomization test for feature selection in black box models</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Tansey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Veitch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rabadan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">M</forename><surname>Blei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computational and Graphical Statistics</title>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note>In press; available on arXiv</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Regression shrinkage and selection via the Lasso</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Tibshirani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the Royal Statistical Society: Series B</title>
+		<imprint>
+			<biblScope unit="volume">58</biblScope>
+			<biblScope unit="page" from="267" to="288" />
+			<date type="published" when="1996">1996</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Discrete flows: Invertible generative models of discrete data</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Vafa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Dinh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Poole</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="volume">32</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">qqman: an R package for visualizing GWAS results using Q-Q and Manhattan plots</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Turner</surname></persName>
+		</author>
+		<idno type="DOI">10.21105/joss.00731</idno>
+	</analytic>
+	<monogr>
+		<title level="j">The Journal of Open Source Software</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Impact of imputation methods on the amount of genetic variation captured by a single-nucleotide polymorphism panel in soybeans</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Xavier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Muir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Rainey</surname></persName>
+		</author>
+		<idno type="DOI">10.1186/s12859-016-0899-7</idno>
+		<ptr target="https://doi.org/10.1186/s12859-016-0899-7" />
+	</analytic>
+	<monogr>
+		<title level="j">BMC Bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<date type="published" when="2016-02">February 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">with respect to the random seed after running experiments multiple times)? [Yes] All figures comparing FDR and Power results (Figure 2 in main text</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Xavier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Beavis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Specht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Diers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Graef</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Nelson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Schapaugh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Shannon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Mchale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Cregan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lopez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Muir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Rainey</surname></persName>
+		</author>
+		<ptr target="https://CRAN.R-project.org/package=SoyNAM" />
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note>SoyNAM: Soybean Nested Association Mapping Dataset. Figures 4-6, 8 in the Appendix) contain error bars indicating results across runs</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

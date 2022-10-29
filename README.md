@@ -24,4 +24,6 @@ ReproScreener aims to address challenges in robustness, transparency and interpr
 
 ## Installation instructions
 
+grobid_client --input /Users/adb/stuff/repro-screener/case-studies/arxiv-corpus/mine50/pdf/ --output /Users/adb/stuff/repro-screener/case-studies/arxiv-corpus/mine50/parsed_xml/ processFulltextDocument
+
 ## Run instructions

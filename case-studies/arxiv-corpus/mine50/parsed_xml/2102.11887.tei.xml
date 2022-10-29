@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Quantum Cross Entropy and Maximum Likelihood Principle</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-24">24 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Zhou</forename><surname>Shangnan</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Stanford Institute for Theoretical Physics</orgName>
+								<orgName type="institution">Stanford University</orgName>
+								<address>
+									<postCode>94305</postCode>
+									<settlement>Stanford</settlement>
+									<region>CA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yixu</forename><surname>Wang</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department" key="dep1">Maryland Center for Fundamental Physics</orgName>
+								<orgName type="department" key="dep2">Department of Physics</orgName>
+								<orgName type="institution">University of Maryland</orgName>
+								<address>
+									<postCode>20742</postCode>
+									<settlement>College Park</settlement>
+									<region>MD</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Quantum Cross Entropy and Maximum Likelihood Principle</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-24">24 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">66E8296CE0D5C6C6995910E00A26DDDA</idno>
+					<idno type="arXiv">arXiv:2102.11887v3[quant-ph]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:47+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Quantum machine learning is an emerging field at the intersection of machine learning and quantum computing. Classical cross entropy plays a central role in machine learning. We define its quantum generalization, the quantum cross entropy, prove its lower bounds, and investigate its relation to quantum fidelity. In the classical case, minimizing cross entropy is equivalent to maximizing likelihood. In the quantum case, when the quantum cross entropy is constructed from quantum data undisturbed by quantum measurements, this relation holds. Classical cross entropy is equal to negative log-likelihood. When we obtain quantum cross entropy through empirical density matrix based on measurement outcomes, the quantum cross entropy is lower-bounded by negative log-likelihood. These two different scenarios illustrate the information loss when making quantum measurements. We conclude that to achieve the goal of full quantum machine learning, it is crucial to utilize the deferred measurement principle.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Machine learning has attracted interests from various fields as a powerful tool for finding patterns in data. Supported by machine learning technology, computer programs can improve automatically through experience, which has enabled a wide spectrum of applications: from visual and speech recognition, effective web search, to study of human genomics <ref type="bibr" target="#b0">[1,</ref><ref type="bibr" target="#b1">2]</ref>. Classical machine learning techniques have also found many interesting applications in different disciplines of quantum physics <ref type="bibr" target="#b2">[3,</ref><ref type="bibr" target="#b3">4,</ref><ref type="bibr" target="#b4">5,</ref><ref type="bibr" target="#b5">6,</ref><ref type="bibr" target="#b6">7,</ref><ref type="bibr" target="#b7">8,</ref><ref type="bibr" target="#b8">9,</ref><ref type="bibr" target="#b9">10]</ref>.</p><p>With the advancement of quantum information science and technology, there is both theoretical and practical interest in understanding quantum systems, building quantum devices, developing quantum algorithms, and ultimately, taking advantage of quantum supremacy <ref type="bibr" target="#b10">[11,</ref><ref type="bibr" target="#b11">12]</ref>. Quantum machine learning overlaps with the current interests in quantum computing and machine learning in many different aspects. For supervised and unsupervised machine learning tasks, we are usually given a set of training data and a set of test data. We process the training data using our learning algorithm, so that we can form a prediction model. Then we use the prediction model to process the test data and give predictions. The learning algorithm usually consists of several steps. Hence, there can be different levels of quantization. At the lowest level, we can use classical processors and classical learning algorithms to study quantum systems <ref type="bibr" target="#b2">[3,</ref><ref type="bibr" target="#b3">4,</ref><ref type="bibr" target="#b4">5,</ref><ref type="bibr" target="#b5">6,</ref><ref type="bibr" target="#b6">7,</ref><ref type="bibr" target="#b7">8,</ref><ref type="bibr" target="#b8">9,</ref><ref type="bibr" target="#b9">10]</ref>. Moreover, we can transform part or all of the learning algorithm to be quantum, so that we can speed up the learning process or improve the learning performance <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b15">16,</ref><ref type="bibr" target="#b16">17]</ref>. The ultimate goal is to achieve full quantum machine learning, where the input data and output predictions, the processing device, and the learning algorithms, are all fully quantum and enjoy quantum supremacy. While there have been many attempts in designing quantum machine learning architectures <ref type="bibr" target="#b17">[18,</ref><ref type="bibr" target="#b18">19,</ref><ref type="bibr" target="#b19">20,</ref><ref type="bibr" target="#b20">21,</ref><ref type="bibr" target="#b21">22,</ref><ref type="bibr" target="#b22">23]</ref>, the theoretical aspects of quantum machine learning are still lacking.</p><p>In this work, we study the quantum generalizations of the cross entropy and maximum likelihood principle. Cross entropy is widely adopted as a loss function for machine learning tasks. To achieve full quantum machine learning, we have to process quantum data and quantum training procedures, which makes a quantum version of cross entropy desirable. We believe that with a loss function more closely related to the quantum nature of quantum systems, there is a large sea of possible quantum machine learning algorithms that can provide speed-ups or enhance performance for various tasks. At the same time, previous works <ref type="bibr" target="#b23">[24,</ref><ref type="bibr" target="#b24">25,</ref><ref type="bibr" target="#b25">26,</ref><ref type="bibr" target="#b26">27,</ref><ref type="bibr" target="#b27">28,</ref><ref type="bibr" target="#b28">29,</ref><ref type="bibr" target="#b29">30,</ref><ref type="bibr" target="#b30">31,</ref><ref type="bibr" target="#b31">32,</ref><ref type="bibr" target="#b32">33]</ref> show that the study of a quantum version of an important classical quantity itself is interesting and opens doors for many applications in the quantum regime. Many supervised, unsupervised, and semi-supervised machine learning algorithms, including but not limited to logistic regression, Gaussian discriminant analysis, and the Expectation-Maximization algorithm, are based on the maximum likelihood principle. The principle tells us to estimate the parameters of a statistical model by maximizing a likelihood function, so that the observed data is most probable. Classically, minimizing the cross entropy is the same as maximizing the likelihood. More concretely, classical cross entropy is equal to average negative log-likelihood. It is natural to ask: do these relations hold in the quantum case? If they don't always hold, what can we learn from that? Our work answers these questions.</p><p>In Section 2, we define a new quantum information quantity, the quantum cross entropy S(ρ, σ) = − tr(ρ log σ), as a direct quantum generalization of the classical cross entropy. We proved its positivity, invariance under unitaries, linearity on the first argument, convexity on the second argument, and joint convexity. We also show that it is lower-bounded by the negative log fidelity, namely S(ρ, σ) ≥ − log tr(ρσ) ≥ − log F (ρ, σ). In Section 3, we review the classical cross entropy, the maximum likelihood principle, and their interplay. In Section 4, we examine quantum cross entropies constructed from different formats of quantum data. When the quantum data used for quantum cross entropy is undisturbed by quantum measurements, minimizing the quantum cross entropy is the same as maximizing the likelihood function. Unfortunately, this doesn't hold when measurements come into play. However, we still have something worth-noting when our quantum cross entropy is reconstructed from the empirical density matrix, a quantum generalization of the empirical probability distribution. In this case, quantum cross entropy is lower-bounded by negative log-likelihood. The inequality, as well as the differences between two scenarios, shows that quantum measurements, and the information loss comes with it, breaks some nice properties that hold in the classical case. With this, we propose a guiding principle for doing full quantum machine learning, which is that we should maximize the usage of deferred measurement principle when designing quantum algorithms, to avoid strange behaviors <ref type="bibr" target="#b33">[34]</ref> in quantum machine learning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Quantum cross entropy</head><p>Despite the fact that classical cross entropy, classical and quantum relative entropies are defined and studied, a formal definition of quantum cross entropy is lacking. In this section, we first review the definition of classical cross entropy, and show its connection to classical fidelity. We then generalize this concept to the quantum case, and present properties and physical intuitions of the quantum cross entropy.</p><p>In classical information theory, the cross entropy is the average number of bits needed to encode data coming from a source with distribution p when we use model q to define our code-book. Formally, the classical cross entropy of the distribution q relative to a distribution p over a given set is defined as <ref type="bibr" target="#b34">[35]</ref> </p><formula xml:id="formula_0">H(p, q) = −E p [log q],<label>(1)</label></formula><p>where E p is the expectation value operator with respect to the distribution p.</p><p>For discrete probability distributions p and q with the same support X , the classical cross entropy is</p><formula xml:id="formula_1">H(p, q) = − x∈X p(x) log q(x).<label>(2)</label></formula><p>Equivalently, it can be written as the sum of Shannon entropy H(p) and KL divergence from p to q (also known as classical relative entropy of q with respect to p):</p><formula xml:id="formula_2">H(p, q) = H(p) + D KL (p q).<label>(3)</label></formula><p>Now we show that classical cross entropy has lower bounds:</p><formula xml:id="formula_3">H(p, q) ≥ − log x∈X p(x)q(x) ≥ − log F (p, q),<label>(4)</label></formula><p>where F (p, q) = x∈X p(x)q(x)</p><formula xml:id="formula_4">2</formula><p>is the classical fidelity.</p><p>Proof. The first inequality is a consequence of concavity of the log function. For the second inequality, let h(x) = p(x)q(x), it is enough to show that</p><formula xml:id="formula_5">x∈X h(x) ≤ x∈X h(x) 2 ,<label>(5)</label></formula><p>which is manifest.</p><p>We define the quantum cross entropy by extending the classical definition from probability distributions to density matrices. For two density matrices ρ and σ, the quantum cross entropy is</p><formula xml:id="formula_6">S(ρ, σ) = − tr(ρ log σ),<label>(6)</label></formula><p>if the support of ρ is contained in the support of σ, and +∞ otherwise. Equivalently, it can be written as</p><formula xml:id="formula_7">S(ρ, σ) = S(ρ σ) − tr(ρ log ρ) = S(ρ σ) + S(ρ),<label>(7)</label></formula><p>where S(ρ σ) is the quantum relative entropy, and S(ρ) is the von Neumann entropy of ρ. This shows that our definition of quantum cross entropy is consistent with existing definitions, and Eq <ref type="bibr" target="#b6">(7)</ref> has exactly the same form as Eq (3). Hence, the quantum cross entropy is also a quantum distance measure. We conjecture that the quantum cross entropy is the average number of qubits needed to encode data from a quantum source represented by a density matrix ρ, when we use a rather universal compression protocol for the quantum source σ. Now we summarize some properties of quantum cross entropy.</p><p>Proposition 1. S(ρ, σ) is zero if and only if ρ = σ and ρ is a pure state, otherwise it is positive.</p><p>Proposition 2. S(ρ, σ) is invariant under simultaneous unitary transformation on both ρ and σ:</p><formula xml:id="formula_8">S(ρ, σ) = S(U ρU † , U σU † ). (<label>8</label></formula><formula xml:id="formula_9">)</formula><p>Proposition 3 (Linearity on the first argument).</p><formula xml:id="formula_10">S i p i ρ i , σ = i p i S(ρ i , σ).<label>(9)</label></formula><p>Proposition 4 (Convexity on the second argument).</p><p>S ρ, j q j σ j ≤ j q j S(ρ, σ j ). ( <ref type="formula">10</ref>)</p><p>Proof. This follows from the joint convexity of the relative entropy S(ρ σ). When ρ is a given density matrix, − tr(ρ log ρ) is cancelled, so the remainder term − tr(ρ log σ) is convex with respect to σ.</p><p>Proposition 5 (Joint convexity).</p><formula xml:id="formula_11">S i p i ρ i , j q j σ j ≤ i j p i q j S(ρ i , σ j ). (<label>11</label></formula><formula xml:id="formula_12">)</formula><p>This is a corollary of Properties 3 and 4.</p><formula xml:id="formula_13">Proposition 6 (Extensivity). Let ρ = ρ 1 ⊗ ρ 2 ... ⊗ ρ n and σ = σ 1 ⊗ σ 2 ... ⊗ σ n , then S(ρ, σ) = n i=1 S(ρ i , σ i ). (<label>12</label></formula><formula xml:id="formula_14">)</formula><p>Proposition 7. S(ρ, σ) has lower bounds:</p><formula xml:id="formula_15">S(ρ, σ) ≥ − log tr(ρσ) ≥ − log F (ρ, σ),<label>(13)</label></formula><p>where F (ρ, σ) = tr ρ 1/2 σρ 1/2 2 is the quantum fidelity between two states.</p><p>Proof. We work in finite dimensional Hilbert spaces so the density matrices are n × n Hermitian matrices. The condition supp(ρ) ⊆ supp(σ) is necessary to have S(ρ, σ) well defined. If rank(σ) = s ≤ n, we may reduce the problem to an s dimensional Hilbert space. So without loss of generality, we take the projection P σ to supp σ as</p><formula xml:id="formula_16">P σ = I n in n-dimensional Hilbert space.</formula><p>If supp(ρ) = supp(σ), then F = log σ and R = log ρ are well-defined n × n Hermitian matrices, so by Peierls-Bogoliubov inequality, together with the Golden-Thompson inequality, tr(e F e R ) ≥ tr(e F +R ) ≥ e tr(F e R ) .</p><p>We get the desired inequality by taking the logarithm of both sides.</p><p>If supp(ρ) ⊂ supp(σ), the inequality can be obtained via a limiting procedure as follows. Consider a sequence of density matrices ρ n such that supp(ρ n ) = supp(σ) and</p><formula xml:id="formula_18">lim n→∞ ρ n − ρ = 0. (<label>15</label></formula><formula xml:id="formula_19">)</formula><p>Here • denotes the operator norm. It is straightforward to show that</p><formula xml:id="formula_20">lim n→∞ − tr(ρ n log σ) = − tr(ρ log σ), lim n→∞ − log tr(ρ n σ) = − log tr(ρσ). (<label>16</label></formula><formula xml:id="formula_21">)</formula><p>For the first one,</p><formula xml:id="formula_22">0 ≤ lim n→∞ | tr((ρ n − ρ) log σ)| ≤ log σ lim n→∞ ρ n − ρ = 0. (<label>17</label></formula><formula xml:id="formula_23">)</formula><p>The other one can be proved similarly. As supp(ρ n ) = supp(σ), we can apply the Peierls-Bogoliubov inequality as before to obtain</p><formula xml:id="formula_24">− tr(ρ n log σ) ≥ − log tr(ρ n σ). (<label>18</label></formula><formula xml:id="formula_25">)</formula><p>The existence of the limit under n → ∞ on both sides implies the desired inequality when supp(ρ) ⊂ supp(σ). Now we investigate when the first inequality achieves equality S(ρ, σ) = − log tr(ρσ). The Golden-Thompson inequality holds if and only if when F and R commute. That is, when the density matrices ρ and σ can be simultaneously diagonalized. Intuitively, there exists a set of bases, in which both ρ and σ "look like classical probability distributions". Hence, it suffices to investigate the Peierls-Bogoliubov inequality when ρ and σ are classical distributions. This inequality, which is a corollary of the Klein's inequality, makes use of the convexity of the logarithmic function. The equality holds in either of the two cases. First, when σ = e g I, that is, it is in a maximally mixed state, in other words, a uniform distribution. The e g factor can be fixed by the normalization condition of the state σ. Second, when ρ commutes with σ and rank(ρ) = 1.</p><p>The second inequality is a consequence of monotonicity of Schatten norm T 1 ≥ T 2 , with positive semi-definite matrix T = ρ 1/2 σρ 1/2 . The equality holds when T is of rank 1. This is the case when ρ and σ are identical pure states.</p><p>As an interesting side note, we give a simple scenario <ref type="bibr" target="#b35">[36]</ref> where the quantum cross entropy arises. Suppose {Q i } is a complete set of projective measurement operators. If we measure state ρ, and do not read out the measurement result, then we obtain a state σ = i Q i ρQ i . In this case, the quantum cross entropy is actually the von Neuman entropy of the after-measurement state S(ρ, σ) = S(σ).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Classical cross entropy and maximum likelihood principle</head><p>One property of classical cross entropy that plays an important role in statistical learning theory, is that classical cross entropy is equal to average negative log-likelihood, also called the log loss. Hence, maximizing likelihood is equivalent to minimizing cross entropy. Many machine learning algorithms based on maximum likelihood principle use cross entropy as a cost function, especially when optimizing classification models. In this section, we review the argument and provide some additional insights from a measurement perspective.</p><p>First we introduce the concept of likelihood. We understand and predict the nature by constructing models, based on our observed data. For example, to estimate how biased a coin is, we basically want to learn the probability θ of getting a head when flipping it, and we call this θ our parameter. We collect our data D by doing a sequence of identically and independently distributed coin flips and record the outputs:</p><formula xml:id="formula_26">D = x 1 , x 2 , ..., x N ,<label>(19)</label></formula><p>where each x i is either Head or Tail.</p><p>The probability of getting a certain D, called the likelihood, is a function of parameter θ. Formally, the likelihood function is</p><formula xml:id="formula_27">L(θ) = P (D|θ) = N i=1 P (x i |θ).<label>(20)</label></formula><p>The principle of maximum likelihood says that we should choose θ so as to make the data as highly probable as possible, which is to choose the θ that maximizes the likelihood function L(θ). The parameter θ also defines a probability distribution P θ (x) = P (x|θ), which tells us the probability of generating an output x on a single trial.</p><p>Maximizing L(θ) is equivalent to maximizing any strictly increasing function of L(θ). In particular, the average log-likelihood l(θ) can make derivations much easier by turning the products into sums:</p><formula xml:id="formula_28">l(θ) = 1 N log P (D|θ) = 1 N N i=1 log P (x i |θ).<label>(21)</label></formula><p>The maximum likelihood estimator is the parameter which maximizes the (log) likelihood function:</p><formula xml:id="formula_29">θ M LE = arg max θ l(θ).<label>(22)</label></formula><p>In more general cases, θ can be a vector or matrix, or we can say we have multiple parameters θ 1 , θ 2 , ... , θ m . Our observed data can also be more complicated than a sequence of heads and tails, it can be a sequence of vectors or matrices. While the data and parameters become high-dimensional, the spirit of constructing a likelihood function and maximizing it remains the same.</p><p>From a physicist's perspective, we do a sequence of classical measurements to get some classical outputs, and we maximize the likelihood function to find the most probable parameters for our model. Now we show that classical cross entropy is equal to average negative log-likelihood. Note that the data points x i 's and the parameter θ can both be seen as vectors.</p><p>Suppose the probability distribution based on model parameter θ is P θ (x) = P (x|θ), where the support of x is X , and our data is D = {x i |1 ≤ i ≤ N }. We can construct the "empirical data distribution":</p><formula xml:id="formula_30">P D (x) = 1 N N i=1 1{x = x i },<label>(23)</label></formula><p>where the indicator function 1{x = x i } = 1 if x = x i , and 1{x = x i } = 0 otherwise. This is a valid distribution since x∈X P D (x) = 1. The classical cross entropy H P D (x), P θ (x) is</p><formula xml:id="formula_31">H P D (x), P θ (x) = − x∈X P D (x) log P θ (x) = − x∈X 1 N 1{x = x i } log P (x|θ) = − N i=1 1 N log P (x i |θ) = −l(θ),<label>(24)</label></formula><p>which is equal to the average negative log-likelihood function l(θ).</p><p>Hence, minimizing classical cross entropy is equivalent to maximizing likelihood:</p><formula xml:id="formula_32">arg min θ H P D (x), P θ (x) = arg max θ l(θ).<label>(25)</label></formula><p>In practice, many machine learning algorithms based on maximum likelihood principle uses classical cross entropy as a cost function. <ref type="bibr" target="#b3">4</ref> The quantum generalization: the cost of quantum measurements</p><p>One necessary component of full quantum machine learning is to learn a quantum system from scratch. To do so, we need to gain further understanding of what "quantum data" means and how we obtain and manipulate them. To extract information from a quantum system, it is necessary to make measurements. However, we all know too well that when we make measurements, we disturb the quantum system and we lose some information of the original quantum system. Hence, it is crucial to examine the effects of measurements. The classical relation between the cross entropy and likelihood can be decomposed into two parts:</p><p>1. Minimizing cross entropy is maximizing likelihood.</p><p>2. Cross entropy is equal to negative log-likelihood. Note that likelihood is based on classical probabilities, so we expect 2 to break down in the quantum case. Our conclusion is that, when the quantum cross entropy is from raw quantum data that is not affected by quantum measurements, 1 continues to hold. If we obtain the quantum cross entropy through empirical density matrix, which is constructed from measurement outcomes, then we have a modified version of 2: the quantum cross entropy is lower bounded by negative log-likelihood. The fundamental difference is the quantum data we use, which is a reflection of different levels of quantum measurements.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Minimizing quantum cross entropy is maximizing likelihood</head><p>Many quantum machine learning tasks involve learning a rather complex quantum state, fully or partially. Suppose we have a quantum state represented by density matrix ρ, with which we want to perform regression or classification tasks on, then naturally we put our model parameters into a density matrix σ, with restrictions based on prior knowledge of ρ.</p><p>In the ideal scenario, in which our quantum computer can calculate the quantum cross entropy directly without disturbing the states, then we have the perfect quantum data: quantum state ρ that has not been measured or approximated. In this scenario, the quantum cross entropy used in calculation is S(ρ, σ) = − tr(ρ log σ), and the model parameter that minimizes the quantum cross entropy is ρ: </p><p>To obtain the likelihood function, we make tomographic complete measurements {E i } on ρ. We may write {E i } as {E jk }, where j labels the j-th set of measurement operators, and k labels the k-th measurement operator in the j-th set. We have k E jk = I, ∀j. We use the j-th set of measurement operators N j times, and the total number of measurements made is N = j N j . We can write the average log-likelihood function l(σ) by grouping the results into different sets:</p><formula xml:id="formula_34">l(σ) = 1 N N i=1 log tr(E i σ) = 1 N j k N jk log tr(E jk σ). (<label>27</label></formula><formula xml:id="formula_35">)</formula><p>The probability of having the k-th outcome using the j-th set of measurements is p jk ≡ tr(E jk ρ). In the limit N j → ∞ for all j, by the law of large numbers, we have lim</p><formula xml:id="formula_36">N j →∞ N jk N = N j N tr(E jk ρ).<label>(28)</label></formula><p>Defining q jk ≡ tr(E jk σ),</p><formula xml:id="formula_37">N j</formula><p>N ≡ n j , the log-likelihood now takes the form</p><formula xml:id="formula_38">l(σ) = j n j k p jk log q jk .<label>(29)</label></formula><p>Now we perform the variation to l(σ) together with the sets of constraints that ∀j, k q jk = 1. The extremal condition gives</p><formula xml:id="formula_39">δ   j n j k (p jk log q jk − λ j q jk )   = j n j k p jk q jk − λ j δq jk = 0. (<label>30</label></formula><formula xml:id="formula_40">)</formula><p>Here δq jk ≡ tr(E jk δσ). n j 's are completely arbitrary because we are free to choose the proportion of each set of measurements. The variational condition gives λ j q jk = p jk . However, the normality condition k p jk = 1 fixes λ j = 1 and gives q jk = p jk . As {E jk } represents a tomographic complete set of measurements, we conclude that ρ = σ, and ρ can be calculated through linear inversion. Hence, that model parameter that maximizes the log-likelihood is ρ:</p><formula xml:id="formula_41">arg max σ l(σ) = ρ.<label>(31)</label></formula><p>Combining Eqs ( <ref type="formula" target="#formula_33">26</ref>) and ( <ref type="formula" target="#formula_41">31</ref>), we conclude that in this scenario, minimizing quantum cross entropy is maximizing likelihood: (32)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Quantum cross entropy is lower-bounded by negative log-likelihood</head><p>In real life, fine-tuning a quantum circuit so that we can vary σ and calculate S(ρ, σ) is hard, if not impossible. For practical purposes, we look at another approach, where we generate rather "dirty" quantum data through measurements. To do so, we borrow the ideas of constructing empirical data distribution from classical statistics.</p><p>In the classical case, we generate a bunch of data by doing a bunch of independent classical measurements. In the quantum case, our data generating process will be doing quantum measurements on identical copies of quantum states ρ. For now, we restrict our discussions to projective measurements, so that in general, our measurement is described by a complete set of projectors {Π m }, such that Π m = I. Often, one can associate the measurement to an observable A:</p><formula xml:id="formula_42">A = m mΠ m ,<label>(33)</label></formula><p>where Π m is the projector onto the eigenspace of A with eigenvalue m. For each copy, we can make measurements using different observables, which corresponds to different sets of measurement operators. Constructing an empirical data distribution based on classical measurements is straightforward, and the corresponding cross entropy H P D (x), P θ (x) agrees with the average negative log-likelihood. Now we need to construct an empirical density matrix based on our quantum measurement results. However, the fact that the wave function collapses when making quantum measurements makes it impossible to make a simple and perfect reconstruction. We have to give up some information, which got lost when making the measurements. Hence, the question becomes: what information can we directly extract from a measurement, without solving equations or doing other complicated manipulations?</p><p>We start from review the classical scenario and get inspirations from it. When we flip a Bit and see it comes back with a "1", there are two ways of interpreting it, from a quantum perspective:</p><p>One way is to think that the "1" represents the eigenvalue m of the observable A. Since what really matters is which eigenspace we project into, in general quantum cases, what we should care about is the corresponding projector Π m . Hence, based on a single measurement outcome m, we record our data as Π m / tr(Π m ). This perspective focuses more on the operator that is associated to the measurement as in Eq <ref type="bibr" target="#b32">(33)</ref>, so we call it the operator perspective.</p><p>Another way is to think that "1" represents the state after the measurement. The problem is that, we don't really know the true ρ, so we can only represent it by our model parameter σ, which is our belief of what ρ should be. In this case, based on a single measurement outcome m, we record our data as Π m σΠ m / tr(Π m σ), which is the state after the measurement, supposing the original state was σ. This perspective focuses more on the state, so we call it the state perspective.</p><p>Note that when all the projectors are of rank 1, then the two perspectives agree, because</p><formula xml:id="formula_43">Π m σΠ m tr(Π m σ) = Π m = Π m tr(Π m ) .<label>(34)</label></formula><p>A physical understanding is that suppose Π m = |ψ ψ|, then the quantum state we get after projection is |ψ ψ|. Note that in the classical case, the outcome of the measurement is always in a certain state, so there is no distinction between the two perspectives described above.</p><p>Now that we have N identical copies, we can actually use N (possibly) different observables, and all we need to record, are the projectors corresponding to the measurement results of the given observables. Hence, for the n-th copy of the quantum states, we construct the corresponding density matrices as</p><formula xml:id="formula_44">ρ O n = Π n tr(Π n ) , ρ S n = Π n σΠ n tr(Π n σ) ,<label>(35)</label></formula><p>where the first equation corresponds to the operator perspective, and the second equation corresponds to the state perspective.</p><p>A direct generalization of the classical case gives the corresponding "empirical density matrices":</p><formula xml:id="formula_45">ρ O = 1 N N n=1 Π n tr(Π n ) , ρ S = 1 N N n=1 Π n σΠ n tr(Π n σ) .<label>(36)</label></formula><p>The quantum cross entropy can be written as follows, for the operator and the state perspectives, respectively:</p><formula xml:id="formula_46">S(ρ O , σ) = − tr(ρ O log σ), S(ρ S , σ) = − tr(ρ S log σ).<label>(37)</label></formula><p>The extensivity of the quantum cross entropy (Proposition 6) ensures that one can measure N copies of the system in parallel and collect the measurement result. In terms of formula, if we write ρO</p><formula xml:id="formula_47">= ρ O 1 ⊗ ... ⊗ ρ O n and σ = σ ⊗ ... ⊗ σ, then S(ρ O , σ) = N S(ρ O , σ).</formula><p>Similarly, for the state perspective, we have S(ρ S , σ) = N S(ρ S , σ).</p><p>The average log-likelihood of the outcomes of the total N measurements is</p><formula xml:id="formula_48">l(σ) = 1 N N n=1 log P (Π n |σ) = 1 N N n=1 log tr(Π n σ).<label>(38)</label></formula><p>Now we show that both quantum cross entropies are lower bounded by the average negative log-likelihood. The inequality can be seen as a reflection of the information loss when making quantum measurements. Hence, when we design full quantum machine learning algorithms, it is crucial to reduce the number of quantum measurements. Moreover, we should take advantage of the deferred measurement principle as much as possible, so that we can reduce the disturbance from quantum measurements in the midst of training phase.</p><p>Theorem 1. If we measure N identical copies of quantum state ρ and define the quantum cross entropies as above, then</p><formula xml:id="formula_49">S(ρ O , σ) ≥ −l(σ), S(ρ S , σ) ≥ −l(σ). (<label>39</label></formula><formula xml:id="formula_50">)</formula><p>Proof. This is an application of Property 7 of the quantum cross entropy.</p><p>tr(ρ log σ) ≤ log tr(ρσ).</p><p>To prove the operator perspective inequality, for each n, we take ρ = ρ O n , so</p><formula xml:id="formula_52">tr(ρ O n log σ) = tr(Π n log σ) tr(Π n ) ≤ log tr(Π n σ) tr(Π n ) ≤ log tr(Π n σ).<label>(41)</label></formula><p>We then sum over n, which gives</p><formula xml:id="formula_53">S(ρ O , σ) = − 1 N N n=1 tr(ρ O n log σ) ≥ − 1 N N n=1 log tr(Π n σ) = −l(σ).<label>(42)</label></formula><p>To prove the state perspective inequality, for each n, we take ρ = ρ S n , so</p><formula xml:id="formula_54">tr(ρ S n log σ) = tr(Π n σΠ n log σ) tr(Π n σΠ n ) ≤ log tr(Π n σΠ n σ) tr(Π n σΠ n ) . (<label>43</label></formula><formula xml:id="formula_55">) Let A = Π n σΠ n . The Schatten norm ||A|| 1 ≥ ||A|| 2 .</formula><p>Since A is a positive matrix,</p><formula xml:id="formula_56">||A|| 1 = tr |A| = tr A ≥ A 2 = tr |A| 2 1 2 = tr A 2 1 2 . (<label>44</label></formula><formula xml:id="formula_57">)</formula><p>We then have Proof. We only consider Π n 's with Π n P σ = 0, because otherwise they will not contribute to the sum in S(ρ O , σ) or S(ρ S , σ). For all Π n 's such that Π n P σ = 0, the last inequality in Eq.( <ref type="formula" target="#formula_52">41</ref>) achieves equality if and only if rank(Π n ) = 1. The first inequality in Eq.( <ref type="formula" target="#formula_52">41</ref>) achieves equality if and only if [Π n , σ] = 0. They combined are the equality conditions for S(ρ O , σ) = −l(σ).</p><p>The Schatten norm inequality Eq.( <ref type="formula">45</ref>) achieves equality if and only if rank(Π n σΠ n ) = 1 for all Π n σΠ n = 0. This is equivalent to rank(Π n P σ ) = 1 whenever Π n P σ = 0. This is proved as Lemma 1. The inequality Eq.( <ref type="formula" target="#formula_54">43</ref>) requires [Π n σΠ n , σ] = 0. In the case rank(Π n P σ ) = 1, [Π n σΠ n , σ] = 0 is equivalent to [Π n , σ] = 0. This equivalence is proved as Lemma 2. Both lemmas are collected in Appendix A.</p><p>The equality condition has direct physical meanings. If we measure an observable Ô, then S(ρ O , σ) = −l(σ) holds if and only if σ has support only on the non-degenerate part of the eigenspace of Ô and [ Ô, σ] = 0. This means that if we measure Ô in the state σ, the outcome is classical, in the sense that eigenstates are non-degenerate and have no correlations among each other. The equality condition for S(ρ S , σ) = −l(σ) is almost the same yet slightly weaker, in the sense that it allows the state σ to take support on degenerate eigenspaces of the operator Ô, but only 1 dimensional. Intuitively, if we measure the operator Ô in the state σ, it again looks classical. For the support on the non-degenerate eigenspaces of Ô, they are the same case as in the state perspective. For the support on the degenerate eigenspaces, since it only allows 1 dimensional subspace in each degenerate eigenspace, we cannot tell whether it is degenerate or not by looking at the outcome of the measurement in this state σ, so it also looks classical.</p><p>We discussed around Eq (34) that the two perspectives give identical results when the projector is of rank 1, which corresponds to the non-degenerate eigenspaces of the operator Ô we measure. The distinction lies in the different treatments of the degenerate eigenspaces.</p><p>In the operator perspective, we interpret the post-measurement state as a maximally mixed state supported on this subspace. While in the state perspective, we just project to this subspace, retaining the original information of the state σ in this subspace.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Violation of Theorem 1 for POVM</head><p>A natural is if we can generalize the discussion of this section from projective measurements to POVM's and establish a generalized version of Theorem 1. Straightforward generalization is not always correct. For example, in the state perspective, consider a qubit state σ = 2/3 0 0 1/3 and POVM operators</p><formula xml:id="formula_58">M 1 = |0 0| = 1 0 0 0 , M 1 = |0 1| = 0 1 0 0 . Indeed M † 1 M 1 + M † 2 M 2 = I 2 . Now we can compute explicitly that tr(ρ s 1 log σ) = log tr(M † 1 M 1 σ) = log 2/3, tr(ρ s 2 log σ) = log 2/3, while log tr(M † 2 M 2 σ) = log 1/3. Here ρ s n is the post-measurement state ρ s n = M n σM † n / tr(M n σM † n ).</formula><p>If we measure N times and get the quantum cross entropy and the average negative log-likelihood, the analogy of the inequality Eq (39) does not hold.</p><p>The mathematical origin of this counterexample is that the POVM operator M 2 is different from the usual projective measurement operator P 2 = |1 1| via a unitary, M 2 = U P 2 . This does not affect the probability of the outcome tr(M † 2 M 2 σ) but will indeed change the post-measurement state comparing to the projective measurement case ρ s</p><formula xml:id="formula_59">2 = M 2 σM † 2 / tr(M 2 σM † 2 ) = U P 2 σP 2 U † / tr(P 2 σ).</formula><p>When calculating the quantum cross entropy, this unitary effectively acts on σ hence changes the reference state.</p><p>In this counterexample, the post-measurement states of the system ρ s 1 and ρ s 2 are identical. The distinction between the measurement result 1 and 2 lies in the post-measurement state of the ancilla not the system. This suggests that when studying POVM measurements, only focusing on the post-measurement state of the system is not sufficient.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>In this paper, we defined the quantum cross entropy. We showed its positivity, invariance under unitaries, linearity on the first argument, convexity on the second argument, and joint convexity. Moreover, we proved its lower bounds, which is related to the quantum fidelity. We investigated its relation to maximum likelihood principle, a driven force of the developments of many machine learning algorithms. Since our ultimate goal is to achieve full quantum machine learning, we explored different notions of quantum data, upon which we constructed the quantum cross entropy. We first showed that minimizing the quantum cross entropy undisturbed by quantum measurements is equivalent to maximizing likelihood. We then examined the case when the quantum cross entropy is reconstructed from the empirical density matrix based on measurement outcomes, where the quantum cross entropy is lowerbounded by negative log-likelihood. The differences between two scenarios mainly come from whether the quantum cross entropy is disturbed by quantum measurements or not. We conclude that to enhance the performances of full quantum machine learning, it is crucial to apply the deferred measurement principle, so that we can use the undisturbed, betterbehaved quantum cross entropy. For future work, we aim at designing quantum algorithms which utilize the quantum cross entropy, and demonstrating its quantum supremacy.</p><p>Proof. From Lemma 1, rank(Π n σ) = 1. So the singular value decomposition can be written as Π n σ = U SV † , where S = diag(s, 0, 0, ...) is a rank 1 diagonal matrix with only first element non-zero, and U, V are unitaries. The condition [Π n n , σ] = 0 can be written as</p><formula xml:id="formula_60">U SV † U SV † = V SU † V SU † .</formula><p>Defining W = V † U , the above equation can be rewritten as </p><formula xml:id="formula_61">W SW SW = SW † S.</formula></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>, σ) = arg min σ − tr(ρ log σ) = arg min σ S(ρ||σ) = ρ.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Illustrations of classical and quantum measurements.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Proposition 8 (</head><label>8</label><figDesc>logtr(Π n σΠ n σ) tr(Π n σΠ n ) = log tr A 2 tr A ≤ log tr A = log tr(Π n σ). Equality condition of Theorem 1). Let P σ be the support projector of state σ, and {Π n } be a set of measurement projectors corresponding to an observable Ô. Then S(ρ O , σ) = −l(σ) if and only if for all Π n 's such that Π n P σ = 0, rank (Π n ) = 1 and [Π n , σ] = 0. S(ρ S , σ) = −l(σ) if and only if for all Π n 's such that Π n P σ = 0, rank (Π n P σ ) = 1 and [Π n , σ] = 0.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head></head><label></label><figDesc>This sets constraints to the form of the unitary W = w 0 0 T W , with w 3 = w * and W an arbitrary unitary of one lower dimension. So w can take ±1, ±i. Plugging U = V W back into Π n σ = U SV † , we find Π n σ = (w/w * )σΠ n . w = ±1 leads to [Π n , σ] = 0 and w = ±i leads to {Π n , σ} = 0. However, if {Π n , σ} = 0, then on the one hand σΠ n = −Π n σ, on the other hand σΠ n Π n = −Π n σΠ n = Π n Π n σ = Π n σ. This implies Π n σ = 0, which contradicts with rank(Π n σ) = 1. So the only possibility is [Π n , σ] = 0. The other direction is manifest.</figDesc></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0" />
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Supplementary proofs of Proposition 8</head><p>Lemma 1. Let Π n be a projector and σ a density operator with P σ its support projector, then rank (Π n P σ ) = rank (Π n σΠ n ).</p><p>Proof. On the one hand, Π n σΠ n = Π n P σ σP σ Π n , this implies rank(Π n σΠ n ) ≤ rank(Π n P σ ). On the other hand, we can make use of the inequality rank(AB) + rank(BC) ≤ rank(B) + rank(ABC).</p><p>Let A = Π n , B = P σ and C = σ 1/2 . Note that P σ σ 1/2 = σ 1/2 and rank(P σ ) = rank(σ 1/2 ), the above inequality implies</p><p>Hence, rank(Π n P σ ) = rank(Π n σΠ n ). </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Deep learning</title>
+		<author>
+			<persName><forename type="first">Yann</forename><surname>Lecun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Hinton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">521</biblScope>
+			<biblScope unit="issue">7553</biblScope>
+			<biblScope unit="page" from="436" to="444" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Improved protein structure prediction using potentials from deep learning</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Andrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Senior</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Jumper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laurent</forename><surname>Kirkpatrick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Sifre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chongli</forename><surname>Green</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Augustin</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Žídek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">R</forename><surname>Alexander</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Nelson</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bridgland</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">577</biblScope>
+			<biblScope unit="issue">7792</biblScope>
+			<biblScope unit="page" from="706" to="710" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Quantum-state estimation</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Hradil</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. A</title>
+		<imprint>
+			<biblScope unit="volume">55</biblScope>
+			<biblScope unit="page" from="R1561" to="R1564" />
+			<date type="published" when="1997-03">Mar 1997</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Solving the quantum many-body problem with artificial neural networks</title>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Carleo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Troyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">355</biblScope>
+			<biblScope unit="issue">6325</biblScope>
+			<biblScope unit="page" from="602" to="606" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Machine learning phases of matter</title>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Carrasquilla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Roger</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Melko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Physics</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="431" to="434" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Efficient representation of quantum many-body states with deep neural networks</title>
+		<author>
+			<persName><forename type="first">Xun</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lu-Ming</forename><surname>Duan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Communications</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page">662</biblScope>
+			<date type="published" when="2017-09">September 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Learning phase transitions by confusion</title>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">L</forename><surname>Evert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ye-Hua</forename><surname>Van Nieuwenburg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><forename type="middle">D</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Huber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Physics</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="435" to="439" />
+			<date type="published" when="2017-02">February 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Machine learning topological states</title>
+		<author>
+			<persName><forename type="first">Dong-Ling</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaopeng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S. Das</forename><surname>Sarma</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. B</title>
+		<imprint>
+			<biblScope unit="volume">96</biblScope>
+			<biblScope unit="page">195145</biblScope>
+			<date type="published" when="2017-11">Nov 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Neural-network quantum state tomography</title>
+		<author>
+			<persName><forename type="first">Giacomo</forename><surname>Torlai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guglielmo</forename><surname>Mazzola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Carrasquilla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Troyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Melko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Carleo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Physics</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="page" from="447" to="450" />
+			<date type="published" when="2018-03">March 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Deep quantum geometry of matrices</title>
+		<author>
+			<persName><forename type="first">Xizhi</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sean</forename><forename type="middle">A</forename><surname>Hartnoll</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. X</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="page">11069</biblScope>
+			<date type="published" when="2020-03">Mar 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Characterizing quantum supremacy in near-term devices</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Boixo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Sergei</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Isakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Vadim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Smelyanskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nan</forename><surname>Babbush</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhang</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">M</forename><surname>Bremner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hartmut</forename><surname>Martinis</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Neven</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Physics</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="595" to="600" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Quantum supremacy using a programmable superconducting processor</title>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Arute</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kunal</forename><surname>Arya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Babbush</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dave</forename><surname>Bacon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rami</forename><surname>Bardin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rupak</forename><surname>Barends</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Biswas</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Boixo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gsl</forename><surname>Fernando</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">A</forename><surname>Brandao</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Buell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">574</biblScope>
+			<biblScope unit="issue">7779</biblScope>
+			<biblScope unit="page" from="505" to="510" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Quantum algorithms for supervised and unsupervised machine learning</title>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Lloyd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masoud</forename><surname>Mohseni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Rebentrost</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1307.0411</idno>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Quantum principal component analysis</title>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Lloyd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masoud</forename><surname>Mohseni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Rebentrost</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature Physics</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">9</biblScope>
+			<biblScope unit="page" from="631" to="633" />
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Information-theoretic bounds on quantum advantage in machine learning</title>
+		<author>
+			<persName><surname>Hsin-Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Kueng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Preskill</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2101.02464</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Supervised learning with quantumenhanced feature spaces</title>
+		<author>
+			<persName><forename type="first">Vojtěch</forename><surname>Havlíček</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Antonio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristan</forename><surname>Córcoles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aram</forename><forename type="middle">W</forename><surname>Temme</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhinav</forename><surname>Harrow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jerry</forename><forename type="middle">M</forename><surname>Kandala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jay</forename><forename type="middle">M</forename><surname>Chow</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gambetta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">567</biblScope>
+			<biblScope unit="issue">7747</biblScope>
+			<biblScope unit="page" from="209" to="212" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Quantum machine learning in feature hilbert spaces</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Schuld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Killoran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review Letters</title>
+		<imprint>
+			<biblScope unit="volume">122</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page">40504</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Training deep quantum neural networks</title>
+		<author>
+			<persName><forename type="first">Kerstin</forename><surname>Beer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmytro</forename><surname>Bondarenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terry</forename><surname>Farrelly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tobias</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Osborne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Salzmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramona</forename><surname>Scheiermann</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wolf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature communications</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Quantum neuron: an elementary building block for machine learning on quantum computers</title>
+		<author>
+			<persName><forename type="first">Yudong</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gian</forename><forename type="middle">Giacomo</forename><surname>Guerreschi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alán</forename><surname>Aspuru-Guzik</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1711.11240</idno>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Training a quantum optimizer</title>
+		<author>
+			<persName><forename type="first">Dave</forename><surname>Wecker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Matthew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Hastings</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Troyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review A</title>
+		<imprint>
+			<biblScope unit="volume">94</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">22309</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Continuous-variable quantum neural networks</title>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Killoran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Thomas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><forename type="middle">Miguel</forename><surname>Bromley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Arrazola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolás</forename><surname>Schuld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Quesada</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lloyd</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review Research</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page">33063</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Machine learning method for state preparation and gate synthesis on photonic quantum computers</title>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Miguel Arrazola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Thomas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josh</forename><surname>Bromley</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Izaac</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Casey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kamil</forename><surname>Myers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Brádler</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Killoran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Quantum Science and Technology</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">24004</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Quantum optical neural networks</title>
+		<author>
+			<persName><forename type="first">Jonathan</forename><forename type="middle">P</forename><surname>Gregory R Steinbrecher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dirk</forename><surname>Olson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacques</forename><surname>Englund</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Carolan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">npj Quantum Information</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="9" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Fidelity for mixed quantum states</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Jozsa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of modern optics</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="2315" to="2323" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Entropy, von neumann and the von neumann entropy</title>
+		<author>
+			<persName><forename type="first">Dénes</forename><surname>Petz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">John von Neumann and the foundations of quantum physics</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="page" from="83" to="96" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Schumacher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Westmoreland</surname></persName>
+		</author>
+		<title level="m">Relative entropy in quantum information theory. Contemporary Mathematics</title>
+				<imprint>
+			<date type="published" when="2002">2002</date>
+			<biblScope unit="volume">305</biblScope>
+			<biblScope unit="page" from="265" to="290" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">The role of relative entropy in quantum information theory</title>
+		<author>
+			<persName><forename type="first">Vlatko</forename><surname>Vedral</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Reviews of Modern Physics</title>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">197</biblScope>
+			<date type="published" when="2002">2002</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Relative entropy and the bekenstein bound</title>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Casini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Classical and Quantum Gravity</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="issue">20</biblScope>
+			<biblScope unit="page">205021</biblScope>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Fidelity approach to quantum phase transitions</title>
+		<author>
+			<persName><forename type="first">Shi-Jian</forename><surname>Gu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Modern Physics B</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="issue">23</biblScope>
+			<biblScope unit="page" from="4371" to="4458" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">On quantum rényi entropies: A new generalization and some properties</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Müller-Lennert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frédéric</forename><surname>Dupuis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oleg</forename><surname>Szehr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Serge</forename><surname>Fehr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Tomamichel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Mathematical Physics</title>
+		<imprint>
+			<biblScope unit="volume">54</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page">122203</biblScope>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Relative entropy equals bulk relative entropy</title>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Daniel L Jafferis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Lewkowycz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S Josephine</forename><surname>Maldacena</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Suh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of High Energy Physics</title>
+		<imprint>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1" to="20" />
+			<date type="published" when="2016">2016. 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">On variational expressions for quantum relative entropies</title>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Berta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omar</forename><surname>Fawzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Tomamichel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Letters in Mathematical Physics</title>
+		<imprint>
+			<biblScope unit="volume">107</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="2239" to="2265" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<author>
+			<persName><forename type="first">Zhou</forename><surname>Shangnan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1902.10538</idno>
+	</analytic>
+	<monogr>
+		<title level="m">entropy, and markov chains</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Barren plateaus in quantum neural network training landscapes</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jarrod R Mcclean</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Boixo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Vadim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Smelyanskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hartmut</forename><surname>Babbush</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Neven</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature communications</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">Machine learning: a probabilistic perspective</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kevin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Murphy</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+			<publisher>MIT press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nielsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Isaac</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chuang</surname></persName>
+		</author>
+		<title level="m">Quantum Computation and Quantum Information</title>
+				<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

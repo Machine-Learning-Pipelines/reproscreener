@@ -1,0 +1,1102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Transferring Dexterous Manipulation from GPU Simulation to a Remote Real-World TriFinger</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-20">20 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Arthur</forename><surname>Allshire</surname></persName>
+							<email>arthur@allshire.org</email>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">University of Toronto</orgName>
+								<orgName type="institution" key="instit2">Vector Institute</orgName>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution">Nvidia</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mayank</forename><surname>Mittal</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Nvidia</orgName>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="institution">ETH Zurich</orgName>
+								<address>
+									<addrLine>4 Snap, 5 MPI</addrLine>
+									<settlement>Tubingen</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Varun</forename><surname>Lodaya</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">University of Toronto</orgName>
+								<orgName type="institution" key="instit2">Vector Institute</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Viktor</forename><surname>Makoviychuk</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Nvidia</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Denys</forename><surname>Makoviichuk</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Felix</forename><surname>Widmaier</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Manuel</forename><surname>Wüthrich</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Stefan</forename><surname>Bauer</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Ankur</forename><surname>Handa</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Nvidia</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Animesh</forename><surname>Garg</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">University of Toronto</orgName>
+								<orgName type="institution" key="instit2">Vector Institute</orgName>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution">Nvidia</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Transferring Dexterous Manipulation from GPU Simulation to a Remote Real-World TriFinger</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-20">20 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">114DF4693E5C91D02B87CA0038BF9172</idno>
+					<idno type="arXiv">arXiv:2108.09779v2[cs.RO]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract/>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Fine correction Initial Grasp</head><p>Fig. <ref type="figure">1</ref>: Top: Our system learns to grasp and manipulate objects to 6-DoF goal poses with a single policy, entirely in simulation, across a variety of objects. Bottom: We then transfer to a real robot located thousands of kilometers away from where development work is done.</p><p>Abstract-In-hand manipulation of objects is an important capability to enable robots to carry-out tasks which demand high levels of dexterity. This work presents a robot systems approach to learning dexterous manipulation tasks involving moving objects to arbitrary 6-DoF poses. We show empirical benefits, both in simulation and sim-to-real transfer, of using keypoint-based representations for object pose in policy observations and reward calculation to train a model-free reinforcement learning agent. By utilizing domain randomization strategies and large-scale training, we achieve a high success rate of 83% on a real TriFinger system, with a single policy able to perform grasping, ungrasping, and finger gaiting in order to achieve arbitrary poses within the workspace. We demonstrate that our policy can generalise to unseen objects, and success rates can be further improved through finetuning. With the aim of assisting further research in learning in-hand manipulation, we provide a detailed exposition of our system and make the codebase of our system available, along with checkpoints trained on billions of steps of experience, at https://s2r2-ig.github.io</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>Multi-fingered robotic platforms are essential for executing complicated tasks such as fruit harvesting, and circuit assembly. However, performing such dexterous manipulation tasks requires dealing with various challenging factors. These include high-dimensionality, hybrid dynamics, and uncertainties about the environment <ref type="bibr" target="#b0">[1]</ref>.</p><p>Therefore, performing multi-fingered manipulation in the context of deployed systems poses unique challenges which practical controllers must overcome. In our work, we provide a method for creating controllers capable of achieving reliable dexterous manipulation tasks across a variety of domain shifts, both from sim to real and across different simulation scenarios. We demonstrate the robustness of our system through: showing transfer of policies created in simulation to the real world, varying system parameters and showing robustness, and changing the object being manipulated.</p><p>Our controllers are trained and evaluated on the TriFinger <ref type="bibr" target="#b1">[2]</ref> hand. Despite the challenging configuration of the Trifinger system (hand oriented down) and task (grasping and subsequent reposing), we train a unified neural-network to achieve effective and robust control over the system.</p><p>The Trifinger robots are run as cloud-based robot farms. Such remote robotic systems promise to alleviate many of the upfront requirements to install and maintain robot hardware <ref type="bibr" target="#b2">[3]</ref>. However, RaaS systems are also more rigid than commonly used research platforms, as controllers designed for individual platforms must be rolled out across the entire fleet. Hence, the robustness of our learning-based approach is further proven out by deployment on a system which we lacked physical access to.</p><p>The key insight of this paper lies in a careful integration and evaluation of empirical advances in reinforcement learning with high-speed simulation, and practical deployment on a remote robot system. In particular, contribution of this robot systems work are: 1) We provide a framework for learning the skill of in-hand manipulation tasks robust to sim-to-real transfer and object morphology. 2) Unlike previous in-hand manipulation systems, we produce a single policy which performs both grasping and re-posing, simplifying the pipeline of using RL in such systems.</p><p>3) We show the benefits of using keypoints to represent the object in RL algorithms for in-hand manipulation, especially when reposing in 6-DoF. 4) We show our system is robust to changing object morphology and physics parameters, shown through simulated experiments and demonstrated sim-to-real transfer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. RELATED WORK</head><p>A. Learning Dexterous Manipulation with Robot Hands 1. Reinforcement Learning Advances in RL algorithms and computational hardware have enabled rapid progression in the capability of real robots in dynamic scenes. Techniques such as domain randomization and large-scale training have enabled results across a variety of tasks with sim-to-real, including in-hand manipulation <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b5">5]</ref>, as well as in legged locomotion <ref type="bibr" target="#b6">[6,</ref><ref type="bibr" target="#b7">7]</ref>. Active identification of system parameters has also been shown to be helpful in the context of learning manipulation tasks <ref type="bibr" target="#b8">[8]</ref>.</p><p>2. Dextrous Manipulation Dexterous manipulation requires dealing with high-dimensionality of the system, hybrid dynamics, and uncertainties about the environment <ref type="bibr" target="#b0">[1]</ref>. Prior work has trained a control policy for in-hand manipulation of a block with a Shadow Dexterous Hand <ref type="bibr" target="#b3">[4]</ref>. However, this relied on expensive robot hardware in a controlled environment which could be reset and tuned by engineers. Recent works have extended this setup to other object morphologies <ref type="bibr" target="#b9">[9,</ref><ref type="bibr" target="#b10">10]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Hand Platforms</head><p>Recently, Wüthrich et al. <ref type="bibr" target="#b1">[2]</ref> designed an open-sourced robotic platform for dexterous manipulation called TriFinger. The Trifinger platform allows remote deployment of policies on a pre-determined experimental setup <ref type="bibr" target="#b11">[11]</ref>, without tweaking of system parameters. As a result of the "reset-free" nature of the robot, the hand is facing down, and objects must first be picked up from the ground to be manipulated. Prior works do not provide a method to learn this behaviour in a simple way, either choosing to address only one step in this process or resorting to chaining multiple policies together to accomplish the complete reorientation task <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b10">10]</ref>. In contrast, in this work, we present an approach to address these shortcomings.</p><p>Our system is able to perform 6-DoF in-hand manipulation, as opposed to just 3-DoF reorientation. Furthermore, as the object starts outside of the hand, our single learned policy is able to perform not just picking, but also grasping and un-grasping, in contrast to these prior works.</p><p>B. Sim-to-real transfer with RL Policies 1. Challenges of Sim-to-Real Our method relies on learning control policies using gradient-based optimisation combined with large-scale accelerated simulation, a proven method of learning a wide variety of complex robotic tasks <ref type="bibr" target="#b12">[12,</ref><ref type="bibr" target="#b14">13,</ref><ref type="bibr" target="#b15">14,</ref><ref type="bibr" target="#b16">15]</ref>. However, doing so means that policies must solve the "sim-to-real transfer" problem of being robust to inference in a different environment than which they were trained. Sim-toreal transfer of manipulation policies is a challenging problem for two major reasons: 1) differences between real-world environment interactions and that of the simulation where policies are trained, and 2) state estimation of objects being manipulated. For the former, a variety of practical methods Fig. <ref type="figure">2</ref>: Previous setups for performing RL-based dexterous manipulation in the real world have relied on specialised hardware or configurations which may be impractical to scale. For example, OpenAI's work on Shadow Hand <ref type="bibr" target="#b3">[4]</ref> started with the cube in hand (avoiding the need to learn to grasp it), relied on phase space tracking, and only set in-hand orientation goals (rather than full pose goals). In contrast, the Trifinger setup relies only on sensor inputs from RGB cameras and encoders in the fingers, and the object starts in a random position on the ground outside of the hand, yet our system achieves 6-DoF reposing on multiple objects across the workspace.</p><p>have been proposed including Domain Randomisation in simulation <ref type="bibr" target="#b16">[15,</ref><ref type="bibr" target="#b15">14]</ref>, Bayesian optimisation on the real system <ref type="bibr" target="#b17">[16]</ref>, and optimisation of the simulator parameters <ref type="bibr" target="#b8">[8,</ref><ref type="bibr" target="#b18">17]</ref>. 2. State Estimation Previous methods of state estimation have included pose estimation <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b19">18]</ref> more recently, policy distillation as a method to solve sim-to-real problem for state estimation <ref type="bibr" target="#b10">[10,</ref><ref type="bibr" target="#b6">6]</ref>. However this is limited by the visual fidelity of current simulators and has only been shown to work for individual objects, limiting the generality of the policy. As a result, practical approaches leveraging existing work in vision still must rely on using pose tracking in the real world.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. METHOD</head><p>A. Problem Setup: The Trifinger Task 1. Task Description. In this paper, we propose a method for training a controller for the Trifinger hand <ref type="bibr" target="#b1">[2]</ref> to perform 6-DoF manipulation of objects. The objects start on the ground, and the goal of the system is to move the object to a target position and orientation and hold it there. Any solution must be able to move the fingers to the object, grasp it, and perform appropriate un-grasping and finger-gaiting to achieve the corresponding target orientation.</p><p>Our aim is to use Reinforcement Learning (RL) to learn a single policy with a unified reward model to achieve closedloop controller for this task, in contrast to previous works which have used relied on carefully designed state machines on top of RL based low-level skills to produce such multimodal behaviour (see Fig. <ref type="figure">2</ref>). 2. Policy Inference on a Remote Real Robot. It is important to show performance on real world rather than simply simulated systems. This is because of the inherent difficulty in having a simulator with the same physics parameters as a real robot, and the necessity of state estimation in the real world, making it the true test of practical methods in robotics.</p><p>On the Trifinger system, the pose of the object is tracked on the system using 3 cameras <ref type="bibr" target="#b21">[20]</ref>. We convert the posi-tion+quaternion representation output by this system into the keypoint representation described in Sec. III-C and use it as input to the policy. Observations of the object pose from the  </p><formula xml:id="formula_0">q q k curr,1 k curr,8 k target,1 k target,8 ⌧ t ⌧ t 1 ⌧ des ⌧ 1 blarg arthur June 2021 blah q q k curr,1 k curr,8 k target,1 k target,8 ⌧ t ⌧ t 1 ⌧ des ⌧ 1 start end June 2021 blah q q kcurr,</formula><formula xml:id="formula_1">q q k curr,1 k curr,8 k target,1 k target,8 ⌧ t ⌧ t 1 ⌧ des ⌧ 1 Domain Randomization:</formula><p>friction, object mass, object scale Fig. <ref type="figure">3</ref>: Our system trains using the IsaacGym simulator 1 <ref type="bibr" target="#b12">[12]</ref> on 16,384 environments in parallel on a single NVIDIA Tesla V100 or RTX 3090 GPU. Inference is then conducted remotely on a TriFinger robot located across the Atlantic in Germany using the uploaded actor weights. The infrastructure on which we perform sim-to-real transfer is provided courtesy of the organisers of the Real Robot Challenge <ref type="bibr" target="#b20">[19]</ref>.  camera system are provided at 10Hz, compared to the higher frequency of 50Hz that the policy is run at. This means our method has to deal with relatively low-frequency and noisy object observations based on camera sensing. The torque on each joint is limited such that it does not damage the equipment while in operation, however the exact values of these parameters may vary and are not exposed, meaning our system must be robust to a range of these parameters. The policy is uploaded to the remote system and run on a the robot's local computer to mitigate latency issues.</p><formula xml:id="formula_2">OBSERVATION SPACE DEGREES OF FREEDOM FINGER JOINTS POSITION 3 FINGERS • 3 JOINTS • 1[R 1 ] = 9 VELOCITY 3 FINGERS • 3 JOINTS • 1[R 1 ] = 9 OBJECT POSE KEYPOINTS 8 KEYPOINTS • 3 [R 3 ] = 24 GOAL POSE KEYPOINTS 8 KEYPOINTS • 3 [R 3 ] = 24 LAST ACTION TORQUE 3 FINGERS • 3 JOINTS • 1[R 1 ] = 9 TOTAL 75 (a) Actor Observations OBSERVATION SPACE DEGREES OF FREEDOM ACTOR OBSERVATIONS (W/O DR) 75 OBJECT VELOCITY 6 [R 6 ] FINGERTIPS STATE POSE 3 FINGERS • 7 [R 3 × SO(3)] = 21 VELOCITY 3 FINGERS • 6 [R 6 ] = 18 WRENCH 3 FINGERS • 6 [R 6 ] = 18 FINGER JOINTS TORQUE 3 FINGERS • 3 JOINTS • 1[R 1 ] = 9</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Reinforcement Learning for Dexterous Manipulation</head><p>1. RL Formulation We model our problem using a sequential decision making formulation in which the robotic agent interacts with the environment with the objective of maximising the sum of discounted rewards. This is modelled as a discrete time, partially observable Markov Decision Process (POMDP), represented as the tuple (S, O, A, P, r, γ, S 0 ), where S is the state space, O are the observations corresponding to partial </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Actor Critic</head><p>Fig. <ref type="figure">4</ref>: The actor and critic networks are parameterized using fullyconnected layers with ELU activation functions <ref type="bibr" target="#b22">[21]</ref>. information about the system states, A is the action space, P : S × S × A → R are the probabilistic state transition dynamics, r is the reward, γ is the discount factor per timestep, and S 0 : S → R is the distribution over the system's initial state at the beginning of an episode.</p><p>1. Proximal Policy Optimisation (PPO) is an actor-critic RL algorithm <ref type="bibr" target="#b23">[22]</ref> that we build on learning a parametric stochastic policy, π θ (a, o) mapping from observations to an action distribution to maximise the sum of discounted rewards in each episode. Along with the policy π, PPO learns a value function V π φ (s) which approximates the onpolicy value function. Following <ref type="bibr" target="#b24">[23]</ref>, the learned value function is a function of states S rather than observations O, which improves the accuracy of value function estimates. The observations o ∈ O of the policy are described in Table Ia and the states s ∈ S provided in the value function are described in Table <ref type="table" target="#tab_3">Ib.</ref> 2. Parametrization While multiple formulations of reward and observations are possible, we choose to use a parametrisation based on a keypoint formulation to represent the object pose, which we find boosts the ability of the RL algorithm to learn the task at hand (see Sec. III-C, III-D, IV-B).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Hyper-parameters</head><p>For PPO, we use the following hyperparameters: discount factor γ = 0.99, clipping = 0.2. The learning rate is annealed linearly over the course of training from 5e−3 to 1e−6. Our policy π θ : S → A is a Multilayer perceptron (MLP) with 4 hidden layers, 2 of size 256 followed by 2 of size 128, and 9 outputs which are scaled to the torque ranges of the real robot. Our value function V π φ : S → R is an MLP with 2 layers of size 512, followed by 2 layers of size 256 and 128 each and produces a scalar value function  as output. The action space A of our policy is torque on each of the 9 joints of the robot.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">RL Library</head><p>We build on the implementation of PPO from the RL Games library <ref type="bibr" target="#b25">[24]</ref>, which vectorizes observations and actions on GPU allowing us to take advantage of the parallelising provided by the simulator (see Sec. III-E) by reducing the overhead in CPU-GPU communication typical to most CPU-based simulators.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Representation of the Object Pose: Keypoints</head><p>We focus on the task of an object in 6 degrees of freedom. As such, we must represent the pose of the object at multiple stages of our training pipeline. In order to capture both position and orientation in the same space in our representation, we use eight keypoints at the edges of the oriented bounding box of the object being manipulated. In the object's local frame these are denoted k L i ∈ R 3 , i = 1, . . . , 8. The keypoints in the world frame are related to those in the local frame by a transformation k C i = Tk L i , where T depends on the current pose of the object.</p><p>In Sec. IV-B, we contrast keypoint representations to a position+quaterinon formulation used in <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b26">25]</ref>, finding that keypoints improve the policy's success rate substantially. During policy inference in the real world, we note as long as we are able to get the bounding box of the object (via classical trackers as on the Trifinger <ref type="bibr" target="#b21">[20]</ref>, or with learningbased setups which commonly rely on the same keypoints on the oriented bounding box, such as <ref type="bibr" target="#b19">[18,</ref><ref type="bibr" target="#b27">26]</ref>), we are able to obtain the keypoints on the object bounding box required to use this representation in policy input.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D. Reward Formulation &amp; Curriculum</head><p>1. Kernel Our reward function r : S × A → R has three components. Following <ref type="bibr" target="#b6">[6]</ref>, we use a logistic kernel to convert tracking error in Euclidean space into a bounded reward function. We generalise the kernel formulation to account for a range of distance scales, defining, K(x) = Fig. <ref type="figure">5</ref>: Training curves on a reward function similar to prior work <ref type="bibr" target="#b17">[16,</ref><ref type="bibr" target="#b29">28]</ref> for the setting with DR. We take the average of 5 seeds; the shaded areas show standard deviation, noting that curves for Orientation and Position+Orientation overlap during training. It is worth noting that the nature of the reward makes it very difficult for the policy to optimize, particularly achieving an orientation goal.</p><p>(e ax + b + e −ax )</p><p>−1 , where a is a scaling factor and b controls the sensitivity of the kernel at low distances.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Object Displacement Reward</head><p>As noted in Sec. III-C, we use keypoints in order to calculate the reward in a natural space for 3-D reposing. The component of the reward corresponding to the difference between the object's current pose and the desired target pose is given by</p><formula xml:id="formula_3">r o = N i=1 K(||k C i − k T i ||),</formula><p>where the k C i and k T i lie at the N = 8 vertices of the bounding boxes of the object at the current and target configurations respectively (see Sec. III-C).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Finger Reaching Reward</head><p>To encourage the fingers to reach the object during initial exploration, we give a reward for moving the fingers towards the object, which was also found to be helpful in <ref type="bibr" target="#b28">[27]</ref>. This term is defined by sum of the movement of each fingertip towards the goal per timestep:</p><formula xml:id="formula_4">r f = 3 i=1 ∆ t</formula><p>i , where ∆ denotes the change across the timestep of the fingertip distance to the centroid of the object,</p><formula xml:id="formula_5">∆ t i = ||f i,t − p C t || 2 − ||f i,t−1 − p C t−1 || 2 ,</formula><p>and f i ∈ R 3 denotes the position of the i-th fingertip, and p C t denotes the position of the centroid of the object.</p><p>Finally, we define a penalty on the movement of each finger:</p><formula xml:id="formula_6">r v = 3 i=1 || ḟi || 2</formula><p>2 where ḟi denotes the velocity of the i'th fingertip in the global frame. 4. Total Reward Our total reward is defined as:</p><formula xml:id="formula_7">R(s, a) = w f × r f × I(t ≤ N v ) + w v × r v + w o × r o</formula><p>where w f = −750, w v = −0.5 and w o = 40 are the weights of each reward component, determined through search over numerous training runs. We also found in initial experimentation that the curriculum reducing the weight of r f reward to 0 after N v = 5e7 timesteps was needed in order to allow the robot to perform ungrasping needed to facilitate reorientation which is learned later in training. However, having the reward term during the initial phases of training sped up learning by encouraging the robot to interact with the object. In the kernel K we use a = 30 and b = 2 which provided a good balance between learning behaviour early in training and good accuracy later in training.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>E. Simulation Environment</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Choice of Simulator</head><p>We train on the IsaacGym simulator <ref type="bibr" target="#b12">[12]</ref>, a simulation environment tailored towards allowing policy learning with a high sampling rate by parallising physics on a single GPU (&gt;50K samples/sec in policy inference on Tesla V100 and around 100K samples/sec on RTX 3090). A high sampling rate is essential to learn complex dynamic robotics tasks quickly <ref type="bibr" target="#b12">[12,</ref><ref type="bibr" target="#b14">13]</ref>, and the ability to perform training and inference on desktop-level systems is important for enabling other researchers to build on our work and use it for in-hand manipulation. 2. Domain Randomisation Domain Randomization (DR) is a method for improving the robustness of policies for sim-toreal transfer <ref type="bibr" target="#b30">[29,</ref><ref type="bibr" target="#b16">15,</ref><ref type="bibr" target="#b15">14]</ref>. In Domain Randomisation, parameters are sampled from a distribution, ξ ∼ P (Ξ) in order to modify the physics behaviour of the simulated environment. If the real-world physics parameters ξ are within the support of the distribution P (Ξ), then a policy which successfully achieves the task in simulation will be able to perform comparably in the real world.</p><p>We choose our Domain Randomization parameters to account for modelling errors in the environment as well as noise in sensor measurements. These parameters are listed in Table <ref type="table" target="#tab_6">II</ref>. In addition to these randomizations, we apply random forces to the object as described in <ref type="bibr" target="#b3">[4]</ref> in order to improve the stability of grasps and represent un-modelled dynamics. We mimic the refresh rate of the camera on the real system, by repeating the observation of the keypoints for 5 frames (See Sec. III-E). To mimic possible extra camera latency, with 3% probability, we repeat the camera-based objectpose observations for subsequent rounds of policy to mimic dropped frames from the tracker. Up-to-date proprioceptive data is provided to allow the policy to take advantage of the high-frequency and more reliable encoder information available on the real system.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. EXPERIMENTS</head><p>In our experiments, we aim to answer the following four questions pertaining to learning a robust policy for this task, as well as evaluating how well it transfers to the real world: 1) How well does our system learn 6-DoF manipulation with a reward function based on prior works? 2) How does performance change when we use a taskappropriate representation -keypoints -for reward computation and policy input in the 6-DoF reposing task? 3) Is our system robust to sensor noise and varying environment parameters, and to changes in object morphology? 4) How well do our policies, trained entirely in simulation, transfer to the real TriFinger system? A. Experiment 1: Training 1. Success Criterion The aim in our 6-DoF manipulation task is to get the position and orientation of the object to a specified goal position and orientation. We define our metric for 'success' in this task as getting the position within 2 cm, and orientation within 0.4 rad (22°) of the target goal pose as used in <ref type="bibr" target="#b3">[4]</ref>; comparable to mean results obtained in <ref type="bibr" target="#b17">[16]</ref>. Following previous works dealing with similar tasks <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b5">5,</ref><ref type="bibr" target="#b28">27]</ref>,</p><p>we apply a reward based on the position and orientation components of error individually. 2. Alternative Reward Formulation Following experimentation, the best candidate reward of this format was:</p><formula xml:id="formula_8">r o = K(||t C − t T || 2 ) + 1 3 × |d r | + 0.01</formula><p>where t C and t T are the current and goal positions of the object, d r = 2 × arcsin(min(1.0, ||q diff || 2 )), q diff = q C (q T ) * . K is the logistic kernel that takes L2 norm between the current and target object position as input, and d r is the distance in radians between the current and target object orientation. We use the alternative scaling parameter a = 50 in K, which we found to work better in this reward formulation (see Sec. III-D). We use the same weightings for each of the 3 components of the reward as in Sec. III-D. For this experiment, we trained on the 6.5cm cube used in the Real Robot Challenge <ref type="bibr" target="#b20">[19]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Results</head><p>The results are shown in Fig. <ref type="figure">5</ref>. We found that while this formulation of the reward was good at allowing PPO to learn a policy to get the object to the goal, even after 1 Billion steps in an environment with no Domain Randomization it was learning very slowly to achieve the orientation goal.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Experiment 2: Representation of Pose</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Comparison</head><p>The poor results in Experiment 1 (Sec. IV-A) lead us to search for alternative representations of object pose in the calculation of the reward and policy observations; these are described in Sec. III-C and Sec. III-D. We compared our method of using keypoints to represent the object pose and using positions and quaternions in two ways: firstly, using it as the policy input as compared to a position and quaternion representation, and secondly, using it to calculate the reward as compared to a reward based on the linear and angular rotational distances individually. 2. Experimental Setup For the observations, in order to provide a fair comparison between position/quaternion and keypoints as policy input, observation noise and delays are applied in the same manner (by applying them in the position and quaternion space before transforming to keypoints, as noted in Sec. III-E). Also note that both representations only rely on the spatial pose information and fixed size of the object to compute. The pose of the object is represented with a 7-dim vector involving translation and quaternion (t, q). The position and quaternion of the goal pose are provided as input to the actor and critic, replacing the keypoints in Tables <ref type="table" target="#tab_3">Ia and Ib</ref>.</p><p>For the reward, in order to provide a fair comparison to the keypoints reward, as mentioned previously, many hours were spent tuning the kernels and parameters used in the translation based reward, described in Experiment 1. In comparison, little effort was spent tuning the keypoints function, with only one tweak to the weightings in the logistic kernel, showing the relative simplicity of working with this formulation. For this experiment, we trained on the 6.5cm cube used in the Real Robot Challenge <ref type="bibr" target="#b20">[19]</ref>, with keypoints placed at the bounding box (in this case the corners of the cube).  <ref type="figure">8</ref>: The use of a single, continuous policy for grasping and reposing allows the policy to automatically recover from failures. For example in the sequence above the system recovers from a failure and re-grasps the cube to achieve the desired goal pose.</p><p>3. Results Fig. <ref type="figure">6</ref> shows the results of training, with both timesteps and wall-clock time. In the curve without any Domain Randomization, we trained for 1 billion steps over the course of 6 hours on a single GPU. Using keypoints in observations and the reward function performs the best of the four policies, also exhibiting a low variance among seeds.</p><p>When Domain Randomization is applied, the two curves with a keypoints-based reward are far better in terms of success rate at the end of training and in terms of convergence rate; however, in this case having keypoint observations seems to matter somewhat less. This is perhaps due to the longer training (4b steps &amp; 24 hours on a single GPU) overwhelming the inductive bias introduced by using keypoints as representations. However, using keypoints to compute the reward provided a large benefit in both cases, showing the improvement caused by calculating the reward in Euclidean space rather than mixing linear and angular displacements through addition. C. Experiment 3: Robustness of Policies in Simulation 1. Impact of Varying Physics Parameters In order to investigate the impact that Domain Randomization (see Sec. III-E) has on the robustness of policies of a hand in this configuration, we ran experiments by varying parameters outside of the normal domain randomization ranges in simulation. Fig. <ref type="figure">7</ref> shows the results. We find that, despite only being randomized initially within a range of 0.97-1.03x nominal size, our policies with Domain Randomization achieve over an 80% success rate even with a scale of 0.6 and 1.2x nominal size, while those without DR have a success rate that drops off much more quickly outside the normal range. We find similar results when scaling the object mass Fig. <ref type="figure">9</ref>: A selection of the trifinger manipulating various different objects from the EGAD dataset. The system achieves a diversity of emergent grasps enabling it to manipulate a variety of object morphologies to 6-DoF target poses. See the website (https://s2r2-ig. github.io) for more videos of object manipulation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Object</head><p>Cube Policy Finetuned Cube 6.5cm  relative to the nominal range, however in this case we find that the policies using keypoints-based reward even without DR is much more robust at masses 3x nominal.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Other objects &amp; Fine-Tuning</head><p>We tested the change in performance resulting from finetuning the policy (O-KP+R-KP trained with DR on the 6.5cm 3 cube) on 100 randomlyselected objects from the EGAD dataset, and on a selecion of cuboids with random side lengths between 2-8 cm. We found an improvement in policy performance resulting from finetuning on 100 randomly selected EGAD objects, on both this same set of objects and test objects (see Table <ref type="table" target="#tab_10">III</ref>). The gains were even bigger when fine-tuning on cuboids of different scales, suggesting that scale is a more important consideration than shape for generalisation.  show the importance of having a reward function which effectively balances learning to achieve the goal in R 3 and SO(3) in order to have policies with a high success rate in simulation, and thus a high corresponding success rate after real robot transfer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Qualitative Behaviour</head><p>We noticed a variety of emergent behaviours used to achieve sub-goals within the overall objectreposing task. We display some of these in the panel in Figures <ref type="figure" target="#fig_0">1 and 8</ref>. The most prominent of these is "dropping and regrasping". In this maneuver, the robot learns to drop the cube when it is close to the correct position, re-grasp, and pick it back up. This enables the robot to get a stable grasp on the cube in the right position. The robot learns to use the motion of the object to the correct location in the arena as an opportunity to simultaneously rotate it on the ground to make achieving the correct grasp in challenging target locations far from the center of the fingers' workspace.</p><p>Our policy is also robust to dropping -it can recover from a object falling out of the hand and retrieve it from the ground. We were only able to perform these experiments with the 6.5cm 3 cube, as the Trifinger remote inference setup only provided a single size of cube to test on. However, using an off the shelf pose detector (for example <ref type="bibr" target="#b19">[18,</ref><ref type="bibr" target="#b27">26]</ref>), sim-to-real with these is a direction that we could pursue in the future.</p><p>V. SUMMARY This paper emphasizes the empirical value of a systems approach to robot learning through a case study in dexterous manipulation. We introduced a framework for learning inhand manipulation tasks and transferring the resulting policies to the real world. We show how RL algorithms for in-hand manipulation can benefit from using keypoints as opposed to the more ordinary angular and linear displacement-based reward and observation computation. We show that our policies are able to generalise to unseen objects, and success rates can be further improved through finetuning. In contrast to work, our system solves all of the challenges inherent in 6-DoF grasping and reposing in a single policy, simplifying the pipeline of using RL for dexterous manipulation. We provide a clear elucidation of our approach and open source checkpoints and code to allow reproducing our work.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>( a )</head><label>a</label><figDesc>OpenAI's shadow hand setup. The cube starts placed in the hand.(b) The Trifinger setup. The object starts outside of the hand to enable reset-free setup.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 10 :</head><label>10</label><figDesc>Fig. 10: Success Rate on the real robot plotted for different trained agents. O-PQ and O-KP stand for position+quaternion and keypoints observations respectively, and R-PQ and R-KP stand for linear+angular and keypoints based rewards respectively, as discussed in Sec. IV-B. Each mean made of N=40 trials and error bars calculated based on an 80% confidence interval.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>TABLE I :</head><label>I</label><figDesc></figDesc><table /><note>Asymmetric actor-critic to learn dexterous manipulation. While the actor receives noisy observations, which are added as a part of DR (Sec. III-E), the critic receives the same information without any noise and also has access to certain privileged information from simulator.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>TABLE II :</head><label>II</label><figDesc>For observations and actions, σ and σcorr are the standard deviation of additive gaussian noise sampled every timestep and at the start of each episode, respectively. For environment, the parameters represent scaling factor applied to the nominal values in the real robot model.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>TABLE III :</head><label>III</label><figDesc>Fine-tuning performance. We tested the zero-shot performance on the EGAD dataset and a number of differently sized cuboids to measure the robustness to differing object morphologies and scales, respectively. Numbers calculated from N=1024 trials in simulation. We disabled environment, observation &amp; action randomizations.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head></head><label></label><figDesc>D. Experiment 4: Simulation to Remote Real Robot Transfer 1. Experimental Setup We ran experiments on the real robot to determine the success rate of the policies trained with Domain Randomization under the metric defined in Sec. 5. We performed N = 40 trials for each policy on the task setup described in Sec. III-E; the results for each of the four ablations on keypoints which we tested are shown in Fig.10.2. ResultsOut of the four models discussed in Sec. IV-B, the best policy achieved a success rate of 82.5%. Billion steps of training, as discussed in Sec. IV-B. In contrast, neither of the policies trained using the position &amp; quaternion based reward achieved good success rates, with the policy using keypoints-based observations (O-KP+R-PQ) achieving only a 60% success rate while the one with position and quaternion observations (O-PQ+R-PQ) only achieved a 55% success rate. These results</figDesc><table><row><cell></cell><cell>100%</cell><cell></cell><cell></cell></row><row><cell>Success Rate &amp; 80% CI</cell><cell>20% 40% 60% 80%</cell><cell></cell><cell></cell></row><row><cell cols="2">This was achieved with the use of keypoints used in observations of the policy as well as the reward function during training (O-KP+R-KP). The policy using position+quaternion representations but with a reward calculated with keypoints (O-PQ+R-KP) achieved a 77.5% success rate. These first two policies were well within each others' confidence intervals. This is likely due to the impact of the better representation of keypoints being mitigated somewhat after 4 O-PQ R-PQ 0%</cell><cell>O-KP R-PQ</cell><cell>O-PQ R-KP</cell><cell>R-KP O-KP</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The noise to keypoints is not applied directly, instead it is added to the object pose in the world frame before computing the keypoints through it.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">An overview of dexterous manipulation</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">M</forename><surname>Okamura</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Smaby</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">R</forename><surname>Cutkosky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings 2000 ICRA. IEEE</title>
+				<meeting>2000 ICRA. IEEE</meeting>
+		<imprint>
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Trifinger: An open-source robot for learning dexterity</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wüthrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Widmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Grimminger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Akpo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hammoud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Khadiv</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bogdanovic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Berenz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Viereck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Naveau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Righetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schölkopf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bauer</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2008.03596" />
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A survey of research on cloud robotics and automation</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Kehoe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Patil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Goldberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Automation Science and Engineering</title>
+		<imprint>
+			<biblScope unit="issue">2</biblScope>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Learning dexterous in-hand manipulation</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Openai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Baker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Chociej</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Józefowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W</forename><surname>Mcgrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pachocki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Pachocki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Petron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Plappert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Powell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sidor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Tobin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Welinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Weng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zaremba</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<ptr target="http://arxiv.org/abs/1808.00177" />
+		<title level="m">Available</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Solving rubik&apos;s cube with a robot hand</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Openai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Akkaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chociej</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Litwin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mcgrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Petron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Paino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Plappert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Powell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ribas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tezak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Tworek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Welinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Weng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zaremba</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zhang</surname></persName>
+		</author>
+		<ptr target="http://arxiv.org/abs/1910.07113" />
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Learning agile and dynamic motor skills for legged robots</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hwangbo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bellicoso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Tsounis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Koltun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hutter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science Robotics</title>
+		<imprint>
+			<biblScope unit="issue">26</biblScope>
+			<date type="published" when="2019-01">Jan 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Circus anymal: A quadruped learning dexterous manipulation with its limbs</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Homberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Miki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Farshidian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Okada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Inaba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hutter</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Closing the sim-to-real loop: Adapting simulation randomization with real world experience</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Chebotar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Handa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Makoviychuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Macklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Issac</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Ratliff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Fox</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Generalization in dexterous manipulation via geometryaware multi-task learning</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Mordatch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Pathak</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2111.03062" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">A system for general in-hand object re-orientation</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2111.03043" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Widmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wüthrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Funk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">U D</forename><surname>Jesus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Watson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Srinivasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">R</forename><surname>Walter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Madan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">B</forename><surname>Schaff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Maeda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Yoneda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yarats</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Allshire</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">K</forename><surname>Gordon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Bhattacharjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">S</forename><surname>Srinivasa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Garg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Buchholz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Stark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Steinbrenner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Akpo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Joshi</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Isaac Gym: High Performance GPU-Based Physics Simulation For Robot Learning</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Makoviychuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wawrzyniak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Storey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Macklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hoeller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Rudin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Allshire</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Handa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>State</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2108.10470" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">A robot cluster for reproducible research in dexterous manipulation</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schölkopf</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2109.10957, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Brax -a differentiable physics engine for large scale rigid body simulation</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">D</forename><surname>Freeman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Frey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Raichuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Girgin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Mordatch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Bachem</surname></persName>
+		</author>
+		<ptr target="http://github.com/google/brax" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Adversarially Robust Policy Learning through Active Construction of Physically-Plausible Perturbations</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mandlekar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">*</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">*</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Garg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">*</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Savarese</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017">2017. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Sim-to-real transfer of robotic control with dynamics randomization</title>
+		<author>
+			<persName><forename type="first">X</forename><forename type="middle">B</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zaremba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Abbeel</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018-05">2018. May 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Benchmarking structured policies and policy optimization for real-world dexterous object manipulation</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Funk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">B</forename><surname>Schaff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Madan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Yoneda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">U D</forename><surname>Jesus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Watson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">K</forename><surname>Gordon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Widmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">S</forename><surname>Srinivasa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Bhattacharjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">R</forename><surname>Walter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Peters</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Bayessim: adaptive domain randomization via probabilistic inference for robotics simulators</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ramos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">C</forename><surname>Possas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Fox</surname></persName>
+		</author>
+		<ptr target="http://arxiv.org/abs/1906.01728" />
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Deep Object Pose Estimation for Semantic Robotic Grasping of Household Objects</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tremblay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>To</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Sundaralingam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Fox</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Birchfield</surname></persName>
+		</author>
+		<editor>CoRL</editor>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Real robot challenge</title>
+		<ptr target="https://real-robot-challenge.com" />
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Trifinger object tracking</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wüthrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Widmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Ahmed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Fast and accurate deep network learning by exponential linear units (elus)</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Clevert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Unterthiner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<ptr target="http://arxiv.org/abs/1511.07289" />
+		<editor>ICLR 2016, Y. Bengio and Y. LeCun</editor>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">Proximal policy optimization algorithms</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schulman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Wolski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Dhariwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Klimov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Asymmetric actor critic for imagebased robot learning</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Pinto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Welinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zaremba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Abbeel</surname></persName>
+		</author>
+		<ptr target="http://arxiv.org/abs/1710.06542" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title level="m" type="main">Rl games</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Makoviichuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Makoviychuk</surname></persName>
+		</author>
+		<ptr target="https://github.com/Denys88/rl_games/" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">GPU-Accelerated Robotic Simulation for Distributed Reinforcement Learning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Makoviychuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Handa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Chentanez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Macklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Fox</surname></persName>
+		</author>
+		<ptr target="http://proceedings.mlr.press/v87/liang18a.html" />
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+	<note>in CoRL 2018. PMLR</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<title level="m" type="main">Cosypose: Consistent multi-view multi-object 6d pose estimation</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Labbé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Carpentier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Aubry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sivic</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2008.08465" />
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Causalworld: A robotic manipulation benchmark for causal structure and transfer learning</title>
+		<author>
+			<persName><forename type="first">O</forename><surname>Ahmed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Träuble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Neitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wüthrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schölkopf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bauer</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2010.04296" />
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">CoRR</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Dexterous manipulation primitives for the real robot challenge</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Srinivasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2101.11597" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">CoRR</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Domain randomization for transferring deep neural networks from simulation to the real world</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tobin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Fong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zaremba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Abbeel</surname></persName>
+		</author>
+		<ptr target="http://arxiv.org/abs/1703.06907" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

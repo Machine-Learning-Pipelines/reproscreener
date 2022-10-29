@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Practical and Parallelizable Algorithms for Non-Monotone Submodular Maximization with Size Constraint</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-21">21 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Yixin</forename><surname>Chen</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science &amp; Engineering</orgName>
+								<orgName type="institution">Texas A&amp;M University College Station</orgName>
+								<address>
+									<region>TX</region>
+								</address>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Alan</forename><surname>Kuhnle</surname></persName>
+							<email>kuhnle@tamu.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science &amp; Engineering</orgName>
+								<orgName type="institution">Texas A&amp;M University College Station</orgName>
+								<address>
+									<region>TX</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Practical and Parallelizable Algorithms for Non-Monotone Submodular Maximization with Size Constraint</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-21">21 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">662299E5754A38295FF31B56074AC924</idno>
+					<idno type="arXiv">arXiv:2009.01947v4[cs.DS]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present combinatorial and parallelizable algorithms for maximization of a submodular function, not necessarily monotone, with respect to a size constraint. We improve the best approximation factor achieved by an algorithm that has optimal adaptivity and nearly optimal query complexity to 0.193 − ε. The conference version of this work mistakenly employed a subroutine that does not work for non-monotone, submodular functions. In this version, we propose a fixed and improved subroutine to add a set with high average marginal gain, ThreshSeq, which returns a solution in O (log(n)) adaptive rounds with high probability. Moreover, we provide two approximation algorithms. The first has approximation ratio 1/6 − ε, adaptivity O(log(n)), and query complexity O(n log(k)), while the second has approximation ratio 0.193 − ε, adaptivity O(log 2 (n)), and query complexity O(n log(k)). Our algorithms are empirically validated to use a low number of adaptive rounds and total queries while obtaining solutions with high objective value in comparison with state-of-the-art approximation algorithms, including continuous algorithms that use the multilinear extension.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>A nonnegative set function f : 2 N → R + , defined on all subsets of a ground set N of size n, is submodular if for all A, B ⊆ N , f (A)+f (B) ≥ f (A∪B)+f (A∩B). Submodular set functions naturally arise in many learning applications, including data summarization <ref type="bibr" target="#b30">(Simon, Snavely, &amp; Seitz, 2007;</ref><ref type="bibr" target="#b31">Sipos, Swaminathan, Shivaswamy, &amp; Joachims, 2012;</ref><ref type="bibr" target="#b32">Tschiatschek, Iyer, Wei, &amp; Bilmes, 2014;</ref><ref type="bibr" target="#b25">Libbrecht, Bilmes, &amp; Stafford, 2017)</ref>, viral marketing <ref type="bibr" target="#b22">(Kempe, Kleinberg, &amp; Tardos, 2003;</ref><ref type="bibr" target="#b20">Hartline, Mirrokni, &amp; Sundararajan, 2008)</ref>, and recommendation systems <ref type="bibr" target="#b11">(El-Arini &amp; Guestrin, 2011)</ref>. Some applications yield submodular functions that are not monotone (a set function is monotone if A ⊆ B implies f (A) ≤ f (B)): for example, image summarization with diversity <ref type="bibr" target="#b26">(Mirzasoleiman, Badanidiyuru, &amp; Karbasi, 2016)</ref> or revenue maximization on a social network <ref type="bibr" target="#b20">(Hartline et al., 2008)</ref>. In this work, we study the maximization of a (not necessarily monotone) submodular function subject to a cardinality constraint; that is, given submodular function f and integer k, determine arg max |S|≤k f (S) (SMCC). Access to f is provided through a value query oracle, which when queried with the set S returns the value f (S).</p><p>As the amount of data in applications has exhibited exponential growth in recent years (e.g. the growth of social networks <ref type="bibr" target="#b27">(Mislove, Koppula, Gummadi, Druschel, &amp; Bhattacharjee, 2008)</ref> or genomic data <ref type="bibr" target="#b25">(Libbrecht et al., 2017)</ref>), it is necessary to design algorithms for SMCC that can scale to these large datasets. One aspect of algorithmic efficiency is the query complexity, the total number of queries to the oracle for f ; since evaluation of f is often expensive, the queries to f often dominate the runtime of an algorithm. In addition to low query complexity, it is necessary to design algorithms that parallelize well to take advantage of modern computer architectures. To quantify the degree of parallelizability of an algorithm, the adaptivity or adaptive complexity of an algorithm is the minimum number of sequential rounds such that in each round the algorithm makes O(poly(n)) independent queries to the evaluation oracle. The lower the adaptive complexity of an algorithm, the more suited the algorithm is to parallelization, as within each adaptive round, the queries to f are independent and may be easily parallelized.</p><p>The design of algorithms with nontrivial adaptivity for SMCC when f is monotone was initiated by <ref type="bibr">Balkanski and Singer's (2018)</ref>, who also prove a lower bound of Ω(log(n)/ log log(n)) adaptive rounds to achieve a constant approximation ratio. Recently, much work has focused on the design of adaptive algorithms for SMCC with (not necessarily monotone) submodular functions, as summarized in Table <ref type="table" target="#tab_0">1</ref>. However, although many algorithms with low adaptivity have been proposed, most of these algorithms exhibit at least a quadratic dependence of the query complexity on the size n of the ground set, for k = Ω(n). For many applications, instances have grown too large for quadratic query complexity to be practical. Therefore, it is necessary to design adaptive algorithms that also have nearly linear query complexity. An algorithm in prior literature that meets this requirement is the algorithm developed by <ref type="bibr">Fahrbach et al.'s (2019a)</ref>, which has O(n log(k)) query complexity and O(log(n)) adaptivity. However, the approximation ratio stated in <ref type="bibr">Fahrbach et al.'s (2019a)</ref> for this algorithm does not hold, as discussed in Section 1.1 and Appendix B.</p><p>Contributions. In this work, we propose two fast, combinatorial algorithms for SMCC: the (1/6 − ε)-approximation algorithm AdaptiveSimpleThreshold (AST) with adaptivity O(log(n)) and query complexity O(n log(k)); and the (0.193 − ε)-approximation algorithm AdaptiveThresholdGreedy (ATG) with adaptivity O(log(n) log(k)) and query complexity O(n log(k)).</p><p>The above algorithms both employ a lowly-adaptive subroutine to add multiple elements that satisfy a given marginal gain, on average. The conference version <ref type="bibr" target="#b23">(Kuhnle, 2021)</ref> of this paper used the Threshold-Sampling subroutine of <ref type="bibr">Fahrbach et al.'s (2019b</ref><ref type="bibr">Fahrbach et al.'s ( , 2019a) )</ref> for this purpose. However, the theoretical guarantee (Lemma 2.3 of <ref type="bibr">Fahrbach et al.'s (2019a)</ref>) for non-monotone functions does not hold, as discussed further. In Appendix B, we give a counterexample to the performance guarantee of Threshold-Sampling. In this version, we introduce a new threshold subroutine ThreshSeq, which not only fixes the problem that Threshold-Sampling faced, but achieves its guarantees with high probability as opposed to in expectation; the high probability guarantees simplify the analysis of our approximation algorithms that rely upon the ThreshSeq subroutine. Our algorithm AST uses a double-threshold procedure to obtain its ratio of 1/6 − ε. Our second algorithm ATG is a low-adaptivity modification of the algorithm of <ref type="bibr">Gupta et al.'s (2010)</ref>, for which we improve the ratio from 1/6 to ≈0.193 through a novel analysis. Both of our algorithms use the low-adaptivity, threshold sampling procedure ThreshSeq and a subroutine for unconstrained maximization of a submodular function <ref type="bibr" target="#b17">(Feige, Mirrokni, &amp; Vondrák, 2011;</ref><ref type="bibr" target="#b9">Chen, Feldman, &amp; Karbasi, 2019)</ref> as components. More details are given in the related work discussion below and in Section 4.</p><p>The new ThreshSeq does not rely on sampling to achieve concentration bounds, which significantly improves the practical efficiency of our algorithms over the conference version. Empirically, we demonstrate that both of our algorithms achieve superior objective value to current state-of-the-art algorithms while using a small number of queries and adaptive rounds on two applications of SMCC. In this work, we propose the ThreshSeq algorithm (Section 2) that fixes the problems of Threshold-Sampling and runs in linear time in the size n of the ground set in O(log n) rounds. We solve these problems by bifurcating the solution found by the algorithm into two sets: an auxilliary set A separate from the solution set A found by ThreshSeq; the algorithm maintains that A ⊆ A, and the larger set is used for filtering from the ground set, while the smaller set maintains desired bounds on the average marginal gain.</p><p>Algorithms with Low Adaptive Complexity. Since the study of parallelizable algorithms for submodular optimization was initiated by <ref type="bibr">Balkanski and Singer's (2018)</ref>, there have been a number of O(log n)-adaptive algorithms designed for SMCC. When f is monotone, adaptive algorithms that obtain the optimal ratio <ref type="bibr" target="#b29">(Nemhauser &amp; Wolsey, 1978)</ref> of 1 − 1/e − ε have been designed by <ref type="bibr">Balkanski et al.'s (2019</ref><ref type="bibr">), Fahrbach et al.'s (2019b)</ref>, <ref type="bibr">Ene and</ref><ref type="bibr">Nguyen's (2019), Chen et al.'s (2021)</ref>. Of these, the algorithm of <ref type="bibr">Chen et al.'s (2021)</ref> also has the state-of-the-art sublinear adapativity and linear query complexity.</p><p>However, when the function f is not monotone, the best approximation ratio with polynomial query complexity for SMCC is unknown, but falls within the range [0.385, 0.491] <ref type="bibr" target="#b5">(Buchbinder &amp; Feldman, 2016;</ref><ref type="bibr" target="#b18">Gharan &amp; Vondrák, 2011)</ref>. For SMCC, algorithms with nearly optimal adaptivity have been designed by <ref type="bibr">Balkanski et al.'s (2018)</ref>, <ref type="bibr" target="#b8">Chekuri and Quanrud's (2019)</ref>, <ref type="bibr">Ene et al.'s (2019</ref><ref type="bibr">), Fahrbach et al.'s (2019a)</ref>, <ref type="bibr" target="#b0">Amanatidis et al.'s (2021)</ref>; for the query complexity and approximation factors of these algorithms, see Table <ref type="table" target="#tab_0">1</ref>. Of these, the best approximation ratio of (1/e − ε) ≈ 0.368 is obtained by the algorithm of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>. However, this algorithm requires access to an oracle for the gradient of the continuous extension of a submodular set function, which requires Ω(nk 2 log 2 (n)) queries to sufficiently approximate; the practical performance of the algorithm of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> is investigated in our empirical evaluation of Section 5. Other than the algorithms of <ref type="bibr">Fahrbach et al.'s (2019b)</ref>  with more than quadratic dependence on n; and the second variant gets a worse approximation ratio and worse number of queries than our algorithm (ATG) with the same adaptivity.</p><p>The IteratedGreedy Algorithm. Although the standard greedy algorithm performs arbitrarily badly for SMCC, <ref type="bibr">Gupta et al.'s (2010)</ref> showed that multiple repetitions of the greedy algorithm, combined with an approximation for the unconstrained maximization problem, yields an approximation for SMCC. Specifically, <ref type="bibr">Gupta et al.'s (2010)</ref> provided the IteratedGreedy algorithm, which achieves an approximation ratio of 1/6 for SMCC when the 1/2-approximation of <ref type="bibr" target="#b6">Buchbinder et al.'s (2012)</ref> is used for the unconstrained maximization subproblems. Our algorithm AdaptiveThresholdGreedy uses ThreshSeq combined with the descending thresholds technique of <ref type="bibr" target="#b1">Badanidiyuru and Vondrák's (2014)</ref> to obtain an adaptive version of IteratedGreedy, as described in Section 4. Pseudocode for IteratedGreedy is given in Appendix E, where an improved ratio of ≈0.193 is proven for this algorithm; we also prove the ratio of nearly 0.193 for our adaptive algorithm ATG in Section 4.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.2">Preliminaries</head><p>A submodular set function defined on all subsets of ground set N is denoted by f . The marginal gain of adding an element s to a set S is denoted by ∆ (s | S) = f (S ∪ {s}) − f (S).</p><p>Let OPT = max |S|≤k f (S). The restriction of f to all subsets of a set S ⊆ N is denoted by f S . Next, we describe two subproblems both of our algorithms need to solve: namely, unconstrained maximization subproblems and a threshold sampling subproblem. For both of these subproblems, procedures with low adaptivity are needed.</p><p>The Unconstrained Maximization Problem. The first subproblem is unconstrained maximization of a submodular function. When the function f is non-monotone, the problem of maximizing f without any constraints is NP-hard <ref type="bibr" target="#b17">(Feige et al., 2011)</ref>. Recently, <ref type="bibr">Chen et al.'s (2019)</ref> developed an algorithm that achieves nearly the optimal ratio of 1/2 with constant adaptivity, as summarized in the following theorem.</p><p>Theorem 1 <ref type="bibr">(Chen et al.'s (2019)</ref>). For each ε &gt; 0, there is an algorithm that achieves a (1/2 − ε)-approximation for unconstrained submodular maximization using O(log(1/ε)/ε) adaptive rounds and O(n log 3 (1/ε)/ε 4 ) evaluation oracle queries.</p><p>To achieve the approximation factor listed for our algorithms in Table <ref type="table" target="#tab_0">1</ref>, the algorithm of <ref type="bibr">Chen et al.'s (2019)</ref> is employed for unconstrained maximization subproblems.</p><p>The Threshold Problem. The second subproblem is the following:</p><p>Definition 2 (Threshold). Given a threshold τ ∈ R and integer k, choose a set S such that 1)</p><formula xml:id="formula_0">f (S) ≥ τ |S|; 2) if |S| &lt; k, then for any x ∈ S, ∆ (x | S) &lt; τ .</formula><p>Algorithms that can use a solution to this subproblem occur frequently, and so multiple algorithms in the literature for this subproblem have been formulated <ref type="bibr" target="#b16">(Fahrbach et al., 2019b;</ref><ref type="bibr" target="#b21">Kazemi, Mitrovic, Zadimoghaddam, Lattanzi, &amp; Karbasi, 2019;</ref><ref type="bibr" target="#b0">Amanatidis et al., 2021;</ref><ref type="bibr" target="#b10">Chen et al., 2021)</ref>. We want a procedure that can solve Threshold with the following three properties: 1) in linear time; 2) in O(log n) adaptive rounds; 3) the function f is nonmonotone.</p><p>None of the prior algorithms satisfy our requirements, since the procedures in Input: evaluation oracle f : 2 N → R + , constraint k, accuracy δ, error ε, threshold τ 3:</p><formula xml:id="formula_1">Initialize A ← ∅, A ← ∅, V ← N , = 4 2 ε log(n) + log n δ 4:</formula><p>for j ← 1 to do Sequential for loop 5:</p><formula xml:id="formula_2">Update V ← {x ∈ V : ∆ (x | A) ≥ τ } Filtering step w.r.t. A 6: if |V | = 0 then 7: return A, A 8: V ← random-permutation(V ) 9: s ← min{k − |A|, |V |} 10: B[1 : s] ← [none, • • • , none]</formula><p>11:</p><p>for i ← 1 to s in parallel do Parallel gain computation 12:</p><formula xml:id="formula_3">T i−1 ← {v 1 , v 2 , . . . , v i−1 } 13: if ∆ (v i | A ∪ T i−1 ) ≥ τ then B[i] ← true 14: elif ∆ (v i | A ∪ T i−1 ) &lt; 0 then B[i] ← false 15: i * ← max{i : #trues in B[1 : i] ≥ (1 − ε)i} Detection of good filtering next iteration 16: A ← A ∪ T i *</formula><p>A gets all elements In this paper, we propose ThreshSeq, which is linear time and has O(log n) adaptivity. This algorithm does not exactly solve Threshold; instead, it returns two sets A ⊆ A, such that f (A ) ≥ τ (1 − ε)|A| with high probability; and ∆ (x | A) &lt; τ for all x ∈ A, which is enough for our algorithms.</p><p>Organization. In Section 2, we introduce our threshold sampling algorithm: ThreshSeq, with detailed analysis in Appendix C. Then, in Sections 3 and 4, we analyze our algorithms using the ThreshSeq and UnconstrainedMax procedures. Our empirical evaluation is reported in Section 5 with more discussions in Appendix G.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">The ThreshSeq Algorithm</head><p>In this section, we introduce the linear and highly parallelizable threshold sampling algorithm ThreshSeq (Alg. 1). This algorithm has logarithmic adaptive rounds and linear query calls with high probability. Rather than directly solving Threshold, it returns two sets A ⊆ A such that the average marginal gain of elements of A is exactly larger than the threshold with a small error rate, and ∆ (x | A) &lt; τ for any x ∈ A.</p><p>Overview of Algorithm. To obtain large sequences of elements with gains above τ , the machinery of existing monotone algorithms <ref type="bibr" target="#b21">(Kazemi et al., 2019;</ref><ref type="bibr" target="#b10">Chen et al., 2021</ref>) is adopted. These algorithms work by adaptively adding sequences of elements to a set A, where the sequence has been checked in parallel to have at most an ε fraction of the sequence failing the marginal gain condition. A uniformly random permutation of elements is considered, where the average marginal gain being below τ is detected by a high proportion of failures in the sequence, which leads to a large number of elements being filtered out at the next iteration.</p><p>The intuitive reason why this does not directly work for non-monotone functions (i.e. A is not a solution to Threshold) is the same reason why Threshold-Sampling of <ref type="bibr">Fahrbach et al.'s (2019b</ref><ref type="bibr">Fahrbach et al.'s ( , 2019a</ref>) fails: if one of the elements added fails the marginal gain condition, it may do so arbitrarily badly and have a large negative marginal gain. Moreover, one cannot simply exclude such elements from consideration, because they are needed to ensure the filtering step at the next iteration will discard a large enough fraction of elements.</p><p>Our solution is to keep these elements in the set A which is used for filtering, but only include those elements with a nonnegative marginal gain in the candidate solution set A . The membership of A is known since the gain of every element was computed in parallel. Moreover, |A | ≥ (1 − ε)|A|, which gives the needed relationship on the average marginal gain of each element of A .</p><p>We prove the following theorem concerning the performance of ThreshSeq.</p><p>Theorem 3. Let (f, k) be an instance of SMCC. For any constant ε, the algorithm ThreshSeq outputs A ⊆ A ⊆ N such that the following properties hold: 1) The algorithm succeeds with probability at least 1 − δ/n. 2) There are O (n/ε) oracle queries in expectation and O (log(n/δ)/ε) adaptive rounds.</p><p>3</p><formula xml:id="formula_4">) It holds that f (A ) ≥ (1 − ε)τ |A|. If |A| &lt; k, then ∆ (x | A) &lt; τ for all x ∈ N . 4) It also holds that f (A ) ≥ f (A) and |A | ≥ (1 − ε)|A|</formula><p>A downside of this bifurcated approach is that a downstream algorithm receives two sets A, A instead of one from ThreshSeq and must be able to handle the fact that the gain of an element to the solution A may be greater than τ . Fortunately, our approximation algorithms below can easily handle this restriction.</p><p>Overview of Proof. The proof of this theorem mainly focuses on two questions: 1) if a constant fraction of elements can be filtered out at any iteration with a high probability; 2) if the two sets returned solve Threshold indirectly. In Lemma 4, it is certified that the number of elements being deleted in the next iteration monotonously increases from 0 to |V | as the size of the selected set increases. Then, by probability lemma and concentration bounds, Lemma 5 answers the first question. Furthermore, with enough iterations, the candidate set V becomes empty at some point with a high probability. Also, since the size of the candidate set |V | exponentially decreases, intuitively, with logarithmic iterations, the total queries is linear. As for Threshold, it is obvious that the second property holds with set A; and, by discarding the elements with negative gains in A, the gains of the rest elements increase and follow the first property of Threshold.</p><p>Proof of Theorem 3. Success Probability. The algorithm succeeds if |V | = 0 or |A| = k at termination. If we can filter out a constant fraction of V or select a subset with k − |A| elements at any iteration with a constant probability, then, with enough iterations, the algorithm successfully terminates with a high probability. The proofs of lemmas in this section are given in Appendix C.</p><p>Lemma 4. After random-permutation on Line 8, let</p><formula xml:id="formula_5">S i = {x ∈ V : ∆ (x | A ∪ T i ) &lt; τ }. It holds that |S 0 | = 0, |S |V | | = |V |, and |S i−1 | ≤ |S i |.</formula><p>From Lemma 4, there exists a point t such that t = min{i :</p><formula xml:id="formula_6">|S i | ≥ ε|V |/2}</formula><p>, where the next iteration filters out more than ε/2-fraction of elements if i * ≥ t. Intuitively, when i ≤ t, there is a high probability that the portion of trues in B[1 : i] exceeds 1 − ε. The following lemma is provided.</p><p>Lemma 5. It holds that P r (i * &lt; min{s, t}) ≤ 1/2.</p><p>Suppose the algorithm does not stop when |A| = 0. If so, in the following iterations, it always holds that s = 0 and T i * = ∅. Lemma 5 still holds in this case. If there are at least m = log 1−ε/2 (1/n) iterations that i * ≥ min{s, t}, the algorithm terminate successfully. Define such iteration as a successful iteration. Then, the number of successful iterations is a sum of dependent Bernoulli random variables. With probability lemma and Chernoff bounds, the algorithms is proven to be succeed with probability at least 1 − δ/n in Appendix C.</p><p>Objective Values and Marginal Gains. If |A| &lt; k, it holds that algorithm terminates with |V | = 0. So, for any x ∈ N , there exists an iteration j (x) + 1 such that x is filtered out at iteration j (x) +1. Then, due to submodularity, it holds that ∆ (</p><formula xml:id="formula_7">x | A) ≤ ∆ x | A j (x) &lt; τ .</formula><p>Lemma 6. Say an element added to the solution set good if its gain is greater than τ . A and A returned by Algorithm 1 hold the following properties: 1) There are at least (1 − ε)fraction of A that is good. 2) A good element in A is always a good element in A . 3) And, any element in A has non-negative marginal gain when added.</p><p>Lemma 6 shows the properties of any single element in A and A . Since A is a subset of A with all the positive gain elements, it holds that |A | ≥ (1 − ε)|A|. By deleting an element in a set of sequence, the marginal gains of the other elements is nondecreasing due to the diminishing property of submodular function. For any x ∈ A, let A (x) be a subsequence of A before x is added into A. Define A (x) analogously. By Lemma 6, it holds that</p><formula xml:id="formula_8">f (A ) = x∈A ∆ x | A (x) ≥ x∈A ∆ x | A (x) + x∈A\A ∆ x | A (x) ≥ f (A), f (A ) = x∈A ∆ x | A (x) ≥ x∈A ,x is good ∆ x | A (x) ≥ (1 − ε)τ |A|. Algorithm 2 The AdaptiveSimpleThreshold Algorithm 1: procedure AST(f, N , k, ε) 2: Input: evaluation oracle f : 2 N → R + , constraint k, accuracy parameter ε &gt; 0 3: Initialize M ← max x∈N f (x); c ← 4 + α, where α −1 is ratio of Unconstrained- Max; ← log 1−ε (1/(ck))) 4:</formula><p>for i ← 0 to in parallel do 5:</p><formula xml:id="formula_9">τ i ← M (1 − ε) i 6: A i , A i ← ThreshSeq (f, k, τ i , ε, 1/2) 7: B i , B i ← ThreshSeq f N \A i , k, τ i , ε, 1/2 8: A i ← UnconstrainedMax(A i ) 9: C i ← arg max{f (A i ), f (B i ), f (A i )} 10: return C ← arg max i {f (C i )}</formula><p>Adaptivity and Query Complexity. In Alg. 1, the oracle queries occur on Line 5 and 13. Since filtering and inner for loop can be done in parallel, there are constant adaptive rounds in an iteration. Therefore, the adaptivity is O ( ) = O (log(n/δ)/ε).</p><p>As for the query complexity, let V j be the set V after filtering on Line 5 in iteration j. There are |V j−1 | + 1 and |V j | + 1 query calls on Line 5 and 13, respectively. Suppose the number of iterations that successfully filter out more than ε/2-fraction of V equals i before current iteration j. The size of |V j | can be bounded by n(1 − ε/2) i . We show that the expected total queries are O (n/ε) in Appendix C.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">The AdaptiveSimpleThreshold Algorithm</head><p>In this section, we present the simple algorithm AdaptiveSimpleThreshold (AST, Alg. 2) and show it obtains a ratio of 1/6 − ε with nearly optimal query and adaptive complexity. This algorithm relies on running ThreshSeq for a suitably chosen threshold value. A procedure for unconstrained maximization is also required.</p><p>Overview of Algorithm. Algorithm AST works as follows. First, the for loop guesses a value of τ close to OPT  (4+α)k , where 1/α is the ratio of the algorithm used for the unconstrained maximization subproblem. Next, ThreshSeq is called with parameter τ to yield set A and A ; followed by a second call to ThreshSeq with f restricted to N \ A to yield set B and B . Next, an unconstrained maximization is performed with f restricted to A to yield set A ; finally, the best of the three candidate sets A , B , A is returned.</p><p>We prove the following theorem concerning the performance of AST.</p><p>Theorem 7. Suppose there exists an (1/α)-approximation for UnconstrainedMax with adaptivity Θ and query complexity Ξ, and let ε &gt; 0, c = 4+α. Then there exists an algorithm for SMCC with expected approximation ratio c −1 − ε with probability at least 1 − 1/n, expected query complexity O log 1−ε (1/(ck)) • (n/ε + Ξ) , and adaptivity O (log(n)/ε + Θ).</p><p>If the algorithm of Chen et al.'s ( <ref type="formula">2019</ref>) is used for UnconstrainedMax, AST achieves ratio 1/6 − ε with adaptive complexity O (log(n)/ε + log(1/ε)/ε) and query complexity</p><formula xml:id="formula_10">O log 1−ε (1/(6k)) • n/ε + n log 3 (1/ε)/ε 4 .</formula><p>Overview of Proof. The proof uses the following strategy: either ThreshSeq finds a set A or B with value ≈ τ k, which is sufficient to achieve the ratio, or we have two disjoint sets A, B of size less than k, such that for any x ∈ A ∪ B, ∆ (x | A) &lt; τ and ∆ (x | B) &lt; τ . In this case, for any set O, we have by submodularity,</p><formula xml:id="formula_11">f (O) ≤ f (O ∩ A) + f (O \ A).</formula><p>The first term is bounded by the unconstrained maximization, and the second term is bounded by an application of submodularity and the fact that the maximum marginal gain of adding an element into A or B is below τ . The choice of constant c balances the trade-off between the two cases of the proof.</p><p>Proof of Theorem 7. Let (f, k) be an instance of SMCC, and let ε &gt; 0. Suppose algorithm AST uses a procedure for UnconstrainedMax with expected ratio 1/α. We will show that the set C returned by algorithm</p><formula xml:id="formula_12">AST(f, k, ε) satisfies E [f (C)] ≥ c −1 − ε OPT with probability at least (1 − 1/n),</formula><p>where OPT is the optimal solution value on the instance (f, k).</p><formula xml:id="formula_13">Observe that τ 0 = M = max x∈N f (x) ≥ OPT/k by submodularity of f ; τ = M (1 − ε) ≤ OPT/(ck) since M ≤ OPT. Because τ decreases by a factor of 1 − ε, there exists i 0 such that (1−ε)OPT ck ≤ τ i 0 ≤ OPT ck . Let A, A , B, B , A denote A i 0 , A i 0 , B i 0 , B i 0 , A i 0 , respectively.</formula><p>For the rest of the proof, we assume that the properties of Theorem 3 hold for the calls to ThreshSeq with threshold τ i 0 , which happens with at least probability 1 − 1/(2n) by the union bound.</p><p>Case |A| = k or |B| = k. Suppose that |A| = k without loss of generality. By Theorem 3 and the value of τ i 0 , it holds that,</p><formula xml:id="formula_14">f (A ) ≥ (1 − ε)τ i 0 |A| ≥ (1 − ε) 2 OPT c ≥ (1/c − ε)OPT. Then f (C) ≥ f (A ) ≥ (1/c − ε)OPT. Case |A| &lt; k and |B| &lt; k. Let O be a set such that f (O) = OPT and |O| ≤ k. Since |A| &lt; k, by Theorem 3, it holds that for any x ∈ N , ∆ (x | A) &lt; τ i 0 . Similarly, for any x ∈ N \ A, ∆ (x | B) &lt; τ i 0 . Hence, by submodularity, f (O ∪ A) − f (A) ≤ o∈O ∆ (o | A) &lt; kτ i 0 ≤ OPT/c,<label>(1)</label></formula><formula xml:id="formula_15">f ((O \ A) ∪ B) − f (B) ≤ o∈O\A ∆ (o | B) &lt; kτ i 0 ≤ OPT/c.<label>(2)</label></formula><p>Next, from (1), (2), submodularity, nonnegativity, Theorem 3, and the fact that A ∩ B = ∅, it holds that,</p><formula xml:id="formula_16">f (A ) + f (B ) ≥ f (A) + f (B) ≥ f (O ∪ A) + f ((O \ A) ∪ B) − 2OPT/c ≥ f (O \ A) + f (O ∪ A ∪ B) − 2OPT/c ≥ f (O \ A) − 2OPT/c. (<label>3</label></formula><formula xml:id="formula_17">)</formula><p>Since UnconstrainedMax is an α-approximation, we have</p><formula xml:id="formula_18">αE f (A ) ≥ f (O ∩ A).<label>(4)</label></formula><p>From Inequalities (3), ( <ref type="formula" target="#formula_18">4</ref>), and submodularity, we have</p><formula xml:id="formula_19">OPT = f (O) ≤ f (O ∩ A) + f (O \ A) ≤ αE [f (C)] + 2f (C) + 2OPT/c, from which it follows that E [f (C)] ≥ OPT/c.</formula><p>Adaptive and query complexities. The adaptivity of AST is twice the adaptivity of ThreshSeq plus the adaptivity of UnconstrainedMax plus a constant. Further, the total query complexity is log 1−ε (1/(ck)) times the sum of twice the query complexity of ThreshSeq and the query complexity of UnconstrainedMax.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">The AdaptiveThresholdGreedy Algorithm</head><p>In this section, we present the algorithm AdaptiveThresholdGreedy (ATG, Alg. 3), which achieves ratio ≈ 0.193−ε in nearly optimal query and adaptive complexity. The price of improving the ratio of the preceding section is an extra log(k) factor in the adaptivity.</p><p>Overview of Algorithm. Our algorithm (pseudocode in Alg. 3) works as follows. Each for loop corresponds to a low-adaptivity greedy procedure using ThreshSeq with descending thresholds. Thus, the algorithm is structured as two iterated calls to a greedy algorithm, where the second greedy call is restricted to select elements outside the auxiliary set A returned by the first. Finally, an unconstrained maximization procedure is used within the first greedily-selected auxiliary set A. Then, the best of three candidate sets is returned.</p><p>In the pseudocode for ATG, Alg. 3, ThreshSeq is called with functions of the form f S , which is defined to be the submodular function</p><formula xml:id="formula_20">f S (•) = f (S ∪ •).</formula><p>At a high level, our approach is the following: the IteratedGreedy framework of <ref type="bibr">Gupta et al.'s (2010)</ref> runs two standard greedy algorithms followed by an unconstrained maximization, which yields an algorithm with O(nk) query complexity and O(k) adaptivity. We adopt this framework but replace the standard greedy algorithm with a novel greedy approach with low adaptivity and query complexity. To design this novel greedy approach, we modify the descending thresholds algorithm of <ref type="bibr" target="#b1">Badanidiyuru and Vondrák's (2014)</ref>, which has query complexity O(n log k) but very high adaptivity of Ω(n log k). We use ThreshSeq Algorithm 3 The AdaptiveThresholdGreedy Algorithm 1: procedure ATG(f, N , k, ε) Input: evaluation oracle f : 2 N → R + , constraint k, accuracy parameter ε &gt; 0, failure probability δ &gt; 0 2:</p><formula xml:id="formula_21">Initialize c ← 8/ε, ε ← (1 − 1/e)ε/8, = log 1−ε (1/(ck)) + 1, δ ← 1/(2 ), M ← max x∈N f (x), A ← ∅, A ← ∅, B ← ∅, B ← ∅ 3: for i ← 1 to do 4: τ ← M (1 − ε ) i−1 5: S, S ← ThreshSeq(f A , k − |A|, τ, ε , δ) 6: A ← A ∪ S 7: A ← A ∪ S 8: if |A| = k then break 9: for i ← 1 to do 10: τ ← M (1 − ε ) i−1 11: S, S ← ThreshSeq(f B N \A , k − |B|, τ, ε , δ) 12: B ← B ∪ S 13: B ← B ∪ S 14: if |B| = k then break 15: A ← UnconstrainedMax(A, ε ) 16: C ← arg max{f (A ), f (B ), f (A )} 17: return C</formula><p>to lower the adaptivity of the descending thresholds greedy algorithm (see Appendix D for pseudocode and a detailed discussion).</p><p>For the resulting algorithm ATG, we prove a ratio of 0.193 − ε (Theorem 8), which improves the 1/6 ratio for IteratedGreedy proven in <ref type="bibr">Gupta et al.'s (2010)</ref>. Also, by adopting ThreshSeq proposed in this paper, the analysis of approximation ratio is simplified. Thanks to that the contribution of each element added to the solution set A is determined, at least (1 − ε)|A| elements in the solution set A have marginal gains which exactly exceed the threshold τ , while the rest of it have non-negative marginal gains. Therefore, it is not needed to analyze the marginal gain in expectation anymore. An exact lower bound is given by the analysis of the two greedy procedures.</p><p>A simpler form of our arguments shows that the improved ratio also holds for the original IteratedGreedy of <ref type="bibr">Gupta et al.'s (2010)</ref>; this analysis is given in Appendix E. We prove the following theorem concerning the performance of ATG.</p><p>Theorem 8. Suppose there exists an (1/α)-approximation for UnconstrainedMax with adaptivity Θ and query complexity Ξ, and let ε &gt; 0. Then the algorithm AdaptiveThresh-oldGreedy for SMCC has expected approximation ratio Proof of Theorem 8. In this proof, we assume that the guarantees of Theorem 3 hold for each call to ThreshSeq made by ATG; this occurs with probability at least (1 − 1/n) by the union bound and the choice of δ.</p><p>Overview of Proof. For the proof, a substantial amount of machinery is necessary to lower bound the marginal gain. The necessary notations are made first; then, in Lemmas 9 -10, we formulate the necessary lower bounds on the marginal gains for the first and second greedy procedures. For each respective greedy procedure, this is accomplished by considering the good elements in the selected set returned by ThreshSeq, or the dummy element if the size of selected set is limited. This allows us to formulate a recurrence on the sum of the marginal gains (Lemma 11). Finally, the recurrence allows us to proceed similarly to our proof in Appendix E after a careful analysis of the error introduced (Lemma 18 in Appendix F).</p><p>Notations. Followed by the notations in the pseudocode of Alg. 2, A and A are returned by the first greedy procedure, while B and B are returned by the second one. Let A j be the first j elements in A , where 1 ≤ j ≤ |A |. Furthermore, for |A | &lt; j ≤ k, let A j be A combined with j − |A | dummy elements. Let {a j } = A j \A j−1 , a j be returned at iteration i(j), and A i(j) be the set A returned at iteration i(j). If a j is dummy element, let i(j) = + 1. Then, we define B j and B i(j) analogously.</p><p>Lemma 9. For 1 ≤ j ≤ k, there are at least</p><formula xml:id="formula_22">(1 − ε )k of j such that f (A j ) − f (A j−1 ) + M ck ≥ 1 − ε k f (O ∪ A i(j)−1 ) − f (A j−1 ) .</formula><p>And for any j, f (A j ) ≥ f (A j−1 ).</p><p>The proof of the above lemma can be found in Appendix F. Following the notations and the proof of Lemma 9, we can get an analogous result for the gain of B as follows.</p><p>Lemma 10. For 1 ≤ j ≤ k, there are at least</p><formula xml:id="formula_23">(1 − ε )k of j such that f (B j ) − f (B j−1 ) + M ck ≥ 1 − ε k f ((O\A) ∪ B i(j)−1 ) − f (B j−1 ) .</formula><p>And for any j, f (B j ) ≥ f (B j−1 ).</p><p>The next lemma proved in Appendix F establishes the main recurrence.</p><p>Lemma 11. Let Γ u = f (A j(u) ) + f (B j(u) ), where j(u) is the u-th j which satisfies Lemma 9 or Lemma 10. Then, there are at least</p><formula xml:id="formula_24">(1 − ε )k of u follow that f (O\A) − Γ u − 2M c(1 − ε ) ≤ 1 − 1 − ε k f (O\A) − Γ u−1 − 2M c(1 − ε ) .</formula><p>Lemma 11 yields a recurrence of the form (b − u i+1 ) ≤ a (b − u i ), u 0 = 0, and has the solution u i ≥ b(1 − a i ). Consequently, we have</p><formula xml:id="formula_25">f (A ) + f (B ) ≥ 1 − 1 − 1 − ε k (1−ε )k f (O\A) − 2M c(1 − ε ) ≥ 1 − e −(1−ε ) 2 f (O\A) − 2M c(1 − ε ) (5) Let β = 1 − e −(1−ε ) 2 .</formula><p>From the choice of C on line 16, we have 2f (C) ≥ f (A ) + f (B ) and so from (5), we have</p><formula xml:id="formula_26">f (O \ A) ≤ 2 β f (C) + 2M c(1 − ε ) 2 ≤ 2 β f (C) + 2f (O) c(1 − ε ) 2 . (<label>6</label></formula><formula xml:id="formula_27">)</formula><p>Since an (1/α)-approximation is used for UnconstrainedMax, for any A, f</p><formula xml:id="formula_28">(O ∩ A)/α ≤ E [f (A )|A]; therefore, f (O ∩ A) ≤ αE [f (C)] .<label>(7)</label></formula><p>For any set A, f (O) ≤ f (O ∩ A) + f (O \ A) by submodularity and nonnegativity. Therefore, by Inequalities 6 and 7,</p><formula xml:id="formula_29">f (O) ≤ f (O ∩ A) + f (O \ A) ≤ 2 β f (C) + 2f (O) c(1 − ε ) 2 + αE [f (C)] .</formula><p>Therefore,</p><formula xml:id="formula_30">E [f (C)] ≥ 1 − 2 c(1−ε ) α + 2 β f (O) ≥ e − 1 α(e − 1) + 2e − ε f (O).</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Empirical Evaluation</head><p>In this section, we evaluate our algorithm in comparison with the state-of-the-art parallelizable algorithms: • Both our algorithm AST and AdaptiveNonmonotoneMax use a very small number of adaptive rounds. Both ATG and the algorithm of Ene and Nguyên's (2020) use roughly an order of magnitude more adaptive rounds; see Figs. <ref type="figure" target="#fig_2">1(b</ref>) and 1(e).</p><p>• The algorithm of Ene and Nguyên's ( <ref type="formula">2020</ref>) is the most query efficient if access is provided to an exact oracle for the multilinear extension of a submodular function and its gradient 2 ; see Fig. <ref type="figure" target="#fig_2">1</ref>(f). However, if these oracles must be approximated with the set function, their algorithm becomes very inefficient and does not scale beyond small instances (n ≤ 100); see Fig. <ref type="figure" target="#fig_9">6</ref> in Appendix G.</p><p>• Our algorithms used fewer queries to the submodular set function than the linear-time algorithm FastRandomGreedy in <ref type="bibr">Buchbinder et al.'s (2015)</ref>; see Fig. <ref type="figure" target="#fig_2">1</ref>(f).</p><p>• Comparing AST with four threshold sampling algorithms, our ThreshSeq proposed in this paper is the most query and round efficient without loss of objective values.</p><p>If running Threshold-Sampling theoretically, with a large amount of sampling in ReducedMean, the algorithms with Threshold-Sampling query by a factor of 10 3 ∼ 10 4 more than the other algorithms; see Fig. <ref type="figure" target="#fig_3">2</ref>.</p><p>Algorithms. In addition to the algorithms discussed in the preceding paragraphs, we evaluate the following baselines: the IteratedGreedy algorithm of <ref type="bibr">Gupta et al.'s (2010)</ref>, and the linear-time (1/e − ε)-approximation algorithm FastRandomGreedy of <ref type="bibr">Buchbinder et al.'s (2015)</ref>. These algorithms are both O(k)-adaptive, where k is the cardinality constraint.</p><p>For all algorithms, the accuracy parameter ε was set to 0.1; the failure probability δ was set to 0.1; 100 samples were used to evaluate expectations for Threshold-Sampling in AdaptiveNonmonotoneMax (thus, this algorithm was run as heuristics with no performance guarantee). Randomized algorithms are averaged over 20 independent repetitions, and the mean is reported. The standard deviation is indicated by a shaded region in the plots. Any algorithm that requires a subroutine for UnconstrainedMax is implemented to use a random set, which is a (1/4)-approximation by <ref type="bibr">Feige et al.'s (2011)</ref>.</p><p>Applications. All combinatorial algorithms are evaluated on two applications of SMCC: the cardinality-constrained maximum cut application and revenue maximization on social networks, a variant of the influence maximization problem in which k users are selected to maximize revenue. We evaluate on a variety of network technologies from the Stanford Large Network Dataset Collection <ref type="bibr" target="#b24">(Leskovec &amp; Krevl, 2020)</ref>.  <ref type="formula">2020</ref>) is run with oracle access to the multilinear extension and its gradient; total queries reported for this algorithm are queries to these oracles, rather than the original set function.</p><p>The algorithm of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> requires access to an oracle for the multilinear extension and its gradient. In the case of maximum cut, the multilinear extension and its gradient can be computed in closed form in time linear in the size of the graph, as described in Appendix G.4. This fact enables us to evaluate the algorithm of Ene and Nguyên's (2020) using direct oracle access to the multilinear extension and its gradient on the maximum cut application. However, no closed form exists for the multilinear extension of the revenue maximization objective. In this case, we found (see Appendix G) that sampling to approximate the multilinear extension is exorbitant in terms of runtime; hence, we were unable to evaluate Ene and Nguyên's (2020) on revenue maximization. For more details on the applications and datasets, see Appendix G.</p><p>Results on cardinality-constrained maximum cut. In Fig. <ref type="figure" target="#fig_2">1</ref>, we show representative results for cardinality-constrained maximum cut on web-Google (n = 875713) for both small and large k values. Results on other datasets and revenue maximization are given in Appendix G. In addition, results for <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> when the multilinear extension is approximated via sampling are given in Appendix G. The algorithms are evaluated by objective value of solution, total queries made to the oracle, and the number of adaptive rounds (lower is better). Objective value is normalized by that of IteratedGreedy. For total queries (Fig. <ref type="figure" target="#fig_2">1(f</ref>)), the most efficient is Ene and Nguyên's (2020), although it does not query the set function directly, but the multilinear extension and its gradient. The most efficient of the combinatorial algorithms was AST, followed by ATG. Finally, with respect to the number of adaptive rounds (Fig. <ref type="figure" target="#fig_2">1(e</ref>)), the best was AdaptiveNonmonotoneMax, closely followed by AST; the next lowest was ATG, followed by <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>.</p><p>Comparison of different threshold sampling procedures. Fig. <ref type="figure" target="#fig_3">2</ref> shows the results of AST with different threshold sampling procedures for cardinality-constrained maximum cut on two datasets, BA (n = 968) and ca-GrQc (n = 5242). All the algorithms are run according to pseudocode without any modification. TS-AMA-v1 and TS-AMA-v2 represent the ThreshSeq algorithms without and with binary search proposed in <ref type="bibr" target="#b0">Amanatidis et al.'s (2021)</ref>.</p><p>For objective values, all four versions of AST return similar results; see Figs. 2(a) and 2(d).</p><p>As for adaptive rounds, ThreshSeq, Threshold-Sampling, and TS-AMA-v1 all run in O (log(n)) rounds, while TS-AMA-v2 runs in O log 2 (n) rounds. By the results in Figs. 2(b) and 2(e), our ThreshSeq is the most highly parallelizable algorithm, followed by TS-AMA-v1. TS-AMA-v2 is significantly worst as what it is in theory. With respect to the query calls, while our ThreshSeq only queries once for each prefix, Threshold-Sampling queries 16 log(2/ δ)/ε 2 times, and both TS-AMA-v1 and TS-AMA-v2 query |V | times. According to Figs. <ref type="figure" target="#fig_3">2(c</ref>) and 2(f), our ThreshSeq is the most query efficient one among all. Also, the total queries do not increase a lot when k increases. With binary search, TS-AMA-v2 is the second best one which has O n log 2 (n) query complexity. As for Threshold-Sampling, with the input values as n = 968, k = 10, and ε = δ = 0.1, it queries about 2 × 10 5 times for each prefix which is significantly large.</p><p>Among all, ThreshSeq proposed in this paper is not only the best theoretically, but also performs well in experiments compared with the pre-existing threshold sampling algorithms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix A. Probability Lemma and Concentration Bounds</head><p>Lemma 12. (Chernoff bounds <ref type="bibr" target="#b28">(Mitzenmacher &amp; Upfal, 2017)</ref>). Suppose X 1 , ... , X n are independent binary random variables such that P r (X i = 1) = p i . Let µ = n i=1 p i , and X = n i=1 X i . Then for any δ ≥ 0, we have</p><formula xml:id="formula_31">P r (X ≥ (1 + δ)µ) ≤ e − δ 2 µ 2+δ .<label>(8)</label></formula><p>Moreover, for any 0 ≤ δ ≤ 1, we have</p><formula xml:id="formula_32">P r (X ≤ (1 − δ)µ) ≤ e − δ 2 µ 2 . (<label>9</label></formula><formula xml:id="formula_33">)</formula><p>Lemma 13. <ref type="bibr" target="#b10">(Chen et al., 2021)</ref>. Suppose there is a sequence of n Bernoulli trials: X 1 , X 2 , . . . , X n , where the success probability of X i depends on the results of the preceding trials X 1 , . . . , X i−1 . Suppose it holds that P r</p><formula xml:id="formula_34">(X i = 1|X 1 = x 1 , X 2 = x 2 , . . . , X i−1 = x i−1 ) ≥ η,</formula><p>where η &gt; 0 is a constant and x 1 , . . . , x i−1 are arbitrary.</p><p>Then, if Y 1 , . . . , Y n are independent Bernoulli trials, each with probability η of success, then</p><formula xml:id="formula_35">P r n i=1 X i ≤ b ≤ P r n i=1 Y i ≤ b ,</formula><p>where b is an arbitrary integer.</p><p>Moreover, let A be the first occurrence of success in sequence X i . Then,</p><formula xml:id="formula_36">E [A] ≤ 1/η.</formula><p>Lemma 14. <ref type="bibr" target="#b10">(Chen et al., 2021)</ref>. Suppose there is a sequence of n + 1 Bernoulli trials: X 1 , X 2 , . . . , X n+1 , where the success probability of X i depends on the results of the preceding trials X 1 , . . . , X i−1 , and it decreases from 1 to 0. Let t be a random variable based on the n + 1 Bernoulli trials. Suppose it holds that</p><formula xml:id="formula_37">P r (X i = 1|X 1 = x 1 , X 2 = x 2 , . . . , X i−1 = x i−1 , i ≤ t) ≥ η,</formula><p>where x 1 , . . . , x i−1 are arbitrary and 0 &lt; η &lt; 1 is a constant. Then, if Y 1 , . . . , Y n+1 are independent Bernoulli trials, each with probability η of success, then</p><formula xml:id="formula_38">P r t i=1 X i ≤ bt ≤ P r t i=1 Y i ≤ bt ,</formula><p>where b is an arbitrary integer.</p><p>Definition 15. Conditioned on the current state of the algorithm, consider the process where the set T ∼ U(A, t − 1) and then the element x ∼ A \ T are drawn uniformly at random. Let D t denote the probability distribution over the indicator random variable</p><formula xml:id="formula_39">I t = I[f (S ∪ T + x) − f (S ∪ T ) ≥ τ ].</formula><p>Below, we state the lemma of Threshold-Sampling in <ref type="bibr">Fahrbach et al.'s (2019b)</ref>.</p><p>Lemma 16 <ref type="bibr">(Fahrbach et al.'s (2019b)</ref>). The algorithm Threshold-Sampling outputs S ⊆ N with |S| ≤ k in O(log(n/δ)/ε) adaptive rounds such that the following properties hold with probability at least 1 − δ:</p><p>1. There are O(n/ε) oracle queries in expectation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">The expected average marginal</head><formula xml:id="formula_40">E [f (S)/|S|] ≥ (1 − ε)τ . 3. If |S| &lt; k, then f x (S) &lt; τ for all x ∈ N .</formula><p>In Fahrbach et al.'s (2019a) and <ref type="bibr" target="#b23">Kuhnle's (2021)</ref>, the above Lemma is used with nonmonotone submodular functions; however, in the case that f is non-monotone, the lemma does not hold. Alg. 4 only checks (on Line 13) if there is more than a constant fraction of elements whose marginal gains are larger than the threshold τ . If there exist elements with large magnitude, negative marginal gains, then the average marginal gain may fail to satisfy the lower bound in Lemma 16. As for the proof in <ref type="bibr">Fahrbach et al.'s (2019a)</ref>, the following inequality does not hold (needed for the proof of Lemma 3.3 of <ref type="bibr">Fahrbach et al.'s (2019a)</ref>):</p><formula xml:id="formula_41">E [∆ (T | S)] ≥ (E [I 1 ] + E [I 2 ] + . . . + E [I t ])τ,</formula><p>where |T | = t * and t ≥ t * /(1 + ε). Next, we give a counterexample for the two versions of Threshold-Sampling used in <ref type="bibr">Fahrbach et al.'s (2019b)</ref> and <ref type="bibr">Fahrbach et al.'s (2019a)</ref> where the only difference is that the if condition in Alg. 5 on Line 9 changes to |A| &lt; 3k in <ref type="bibr">Fahrbach et al.'s (2019a)</ref>.</p><p>Counterexample 1. Define a set function f : 2 N → R + as follows,</p><formula xml:id="formula_42">f (B) = n 2 + |B|, if a ∈ B n 2 + 1 − (|B| − 1)n, if a ∈ B . Let k = n = |N | &gt; 400, τ = 1, ε = 0.1, δ = 0.1. Run Threshold-Sampling(f, k, τ, ε, δ).</formula><p>Algorithm 4 The ReducedMean algorithm of <ref type="bibr">Fahrbach et al.'s (2019b)</ref> 1: Input: access to a Bernoulli distribution D, error ε, failure probability δ</p><formula xml:id="formula_43">2: Set number of samples m ← 16 log(2/δ)/ε 2 3: Sample X 1 , X 2 , . . . , X m ∼ D 4: Set μ ← 1 m m i=1 X i 5: if μ ≤ 1 − 1.5ε then 6:</formula><p>return true 7: return false Algorithm 5 The threshold sampling algorithm of <ref type="bibr">Fahrbach et al.'s (2019b)</ref> 1: procedure Threshold-Sampling(f, k, τ, ε, δ) 2:</p><formula xml:id="formula_44">Input: evaluation oracle f : 2 N → R + , constraint k, threshold τ , error ε, failure probability δ 3: Set smaller error ε ← ε/3 4: Set iteration bounds r ← log (1−ε) −1 (2n/δ) , m ← log(k)/ε 5:</formula><p>Set smaller failure probability δ ← δ/(2r(m + 1))</p><formula xml:id="formula_45">6: Initialize S ← ∅, A ← N 7:</formula><p>for r sequential rounds do 8: </p><formula xml:id="formula_46">Filter A ← {x ∈ A : ∆(x, S) ≥ τ } 9: if |A| = 0 then 10:</formula><formula xml:id="formula_47">(x | B) =      1, if x = a and a ∈ B − n, if x = a and a ∈ B 1 − |B|(n + 1), if x = a .</formula><p>Thus, f is a non-negative, non-monotone submodular function. For any 1 &lt; t ≤ |N |, |T | = t − 1, and S = ∅,</p><formula xml:id="formula_48">E [I t ] = P r (f (S ∪ T + x) − f (S ∪ T ) ≥ τ ) = P r (x = a and a ∈ T ) = 1 − t n .</formula><p>So, with any value of ε, ReducedMean returns true when t &gt; εn/2. The first round of Threshold-Sampling samples a set T 1 with t 1 = |T 1 | &gt; εn/2. Then update S by S = T 1 .</p><p>For the Threshold-Sampling in <ref type="bibr">Fahrbach et al.'s (2019a)</ref> with stop condition |A| &lt; 3k, the algorithm stopped here after the first iteration, no matter what is sampled. In this case, the expectation of marginal gains of the set returned by the algorithm would be as follows,</p><formula xml:id="formula_49">E [∆ (S | ∅)] = P r (a ∈ T 1 ) ∆ (T 1 | ∅) + P r (a ∈ T 1 ) ∆ (T 1 | ∅) = t 1 n 1 − (t 1 − 1)n + n − t 1 n t 1 = t 1 2 − t 1 + 1 − t 1 n &lt; 0.</formula><p>Next, we consider the Threshold-Sampling with stop condition |A| = 0. After the first iteration discussed above, if a ∈ T 1 , all the elements would be filtered out at the second round. Algorithm stoped here and returned S, say S 1 . If a ∈ T 1 , T 1 and a would be filtered out at the second round, which means A = N \(S ∪ {a}). And for any T ⊆ A and x ∈ A\T ,</p><formula xml:id="formula_50">f (S ∪ T + x) − f (S ∪ T ) = 1.</formula><p>Therefore, E [I t ] = 1 for all t. After several iterations, S = N \{a} would be returned, say S 2 .</p><p>The expectation of objective value of the set returned would be as follows,</p><formula xml:id="formula_51">E [∆ (S | ∅)] = P r (a ∈ T 1 ) ∆ (S 1 | ∅) + P r (a ∈ T 1 ) ∆ (S 2 | ∅) = t 1 n (1 − (t 1 − 1)n) + n − t 1 n (n − 1) = 2t 1 n − 1 − t 2 1 + n &lt; 0,</formula><p>since ε = 0.1, n &gt; 400, and εn/2 &lt; t 1 &lt; ε(1 + ε/3)n/2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix C. Analysis of ThreshSeq</head><p>Lemma 4. After random-permutation on Line 8, let</p><formula xml:id="formula_52">S i = {x ∈ V : ∆ (x | A ∪ T i ) &lt; τ }. It holds that |S 0 | = 0, |S |V | | = |V |, and |S i−1 | ≤ |S i |.</formula><p>proof of Lemma 4. After filtering on Line 5, any element</p><formula xml:id="formula_53">x ∈ V follows that ∆ (x | A) ≥ τ . Therefore, S 0 = ∅. Also, it is obvious that ∆ (x | A ∪ V ) = 0. So, S |V | = V . Next, let's consider any x ∈ S i−1 . By submodularity, ∆ (x | A ∪ T i ) ≤ ∆ (x | A ∪ T i−1 ) &lt; τ.</formula><p>Thus, for any x ∈ S i−1 , it holds that x ∈ S i , which means S i−1 ⊆ S i .</p><p>Lemma 5. It holds that P r (i * &lt; min{s, t}) ≤ 1/2.</p><p>proof of Lemma 5. Call an element v i ∈ V bad iff ∆ (v i | A ∪ T i−1 ) &lt; τ ; and good, otherwise.</p><p>The random permutation of V can be regarded as |V | dependent Bernoulli trials, with success iff the element is bad and failure otherwise. Observe that, the probability that an element in T i is bad, when i ≤ t, is less than ε/2, conditioned on the outcomes of the preceding trials. We know that, P r (i * &lt; min{s, t}) ≤ P r # bad elements in T i &gt; εi , where i = min{s, t} .</p><p>Let X i = 1, if v i is bad; and X i = 0, otherwise. Then, (X i ) is a sequence of dependent Bernoulli trails. And for any i ≤ i , P r (X i = 1) ≤ ε/2. Let (Y i ) be a sequence of independent and identically distributed Bernoulli trails, each with success probability ε/2. Then, the probability of i * &lt; min{s, t} can be bounded as follows:</p><formula xml:id="formula_54">P r (i * &lt; min{s, t}) ≤ P r i i=1 X i &gt; εi (a) ≤ P r i i=1 Y i &gt; εi (b) ≤ 1/2,</formula><p>where Inequality (a) follows from Lemma 14, and Inequality (b) follows from Law of Total Probability and Markov's inequality.</p><p>proof of success probability. When the algorithm fails to terminate, at each iteration, it always holds that i * &lt; s; and there are no more than m = log 1−ε/2 (1/n) iterations that i * ≥ t. Therefore, there are no more than m iterations that i * ≥ min{s, t}. Otherwise, with more than m iterations that i * ≥ min{s, t}, if there is an iteration that s ≤ t, the algorithm terminates with |A| = k. Otherwise, with more than m iterations that i * ≥ t, the algorithm terminates with |V | = 0. Define a successful iteration as an iteration that i * ≥ min{s, t}, which means it successfully filters out ε/2-fraction of V or the algorithm stops here. Let X be the number of successes in the iterations. Then, X can be regarded as a sum of dependent Bernoulli trails, where the success probability is larger than 1/2 from Lemma 5. Let Y be a sum of independent Bernoulli trials, where the success probability is equal to 1/2. Then, the probability of failure can be bounded as follows, P r (failure) ≤ P r (X ≤ m)</p><formula xml:id="formula_55">(a) ≤ P r (Y ≤ m) ≤ P r (Y ≤ 2 log(n)/ε) (b) ≤ e − log(n) 2 log(n)+ε log ( n δ ) −1 2 •( 2 ε log(n)+log( n δ )) = e − log( n δ )− log 2 (n) ε 2 log ( n δ ) +2ε log(n) ≤ δ n ,</formula><p>where Inequality (a) follows from Lemma 13, and Inequality (b) follows from Lemma 12.</p><p>Lemma 6. Say an element added to the solution set good if its gain is greater than τ . A and A returned by Algorithm 1 hold the following properties: 1) There are at least (1 − ε)fraction of A that is good. 2) A good element in A is always a good element in A . 3) And, any element in A has non-negative marginal gain when added.</p><p>proof of Lemma 6. Let A j be the set A after iteration j, T j,i be the first i elements of V j at j-th iteration. Similarly, define A j as the set A after iteration j, T j,i = T j,i [where B[1</p><formula xml:id="formula_56">: i] = false].</formula><p>From Algorithm 1, A = j=1 T j,i * . For each T j,i * , there are at least (1 − ε)-fraction of T j,i * are good. Totally, there are at least (1 − ε)-fraction of A are good.</p><p>By Line 17, T j,i only contains the elements with nonnegative marginal gains in T j,i . Therefore, any element in A has nonnegative marginal gain when added. For any good element</p><formula xml:id="formula_57">v i ∈ V j , by submodularity, ∆ v i | A j−1 ∪ T j,i−1 ≥ ∆ (v i | A j−1 ∪ T j,i−1 ) ≥ τ . Thus, a good element in A is always good in A .</formula><p>Calculation of Query Complexity. Let V j be the set V after filtering on Line 5 at iteration j, j i be the iteration which is the i-th successful iterations, Y i = j i − j i−1 . By Lemma 13, it holds that E [Y i ] ≤ 2. For any iteration j that j i−1 + 1 ≤ j ≤ j i , there are i − 1 successes before it. Thus, it holds that</p><formula xml:id="formula_58">|V j | ≤ n(1 − ε/2) i−1 .</formula><p>At any iteration j, there are |V j−1 | + 1 oracle queries on Line 5. As for the inner for loop, there are no more than |V j | + 1 oracle queries. The expected number of total queries can be bounded as follows:</p><formula xml:id="formula_59">E [Queries] ≤ j=1 E [|V j−1 | + |V j | + 2] ≤ n + 2 + j=1 2E [|V j |] ≤ n + 2 + i≥1 2E Y i • n(1 − ε/2) i−1 ≤ n + 2 + 4n/ε.</formula><p>Therefore, the total queries are O (n/ε).</p><p>Algorithm 6 The ThresholdGreedy Algorithm of <ref type="bibr" target="#b1">Badanidiyuru and Vondrák's (2014)</ref> 1: procedure ThresholdGreedy(f, k, ε)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>2:</head><p>Input: evaluation oracle f : 2 N → R + , constraint k, accuracy parameter ε &gt; 0</p><formula xml:id="formula_60">3: M ← arg max x∈N f (x); 4: S ← ∅ 5: for τ = M ; τ ≥ (1 − ε)M/k; τ ← τ (1 − ε) do 6:</formula><p>for x ∈ N do Input:</p><formula xml:id="formula_61">evaluation oracle f : 2 N → R + , constraint k, 3: A ← ∅ 4: for i ← 1 to k do 5: a i ← arg max x∈N f (A + x) − f (A) 6: A ← A + a i 7: B ← ∅ 8:</formula><p>for i ← 1 to k do A ← UnconstrainedMax (A)</p><p>12:</p><p>return C ← arg max{f (A), f (A ), f (B)} way: initially, a threshold of τ = M = arg max a∈N f (a) is chosen, which is iteratively decreased by a factor of (1 − ε) until τ &lt; M/k. For each threshold τ , a pass through all elements of N is made, during which any element x that satisfies f (S + x) − f (S) ≥ τ is added to the set S. While this strategy leads to an efficient O(n log k) total number of queries, it also has Ω(n log k) adaptivity, as each query depends on the previous ones.</p><p>To make this approach less adaptive, we replace the highly adaptive pass through N (the inner for loop) with a single call to Threshold-Sampling, which requires O(log n) adaptive rounds and O(n/ε) queries in expectation. This modified greedy approach appears twice in ATG (Alg. 3), corresponding to the two for loops.</p><p>IteratedGreedy works as follows. First a standard greedy procedure is run which produces set A of size k. Next, a second greedy procedure is run to yield set B; during this second procedure, elements of A are ignored. A subroutine for UnconstrainedMax is used on f restricted to A, which yields set A . Finally the set of {A, A , B} that maximizes f is returned.</p><p>Theorem 17. Suppose there exists an (1/α)-approximation for UnconstrainedMax.</p><p>Then by using this procedure as a subroutine, the algorithm IteratedGreedy has approximation ratio e−1 e(2+α)−α for SMCC.</p><p>Proof. For 1 ≤ i ≤ k, let a i , b i be as chosen during the run of IteratedGreedy. Define</p><formula xml:id="formula_62">A i = {a 1 , . . . , a i−1 }, B i = {b 1 , . . . , b i−1 }. Then for for any 1 ≤ i ≤ k, we have f (A i+1 ) + f (B i+1 ) − f (A i ) − f (B i ) = f a i (A i ) + f b i (B i ) ≥ 1 k o∈O f o (A i ) + 1 k o∈O\A f o (B i ) ≥ 1 k (f (O ∪ A i ) − f (A i ) + f ((O \ A) ∪ B i ) − f (B i )) ≥ 1 k (f (O \ A) − (f (A i ) + f (B i ))) ,</formula><p>where the first inequality follows from the greedy choices, the second follows from submodularity, and the third follows from submodularity and the fact that A i ∩ B i = ∅. Hence, from this recurrence and standard arguments,</p><formula xml:id="formula_63">f (A) + f (B) ≥ (1 − 1/e)f (O \ A) ,</formula><p>where A, B have their values at termination of IteratedGreedy. Since f (A ) ≥ f (O ∩ A)/α, we have from submodularity</p><formula xml:id="formula_64">f (O) ≤ f (O ∩ A) + f (O \ A) ≤ αf (A ) + (1 − 1/e) −1 (f (A) + f (B)) ≤ (α + 2(1 − 1/e) −1 )f (C).</formula><p>proof of Lemma 9. Since each element in A has nonnegative marginal gain, it always holds that f (A j ) ≥ f (A j−1 ).</p><p>From Lemma 6, there are at least (1 − ε)-fraction of A are good elements. Therefore, there are at least (1 − ε)k of a j which is good element or dummy element. Next, let's consider the following 3 cases of a j .</p><p>Case i(j) = 1 and a j is good. By Theorem 3 and Lemma 6, it holds that</p><formula xml:id="formula_65">f (A j ) − f (A j−1 ) ≥ τ 1 = M ≥ 1 k o∈O f (o) ≥ 1 k f (O).</formula><p>Case i(j) &gt; 1 and a j is good. Since a j is returned at iteration i(j) and a j is good, it holds that:</p><formula xml:id="formula_66">(1) f (A j ) − f (A j−1 ) ≥ τ i(j) ; (2) at previous iteration i(j) − 1, ThreshSeq returns S i(j)−1 that |S i(j)−1 | &lt; k − |A i(j)−2 |. By property (2) and Theorem 3, for any o ∈ O\A i(j)−1 , ∆ o | A i(j)−1 &lt; τ i(j)−1 . Then, f (A j ) − f (A j−1 ) ≥ τ i(j) = (1 − ε )τ i(j)−1 &gt; 1 − ε k o∈O\A i(j)−1 ∆ o | A i(j)−1 ≥ 1 − ε k f (O ∪ A i(j)−1 ) − f (A i(j)−1 ) ≥ 1 − ε k f (O ∪ A i(j)−1 ) − f (A i(j)−1 ) (10) ≥ 1 − ε k f (O ∪ A i(j)−1 ) − f (A j−1 ) ,<label>(11)</label></formula><p>where Inequality 10 follows from the proof of Lemma 6, and Inequality 11 follows from A i(j)−1 ⊆ A j−1 .</p><p>Case i(j) = + 1 (or a j is dummy element). In this case, |A| &lt; k when the first for loop ends. So, ThreshSeq in the last iteration returns</p><formula xml:id="formula_67">S that |S | &lt; k − |A −1 |. From Theorem 3, it holds that ∆ (o | A ) &lt; τ &lt; M ck , for any o ∈ O\A . Thus, M ck &gt; 1 k o∈O\A ∆ (o | A ) ≥ 1 k (f (O ∪ A ) − f (A )) (a) ≥ 1 k f (O ∪ A ) − f (A j ) ,</formula><p>where Inequality (a) follows from A = A and f (A j ) = f (A ).</p><p>The first inequality of Lemma 9 holds in those three cases with at least (1 − ε )k of j.</p><p>Lemma 11. Let Γ u = f (A j(u) ) + f (B j(u) ), where j(u) is the u-th j which satisfies Lemma 9 or Lemma 10. Then, there are at least (1 − ε )k of u follow that</p><formula xml:id="formula_68">f (O\A) − Γ u − 2M c(1 − ε ) ≤ 1 − 1 − ε k f (O\A) − Γ u−1 − 2M c(1 − ε ) .</formula><p>Proof of (13).</p><formula xml:id="formula_69">c ≥ 8/ε = 2 ε(1/2) 2 ≥ 2 ε(1 − ε ) 2 , since ε = (1 − 1/e)ε/8 ≤ 1/2.</formula><p>Proof of ( <ref type="formula">14</ref>). Let λ = 1 − 1/e, κ = e −(1−ε ) 2 . Inequality ( <ref type="formula">14</ref>    Results are shown in Fig. <ref type="figure" target="#fig_9">6</ref> on a very small random graph with n = 87 and k = 10. The figure shows the objective value and total queries to the set function vs. the number of samples used to approximate the multilinear extension. There is a clear tradeoff between the solution quality and the number of queries required; at 10 3 samples per evaluation, the algorithm matches the objective value of the version with the exact oracle; however, even at roughly 10 11 queries (corresponding to 10 4 samples for each evaluation of the multilinear extension), the algorithm of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> is unable to exceed 0.8 of the IteratedGreedy value. On the other hand, if ≤ 10 samples are used to approximate the multilinear extension, the algorithm is unable to exceed 0.5 of the IteratedGreedy value and still requires on the order of 10 7 queries.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>G.3 Further Details of Algorithm Implementations</head><p>As stated above, we set ε = 0.1 for all algorithms and used 100 samples to evaluate expectations for adaptive algorithms. Further, in the algorithms AdaptiveSimpleThreshold, AdaptiveThresholdGreedy, and AdaptiveNonmonotoneMax, we ignored the smaller values of ε, δ passed to Threshold-Sampling in each algorithm, and simply used the input values of ε and δ.</p><p>For AdaptiveThresholdGreedy, we used an early termination condition to check if the threshold value τ &lt; OPT(1 − ε)/(ck), by using the best solution value found so far as a lower bound on OPT; this early termination condition is responsible for the high variance in total queries. We also used a sharper upper bound on OPT/k in place of the maximum singleton: the sum of the top k singleton values divided by k. We attempted to use the same sharper upper bound in AdaptiveNonmonotoneMax, but it resulted in signficantly worse objective values, so we simply used the maximum singleton as described in <ref type="bibr">Fahrbach et al.'s (2019a)</ref>.</p><p>G.4 Multilinear Extension and Implementation of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> In this section, we describe the multilinear extension and implmentation of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>. The multilinear extension F of set function f is defined to be, for x ∈ [0, 1] n : The gradient is approximated by using the central difference in each coordinate dg dx (x) ≈ g(x + γ/2) − g(x − γ/2) γ , unless using this approximation required evaluations outside the unit cube, in which case the forward or backward difference approximations were used. The parameter γ is set to 0.5.</p><formula xml:id="formula_70">F (x) = E [f (S)] = S⊆V f<label>(</label></formula><p>Finally, for the maximum cut application, closed forms expressions exist for both the multilinear extension and its gradient. These are: (1 − 2x v ).</p><formula xml:id="formula_71">F (x) = (u,v)∈E x u • (1 − x v ) + x v • (1 − x u ),</formula><p>Implementation. The algorithm was implemented as specified in the pseudocode on page 19 of the arXiv version of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>. We followed the same parameter choices as in <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>, although we set ε = 0.1 as setting it to 0.05 did not improve the objective value significantly but caused a large increase in runtime and adaptive rounds. The value of δ = ε 3 was used after communications with the authors.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>A</head><label></label><figDesc>← A ∪ T i * [where B = false] A only gets nonnegative-gain elements al.'s (2021), the procedures for Threshold only guarantee E [f (S)] ≥ τ |S|.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>)−α − ε with probability at least (1 − 1/n), adaptive complexity of O log 1−ε (1/k) log(n)/ε + Θ and expected query complexity of O log 1−ε (1/k) • (n/ε) + Ξ .If the algorithm of Chen et al.'s (2019) is used for UnconstrainedMax, ATG achieves approximation ratio ≈ 0.193 − ε with adaptive complexity O (log(n) log(k)) and query complexity O (n log(k)), wherein the ε dependence has been suppressed.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Comparison of objective value (normalized by the IteratedGreedy objective value), total queries, and adaptive rounds on web-Google for the maxcut application for both small and large k values. The large k values are given as a fraction of the number of nodes in the network. The algorithm of Ene and Nguyên's (2020) is run with oracle access to the multilinear extension and its gradient; total queries reported for this algorithm are queries to these oracles, rather than the original set function.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Results of AST with four threshold sampling procedures on two datasets. The algorithms are run strictly following pseudocode.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head></head><label></label><figDesc>for i = 0 to m in parallel do12: Set t ← min{ (1 + ε) i , |A|} 13: rm[t] ←ReducedMean (D t , ε, δ) 14: t ← min t such that rm[t] is true 15:Sample T ∼ U (A, min{t , k − |S|}) For any B ⊆ N and x ∈ N \B, the above set function follows that ∆</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head></head><label></label><figDesc>The IteratedGreedy Algorithm ofGupta et al.'s (2010)    1: procedure IteratedGreedy(f, k) 2:</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head></head><label></label><figDesc>arg max x∈N \A f (B + x) − f (B)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: Results of AST and ATG with four threshold procedures on two datasets. The algorithms are run strictly following pseudocode.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Figure 6 :</head><label>6</label><figDesc>Figure6: Comparison of our algorithms with Ene and Nguyên's (2020) on a very small random graph (n = 87, k = 10). In all plots, the x-axis shows the number of samples used to approximate the multilinear extension.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>Adaptive algorithms for SMCC where objective f is not necessarily monotone.</figDesc><table><row><cell>Reference</cell><cell cols="4">Approximation Adaptivity</cell><cell>Queries</cell></row><row><cell>Buchbinder et al.'s (2015)</cell><cell cols="3">1/e − ε</cell><cell>O(k)</cell><cell>O(n)</cell></row><row><cell>Balkanski et al.'s (2018)</cell><cell cols="3">1/(2e) − ε</cell><cell>O log 2 (n)</cell><cell>O OP T 2 n log 2 (n) log(k)</cell></row><row><cell cols="2">Chekuri and Quanrud's (2019) 3 − 2</cell><cell>√</cell><cell>2 − ε</cell><cell>O(log 2 (n))</cell><cell>O nk 4 log 2 (n)</cell></row><row><cell>Ene and Nguyên's (2020)</cell><cell cols="3">1/e − ε</cell><cell>O(log(n))</cell><cell>O nk 2 log 2 (n)</cell></row><row><cell>Fahrbach et al.'s (2019a)</cell><cell cols="3">0.039 − ε  †</cell><cell>O(log(n))</cell><cell>O(n log(k))</cell></row><row><cell>Amanatidis et al.'s (2021)</cell><cell cols="3">0.172 − ε</cell><cell>O (log(n)) O (log(n) log(k))</cell><cell>O (nk log(n) log(k)) O n log(n) log 2 (k)</cell></row><row><cell>Theorem 7 (AST)</cell><cell cols="3">1/6 − ε</cell><cell>O(log(n))</cell><cell>O(n log(k))</cell></row><row><cell>Theorem 8 (ATG)</cell><cell cols="3">0.193 − ε</cell><cell></cell></row></table><note>O(log(n) log(k)) O(n log(k)) †The approximation ratio of this algorithm does not hold, and is discussed in Appendix B.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>al.'s (2021)  have a high time complexity and require O n 2 query calls within one iteration even when restricted to size constraint. Although a variant with binary search is proposed to get fewer queries, the sequential binary search worsens the adaptivity of the algorithm.</figDesc><table><row><cell>this work</cell></row><row><cell>(Kuhnle, 2021) as subroutines for non-monotone SMCC. However, theoretical guarantee</cell></row><row><cell>(Lemma 2.3 of Fahrbach et al.'s (2019a)) does not hold when the objective function is</cell></row><row><cell>non-monotone. Counterexamples and pseudocode for Threshold-Sampling are given in</cell></row><row><cell>Appendix B.</cell></row></table><note>1.1 Related WorkTheshold Procedures. A recurring subproblem of SMCC (and other submodular optimization problems) is to add all elements of the ground set that give a marginal gain of at least τ , for some constant threshold τ . To solve this subproblem, the algorithm Threshold-Sampling is proposed inFahrbach et al.'s (2019b)  for monotone submodular functions and applied inFahrbach et al.'s (2019a)  and the conference version of Two alternative solutions to the non-monotone threshold problem were proposed in<ref type="bibr" target="#b0">Amanatidis et al.'s (2021)</ref> for the case of non-monotone, submodular maximization subject to a knapsack constraint. Due to the complexity of the constraints, the thresholding procedures in Amanatidis et</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>versions of threshold sampling algorithms of<ref type="bibr" target="#b0">Amanatidis et al.'s (2021)</ref>, and Thresh-Seq proposed in this paper. Our results are summarized as follows. 1• Our algorithm ATG obtains the best objective value of any of the parallelizable algorithms; obtaining an improvement of up to 19% over the next algorithm, our AST.Both Fahrbach et al.'s (2019a)  and<ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> exhibit a large loss of objective value at both small and large k values; see Figs. 1(a) and 1(d).</figDesc><table /><note>AdaptiveNonmonotoneMax of Fahrbach et al.'s (2019a)  and the algorithm of<ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref>. Also, we compare four versions of our algorithms with different threshold procedures: Threshold-Sampling ofFahrbach et al.'s (2019b), two</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>) is satisfied iff.</figDesc><table><row><cell>2λ ≤ 2(1 − κ) +</cell><cell>λε(1 − κ) 2</cell><cell cols="3">⇐⇒ 2λ ≤ 2 − 2κ + λε/2 − λεκ/2</cell></row><row><cell></cell><cell></cell><cell cols="3">⇐⇒ 2κ + λεκ/2 ≤ λε/2 + 2 − 2λ</cell></row><row><cell></cell><cell></cell><cell cols="3">⇐⇒ κ = e −(1−ε ) 2 ≤</cell><cell>λε/2 + 2 − 2λ 2 + λε/2</cell></row><row><cell></cell><cell></cell><cell cols="3">⇐⇒ (1 − ε ) 2 ≥ log</cell><cell>2 + λε/2 λε/2 + 2 − 2λ</cell><cell>,</cell></row><row><cell>which in turn is satisfied if</cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">2ε ≤ 1 − log</cell><cell cols="2">2 + λε/2 λε/2 + 2 − 2λ</cell><cell>.</cell></row><row><cell>Then</cell><cell></cell><cell></cell><cell></cell></row><row><cell>2ε = λε/4 ≤</cell><cell cols="2">2 + λε/2 − 4λ 2 − λ</cell><cell>≤</cell><cell>2 + λε/2 − 4λ 2 + λε/2 − 2λ</cell></row><row><cell></cell><cell></cell><cell></cell><cell>=</cell><cell>2(λε/2 + 2 − 2λ) − 2 − λε/2 λε/2 + 2 − 2λ</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="2">= 2 −</cell><cell>2 + λε/2 λε/2 + 2 − 2λ</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="2">= 1 −</cell><cell>2 + λε/2 λε/2 + 2 − 2λ</cell><cell>− 1</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="2">≤ 1 − log</cell><cell>2 + λε/2 λε/2 + 2 − 2λ</cell><cell>,</cell></row></table><note>where we have used log x ≤ x − 1, for x &gt; 0.</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot">Chen, &amp; Kuhnle</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">. Our code is available at https://gitlab.com/luciacyx/nm-adaptive-code.git. 2. The definition of the multilinear extension is given in Appendix G.4.</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix B. Counterexample for Threshold-Sampling with</head><p>Non-monotone Submodular Functions <ref type="bibr">Fahrbach et al.'s (2019b)</ref> proposed a subroutine, Threshold-Sampling, which returns a solution S ⊆ N that E [f (S)/S] ≥ (1 − ε)τ within logarithmic rounds and linear time.</p><p>The full pseudocode for Threshold-Sampling is given in Alg. 5. The notation U(S, t) represents the uniform distribution over subsets of S of size t. Threshold-Sampling relies upon the procedure ReducedMean, given in Alg. 4. The Bernoulli distribution input to ReducedMean is the distribution D t , which is defined as follows.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix D. ThresholdGreedy and Modification</head><p>In this section, we describe ThresholdGreedy (Alg. 6) of <ref type="bibr" target="#b1">Badanidiyuru and Vondrák's (2014)</ref> and how it is modified to have low adaptivity. This algorithm achieves ratio 1−1/e−ε in O(n log k) queries if the function f is monotone but has no constant ratio if f is not monotone.</p><p>The ThresholdGreedy algorithm works as follows: a set S is initialized to the empty set. Elements whose marginal gain exceed a threshold value are added to the set in the following</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix E. Improved Ratio for IteratedGreedy</head><p>In this section, we prove an improved approximation ratio for the algorithm Iterated-Greedy of <ref type="bibr">Gupta et al.'s (2010)</ref>, wherein a ratio of 1/(4 + α) is proven given access to a 1/α-approximation for UnconstrainedMax. We improve this ratio to </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix F. Proofs for Section 4</head><p>In this section, we provide the proofs omitted from Section 4. Lemma 9. For 1 ≤ j ≤ k, there are at least</p><p>And for any j, f (A j ) ≥ f (A j−1 ).</p><p>Proof of Lemma 11. From Lemma 9, f (A j(u)−1 ) ≥ f (A j(u−1) ), and</p><p>Similarly,</p><p>By adding the above two inequalities and the submodularity, we have,</p><p>Lemma 18. Let ε ∈ (0, 1), and suppose c = 8/ε, ε = (1 − 1/e)ε/8, and</p><p>Proof of Lemma 18. We start with the following two inequalities, which are verified below.</p><p>From the inequalities above, the left-hand side of ( <ref type="formula">12</ref>) is at least A−ε B+ε and</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix G. Additional Experiments</head><p>In this section, we describe additional details of the experimental setup; we also provide and discuss more empirical results, including an empirical analysis of using a small number of samples to approximate the multilinear extension for the algorithm of Ene and Nguyên's (2020).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>G.1 Applications and Datasets</head><p>The cardinality-constrained maximum cut function is defined as follows. Given graph G = (V, E), and nonnegative edge weight w ij on each edge (i, j) ∈ E. For S ⊆ V , let</p><p>In general, this is a non-monotone, submodular function.</p><p>The revenue maximization objective is defined as follows. Let graph G = (V, E) represent a social network, with nonnegative edge weight w ij on each edge (i, j) ∈ E. We use the concave graph model introduced by <ref type="bibr" target="#b20">Hartline et al.'s (2008)</ref>. In this model, each user i ∈ V is associated with a non-negative, concave function f i : R + → R + . The value v i (S) = f i ( j∈S w ij ) encodes how likely the user i is to buy a product if the set S has adopted it. Then the total revenue for seeding a set S is</p><p>This is a non-monotone, submodular function. In our implementation, each edge weight w ij ∈ (0, 1) is chosen uniformly randomly; further, f i (•) = (•) α i , where α i ∈ (0, 1) is chosen uniformly randomly for each user i ∈ V .</p><p>Network topologies from SNAP were used; specifically, web-Google (n = 875713, m = 5105039), a web graph from Google, ca-GrQc (n = 5242, m = 14496), a collaboration network from Arxiv General Relativity and Quantum Cosmology, and ca-Astro (n = 18772, m = 198110), a collaboration network of Arxiv Astro Physics. In addition, a Barabási-Albert random graph was used (BA), with n = 968, m = 5708.  Comparison of ATG with different threshold sampling procedures. All ATG algorithms return the competitive solutions compared with IteratedGreedy; see Figs. 5(a) and 5(d). Since each iteration of ATG calls a threshold sampling subroutine which is based on the solution of previous iterations and a slowly decreasing threshold τ , after the first filtration of the subroutine, the size of the candidate set is limited. Thus, there is no significant difference between different ATGs concerning rounds and queries. However, there are two exceptions. First, since TS-AMA-v2 is the only one who has O log 2 (n) adaptive rounds, it still runs with more rounds; see Figs. 5(b) and 5(e). Also, the number of queries of ATG with Threshold-Sampling is significantly large with the same reason discussed in Section 5.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>G.2 Additional results</head><p>Approximation of the Multilinear Extension. In this section, we further investigate the performance of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> when closed-form evaluation of the multilinear extension and its gradient are impossible. We find that sampling to approximate the multilinear extension and its gradient is extremely inefficient or yields poor solution quality with a small number of samples. For this reason, we exclude this algorithm from our revenue maximization experiments. To perform this evaluation, we compared versions of the algorithm of <ref type="bibr" target="#b13">Ene and Nguyên's (2020)</ref> that use varying number of samples to approximate the multilinear extension.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Submodular maximization subject to a knapsack constraint: Combinatorial algorithms with near-optimal adaptive complexity</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Amanatidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Fusco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lazos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Leonardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Marchetti-Spaccamela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reiffenhäuser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning (ICML)</title>
+				<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Fast algorithms for maximizing submodular functions</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Badanidiyuru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Vondrák</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Non-monotone Submodular Maximization in Exponentially Fewer Iterations</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Balkanski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Breuer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems (NeurIPS)</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">An Exponential Speedup in Parallel Running Time for Submodular Maximization without Loss in Approximation</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Balkanski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rubinstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">The adaptive complexity of maximizing a submodular function</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Balkanski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGACT Symposium on Theory of Computing (STOC)</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Constrained Submodular Maximization via a Nonsymmetric Technique</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Buchbinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Feldman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Mathematics of Operations Research</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="volume">44</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A Tight Linear Time (1 / 2)-Approximation for Unconstrained Submodular Maximization</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Buchbinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Feldman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">S</forename><surname>Naor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Schwartz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Symposium on Foundations of Computer Science (FOCS)</title>
+				<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Comparing Apples and Oranges: Query Tradeoff in Submodular Maximization</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Buchbinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Feldman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Schwartz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Parallelizing greedy for submodular set function maximization in matroids and beyond</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Chekuri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Quanrud</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGACT Symposium on Theory of Computing (STOC)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="78" to="89" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Unconstrained submodular maximization with constant adaptive complexity</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Feldman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Karbasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGACT Symposium on Theory of Computing (STOC)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="102" to="113" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Best of both worlds: Practical and theoretically optimal submodular maximization in parallel</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Dey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kuhnle</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems (NeurIPS)</title>
+				<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Beyond Keyword Search: Discovering Relevant Scientific Literature</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>El-Arini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Guestrin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)</title>
+				<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Submodular Maximization with Nearly-optimal Approximation and Adaptivity in Nearly-linear Time</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ene</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">L</forename><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Parallel algorithm for non-monotone dr-submodular maximization</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ene</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">L</forename><surname>Nguyên</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning (ICML)</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Submodular maximization with matroid and packing constraints in parallel</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ene</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">L</forename><surname>Nguyên</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vladu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGACT Symposium on Theory of Computing (STOC)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="90" to="101" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Non-monotone Submodular Maximization with Nearly Optimal Adaptivity Complexity</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Fahrbach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Mirrokni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zadimoghaddam</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning (ICML)</title>
+				<imprint>
+			<date type="published" when="2019">2019a</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Submodular Maximization with Nearly Optimal Approximation, Adaptivity, and Query Complexity</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Fahrbach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Mirrokni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zadimoghaddam</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2019">2019b</date>
+			<biblScope unit="page" from="255" to="273" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Maximizing non-monotone submodular functions</title>
+		<author>
+			<persName><forename type="first">U</forename><surname>Feige</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Mirrokni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Vondrák</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">In SIAM Journal on Computing</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Submodular maximization by simulated annealing</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">O</forename><surname>Gharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Vondrák</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM-SIAM Symposium on Discrete Algorithms (SODA)</title>
+				<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Constrained non-monotone submodular maximization: Offline and secretary algorithms</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Schoenebeck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Talwar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Workshop on Internet and Network Economics (WINE)</title>
+				<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="246" to="257" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Optimal marketing strategies over social networks</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hartline</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">S</forename><surname>Mirrokni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sundararajan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on World Wide Web (WWW)</title>
+				<imprint>
+			<date type="published" when="2008">2008</date>
+			<biblScope unit="page" from="189" to="198" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Submodular Streaming in All its Glory: Tight Approximation, Minimum Memory and Low Adaptive Complexity</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Kazemi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mitrovic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zadimoghaddam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Lattanzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Karbasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning (ICML)</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Maximizing the spread of influence through a social network</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kempe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kleinberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">É</forename><surname>Tardos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)</title>
+				<imprint>
+			<date type="published" when="2003">2003</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Nearly linear-time, parallelizable algorithms for non-monotone submodular maximization</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kuhnle</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI Conference on Artificial Intelligence</title>
+				<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leskovec</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Krevl</surname></persName>
+		</author>
+		<ptr target="http://snap.stanford.edu/data" />
+		<title level="m">SNAP Datasets: Stanford Large Network Dataset Collection</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Choosing non-redundant representative subsets of protein sequence data sets using submodular optimization</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">W</forename><surname>Libbrecht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Bilmes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Stafford</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proteins: Structure, Function, and Bioinformatics</title>
+				<imprint>
+			<date type="published" when="2017-07">2017. July 2017</date>
+			<biblScope unit="page" from="454" to="466" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Fast Constrained Submodular Maximization : Personalized Data Summarization</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Mirzasoleiman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Badanidiyuru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Karbasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning (ICML)</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Growth of the Flickr Social Network</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mislove</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">S</forename><surname>Koppula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">P</forename><surname>Gummadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Druschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Bhattacharjee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">First Workshop on Online Social Networks</title>
+				<imprint>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Probability and computing: Randomization and probabilistic techniques in algorithms and data analysis</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mitzenmacher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Upfal</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<publisher>Cambridge university press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Best Algorithms for Approximating the Maximum of a Submodular Set Function</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">L</forename><surname>Nemhauser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">A</forename><surname>Wolsey</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1978">1978</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Scene summarization for online image collections</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Simon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Snavely</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Seitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE International Conference on Computer Vision (ICCV)</title>
+				<imprint>
+			<date type="published" when="2007">2007</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Temporal corpus summarization using submodular word coverage</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sipos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Swaminathan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Shivaswamy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Joachims</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM International Conference on Information and Knowledge Management (CIKM)</title>
+				<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Learning Mixtures of Submodular Functions for Image Cxollection Summarization</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Tschiatschek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Iyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bilmes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems (NeurIPS)</title>
+				<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Exploring Optimal Deep Learning Models for Image-based Malware Variant Classification</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-23">23 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Rikima</forename><surname>Mitsuhashi</surname></persName>
+							<email>mitsuhashi@os.ecc.u-tokyo.ac.jp</email>
+							<affiliation key="aff0">
+								<orgName type="institution">The University of Tokyo Tokyo</orgName>
+								<address>
+									<country key="JP">Japan</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Takahiro</forename><surname>Shinagawa</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">The University of Tokyo Tokyo</orgName>
+								<address>
+									<country key="JP">Japan</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Exploring Optimal Deep Learning Models for Image-based Malware Variant Classification</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-23">23 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">FFED05138EA01731C5588C179E0B1AC2</idno>
+					<idno type="DOI">10.1109/COMPSAC54236.2022.00128</idno>
+					<idno type="arXiv">arXiv:2004.05258v2[cs.CR]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Malware variant classification</term>
+					<term>Deep learning</term>
+					<term>Machine learning</term>
+					<term>Fine-tuning</term>
+					<term>Malimg</term>
+					<term>Drebin</term>
+					<term>VirusTotal</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Analyzing a huge amount of malware is a major burden for security analysts. Since emerging malware is often a variant of existing malware, automatically classifying malware into known families greatly reduces a part of their burden. Imagebased malware classification with deep learning is an attractive approach for its simplicity, versatility, and affinity with the latest technologies. However, the impact of differences in deep learning models and the degree of transfer learning on the classification accuracy of malware variants has not been fully studied. In this paper, we conducted an exhaustive survey of deep learning models using 24 ImageNet pre-trained models and five fine-tuning parameters, totaling 120 combinations, on two platforms. As a result, we found that the highest classification accuracy was obtained by fine-tuning one of the latest deep learning models with a relatively low degree of transfer learning, and we achieved the highest classification accuracy ever in cross-validation on the Malimg and Drebin datasets. We also confirmed that this trend holds true for the recent malware variants using the VirusTotal 2020 Windows and Android datasets. The experimental results suggest that it is effective to periodically explore optimal deep learning models with the latest models and malware datasets by gradually reducing the degree of transfer learning from half.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>In the field of cybersecurity, security analysts are struggling with a huge amount of malware. Since recent malware is more complex and sophisticated than ever before, security analysts must carefully analyze its structure and behavior based on their advanced knowledge and insights. Unfortunately, recent malware often exploits new vulnerabilities and obfuscation techniques <ref type="bibr" target="#b0">[1]</ref>, leaving security analysts with the burden of studying the latest technologies and performing manual analysis. Moreover, even novice users can generate new malware using easily available tools, such as malware generators that run on smartphones <ref type="bibr" target="#b1">[2]</ref> and malware as a service (MaaS) <ref type="bibr" target="#b2">[3]</ref>, which is spurring the increase of malware.</p><p>One way to reduce the burden of malware analysis is automatic malware classification. Since attackers tend to create many malware variants to save time and effort in creating new ones, automatically classifying malware into known families helps security analysts to leverage their past knowledge and experience. Machine learning (ML) is a promising approach to automatic malware classification, and many ML-based methods have been proposed <ref type="bibr" target="#b3">[4]</ref>, <ref type="bibr" target="#b4">[5]</ref>. However, most ML-based methods require security experts to manually define malware features, which is time-consuming, task-specific, error-prone, and highly dependent on individual experience and knowledge <ref type="bibr" target="#b5">[6]</ref>. Deep learning overcomes this problem by using a deep hierarchical data model that automatically extracts nonlinear features at various levels of abstraction without manual efforts <ref type="bibr" target="#b5">[6]</ref>.</p><p>A convolutional neural network (CNN) is a popular algorithm in deep learning because of the availability of huge datasets, many properly pre-trained models, and support for transfer learning. Many studies tried to extract malware features suitable for CNNs, such as opcode sequences, control flow graphs, and API calls <ref type="bibr" target="#b5">[6]</ref>. However, manual feature extraction requires expert knowledge and skills, and its effectiveness can vary from platform to platform and over time. Malware images <ref type="bibr" target="#b6">[7]</ref>, which are generated by converting malware binaries directly into grayscale images, is a simple yet versatile approach that is expert-knowledge-free, applicable to any platform, and highly compatible with image classification methods. In addition, since CNNs have been actively researched and developed for image recognition, the latest technologies can be easily incorporated. However, previous studies on applying CNNs to malware image classification <ref type="bibr" target="#b7">[8]</ref>- <ref type="bibr" target="#b18">[16]</ref> have limited variations of models and transfer learning parameters, and their impact on classification accuracy has not been fully explored.</p><p>In this paper, we conducted an exhaustive study on the accuracy of image-based malware classification with a number of CNN models. We used CNN models pre-trained with ImageNet <ref type="bibr" target="#b19">[17]</ref> provided by Keras <ref type="bibr" target="#b20">[18]</ref>. ImageNet is an image database with supervised labels consisting of more than 14 million color photographs of objects that exist in nature, such as plants, terrain, sports, animals, and so on. Thus, ImageNet pre-trained models would have some of the visual recognition capabilities of humans. However, it is unclear how effective the ability to distinguish objects in nature is in classifying artificially created malware images. Therefore, we investigated the effect of ImageNet pre-training on malware classification accuracy with different degrees of transfer learning. Specifically, we prepared 24 pre-trained models and five fine-tuning parameters for each model, 120 combinations in total. To the best of our knowledge, this is the first study to investigate the effects of different CNN pre-training models and fine-tuning parameters on malware classification accuracy in such a wide variety of combinations.</p><p>We conducted our study in two steps. First, to identify the optimal CNN models to classify malware images, we used two pre-labeled datasets: Malimg <ref type="bibr">[19]</ref> for Windows and Drebin <ref type="bibr" target="#b21">[20]</ref> for Android. As a result, we found that the EfficientNetB4 model fine-tuned with no frozen parameters, i.e., forgetting all ImageNet pre-trained knowledge, had the highest classification accuracy in Mailimg, obtaining 98.96% with cross-validation. For the top 20 classes of Drebin, the EfficientNetB4 model fine-tuned with 1/4 of the pre-trained parameters frozen achieved the highest classification accuracy of 91.03% with cross-validation. To the best of our knowledge, these are the highest classification accuracy of Malimg and Drebin with cross-validation reported so far.</p><p>Next, to examine the classification accuracy against recent real malware, we obtained the VirusTotal <ref type="bibr" target="#b22">[21]</ref> May 2020 datasets and trained several models that had relatively high classification accuracy in Malimg and Drebin with the datasets. As a result, for Windows malware, EfficientNetB5 with 1/2 of the pre-trained parameters frozen achieved 98.78% accuracy, and for Android malware, EfficientNetB3-B5 with no frozen parameters achieved 100% accuracy.</p><p>From the results of these experiments, we found that the highest malware variant classification accuracy tends to be obtained by using the latest deep learning models with a relatively low degree of transfer learning, i.e., freezing the fine-tuning parameters from 0% to 50%. This suggests that the ability to recognize natural objects is effective to some extent, but learning more features of malware images is also important in classifying malware variants. Since it is not easy to identify in advance the optimal parameters for each malware dataset, a realistic approach is to periodically explore the optimal degree of transfer learning by fine-tuning the latest model with the latest malware data while gradually lowering the freezing parameters from 50%.</p><p>The contributions of this paper are as follows: • We conducted an exhaustive study on the impact of different models and fine-tuning parameters of CNNs, 120 combinations in total, on the classification accuracy of malware variants. • We found that the optimal model for malware classification of Malimg and Drebin was EfficientNetB4 with pre-trained parameters unfrozen and 25% frozen, respectively, and achieved the highest classification accuracy to date with cross-validation. • We confirmed that fine-tuning the latest models with lower frozen parameters is effective for classifying malware variants in VirusTotal; EfficientNetB5 with 50% frozen for Windows and EfficientNetB3-B5 with no frozen for Android achieved the highest accuracy. The rest of this paper is organized as follows: Section II presents related work. Section III explains background knowledge on CNNs and fine-tuning. Section IV describes our experimental method to explore the optimal models for malware variant classification. Section V shows the experimental results and Section VI concludes the paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. RELATED WORK</head><p>Malware image is a concept whereby malware binaries are converted into visual images to extract malware features <ref type="bibr" target="#b6">[7]</ref>. Malware image has the advantage that features can be easily extracted without expert knowledge and that they can be applied to different platforms, such as Windows and Android. Fig. <ref type="figure" target="#fig_0">1</ref> shows the example of malware images.</p><p>Many previous studies have attempted to improve the accuracy of image-based classification using Malimg as a standard dataset. Nataraj et al. <ref type="bibr" target="#b6">[7]</ref> used GIST and k-nearest neighbors for classification and obtained an accuracy of 97.18% with 10-fold cross-validation. Kosmidis and Kalloniatis <ref type="bibr" target="#b23">[22]</ref> used several ML techniques such as decision tree, nearest centroid, stochastic gradient, perceptron, multilayer perceptron, and Random Forest. The best result was Random Forest with 91.6% average accuracy. Cui et al. <ref type="bibr" target="#b7">[8]</ref> used a CNN and addressed the data imbalance among different malware families. The classification accuracy of cross-validation was 94.5%. Rezende et al. <ref type="bibr" target="#b8">[9]</ref> prepared a ResNet50 model with all convolutional layer parameters transferred from a model trained with ImageNet and achieved the classification accuracy of 98.62% with cross-validation. Mourtaji et al. <ref type="bibr" target="#b10">[10]</ref> reported the VGG16 model with an accuracy of 97.02% using the hold-out method. Kalash et al. <ref type="bibr" target="#b12">[11]</ref> proposed M-CNN based on VGG16 pre-trained by ImageNet and achieved an accuracy of 98.52% with hold-out validation. Lo et al. <ref type="bibr" target="#b13">[12]</ref> used the Xception model and its classification accuracy reached 99.03% using the hold-out method.</p><p>Several studies tried to manipulate malware images or machine learning models to improve classification accuracy. Vasan et al. <ref type="bibr" target="#b18">[16]</ref> converted malware binaries into color images and had a classification accuracy of 98.82%, although their evaluation was not cross-validation. Su et al. <ref type="bibr" target="#b25">[23]</ref> used a two-layer shallow convolutional neural network and achieved 94.0% accuracy in classifying goodware and DDoS malware with 5-fold hold-out validation. Vasan et al. <ref type="bibr" target="#b26">[24]</ref> introduced an ensemble method that used five models and had an accuracy of 99.50% with hold-out validation. Although their ensemble method used an argmax function for finding the model with the highest predicted probability, they did not evaluate which of the five models was the most important for improving the classification accuracy.</p><p>For image-based classification of Android malware, Singh et al. <ref type="bibr" target="#b27">[25]</ref> classified the top 20 Drebin dataset using images generated from manifest and certificate of android application. As a result, they obtained a classification accuracy of 93.24% using the Feature Fusion-SVM model.</p><p>Although all the previous studies have shown good classification accuracy, there is still room for improvement. Even a 0.1% improvement in accuracy has a non-negligible impact when there are tens of thousands of malware variants. Moreover, few studies investigated the impact of different models and fine-tuning parameters on classification accuracy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. BACKGROUND</head><p>In this section, we briefly explain the basics of CNNs and fine-tuning, which are necessary to understand the experiments described later.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. CNN</head><p>A CNN is a class of deep neural network (DNN), which is an evolution of an artificial neural network (ANN) <ref type="bibr" target="#b28">[26]</ref>.</p><p>ANNs are designed to mimic the neural structure of human brains, where many neurons are connected by synapses. Information is transmitted between neurons by electrical signals, and the amount of information transmitted is determined by the strength of the synaptic connections. A neuron that receives signals from multiple neurons produces a single output when the sum of the signals exceeds a certain threshold. In ANNs, neurons are called nodes, and synapses are called edges. The strength of the synaptic connections is represented by the weight of the edge, and the threshold is determined by the activation function. An ANN is basically composed of three layers: an input layer, a hidden layer, and an output layer. A DNN forms a "deep" layered structure by increasing the number of hidden layers and succeeds in understanding the complex structure of the real world.</p><p>CNNs are mainly used for image classification. The input layer of a CNN associates the pixels of input images with nodes and passes them to the hidden layers. The hidden layers consist of convolutional layers, pooling layers, and fully-connected layers. The convolutional layers apply small filters to the entire image by sliding them gradually to produce images with a collection of representative values called feature maps. The fully-connected layers concatenate the features from the convolutional and pooling layers and pass them to the output layer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Fine-tuning</head><p>Fine-tuning is one way of transfer learning <ref type="bibr" target="#b29">[27]</ref>. Transfer learning is a method to apply knowledge gained from one domain to another. Transfer learning can create highly accurate models even in domains with small amounts of data available by transferring knowledge from domains with large amounts of high-quality data. Transfer learning can also reduce the model training time by reusing the edge weights of previously trained models. On the other hand, transfer learning can cause a deterioration in accuracy called negative transfer, which occurs when the transfer method is inappropriate or when the source and destination domains are relatively unrelated.</p><p>In transfer learning of CNN, the network trained in one domain is reused for another domain. In fine-tuning, the basic structure of the CNN network is reused. The edge weights in some layers could be relearned while other layers are frozen, i.e., fixed. Although relearning is useful for acquiring knowledge in a new domain, relearning the entire model may result in overtraining if the dataset is very small. Overtraining is a problem in which a CNN network closely related to a specific dataset cannot accurately classify additional data.</p><p>In short, in order to achieve high classification accuracy through fine-tuning, it is crucial to select the appropriate degree of frozen layers depending on the similarity and size of the dataset to be classified.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. EXPERIMENTAL METHOD</head><p>In this section, we explain the experimental method for this study. We first explain the CNN models and fine-tuning parameters we used. Next, we describe how we created the malware image and the characteristics of the dataset we used. Finally, we describe the evaluation criteria for measuring the accuracy of malware subspecies classification.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. CNN Models and Fine-tuning Parameters</head><p>We selected 24 models from the ImageNet pre-trained models provided by Keras as our pre-trained models. The models were DenseNet121, DenseNet169, DenseNet201 <ref type="bibr" target="#b30">[28]</ref>, EfficientNetB0, EfficientNetB1, EfficientNetB2, Efficient-NetB3, EfficientNetB4, EfficientNetB5 <ref type="bibr" target="#b31">[29]</ref>, InceptionRes-NetV2 <ref type="bibr" target="#b32">[30]</ref>, InceptionV3 <ref type="bibr" target="#b33">[31]</ref>, MoblileNet <ref type="bibr" target="#b34">[32]</ref>, Mo-bileNetV2 <ref type="bibr" target="#b35">[33]</ref>, NASNetLarge, NASMobile <ref type="bibr" target="#b36">[34]</ref>, ResNet101, ResNet152, ResNet50 <ref type="bibr" target="#b37">[35]</ref>, ResNet101V2, ResNet152V2, ResNet50V2 <ref type="bibr" target="#b38">[36]</ref>, VGG16, VGG19 <ref type="bibr" target="#b39">[37]</ref>, and Xception <ref type="bibr" target="#b40">[38]</ref>.</p><p>As mentioned in Section III-B, it is necessary to pay attention to the degradation of classification accuracy due to negative transfer because the malware images do not seem to resemble pre-trained natural objects. Then, since the number of malware appearing in a year depends on the trend of attacks, overtraining should be avoided if the number of data is small. In order to find the right degree of fine-tuning, it is appropriate to try multiple parameters. we used five different fine-tuning parameters for each model: the ratio of frozen parameters is (1) 1 (Frozen all), (2) 3/4 (Frozen 3/4), (3) 1/2 (Frozen 1/2), (4) 1/4 (Frozen 1/4), and (5) 0 (Frozen none). Table <ref type="table" target="#tab_0">I</ref> shows the number of frozen layers and the name of the border layer for each model. Note that the number of layers shown in Table <ref type="table" target="#tab_0">I</ref> is based on the Keras implementation and differs from the number of layers in the theoretical model (e.g., 16 layers in VGG16 or 121 layers in DenseNet121). In addition, the number of parameters to be frozen is not exactly 1/4, 1/2, or 3/4 of the total number of parameters because the number of parameters in a layer is not constant, and if the model has a block consisting of multiple layers, the layer to be frozen must be specified at the block boundary.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Malware Image Conversion Tool</head><p>We developed a tool to convert malware files into images. This tool is designed to accept files in Portable Executable (PE) format for Windows malware and Dalvik Executable (DEX) format for Android malware. The tool checks the header information of the file to determine the file format and converts the binary data of the file into a grayscale image with 256 shades per pixel. The width of the image is determined </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>File Size Range</head><p>Image Width</p><formula xml:id="formula_0">&lt;10KB 32 10KB -30KB 64 30KB -60KB 128 60KB -100KB 256 100KB -200KB 384 200KB -500KB 512 500KB -1,000KB 768 &gt;=1,000KB<label>1024</label></formula><p>by the file size according to the rule in Table <ref type="table" target="#tab_1">II</ref>. This rule is equivalent to that proposed by Nataraj et al. <ref type="bibr" target="#b6">[7]</ref>, but we extended it to be applied to Android malware. The size of the image generated by the malware file varies, but it is automatically changed to the standard size of each model at the time of input by using the nearest-neighbor algorithm, which is the default method for image resizing in Keras (for example, for the VGG16 model, the image size is a 224 x 224 square).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Malware Dataset</head><p>We used Malimg and Drebin as the malware datasets to obtain the optimal CNN models for malware image classifi-   <ref type="bibr" target="#b42">[40]</ref>. To compare with the malware classification experiment of previous research, we selected the top 20 classes from the Drebin dataset. To make malware images, we obtained the class.dex file from each APK file. Note that one file was excluded from our dataset because it is a compilation of 25 APK files and we could not obtain a unique class.dex file 1 , so the total number of malware samples was 4,663.</p><p>We also used VirusTotal to validate the classification accuracy for recent malware variants. VirusTotal offers two types 1 The SHA256 value of this file is: df2c357f513c270cd1d06418e4eaf64aeb6b2d947149e83ed4f42c88286b76a7 of data access with an academic account: 1) access to the Academic API or 2) access to the malware sample folder. We accessed the malware sample folder and got the recent malware dataset. Since new malware data is added to the malware sample folder approximately every six months, we used the datasets added in May 2020 for our evaluation. From each dataset, we selected the Win32 EXE category and the Android category for malware classification. The May 2020 dataset had 38,444 files in the Win32 EXE category and 434 files in the Android category.</p><p>Due to many research reports that malware labels of anti-virus scanners are biased <ref type="bibr" target="#b43">[41]</ref>- <ref type="bibr" target="#b47">[45]</ref>, we determined to use labels that were matched by at least three scanners for VirusTotal. However, since VirusTotal uses more than 70 scanners for each malware, it is time-consuming to check all combinations to extract matching labels. Therefore, we used one scanner to list base labels and then check if two or more scanners had the same labels. We used Kaspersky for our base labels because it supports both Windows and Android.</p><p>One problem with the malware image approach, especially on Windows, is that compilers and packers could drastically change the binary image, even if the source code of the malware is the same. Therefore, we decided to add the names of the compilers and packers used by the malware to the labels to make the identification easier. To detect compilers and packers, we used five detectors (PEiD <ref type="bibr" target="#b48">[46]</ref>, DIE [47], Exeinfo PE <ref type="bibr" target="#b49">[48]</ref>, PE Detective <ref type="bibr" target="#b50">[49]</ref>, and TrID <ref type="bibr" target="#b51">[50]</ref>) and used the name of compilers and packers that were matched by at least three detectors. If the malware uses a compiler or packer that cannot be detected, we expect security analysts to analyze the malware from scratch.</p><p>In addition, to reduce the imbalance between malware classes, we selected classes that contained at least 40 malware files and excluded malware with non-family name labels such as "generic" and "gen."</p><p>As a result, we obtained 1,556 Windows malware files in 18 classes from the May 2020 dataset, as shown in Table <ref type="table" target="#tab_2">III</ref>, which we call the 'VirusTotal May 2020 Windows" dataset. For Android, we obtained 164 malware files classified into three classes, as shown in Table <ref type="table" target="#tab_3">IV</ref>, which we call the 'VirusTotal May 2020 Android" dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D. Evaluation Criteria</head><p>Each malware file in the dataset is labeled with the name of the family it belongs to. Based on the label, we trained our models with the malware images to classify the malware files. Since there are many types of labels in the dataset, it is a multi-class classification. Therefore, we evaluated the classification results using the commonly used metrics defined by the following equations <ref type="bibr" target="#b52">[51]</ref>: </p><formula xml:id="formula_1">tp i + tn i tp i + f n i + f p i + tn i P recision = 1 l • l i=1 tp i tp i + f p i Recall = 1 l • l i=1 tp i tp i + f n i F -score = 1 l • l i=1 2 • P recision • Recall P recision + Recall</formula><p>where tp i is true positive, f p i is false positive, f n i is false negative, and tn i is true negative, respectively. All the metrics use macro averaging. We evaluated all classifications with stratified 10-fold crossvalidation, i.e., for each class, 90% of the data is used for training and the remaining 10% for testing. The cross-validation involves multiple rounds of creating training and test data in order to evaluate the average. The hold-out validation, on the other hand, does it only once.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>V. EVALUATION RESULT</head><p>This section presents our evaluation results. We first show the classification results of Malimg and Drebin, and then show the results of our attempt to classify malware in the VirusTotal May 2020 dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Setup</head><p>We ran Keras 2.4.3 with Python 3.6.9 on Ubuntu 18.04 LTS 64bit on three machines with Nvidia GeForce RTX 2080Ti. The backend of Keras was TensorFlow 2.2 on CUDA 10.1 and cuDNN 7.6.5.</p><p>We designed the size of the output layer for each model to match the class size of the dataset. Specifically, we used softmax as the activation function and set the number of outputs to 25 for Malimg, 20 for Drebin, 18 for VirusTotal May 2020 Windows, and 3 for Android, respectively. In the fully-connected layer, we used Relu as the activation function  and set the number of outputs to 128, which was determined by referring to a previous study that used a dataset with a similar number of classes and samples <ref type="bibr" target="#b53">[52]</ref>.</p><p>The hyperparameters of our fine-tuned models were as follows: the loss function was categorical cross-entropy, the optimizer was SGD, the learning rate was 1e-4, the momentum was 0.9, and the epochs numbered 30. The batch size for each model was determined to be the value shown in Table <ref type="table" target="#tab_4">V</ref>, which was the highest possible value to shorten the learning time.</p><p>Data augmentation, which increases the number of images by flipping, rotating, scaling, etc., is generally effective in obtaining high classification accuracy from a limited data set in machine learning. However, in our preliminary experiments, the classification accuracy with data augmentation was lower than that without augmentation, so we did not use it this time.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Classification of Malimg</head><p>We first classified Malimg. Fig. <ref type="figure">2</ref> shows the classification accuracy of the stratified 10-fold cross-validation for each model. Most of the models except for the MobileNetV2 and NASNetMobile achieved over 90% accuracy. Some models of the MobileNetV2 and NASNetMobile were below 40%. As the name implies, MobileNetV2 and NASNetMobile are designed to work with limited system resources and have a smaller number of training parameters than the other models. For example, the VGG16 without the fully-connected layers has 14,714,688 training parameters, while the MobileNetV2 without them has 2,257,984 and the NASNetMobile without them has 4,269,716. We consider that the small number  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Method</head><p>Accuracy F -score CNN <ref type="bibr" target="#b7">[8]</ref> 94.50% N/A GIST + K-nearest neighbors <ref type="bibr" target="#b6">[7]</ref> 97.18% N/A ResNet50 <ref type="bibr" target="#b8">[9]</ref> 98.62% N/A EfficientNetB4 + Frozen none (ours) 98.96% 97.14% </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Method</head><p>Accuracy F -score VGG16 <ref type="bibr" target="#b10">[10]</ref> 97.02% N/A M-CNN <ref type="bibr" target="#b12">[11]</ref> 98.52% N/A IMCFN <ref type="bibr" target="#b18">[16]</ref> 98.82% 98.75% Xception <ref type="bibr" target="#b13">[12]</ref> 99.03% N/A EfficientNetB4 + Frozen none (ours) 99.13% 97.66% IMCEC <ref type="bibr" target="#b26">[24]</ref> 99.50% 99.48%</p><p>of training parameters may have affected the classification accuracy.</p><p>Table <ref type="table" target="#tab_4">VI</ref> shows the top five models in classification accuracy. The model with the highest accuracy was Effi-cientNetB4 Frozen none, with a classification accuracy of 98.96%. Looking at the results of the ten tests among the cross-validation using the EfficientNetB4 Frozen none, the maximum accuracy was 0.9913, the minimum accuracy was 0.9869, and the standard deviation was 0.0017. Fig. <ref type="figure" target="#fig_1">3</ref> shows the confusion matrix when the maximum accuracy was obtained. The number of training data was 8,416, the number of test data was 923, accuracy was 0.9913, recall was 0.9761, precision was 0.9773, and F -score was 0.9766. Malimg is an imbalanced dataset; for example, the Allaple.A family has 294 test data, while the Skintrim.N family has only eight test data. In general, when classifying imbalanced data sets, correctly classifying classes with more data may lead to higher  As shown in Table <ref type="table" target="#tab_7">VII</ref> (cross-validation), our method obtained the highest accuracy and F -score. Achieving high classification accuracy and a high F -score is very important in terms of reducing the burden on security analysts. As shown in Table VIII (hold-out validation), our method was the second best. Comparing cross-validation and hold-out validation, cross-validation is more important during evaluation. This is because an accuracy obtained by hold-out validation may decrease substantially depending on how the training and test data are created.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Classification of Drebin</head><p>Next, we classified Drebin. Fig. <ref type="figure">4</ref> shows the classification accuracy on closs-validation. Similar to Malimg, we found MobileNetV2 and NASNetMobile to be less accurate. Table <ref type="table" target="#tab_11">IX</ref> shows the top five models in classification accuracy. The model with the highest accuracy was the EfficientNetB4 Frozen 1/4 model with a classification accuracy of 91.03%. Looking at the results of the ten tests among the cross-validation using EfficientNetB4 Frozen 1/4 model, the maximum accuracy was 0.9365, the minimum accuracy was 0.8781, and the standard deviation was 0.014. Fig. <ref type="figure" target="#fig_2">5</ref> shows the confusion matrix when the maximum accuracy was obtained. The number of training data was 4,206, the number of test data was 457, accuracy was 0.9365, recall was 0.9096, precision was 0.9016, and F -score was 0.9055. There was no class with extremely poor classification accuracy, but the classification accuracy was not  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Method</head><p>Accuracy F -score</p><p>Feature Fusion-SVM <ref type="bibr" target="#b27">[25]</ref> 93.24% N/A EfficientNetB4 + Frozen 1/4 (ours)</p><p>93.65% 90.55%</p><p>sufficient for classes with little data, such as Exploit Linux Lotoor, SMSreg and SendPay.</p><p>To the best of our knowledge, no previous study has evaluated the classification accuracy of image-based Drebin with cross-validation. As shown in Table X, our classification accuracy was higher than that of the previous study using image-based Drebin with hold-out validation. Since our method only converts the dex file contained in the APK file into an image, the pre-processing is very simple. Then, the features extracted from images work effectively to classify malware variants.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D. Windows Malware in VirusTotal</head><p>To examine the classification accuracy of recent real Windows malware, we used the VirusTotal May 2020 Windows dataset and the models that had high classification accuracy for Malimg.</p><p>Fig. <ref type="figure" target="#fig_3">6</ref> shows the classification accuracy of the VirusTotal May 2020 Windows dataset for each model. We selected EfficientNetB3, B4, and B5 with five fine-tuning parameters. Most of the models had an accuracy of 96% or better, and no model had a lower accuracy. Table <ref type="table" target="#tab_12">XI</ref> shows the top five models with the highest classification accuracy. As shown in the table, the EfficientNetB5 Frozen 1/2 model showed the highest classification accuracy of 98.78%, which was slightly lower than Malimg's best classification accuracy (98.96%). However, the difference between Accuracy and F -score was 0.0034, which was better than 0.0182 in the best model in Malimg.  Looking at the results of the ten tests among the crossvalidation using the EfficientNetB5 Frozen 1/2 model, the maximum accuracy was 0.9932, the minimum accuracy was 0.9662, and the standard deviation was 0.0084. Fig. <ref type="figure">7</ref> shows the confusion matrix at maximum accuracy. The number of training data was 1,408 and test data was 148, accuracy was 0.99324, recall was 0.9920, precision was 0.9970, and F -score was 0.9942. Fortunately, in the confusion matrix, almost all the classes were fully classified. Overall, our method correctly classified most of the VirusTotal May 2020 Windows dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>E. Android Malware in VirusTotal</head><p>Finally, we performed the same evaluation for the Android malware. We used EfficientNetB3, B4, and B5 to classify the Virus Total May 2020 Android dataset. Fig. <ref type="figure">8</ref> shows the classification accuracy of each model. The results show that the classification accuracy of all models reached 100%.</p><p>Since the Android dataset had only three classes, there was no difference in the classification accuracy even with different models and degrees of fine-tuning, respectively. In addition, the number of files in the Android dataset was 146, which was less than the other datasets (Malimg: 9,339, Drebin: 4663, VirusTotal May 2020 Windows: 1,556), but the classification accuracy by cross-validation reached 100%. It indicates no overtraining in EfficientNetB3-B5, even when all the parameters are not frozen.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>F. Discussion and Future Work</head><p>We discuss some of the issues regarding our evaluation results and present some future work. First of all, the evaluation result shows that EfficientNetB4 fine-tuned by freezing no or only 1/4 of the pre-trained parameters, had the highest classification accuracy on the Malimg and Drebin datasets.</p><p>As for the VirusTotal Windows dataset, we found that Effie-icnetNetB5 fine-tuned with 1/2 frozen achieved the highest classification accuracy for the May 2020 Windows dataset, while the EfficientNetB3-B5 with no fine-tuning achieved 100% accuracy for the May 2020 Android dataset. These results suggest that the optimal model for malware classification was obtained by using the latest models and reducing the degree of transfer learning. By reducing the degree of transfer learning, it has become possible to use more layers to learn the features of malware images, which is thought to have helped improve the classification accuracy. This is due to the fact that with the continued development of malware, it has become possible to extract the characteristics from a large number of malware images. On the other hand, the classification of Android malware in VirusTotal is considered to be highly accurate regardless of the degree of transfer learning because the number of classes to be classified is small for the period of May 2020.</p><p>Based on the experimental results, we expect that the degree of transfer learning most effective in classifying malware is in the range of 0-1/2. To search for the optimal deep learning models, we believe that fine-tuning the latest models while gradually lowering the number of frozen parameters from 50% would be effective as a practical approach.</p><p>Secondly, in order to address the problem of Windows malware being widely obfuscated, we added the names of the compiler or packer used by the malware to the labels. In Section V-D, we have distinguished recent malware variants with high accuracy. Experience shows that even obfuscated malware may still retain some similarity to the original malware if the same packer and compiler are used. However, there are many types of obfuscation techniques, and their number is increasing. Malware variants that apply various obfuscation techniques to the original are hard to classify into the same family because their malware image has different characteristics, which is a limitation of image-based malware classification. Improving resistance to obfuscation and the specific evaluation are future works.</p><p>Thirdly, we developed an image conversion tool that supports Windows PE and Android DEX format. The multiplatform tool has worked well in the evaluations and is expected to help reduce the burden on security analysts. Nevertheless, some malware runs on other platforms, such as iOS, macOS, and Linux. We believe our tool can be extended for other platforms and confirm its effectiveness in the future.</p><p>Finally, if an attacker modifies a large part of existing malware or adds many new features, the malware would no longer be regarded as a variant. Therefore, it is necessary to update deep learning models with knowledge of new malware regularly. Unfortunately, since regular updates typically take days to weeks, we have a plan to introduce some complementary applications to detect malware that emerges in the meantime.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VI. CONCLUSION</head><p>We conducted an exhaustive study on the impact of deep learning models and the degree of transfer learning on the accuracy of image-based malware classification using 120 combinations with 24 different ImageNet pre-trained CNN models and five levels of fine-tuning parameters. As a result, we found that the EfficientNetB4 model fine-tuned by freezing no or only 1/4 of the pre-trained parameters had the highest classification accuracy for the Malimg (98.96%) and Drebin (93.65%) datasets. These are the highest classification accuracies ever known to have been validated in cross-validation.</p><p>As for recent real malware, we found that the Effieicnet-NetB5 model fine-tuned with 1/2 frozen parameters achieved the highest classification accuracy of 98.78% for the May 2020 Windows dataset, while the EfficientNetB3 to B5 models with no frozen fine-tuning parameters achieved the 100% accuracy for the VirusTotal Android dataset.</p><p>The experimental results show that the classification accuracy of malware variants tends to be the highest when using the latest deep learning models with a relatively low degree of transfer learning. A practical approach for exploring the optimal model would be fine-tuning the latest modes while gradually reducing the number of frozen parameters from half.</p><p>Future work includes addressing program obfuscation, multi-platform development, and knowledge updating.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Example of Windows and Android malware images.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3. Confusion matrix of EfficientNetB4 Frozen none for Malimg.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 5 .</head><label>5</label><figDesc>Fig. 5. Confusion matrix of EfficientNetB4 Frozen 1/4 in Drebin.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 6 .</head><label>6</label><figDesc>Fig. 6. Classification accuracy for VirusTotal May 2020 Windows.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 7 .Fig. 8 .</head><label>78</label><figDesc>Fig. 7. Confusion matrix of EfficientNetB5 Frozen 1/2 in VirusTotal May 2020 Windows.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>TABLE I THE</head><label>I</label><figDesc>NUMBERS AND NAMES OF FROZEN LAYERS IN THE KERAS IMPLEMENTATION FOR OUR 24 MODELS.</figDesc><table><row><cell></cell><cell>Frozen all</cell><cell>Frozen 3/4</cell><cell>Frozen 1/2</cell><cell>Frozen 1/4</cell></row><row><cell>DenseNet121</cell><cell>427 (relu)</cell><cell>341 (conv5 block4 concat)</cell><cell cols="2">274 (conv4 block19 concat) (conv4 block3 concat</cell></row><row><cell>DenseNet169</cell><cell>595 (relu)</cell><cell cols="3">495 (conv5 block18 concat) 365 (conv4 block32 concat) (conv4 block16 conc</cell></row><row><cell>DenseNet201</cell><cell>707 (relu)</cell><cell cols="3">572 (conv5 block13 concat) 449 (conv4 block44 concat) (conv4 block25 conc</cell></row><row><cell>EfficientNetB0</cell><cell>230 (top activation)</cell><cell>214 (block6d add)</cell><cell>184 (block6b add)</cell><cell>(block5c add)</cell></row><row><cell>EfficientNetB1</cell><cell>332 (top activation)</cell><cell>314 (block7a project bn)</cell><cell>286 (block6d add)</cell><cell>(block6a project bn)</cell></row><row><cell>EfficientNetB2</cell><cell>332 (top activation)</cell><cell>314 (block7a project bn)</cell><cell>286 (block6d add)</cell><cell>(block6a project bn)</cell></row><row><cell>EfficientNetB3</cell><cell>377 (top activation)</cell><cell>359 (block7a project bn)</cell><cell>316 (block6d add)</cell><cell>(block6a project bn)</cell></row><row><cell>EfficientNetB4</cell><cell>467 (top activation)</cell><cell>449 (block7a project bn)</cell><cell>391 (block6e add)</cell><cell>(block6a project bn)</cell></row><row><cell>EfficientNetB5</cell><cell>569 (top activation)</cell><cell>551 (block7b add)</cell><cell>493 (block6g add)</cell><cell>(block6b add)</cell></row><row><cell cols="2">InceptionResNetV2 780 (conv 7b ac)</cell><cell>698 (block8 5 ac)</cell><cell>618 (mixed 7a)</cell><cell>(block17 9 ac)</cell></row><row><cell>InceptionV3</cell><cell>311 (mixed10)</cell><cell>280 (mixed9)</cell><cell>249 (mixed8)</cell><cell>(mixed5)</cell></row><row><cell>MobileNet</cell><cell>87 (conv pw 13 relu)</cell><cell>84 (conv dw 13 relu)</cell><cell>74 (conv pw 11 relu)</cell><cell>(conv pw 8 relu)</cell></row><row><cell>MobileNetV2</cell><cell>155 (out relu)</cell><cell>144 (block 15 add)</cell><cell>135 (block 14 add)</cell><cell>(block 12 add)</cell></row><row><cell>NASNetLarge</cell><cell>1039 (activation 259)</cell><cell>948 (normal concat 16)</cell><cell>858 (normal concat 14)</cell><cell>(normal concat 12)</cell></row><row><cell>NASNetMobile</cell><cell>769 (activation 187)</cell><cell>723 (normal concat 11)</cell><cell>633 (normal concat 9)</cell><cell>(normal concat 8)</cell></row><row><cell>ResNet101</cell><cell>345 (conv5 block3 out)</cell><cell>325 (conv5 block1 out)</cell><cell>253 (conv4 block17 out)</cell><cell>(conv4 block8 out)</cell></row><row><cell>ResNet152</cell><cell>515 (conv5 block3 out)</cell><cell>483 (conv4 block36 out)</cell><cell>353 (conv4 block23 out)</cell><cell>(conv4 block10 out)</cell></row><row><cell>ResNet50</cell><cell>175 (conv5 block3 out)</cell><cell>165 (conv5 block2 out)</cell><cell>155 (conv5 block1 out)</cell><cell>(conv4 block4 out)</cell></row><row><cell>ResNet101V2</cell><cell>377 (post relu)</cell><cell>353 (conv5 block1 out)</cell><cell>274 (conv4 block17 out)</cell><cell>(conv4 block8 out)</cell></row><row><cell>ResNet152V2</cell><cell>564 (post relu)</cell><cell>528 (conv4 block36 out)</cell><cell>384 (conv4 block23 out)</cell><cell>(conv4 block10 out)</cell></row><row><cell>ResNet50V2</cell><cell>190 (post relu)</cell><cell>177 (conv5 block2 out)</cell><cell>166 (conv5 block1 out)</cell><cell>(conv4 block4 out)</cell></row><row><cell>VGG16</cell><cell>19 (block5 pool)</cell><cell>17 (block5 conv2)</cell><cell>15 (block4 pool)</cell><cell>(block4 conv1)</cell></row><row><cell>VGG19</cell><cell>22 (block5 pool)</cell><cell>19 (block5 conv2)</cell><cell>17 (block4 pool)</cell><cell>(block4 conv2)</cell></row><row><cell>Xception</cell><cell cols="2">132 (block14 sepconv2 act) 126 (add 11)</cell><cell>96 (add 8)</cell><cell>(add 5)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>TABLE II RULES</head><label>II</label><figDesc>TO DETERMINE THE IMAGE WIDTH.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>TABLE III THE</head><label>III</label><figDesc>VIRUSTOTAL MAY 2020 WINDOWS DATASET.</figDesc><table><row><cell>Family</cell><cell>Packer / Compiler</cell><cell>Files</cell></row><row><cell>Backdoor.Delf</cell><cell>tElock</cell><cell>186</cell></row><row><cell>Backdoor.Gobot</cell><cell>Delphi</cell><cell>43</cell></row><row><cell cols="2">Backdoor.IRCBot Visual C++</cell><cell>55</cell></row><row><cell>Backdoor.Wabot</cell><cell>Delphi</cell><cell>186</cell></row><row><cell>Trojan.Agent</cell><cell>Visual C++</cell><cell>54</cell></row><row><cell>Worm.Benjamin</cell><cell>ASPack</cell><cell>92</cell></row><row><cell>Worm.Picsys</cell><cell>UPX</cell><cell>126</cell></row><row><cell>Worm.Small</cell><cell>Visual C++</cell><cell>79</cell></row><row><cell>StormAttack</cell><cell>Visual C++</cell><cell>50</cell></row><row><cell>Dropper.Dinwod</cell><cell>UPX</cell><cell>165</cell></row><row><cell>Trojan.Agent</cell><cell>MingWin32</cell><cell>66</cell></row><row><cell>Trojan.Agent</cell><cell>Visual Basic</cell><cell>74</cell></row><row><cell>Trojan.Mansabo</cell><cell>Visual Basic</cell><cell>53</cell></row><row><cell>Trojan.VB</cell><cell>Visual Basic</cell><cell>101</cell></row><row><cell cols="2">Trojan.Agent.VB Visual Basic</cell><cell>42</cell></row><row><cell>AdWare.Gator</cell><cell>Visual C++</cell><cell>57</cell></row><row><cell cols="2">AdWare.Lollipop LCC Win32</cell><cell>80</cell></row><row><cell>CoinMiner</cell><cell>Visual C++</cell><cell>47</cell></row><row><cell>Total</cell><cell></cell><cell>1,556</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>TABLE IV THE</head><label>IV</label><figDesc>VIRUSTOTAL MAY 2020 ANDROID DATASET. Malimg is a dataset introduced by Nataraj et al.<ref type="bibr" target="#b6">[7]</ref>. It consists of 9,339 images of malware files in the PE32 format, converted to PNG format images, and labeled with 25 classes using Windows Security Essential. Drebin is a malware dataset introduced by D. Arp et al.<ref type="bibr" target="#b41">[39]</ref>. It is an Android malware dataset collected from August 2010 to October 2012, which contains 5,560 APK files of Android malware and is classified into 178 classes based on Kaspersky</figDesc><table><row><cell>Family</cell><cell>Files</cell></row><row><cell>Android.Agent</cell><cell>43</cell></row><row><cell>Android.Ewind</cell><cell>72</cell></row><row><cell>Android.SMSreg</cell><cell>49</cell></row><row><cell>Total</cell><cell>164</cell></row><row><cell cols="2">cation to compare the classification accuracy of the previous</cell></row><row><cell>study.</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>TABLE V BATCH</head><label>V</label><figDesc>SIZE FOR EACH MODEL.</figDesc><table><row><cell>Model</cell><cell></cell><cell></cell><cell></cell><cell>Size</cell></row><row><cell cols="3">MobileNet, MobileNetV2</cell><cell></cell><cell>128</cell></row><row><cell cols="5">DenseNet121, EfficientNetB0, InceptionV3, NASNetMobile 64</cell></row><row><cell cols="4">ResNet101, ResNet101V2, ResNet50, ResNet50V2, VGG16</cell></row><row><cell>VGG19</cell><cell></cell><cell></cell><cell></cell></row><row><cell cols="5">DenseNet169, DenseNet201, EfficientNetB1, EfficientNetB2 32</cell></row><row><cell cols="4">InceptionResNetV2, ResNet152, ResNet152V2, Xception</cell></row><row><cell>EfficientNetB3</cell><cell></cell><cell></cell><cell></cell><cell>16</cell></row><row><cell cols="4">EfficientNetB4, NASNetLarge</cell><cell>8</cell></row><row><cell>EfficientNetB5</cell><cell></cell><cell></cell><cell></cell><cell>4</cell></row><row><cell>Accuracy =</cell><cell>1 l</cell><cell>•</cell><cell>l i=1</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>TABLE VII COMPARISON</head><label>VII</label><figDesc>OF CROSS-VALIDATION FOR MALIMG.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>TABLE VIII COMPARISON</head><label>VIII</label><figDesc>OF HOLD-OUT VALIDATION FOR MALIMG.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>TABLE X COMPARISON</head><label>X</label><figDesc>OF HOLD-OUT VALIDATION FOR IMAGE-BASED DREBIN.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>TABLE XI TOP</head><label>XI</label><figDesc>FIVE MODELS FOR VIRUSTOTAL MAY 2020 WINDOWS.</figDesc><table><row><cell>Model</cell><cell cols="5">Frozen Accuracy P recision Recall F -score</cell></row><row><cell>EfficientNetB5</cell><cell>1/2</cell><cell>0.9878</cell><cell>0.9868</cell><cell>0.9858</cell><cell>0.9844</cell></row><row><cell>EfficientNetB4</cell><cell>1/4</cell><cell>0.9874</cell><cell>0.9880</cell><cell>0.9849</cell><cell>0.9851</cell></row><row><cell>EfficientNetB4</cell><cell>all</cell><cell>0.9871</cell><cell>0.9893</cell><cell>0.9849</cell><cell>0.9859</cell></row><row><cell>EfficientNetB3</cell><cell>1/4</cell><cell>0.9862</cell><cell>0.9887</cell><cell>0.9837</cell><cell>0.9849</cell></row><row><cell>EfficientNetB4</cell><cell>1/2</cell><cell>0.9858</cell><cell>0.9888</cell><cell>0.9838</cell><cell>0.9846</cell></row></table></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<author>
+			<persName><surname>Mcafee</surname></persName>
+		</author>
+		<ptr target="https://www.mcafee.com/enterprise/en-us/assets/reports/rp-threats-oct-2021.pdf" />
+		<title level="m">Mcafee labs threats report</title>
+				<imprint>
+			<date type="published" when="2021-10">October 2021. Oct. 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Mobile malware factories: Android apps for creating ransomware</title>
+		<author>
+			<persName><surname>Symantec</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017-08">Aug. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Adwind malware-as-a-service hits more than 400,000 users globally</title>
+		<author>
+			<persName><surname>Kaspersky</surname></persName>
+		</author>
+		<ptr target="https://www.kaspersky.com/blog/adwind-rat/11252/" />
+		<imprint>
+			<date type="published" when="2016-02">Feb. 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Survey of machine learning techniques for malware analysis</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Ucci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Aniello</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Baldoni</surname></persName>
+		</author>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/S0167404818303808" />
+	</analytic>
+	<monogr>
+		<title level="j">Computers &amp; Security</title>
+		<imprint>
+			<biblScope unit="volume">81</biblScope>
+			<biblScope unit="page" from="123" to="147" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">A survey on machine learning-based malware detection in executable files</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Singh</surname></persName>
+		</author>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/S1383762120301442" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Systems Architecture</title>
+		<imprint>
+			<biblScope unit="volume">112</biblScope>
+			<biblScope unit="page">101861</biblScope>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A Survey of Android Malware Detection with Deep Neural Models</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Nepal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Xiang</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3417978</idno>
+		<ptr target="https://doi.org/10.1145/3417978" />
+	</analytic>
+	<monogr>
+		<title level="j">ACM Computing Surveys</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<date type="published" when="2020-12">Dec. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Malware Images: Visualization and Automatic Classification</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Nataraj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Karthikeyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Jacob</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">S</forename><surname>Manjunath</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/2016904.2016908</idno>
+		<ptr target="https://doi.org/10.1145/2016904.2016908" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Symposium on Visualization for Cyber Security, ser. VizSec &apos;11</title>
+				<meeting>the 8th International Symposium on Visualization for Cyber Security, ser. VizSec &apos;11</meeting>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Detection of Malicious Code Variants Based on Deep Learning</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Industrial Informatics</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">7</biblScope>
+			<biblScope unit="page" from="3187" to="3196" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">E</forename><surname>Rezende</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Ruppert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Carvalho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ramos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>De Geus</surname></persName>
+		</author>
+		<title level="m">Malicious Software Classification Using Transfer Learning of ResNet-50</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Deep Neural Network</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th IEEE International Conference on Machine Learning and Applications (ICMLA</title>
+				<meeting>the 16th IEEE International Conference on Machine Learning and Applications (ICMLA</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1011" to="1014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Intelligent Framework for Malware Detection with Convolutional Neural Network</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Mourtaji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bouhorma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Alghazzawi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd International Conference on Networking, Information Systems &amp; Security, ser. NISS19</title>
+				<meeting>the 2nd International Conference on Networking, Information Systems &amp; Security, ser. NISS19</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1145/3320326.3320333</idno>
+		<ptr target="https://doi.org/10.1145/3320326.3320333" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Malware Classification with Deep Convolutional Neural Networks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kalash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Rochan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Mohammed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">D B</forename><surname>Bruce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Iqbal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th IFIP International Conference on New Technologies, Mobility and Security (NTMS)</title>
+				<meeting>the 9th IFIP International Conference on New Technologies, Mobility and Security (NTMS)</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="1" to="5" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">An Xception Convolutional Neural Network for Malware Classification with Transfer Learning</title>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">W</forename><surname>Lo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th IFIP International Conference on New Technologies, Mobility and Security, ser. NTMS 2019</title>
+				<meeting>the 10th IFIP International Conference on New Technologies, Mobility and Security, ser. NTMS 2019</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1" to="5" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Malicious Code Detection Based on Image Processing Using Deep Learning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Xiaosong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">U</forename><surname>Khan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Ahad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kumar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 International Conference on Computing and Artificial Intelligence, ser. ICCAI</title>
+				<meeting>the 2018 International Conference on Computing and Artificial Intelligence, ser. ICCAI</meeting>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+			<biblScope unit="page" from="81" to="85" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1145/3194452.3194459</idno>
+		<ptr target="https://doi.org/10.1145/3194452.3194459" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Deep Learning versus Gist Descriptors for Image-based Malware Classification</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Yajamanam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">R S</forename><surname>Selvin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Di Troia</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Stamp</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th International Conference on Information Systems Security and Privacy</title>
+				<meeting>the 4th International Conference on Information Systems Security and Privacy<address><addrLine>ForSE,, INSTICC</addrLine></address></meeting>
+		<imprint>
+			<publisher>SciTePress</publisher>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="553" to="561" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Transfer Learning for Image-based Malware Classification</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Bhodia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Prajapati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Di Troia</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Stamp</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Conference on Information Systems Security and Privacy</title>
+				<meeting>the 5th International Conference on Information Systems Security and Privacy</meeting>
+		<imprint>
+			<date type="published" when="2019">ICISSP 2019. 2019</date>
+			<biblScope unit="page" from="719" to="726" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">IMCFN: Image-based malware classification using fine-tuned convolutional neural network architecture</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Vasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Alazab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Naeem</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Safaei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Zheng</surname></persName>
+		</author>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/S1389128619304736" />
+	</analytic>
+	<monogr>
+		<title level="j">Computer Networks</title>
+		<imprint>
+			<biblScope unit="volume">171</biblScope>
+			<biblScope unit="page">107138</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Imagenet: A large-scale hierarchical image database</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L.-J</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2009 IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the 2009 IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="page" from="248" to="255" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Malimg Dataset</title>
+		<ptr target="https://sarvamblog.blogspot.com/2014/08/supervised-classification-with-k-fold.html/" />
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+	<note>Keras</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Drebin</forename><surname>Dataset</surname></persName>
+		</author>
+		<ptr target="https://www.sec.cs.tu-bs.de/∼danarp/drebin/" />
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Virustotal</title>
+		<ptr target="https://www.virustotal.com" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Machine Learning and Images for Malware Detection and Classification</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kosmidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Kalloniatis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21st Pan-Hellenic Conference on Informatics</title>
+				<meeting>the 21st Pan-Hellenic Conference on Informatics</meeting>
+		<imprint>
+			<date type="published" when="2017">2017. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1145/3139367.3139400</idno>
+		<ptr target="https://doi.org/10.1145/3139367.3139400" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Lightweight Classification of IoT Malware Based on Image Recognition</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">V</forename><surname>Vasconcellos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Prasad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sgandurra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sakurai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 IEEE 42nd Annual Computer Software and Applications Conference (COMPSAC)</title>
+				<meeting>the 2018 IEEE 42nd Annual Computer Software and Applications Conference (COMPSAC)</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">02</biblScope>
+			<biblScope unit="page" from="664" to="669" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Image-Based malware classification using ensemble of CNN architectures (IMCEC)</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Vasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Alazab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Safaei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Zheng</surname></persName>
+		</author>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/S016740482030033X" />
+	</analytic>
+	<monogr>
+		<title level="j">Computers &amp; Security</title>
+		<imprint>
+			<biblScope unit="volume">92</biblScope>
+			<biblScope unit="page">101748</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Classification and Analysis of Android Malware Images Using Feature Fusion Technique</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Thakur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Gera</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Shah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Abuhmed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ali</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Access</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page" from="90" to="102" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<author>
+			<persName><forename type="first">S</forename><surname>Pouyanfar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sadiq</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Tao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">P</forename><surname>Reyes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-L</forename><surname>Shyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S.-C</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">S</forename><surname>Iyengar</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3234150</idno>
+		<ptr target="https://doi.org/10.1145/3234150" />
+	</analytic>
+	<monogr>
+		<title level="m">A Survey on Deep Learning: Algorithms, Techniques, and Applications</title>
+				<imprint>
+			<date type="published" when="2018-09">Sep. 2018</date>
+			<biblScope unit="volume">51</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Learning without Forgetting</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hoiem</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Pattern Analysis and Machine Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="2935" to="2947" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Densely Connected Convolutional Networks</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Van Der Maaten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">Q</forename><surname>Weinberger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the 2017 IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2017-07">2017. July 2017</date>
+			<biblScope unit="page" from="2261" to="2269" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Le</surname></persName>
+		</author>
+		<ptr target="https://proceedings.mlr.press/v97/tan19a.html" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 36th International Conference on Machine Learning, ser. ICML</title>
+				<meeting>the 36th International Conference on Machine Learning, ser. ICML</meeting>
+		<imprint>
+			<date type="published" when="2019-06">2019, 09-15 Jun 2019</date>
+			<biblScope unit="page" from="6105" to="6114" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Inception-v4, Inception-Resnet and the Impact of Residual Connections on Learning</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Szegedy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ioffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Vanhoucke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename></persName>
+		</author>
+		<ptr target="https://aaai.org/ocs/index.php/AAAI/AAAI17/paper/view/14806" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence, ser. AAAI&apos;17</title>
+				<meeting>the Thirty-First AAAI Conference on Artificial Intelligence, ser. AAAI&apos;17</meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="4278" to="4284" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Rethinking the Inception Architecture for Computer Vision</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Szegedy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Vanhoucke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ioffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shlens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wojna</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</title>
+				<meeting>the 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="2818" to="2826" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">G</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Kalenichenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Weyand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andreetto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Adam</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/1704.04861" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Mo-bileNetV2: Inverted Residuals and Linear Bottlenecks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sandler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zhmoginov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L.-C</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="4510" to="4520" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Learning Transferable Architectures for Scalable Image Recognition</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Zoph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Vasudevan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shlens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><forename type="middle">V</forename><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="8697" to="8710" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Deep Residual Learning for Image Recognition</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2016)</title>
+				<meeting>the 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2016)</meeting>
+		<imprint>
+			<date type="published" when="2016-06">June 2016</date>
+			<biblScope unit="page" from="770" to="778" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Identity Mappings in Deep Residual Networks</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th European Conference on Computer Vision (ECCV 2016)</title>
+				<meeting>the 14th European Conference on Computer Vision (ECCV 2016)</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="630" to="645" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Very deep convolutional networks for large-scale image recognition</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zisserman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 3rd International Conference on Learning Representations, ser</title>
+				<meeting>the 3rd International Conference on Learning Representations, ser</meeting>
+		<imprint>
+			<date type="published" when="2015">2015. 2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Xception: Deep Learning with Depthwise Separable Convolutions</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Chollet</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the 2017 IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2017-07">2017. July 2017</date>
+			<biblScope unit="page" from="1800" to="1807" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Drebin: Effective and Explainable Detection of Android Malware in Your Pocket</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Spreitzenbarth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hubner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Gascon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Rieck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21th Annual Network and Distributed System Security Symposium (NDSS 2014)</title>
+				<meeting>the 21th Annual Network and Distributed System Security Symposium (NDSS 2014)</meeting>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<title level="m" type="main">Kaspersky</title>
+		<ptr target="https://www.kaspersky.com/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Detection and Elimination of Systematic Labeling Bias in Code Reviewer Recommendation Systems</title>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">A</forename><surname>Tecimer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Tüzün</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Dibeklioglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Erdogmus</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3463274.3463336</idno>
+		<ptr target="https://doi.org/10.1145/3463274.3463336" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 25th Evaluation and Assessment in Software Engineering, ser. EASE 2021</title>
+				<meeting>the 25th Evaluation and Assessment in Software Engineering, ser. EASE 2021</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="181" to="190" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">AVclass2: Massive Malware Tag Extraction from AV Labels</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sebastián</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Caballero</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3427228.3427261</idno>
+		<ptr target="https://doi.org/10.1145/3427228.3427261" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 36th Annual Computer Security Applications Conference, ser. ACSAC &apos;20</title>
+				<meeting>the 36th Annual Computer Security Applications Conference, ser. ACSAC &apos;20</meeting>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="42" to="53" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Towards Accurate Labeling of Android Apps for Reliable Malware Detection</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Salem</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3422337.3447849</idno>
+		<ptr target="https://doi.org/10.1145/3422337.3447849" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th ACM Conference on Data and Application Security and Privacy, ser. CODASPY &apos;21</title>
+				<meeting>the 11th ACM Conference on Data and Application Security and Privacy, ser. CODASPY &apos;21</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="269" to="280" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">An Optimized Positive-Unlabeled Learning Method for Detecting a Large Scale of Malware variants</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">F</forename><surname>Khan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Qin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 IEEE Conference on Dependable and Secure Computing, ser. DSC 2019</title>
+				<meeting>the 2019 IEEE Conference on Dependable and Secure Computing, ser. DSC 2019</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Investigating Labelless Drift Adaptation for Malware Detection</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Kan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pendlebury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pierazzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Cavallaro</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3474369.3486873</idno>
+		<ptr target="https://doi.org/10.1145/3474369.3486873" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th ACM Workshop on Artificial Intelligence and Security, ser. AISec &apos;21</title>
+				<meeting>the 14th ACM Workshop on Artificial Intelligence and Security, ser. AISec &apos;21</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="123" to="134" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<title level="m" type="main">Detect-It-Easy (DIE)</title>
+		<ptr target="https://sectechno.com/detect-it-easy-die-packer-identifier/" />
+		<imprint/>
+	</monogr>
+	<note>PEiD</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">E</forename><surname>Exeinfo</surname></persName>
+		</author>
+		<ptr target="http://exeinfo.atwebpages.com/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">"</forename><surname>Pe Detective</surname></persName>
+		</author>
+		<ptr target="https://ntcore.com/?pageid=367" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<monogr>
+		<title level="m" type="main">TrID on VirusTotal</title>
+		<ptr target="https://developers.virustotal.com/reference/trid-1" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<title level="m" type="main">A systematic analysis of performance measures for classification tasks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sokolova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Lapalme</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="page" from="427" to="437" />
+		</imprint>
+	</monogr>
+	<note>Information processing &amp; management</note>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Effectiveness of Transfer Learning and Fine Tuning in Automated Fruit Image Classification</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Siddiqi</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3342999.3343002</idno>
+		<ptr target="https://doi.org/10.1145/3342999.3343002" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 3rd International Conference on Deep Learning Technologies, ser. ICDLT 2019</title>
+				<meeting>the 3rd International Conference on Deep Learning Technologies, ser. ICDLT 2019</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="91" to="100" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

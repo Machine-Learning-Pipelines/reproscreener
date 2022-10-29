@@ -1,0 +1,1891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Inverting Adversarially Robust Networks for Image Synthesis</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Renan</forename><forename type="middle">A</forename><surname>Rojas-Gomez</surname></persName>
+							<email>renanar2@illinois.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Illinois at Urbana-Champaign</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Raymond</forename><forename type="middle">A</forename><surname>Yeh</surname></persName>
+							<email>rayyeh@purdue.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Purdue University 3 Auburn University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Minh</forename><forename type="middle">N</forename><surname>Do</surname></persName>
+							<email>minhdo@illinois.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Illinois at Urbana-Champaign</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Anh</forename><surname>Nguyen</surname></persName>
+						</author>
+						<title level="a" type="main">Inverting Adversarially Robust Networks for Image Synthesis</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">EAC4C14E802A704784A4994EE89D5D9B</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:47+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Despite unconditional feature inversion being the foundation of many image synthesis applications, training an inverter demands a high computational budget, large decoding capacity and imposing conditions such as autoregressive priors. To address these limitations, we propose the use of adversarially robust representations as a perceptual primitive for feature inversion. We train an adversarially robust encoder to extract disentangled and perceptually-aligned image representations, making them easily invertible. By training a simple generator with the mirror architecture of the encoder, we achieve superior reconstruction quality and generalization over standard models. Based on this, we propose an adversarially robust autoencoder and demonstrate its improved performance on style transfer, image denoising and anomaly detection tasks. Compared to recent ImageNet feature inversion methods, our model attains improved performance with significantly less complexity. 4  </p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Deep classifiers trained on large-scale datasets extract meaningful high-level features of natural images, making them an essential tool for manipulation tasks such as style transfer <ref type="bibr" target="#b0">[1,</ref><ref type="bibr" target="#b1">2,</ref><ref type="bibr" target="#b2">3]</ref>, image inpainting <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b4">5]</ref>, image composition <ref type="bibr" target="#b5">[6,</ref><ref type="bibr" target="#b6">7]</ref>, among others <ref type="bibr" target="#b7">[8,</ref><ref type="bibr" target="#b8">9,</ref><ref type="bibr" target="#b9">10]</ref>. State-of-the-art image manipulation techniques use a decoder <ref type="bibr" target="#b4">[5,</ref><ref type="bibr" target="#b9">10]</ref>, i.e., an image generator, to create natural images from high-level features. Extensive work has explored how to train image generators, leading to models with photorealistic results <ref type="bibr" target="#b10">[11]</ref>. Moreover, by learning how to invert deep features, image generators enable impressive synthesis use cases such as anomaly detection <ref type="bibr" target="#b11">[12,</ref><ref type="bibr" target="#b12">13]</ref> and neural network visualization <ref type="bibr" target="#b6">[7,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b15">16]</ref>.</p><p>Inverting ImageNet features is a challenging task that often requires the generator to be more complex than the encoder <ref type="bibr" target="#b16">[17,</ref><ref type="bibr" target="#b17">18,</ref><ref type="bibr" target="#b18">19,</ref><ref type="bibr" target="#b4">5]</ref>, incurring in a high computational cost. Donahue et al. <ref type="bibr" target="#b16">[17]</ref> explained this shortcoming by the fact that the encoder bottleneck learns entangled representations that are hard to invert. An alternative state-of-the-art technique for inverting ImageNet features requires, in addition to the encoder and decoder CNNs, an extra autoregressive model and vector quantization <ref type="bibr" target="#b19">[20,</ref><ref type="bibr" target="#b20">21]</ref> or a separate invertible network <ref type="bibr" target="#b15">[16]</ref>.</p><p>In this paper, we propose a novel mechanism for training effective ImageNet autoencoders that do not require extra decoding layers or networks besides the encoder and its mirror decoder. Specifically, we adopt a pre-trained classifier as encoder and train an image generator to invert its features, yielding an autoencoder for real data. Unlike existing works that use feature extractors trained on natural images, we train the encoder on adversarial examples <ref type="bibr" target="#b21">[22]</ref>. This fundamental difference equips our adversarially robust (AR) autoencoder with representations that are perceptually-aligned with human vision <ref type="bibr" target="#b22">[23,</ref><ref type="bibr" target="#b8">9]</ref>, resulting in favorable inversion properties.</p><p>To show the advantages of learning how to invert AR features, our generator corresponds to the mirror architecture of the encoder, without additional decoding layers <ref type="bibr" target="#b16">[17,</ref><ref type="bibr" target="#b5">6]</ref> or extra components <ref type="bibr" target="#b23">[24,</ref><ref type="bibr" target="#b19">20,</ref><ref type="bibr" target="#b15">16,</ref><ref type="bibr" target="#b20">21,</ref><ref type="bibr" target="#b24">25]</ref>. To the best of our knowledge, we are the first to show the benefits of training an autoencoder on both adversarial and real images. Our main findings are as follows:</p><p>-A generator trained to invert AR features has a substantially higher reconstruction quality than those trained on standard features. Our method generalizes to different models (AlexNet <ref type="bibr" target="#b25">[26]</ref>, VGG-16 <ref type="bibr" target="#b26">[27]</ref>, and ResNet <ref type="bibr" target="#b27">[28]</ref>) and datasets (CIFAR-10 <ref type="bibr" target="#b28">[29]</ref> and ImageNet <ref type="bibr" target="#b29">[30]</ref>)(Sec. 5.1). -Our proposed AR autoencoder is remarkably robust to resolution changes, as shown on natural and upscaled high-resolution images (Fig. <ref type="figure">8</ref>). Experiments on DIV2K <ref type="bibr" target="#b30">[31]</ref> show it accurately reconstructs high-resolution images without any finetuning, despite being trained on low-resolution images (Sec. 5.3). -Our generator outperforms state-of-the-art inversion methods based on iterative optimization techniques <ref type="bibr" target="#b22">[23]</ref> in terms of PSNR, SSIM, and LPIPS <ref type="bibr" target="#b9">[10]</ref>.</p><p>It also attains comparable accuracy to the well-established DeepSiM model <ref type="bibr" target="#b31">[32]</ref> with a much lower model complexity (Sec. 5.4). -Our AR model outperforms standard baselines on three downstream tasks:</p><p>style transfer <ref type="bibr" target="#b1">[2]</ref>, image denoising <ref type="bibr" target="#b4">[5]</ref> (Sec. 6) and anomaly detection <ref type="bibr" target="#b11">[12]</ref>. The latter is covered in detail in the Appendix (Sec. A1).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Inverting Neural Networks. Prior work exploring deep feature inversion using optimization approaches are either limited to per-pixel priors or require multiple steps to converge and are sensitive to initialization <ref type="bibr" target="#b32">[33,</ref><ref type="bibr" target="#b33">34,</ref><ref type="bibr" target="#b22">23,</ref><ref type="bibr" target="#b8">9]</ref>. Instead, we propose to map contracted features to images via a generator, following the work by Dosovitskiy et al. <ref type="bibr" target="#b18">[19]</ref> and similar synthesis techniques <ref type="bibr" target="#b5">[6,</ref><ref type="bibr" target="#b4">5,</ref><ref type="bibr" target="#b6">7]</ref>. By combining natural priors and AR features, we get a significant reconstruction improvement with much less trainable parameters.</p><p>Our results are consistent to prior findings on AR features being more invertible via optimization <ref type="bibr" target="#b22">[23]</ref> and more useful for transfer learning <ref type="bibr" target="#b34">[35]</ref>. As part of our contribution, we complement these by showing that (i) learning a map from the AR feature space to the image domain largely outperforms the original optimization approach, (ii) such an improvement generalizes to models of different complexity, and (iii) inverting AR features shows remarkable robustness to scale changes. We also show AR encoders with higher robustness can be more easily decoded, revealing potential security issues <ref type="bibr" target="#b35">[36]</ref>.</p><p>Regularized Autoencoders. Prior work requiring data augmentation to train generative and autoencoding models often requires learning an invertible transformation that maps augmented samples back to real data <ref type="bibr" target="#b36">[37]</ref>. Instead, our approach can be seen as a novel way to regularize bottleneck features, providing an alternative to contractive, variational and sparse autoencoders <ref type="bibr" target="#b10">[11,</ref><ref type="bibr" target="#b37">38,</ref><ref type="bibr" target="#b38">39]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Preliminaries</head><p>Our model exploits AR representations to reconstruct high-quality images, which is related to the feature inversion framework. Specifically, we explore AR features as a strong prior to obtain photorealism. For a clear understanding of our proposal, we review fundamental concepts of feature inversion and AR training.</p><p>Feature Inversion. Consider a target image x 0 ∈ R W ×H×C and its con-</p><formula xml:id="formula_0">tracted representation f 0 F θ (x 0 ) ∈ R W ×H ×C .</formula><p>Here, F θ denotes the target model, e.g. AlexNet, with parameters θ ∈ R T and W H C W HC. Features extracted by F θ encapsulate rich input information that can either be used for the task it was trained on, transferred to a related domain <ref type="bibr" target="#b39">[40]</ref> or used for applications such as image enhancement and manipulation <ref type="bibr" target="#b40">[41,</ref><ref type="bibr" target="#b0">1]</ref>.</p><p>An effective way to leverage these representations is by training a second model, a generator, to map them to the pixel domain. This way, deep features can be manipulated and transformed into images <ref type="bibr" target="#b31">[32,</ref><ref type="bibr" target="#b18">19]</ref>. Also, since deep features preserve partial input information, inverting them elucidates what kind of attributes they encode. Based on these, feature inversion <ref type="bibr" target="#b41">[42,</ref><ref type="bibr" target="#b32">33,</ref><ref type="bibr" target="#b31">32]</ref> has been extensively studied for visualization and understanding purposes as well as for synthesis and manipulation tasks. Typically, feature inversion is formulated as an optimization problem:</p><formula xml:id="formula_1">x = arg min x F(F θ (x), f 0 ) + λR(x),<label>(1)</label></formula><p>where x is the estimated image and F(F θ (x), f 0 ) the fidelity term between estimated and target representations, F θ (x) and f 0 respectively. R(x) denotes the regularization term imposing apriori constraints in the pixel domain and λ ∈ R ++ balances between fidelity and regularization terms. Adversarial Robustness. Adversarial training adds perturbations to the input data and lets the network learn how to classify in the presence of such adversarial attacks <ref type="bibr" target="#b42">[43,</ref><ref type="bibr" target="#b21">22,</ref><ref type="bibr" target="#b43">44]</ref>. Consider the image classification task with annotated dataset K. Let an annotated pair correspond to image x ∈ R W ×H×C and its one-hot encoded label y ∈ {0, 1} |C| , where C is the set of possible classes. From the definition by Madry et al. <ref type="bibr" target="#b21">[22]</ref>, a perturbed input is denoted by x = x + δ, where x is the perturbed sample and δ the perturbation. Let the set of perturbations be bounded by the p ball for p ∈ {2, ∞}, S : {δ, δ p ≤ ε}. Then, the AR training corresponds to an optimization problem: Fig. <ref type="figure">1</ref>: By training it to invert adversarially robust features, our proposed autoencoder obtains better reconstructions than models trained on standard features.</p><formula xml:id="formula_2">θ = arg min θ E (x,y)∼K max δ∈S L x ,y (θ) ,<label>(2)</label></formula><p>where θ ∈ R T are the optimal weights and L x ,y (θ) the negative log-likelihood. The goal is to minimize L x ,y (θ) in the presence of the worst possible adversary.</p><p>4 Proposed Method</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Adversarially Robust Autoencoder</head><p>We propose an autoencoder architecture (Fig. <ref type="figure">1</ref>) to extract bottleneck AR features of arbitrary input images, manipulate them for a given synthesis task, and map the results back to images. We denote the AR feature extractor as F θ , where θ are the AR model weights, as explained in Sec. 3. Robust features are transformed into images using a CNN-based generator denoted as G φ. Here, φ are the generator weights learned by inverting AR features.</p><p>Following prior works <ref type="bibr" target="#b44">[45,</ref><ref type="bibr" target="#b18">19]</ref>, we use AlexNet as the encoder and extract AR features from its conv5 layer. We also explore more complex encoders from the VGG and ResNet families and evaluate their improvement over standard encoders (See Sec. A4.1 for architecture details).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Image Decoder: Optimization Criteria</head><p>Given a pre-trained AR encoder F θ , the generator G φ is trained using 1 pixel, 2 feature and GAN losses, where the feature loss matches AR representations, known to be perceptually aligned <ref type="bibr" target="#b22">[23]</ref>.</p><p>In more detail, we denote x = G φ(f ) to be the reconstruction of image x, where f = F θ (x) are its AR features. Training the generator with fixed encoder's weights θ corresponds to the following optimization problem: where λ pix , λ feat , λ adv ∈ R ++ are hyperparameters, D ψ : R W ×H×C → [0, 1] denotes the discriminator with weights ψ and predicts the probability of an image being real. The pixel loss L pix (φ) is the 1 distance between prediction G φ (f ) and target x. The feature loss L feat (φ, θ) is the 2 distance between the AR features of prediction and target. The adversarial loss L adv (φ, ψ) maximizes the discriminator score of predictions, i.e., it increases the chance the discriminator classifies them as real. On the other hand, the discriminator weights are trained via the cross-entropy loss, i.e.,</p><formula xml:id="formula_3">φ = arg min φ λ pix L pix (φ) + λ feat L feat (φ, θ) + λ adv L adv (φ, ψ),<label>(3)</label></formula><formula xml:id="formula_4">L pix (φ) E x∼ K x − G φ (f ) 1 ,<label>(4)</label></formula><formula xml:id="formula_5">L feat (φ, θ) E x∼ K f − F θ • G φ (f ) 2 2 ,<label>(5)</label></formula><formula xml:id="formula_6">L adv (φ, ψ) E x∼ K − logD ψ • G φ (f ) ,<label>(6)</label></formula><formula xml:id="formula_7">min ψ L disc (φ, ψ) E x∼ K − logD ψ (x) − log(1 − D ψ • G φ (f )) .<label>(7)</label></formula><p>This discriminative loss L disc (φ, ψ) guides D ψ to maximize the score of real images and minimize the score of reconstructed (fake) images. Similar to traditional GAN algorithms, we alternate between the generator and discriminator training to reach the equilibrium point.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Applications</head><p>The trained AR autoencoder can be used to improve the performance of tasks such as style transfer <ref type="bibr" target="#b1">[2]</ref>, image denoising <ref type="bibr" target="#b45">[46]</ref>, and anomaly detection <ref type="bibr" target="#b11">[12]</ref>. In what follows, we describe the use of our model on style transfer and image denoising. The task of anomaly detection is covered in the Appendix (Sec. A1).</p><p>Example-based Style Transfer. Style transfer <ref type="bibr" target="#b0">[1]</ref> aligns deep features to impose perceptual properties of a style image x s over semantic properties of a content image x c . This is done by matching the content and style distributions in the latent space of a pre-trained encoder to then transform the resulting features back into images. We adopt the Universal Style Transfer framework <ref type="bibr" target="#b1">[2]</ref> to show the benefits of using our AR model for stylization (Fig. <ref type="figure" target="#fig_1">2</ref>).</p><p>We train three AR AlexNet autoencoders {F l, θ , G l, φ} L=3 l=1 and use them to sequentially align features at each scale. F 1, θ , F 2, θ and F 3, θ extract AR conv5, conv2 and conv1 features, respectively. First, style features f l,s = F l, θ (x s ) are extracted at each stage. We then use the content image as initialization for the stylized output x 0,cs x c and extract its conv5 features f 1,cs = F 1, θ (x 0,cs ).</p><p>At stage l = 1, the style distribution is imposed over the content features by using the whitening and coloring transform <ref type="bibr" target="#b1">[2,</ref><ref type="bibr" target="#b46">47]</ref> denoted by T . The resulting representation f 1,t = T f 1,s , f 1,cs is characterized by the first and second  </p><formula xml:id="formula_8">= G 1, φ(f 1,t ).</formula><p>The process is repeated for l ∈ {2, 3} to incorporate the style at finer resolutions, resulting in the final stylized image x cs = x 3,cs .</p><p>Image Denoising. Motivated by denoising autoencoders (DAE) <ref type="bibr" target="#b45">[46]</ref> where meaningful features are extracted from distorted instances, we leverage AR features for image enhancement tasks. Similarly to deep denoising models <ref type="bibr" target="#b47">[48]</ref>, we incorporate skip connections in our pre-trained AR AlexNet autoencoder to extract features at different scales, complementing the information distilled at the encoder bottleneck (Fig. <ref type="figure" target="#fig_2">3</ref>). Skip connections correspond to Wavelet Pooling <ref type="bibr" target="#b2">[3]</ref>, replacing pooling and upsampling layers by analysis and synthesis Haar wavelet operators, respectively. Our skip-connected model is denoted by {F s, θ , G s, φ}.</p><p>Similarly to real quantization scenarios <ref type="bibr" target="#b48">[49,</ref><ref type="bibr">50,</ref><ref type="bibr" target="#b50">51]</ref>, we assume images are corrupted by clipped additive Gaussian noise. A noisy image is denoted by b = ρ x + η ∈ R W ×H×C , where η ∼ N (0, σ) is the additive white Gaussian noise term and ρ(x) = max[0, min(1, x)] a pointwise operator restricting the range between 0 and 1. Denoised images are denoted by xs = G s, φ • F s, θ (b).</p><p>G s, φ is trained to recover an image x from the features of its corrupted version F s, θ (b). The training process uses the optimization criteria described in Sec. 4.2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Experiments on Feature Inversion</head><p>We begin analyzing the reconstruction accuracy achieved by inverting features from different classifiers and empirically show that learning how to invert AR features via our proposed generator improves over standard feature inversion. Refer to Sec. A2 and Sec. A4 for additional inversion results and training details.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Reconstruction Accuracy of AR Autoencoders</head><p>Inverting AlexNet features. Standard and AR AlexNet autoencoders are trained as described in Sec. 4.1 on ImageNet for comparison purposes. The AR AlexNet classifier is trained via 2 -PGD attacks <ref type="bibr" target="#b21">[22]</ref> of radius ε = 3 255 and 7 steps of size 0.5. Training is performed using 90 epochs via SGD with a learning rate of 0.1 reduced 10 times every 30 epochs. On the other hand, the standard AlexNet classifier is trained on natural images via cross-entropy (CE) loss with the same SGD setup as in the AR case.</p><p>Next, generators are trained using pixel, feature and GAN losses to invert AlexNet conv5 features (size 6 × 6 × 256). Both AR and standard models use the same generator architecture, which corresponds to the mirror network of the encoder. We deliberately use a simple architecture to highlight the reconstruction improvement is due to inverting AR features and not the generator capacity. We also train generators using (i) pixel and (ii) pixel and feature losses to ablate their effect. Reconstruction quality is evaluated using PSNR, SSIM and LPIPS.</p><p>Under all three loss combinations, reconstructions from AR AlexNet features obtain better PSNR and SSIM than their standard counterparts (Tab. 1). Specifically, inverting AR AlexNet features gives an average PSNR improvement of over 2 dB in all three cases. LPIPS scores also improve, except when using pixel, feature and GAN losses. Nevertheless, inverting AR features obtain a strong PSNR and SSIM improvement in this case as well. Qualitatively, inverting AR features better preserves the natural appearance in all cases, reducing the checkerboard effect and retaining sharp edges (Fig. <ref type="figure" target="#fig_3">4</ref>).</p><p>Inverting VGG features. We extend the analysis to VGG-16 trained on ImageNet-143 and evaluate the reconstruction improvement achieved by inverting its AR features. We use the AR pre-trained classifier from the recent work by Liu et al. <ref type="bibr" target="#b51">[52]</ref> trained using ∞ -PGD attacks of radius ε = 0.01 and 10 steps of size 1 50 . Training is performed using 80 epochs via SGD with a learning rate of 0.1 reduced 10 times every 30, 20, 20 and 10 epochs. On the other hand, its standard version is trained on natural images via CE loss with the same SGD setup as in the AR case.  Generators are trained on pixel and feature losses to invert VGG-16 conv5 1 features (size 14 × 14 × 512). Similarly to the AlexNet analysis, generators inverting both standard and AR features correspond to the mirror network of the encoder. We evaluate the reconstruction accuracy of both models and report their level of adversarial robustness (Tab. 2 and Fig. <ref type="figure" target="#fig_4">5</ref>).</p><p>Quantitatively, reconstructions from AR VGG-16 features are more accurate than those of standard features in PSNR, SSIM and LPIPS by a large margin. Specifically, inverting AR VGG-16 features gives an average PSNR improvement of 2.7 dB. Qualitatively, reconstructions from AR VGG-16 features are more similar to the original images, reducing artifacts and preserving object boundaries.</p><p>Furthermore, the reconstruction accuracy attained by the AR VGG-16 autoencoder improves over that of the AR AlexNet model. This suggests that the benefits of inverting AR features are not constrained to shallow models such as AlexNet, but generalize to models with larger capacity.</p><p>Inverting ResNet features. To analyze the effect of inverting AR features from classifiers trained on different datasets, we evaluate the reconstruction accuracy obtained by inverting WideResNet-28-10 trained on CIFAR-10. We use the AR pre-trained classifier from the recent work by Zhang et al. <ref type="bibr" target="#b52">[53]</ref>. This model obtains State-of-the-art AR classification accuracy via a novel weighted adversarial training regime. Specifically, the model is adversarially trained via PGD by ranking the importance of each sample based on how close it is to the decision boundary (how attackable the sample is).</p><p>AR training is performed using ∞ attacks of radius ε = 8 255 and 10 steps of size 2 255 . Classification training is performed using 100 epochs (with a burn-in period of 30 epochs) via SGD with a learning rate of 0.1 reduced 10 times every 30 epochs. On the other hand, its standard version is trained on natural images via CE loss using the same SGD setup as in the AR case.</p><p>Generators for standard and AR WideResNet-28-10 models are trained to invert features from its 3rd residual block (size 8 × 8 × 640) via pixel and feature losses. Similarly to our previous analysis, both generators correspond to the mirror architecture of the encoder. We evaluate their reconstruction via PSNR, SSIM and LPIPS, and their robustness via AutoAttack <ref type="bibr" target="#b53">[54]</ref> (Tab. 3 and Fig. <ref type="figure">6</ref>).</p><p>Similarly to previous scenarios, inverting WideResNet-28-10 AR features shows a large improvement over standard ones in all metrics. Specifically, invert- Overall, results enforce our claim that the benefits of inverting AR features extend to different models, datasets and training strategies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Robustness Level vs. Reconstruction Accuracy</head><p>We complement the reconstruction analysis by exploring the relation between adversarial robustness and inversion quality. We train five AlexNet classifiers on ImageNet, one on natural images (standard) and four via 2 -PGD attacks with ε ∈ {0.5, 2, 3, 4}/255. All other training parameters are identical across models.</p><p>For each classifier, an image generator is trained on an ImageNet subset via pixel, feature and GAN losses to invert conv5 features. Similar to Sec. 5.1, all five generators correspond to the mirror network of the encoder. To realiably measure the impact of adversarial robustness, reconstruction accuracy is evaluated in terms of PSNR, SSIM and LPIPS. We also report the effective robustness level achieved by each model via AutoAttack (Tab. 4).</p><p>Results show LPIPS and SSIM improve almost monotonically until a maximum value is reached at ε = 2, while PSNR keeps increasing. This implies that just by changing ε from 0.5 to 4 while keeping the exact same architecture and training regime, a reconstruction improvement of 1.2 dB PSNR is obtained.</p><p>Based on this, we use an AR AlexNet model trained with ε = 3 in our experiments, which gives the best tradeoff between PSNR, SSIM and LPIPS. Overall, our analysis suggests that, while all four AR models outperform the   inversion accuracy of the standard model, the reconstruction improvement is not proportional to the robustness level. Instead, it is maximized at a particular level. Please refer to Sec. A2.3 for additional robustness level vs. reconstruction accuracy experiments on ResNet-18 pointing to the same conclusion.</p><formula xml:id="formula_9">G. truth L = 1 L = 4 L = 7 L = 10</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Reconstructing Images at Unseen Resolutions</head><p>Unlike extracting shift-invariant representations, image scaling is difficult to handle for standard CNN-based models <ref type="bibr" target="#b54">[55,</ref><ref type="bibr" target="#b55">56]</ref>. Following previous work suggesting AR features are more generic and transferable than standard ones <ref type="bibr" target="#b56">[57,</ref><ref type="bibr" target="#b34">35]</ref>, we test whether our proposed AR autoencoder generalizes better to scale changes. We explore this property and show that our model trained on low-resolution samples improves reconstruction of images at unseen scales without any fine-tuning.</p><p>Scenario 1: Reconstructing Upscaled Images. Upscaled ImageNet samples are reconstructed from their AR AlexNet conv5 representations. For a fair comparison across scales, each image is normalized to 224 × 224 px. and then enlarged by an integer factor L &gt; 1. Experiments show a higher accuracy obtained from AR features in terms of PSNR, SSIM and LPIPS (Tab. 5). All metrics improve almost monotonically with L. In contrast, accuracy using standard features degrades with L. Inversion from AR features show almost perfect reconstruction for large scales, while those of standard features show severe distorsions (Fig. <ref type="figure" target="#fig_5">7</ref>). [31], containing objects at multiple scales. AR feature reconstructions show a significant PSNR, SSIM and LPIPS improvement over standard ones, despite not being explicitly trained to handle such large-scale objects (Tab. 6). Qualitatively, reconstructions from AR AlexNet features preserve sharp edges, reduces color degradation and diminishes checkerboard effects induced by standard inversion (Fig. <ref type="figure">8</ref>). Thus, for unseen scales and without finetuning, AR features better preserve structure without penalizing the perceptual similarity.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Comparison against State-of-the-Art Inversion Techniques</head><p>The inversion accuracy of our AR autoencoder is compared against two alternative techniques: Optimization-based robust representation inversion (RI) <ref type="bibr" target="#b22">[23]</ref> and DeePSiM <ref type="bibr" target="#b31">[32]</ref>. For a fair comparison, all methods reconstruct images from AlexNet features. We begin by highlighting the differences between them.</p><p>While RI is a model-based approach that searches in the pixel domain for an image that matches a set of target AR features, we use a CNN-based generator trained on a combination of natural-image priors (Sec. 4.2). On the other hand, while DeePSiM is also a CNN-based technique trained under multiple priors, its generator has approximately 63% more trainable parameters than ours (Tab. 7).</p><p>Experimental Setup. All inversion methods are evaluated on ImageNet. Our standard and AR models are trained using pixel, feature and GAN losses using the training setup described in Sec. A4. DeePSiM is evaluated using its official Caffe implementation without any changes. RI is evaluated using its official PyTorch implementation modified to invert conv5 AR features. Input samples are rescaled to 224 × 224 px. (227 × 227 px. for DeepSiM).</p><p>Results. Our AR AlexNet autoencoder obtains the best accuracy in terms of PSNR and the second best in terms of SSIM (Tab. 7). While it outperforms its standard version in PSNR and SSIM, it gets a marginally worse LPIPS. Moreover, our AR model outperforms RI in all metrics. Also, despite DeePSiM having more layers and using larger inputs, our model achieves a large PSNR improvement over it. Results highlight the improvement obtained by inverting AR features and how this fundamental change allows competitive reconstruction quality using three times less trainable parameters. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Downstream Tasks</head><p>We further evaluate the benefits of incorporating AR autoencoders into two downstream tasks: style transfer and image denoising. To assess the benefits of AR autoencoders, in each task, we simply replace the standard autoencoders by the AR versions without incorporating any additional task-specific priors or tuning. Despite not tailoring our architecture to each scenario, it obtains on-par or better results than well-established methods. Refer to Sec. A3 and Sec. A4 for more results and full implementation details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Style Transfer via Robust Feature Alignment</head><p>Motivated by the perceptual properties of AR features <ref type="bibr" target="#b22">[23]</ref>, we analyze their impact on style transfer using our AR AlexNet autoencoder as backbone and measure their improvement in both structure and texture preservation. Experimental Setup. Stylization is evaluated on 75 random content images and 100 random style images, leading to 7, 500 image pairs. Content and style preservation is evaluated via the SSIM between content and stylized images and the VGG-19 Gram loss between style and stylized images, respectively. Conv1 and conv2 models use nearest neighbor interpolation instead of transposed convolution layers to improve reconstruction and avoid checkerboard effects, while the conv5 model remains unaltered. We also include results using Universal Style Transfer's (UST) official implementation, using a VGG-19 backbone.</p><p>Results. Our AR autoencoder improves both texture and structure preservation over its standard version (Tab. 8). Stylization via AR features removes artifacts in flat areas, reducing blurry outputs and degraded structure (Fig. <ref type="figure">9</ref>). Besides, our AR model gets a lower Gram loss with respect to UST. This implies that, despite matching less feature maps than the VGG-19 model (three instead of five), stylizing via our AR AlexNet autoencoder better preserves the style. As expected, UST obtains a better SSIM since VGG-19 has more complexity and uses less contracted feature maps than our AlexNet model (e.g. 14×14×512 vs. 6×6×256). Also, UST blends stylized and content features to better preserve shapes. Overall, a comparison between our AR model and UST shows a tradeoff between content and style preservation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Image Denoising via AR Autoencoder</head><p>Similarly to the robustness imposed by regularized autoencoders <ref type="bibr" target="#b45">[46,</ref><ref type="bibr" target="#b57">58,</ref><ref type="bibr" target="#b37">38]</ref>, we harness the manifold learned by AR models to obtain noise-free reconstructions. We evaluate our AR AlexNet denoising model and compare its restoration properties with alternative learn-based methods.</p><p>Experimental Setup. Our image denoising model consists of an AR autoencoder equipped with skip connections in conv1, conv2 and conv5 layers to better preserve image details. Skip connections follow the Wavelet Pooling approach <ref type="bibr" target="#b2">[3]</ref>. Generators are trained on ImageNet via pixel and feature losses.</p><p>Accuracy is evaluated on the Kodak24, McMaster <ref type="bibr" target="#b60">[61]</ref> and Color Berkeley Segmentation Dataset 68 (CBSD68) <ref type="bibr" target="#b61">[62]</ref> for clipped additive Gaussian noise (σ = 50/255). We compare our AR model against two learn-based methods, Trainable Nonlinear Reaction Diffusion (TNRD) <ref type="bibr" target="#b58">[59]</ref> and Multi Layer Perceptron-based model (MLP) <ref type="bibr" target="#b59">[60]</ref>, often included in real-noise denoising benchmarks <ref type="bibr" target="#b62">[63,</ref><ref type="bibr" target="#b63">64]</ref>.</p><p>Results. Our AR model improves over its standard version in all metrics across all datasets (Tab. 9). While standard predictions include color distorsions Ground-truth Observation Standard AR (ours) Fig. <ref type="figure">10</ref>: Image denoising (σ = 50 255 ): While inverting standard features introduces artifacts and degrades color, limiting their use for restoration tasks, our AR denoiser reduces the artifacts and better preserves the original texture. and texture artifacts, AR predictions show a better texture preservation and significantly reduce the distorsions introduced by the denoising process (Fig. <ref type="figure">10</ref>).</p><p>Our AR model obtains the best PSNR, SSIM and LPIPS scores on CBSD68, the most diverse of all datasets. While it is outperformed in PSNR by MLP in the two remaining datasets, it improves in SSIM and LPIPS, getting best or second best performance. For the McMaster dataset, SSIM and LPIPS values obtained by our model are slightly below the best values. Overall, our model consistently preserves the perceptual and structural similarity across all datasets, showing competitive results with alternative data-driven approaches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>A novel encoding-decoding model for synthesis tasks is proposed by exploiting the perceptual properties of AR features. We show the reconstruction improvement obtained by generators trained on AR features and how it generalizes to models of different complexity. We showcase our model on style transfer and image denoising tasks, outperforming standard approaches and attaining competitive performance against alternative methods. A potential limitation of our model is the loss of details due to its contracted features. Yet, experiments show that using shortcut connections allow preserving these, enabling enhancement and restoration tasks. Our method also requires pre-training an AR encoder prior to training the generator, which may increase its computational requirements.</p><p>Learning how to invert AR features may be interestingly extended to conditional GANs for image-to-image translation tasks <ref type="bibr" target="#b64">[65]</ref> and to VAEs as a latent variable regularizer <ref type="bibr" target="#b18">[19]</ref>. Our AR autoencoder can also be seen as an energybased model <ref type="bibr" target="#b4">[5]</ref> for artificial and biological neural networks vizualization <ref type="bibr" target="#b6">[7,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b14">15]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix for: Inverting Adversarially Robust Networks for Image Synthesis</head><p>The appendix is organized as follows:</p><p>-In Sec. A1, we present a third application, GAN-based One-vs-All anomaly detection using AR features, and show its benefits over standard techniques. -In Sec. A2, we provide additional experimental results on feature inversion.</p><p>-In Sec. A3, we provide additional experimental results on downstream tasks.</p><p>-In Sec. A4, we provide implementation and experimental setup details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A1 Anomaly Detection using AR Representations</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A1.1 Approach</head><p>One-vs-All anomaly detection is the task of identifying samples that do not fit an expected pattern <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b11">12,</ref><ref type="bibr" target="#b65">66,</ref><ref type="bibr" target="#b66">67]</ref>. Given an unlabeled image dataset with normal (positives) and anomalous instances (negatives), the goal is to distinguish between them. Following GAN-based techniques <ref type="bibr" target="#b11">[12]</ref>, we train our proposed AR AlexNet autoencoder exclusively on positives to learn a how to accurately reconstruct them. Once trained on such a target distribution, we use its reconstruction accuracy to detect negatives.</p><p>Given an unlabeled sample x and its AR features f , we search for f that yields the best reconstruction x = G φ( f ) based on the following criterion (Fig. <ref type="figure">A1</ref>):</p><formula xml:id="formula_10">f = arg min f α pix G φ(f ) − x 1 + α feat F θ • G φ(f ) − F θ (x) 2 2 ,<label>(8)</label></formula><p>where α pix , α feat ∈ R ++ are hyperparameters. Essentially, x is associated to f that minimizes pixel and feature losses between estimated and target representations. Since G φ has been trained on the distribution of positive samples, latent codes of negative samples generate abnormal reconstructions, revealing anomalous instances.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A1.2 Experiments</head><p>We hypothesize that our AR generator widens the reconstruction gap between in and out-of-distribution samples, improving its performance on anomaly detection. Given a labeled dataset, our generator is trained to invert AR features from samples of a single class (positives). Then, we evaluate how accurately samples from the rest of classes (negatives) are distinguished from positives on an unlabeled test set. Experimental Setup. We compare our technique using AR and standard features against ADGAN <ref type="bibr" target="#b11">[12,</ref><ref type="bibr" target="#b12">13]</ref>. We evaluate the performance on CIFAR10 and Cats vs. Dogs <ref type="bibr" target="#b67">[68]</ref> datasets, where AUROC is computed on their full test sets.</p><p>Standard and AR encoders are fully-trained on ImageNet using the parameters described in Sec. A2. By freezing the encoder, generators are trained using pixel and feature losses on positives from the dataset of interest, CIFAR10 or Cats vs. Dogs. Input images are rescaled to 224 × 224 px. before being passed to the model, no additional data augmentation is applied during the generator training. The regularization parameters for both standard and AR autoencoders are heuristically selected as:</p><formula xml:id="formula_11">-Standard autoencoder: λ pix = 2 × 10 −3 , λ feat = 1 × 10 −2 .</formula><p>-AR autoencoder:</p><formula xml:id="formula_12">λ pix = 2 × 10 −6 , λ feat = 1 × 10 −2 .</formula><p>Iterative Optimization Details. After training the generator on a particular class of interest, the optimal latent code f associated to an arbitrary target image x is obtained via stochastic gradient descent. For both standard and AR autoencoders, the optimization criteria are identical to that used during the generator training. Specifically, we minimize pixel and feature loss components using the following hyperparameters:</p><formula xml:id="formula_13">-Standard autoencoder: α pix = 2 × 10 −3 , α feat = 1 × 10 −2 . -AR autoencoder: α pix = 2 × 10 −6 , α feat = 1 × 10 −2 .</formula><p>Detection is performed by solving Eq. ( <ref type="formula" target="#formula_10">8</ref>), where f ∈ R 6×6×256 is initialized as white Gaussian noise and optimized for i max = 100 iterations. The initial learn rate is chosen as 0.1 and linearly decreases along iterations down to 0.001.</p><p>Results. Full one-vs-all anomaly detection results for CIFAR-10 and Cats vs. Dogs datasets are shown in Tab. A1. On average, our AR model improves on outlier detection over its standard version and ADGAN. Our AR model gets 6.51% and 8.84% relative AUROC improvement over ADGAN on CIFAR-10 and Cats vs. Dogs, respectively. This shows our generator better distinguishes positives and negatives due to its improved reconstruction accuracy. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Dataset</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A2 Additional Experiments on Feature Inversion</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A2.1 Ablation Study</head><p>Feature inversion results obtained using different optimization criteria are illustrated in Fig. <ref type="figure" target="#fig_9">A2</ref>. Results clearly show the effect of each term, 1 pixel, feature and GAN components, in the final reconstruction. Samples correspond to the ImageNet validation set. Particularly, when inverting features using pixel and feature losses, adversarially robust features show a significant improvement with respect to their standard counterparts. This agrees with the idea of adversarially robust features being perceptually aligned.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A2.2 Robustness to Scale Changes</head><p>Inversion accuracy on upscaled low-resolution images is illustrated in Fig. <ref type="figure" target="#fig_10">A3</ref> for scale factors L ∈ {1, . . . , 10}. While standard inversions show significant distortions for large upscaling factors L, reconstructions from adversarially robust representations show almost perfect reconstruction for high upscaling factors.</p><p>Quantitative results are included in Tab. A2. Results improve almost monotonically when inverting AR representations, even without exposing the Autoencoder to high-resolution images during training and without any fine-tuning. On the other hand, extended results on feature inversion from high-resolution images are illustrated in Fig. <ref type="figure" target="#fig_11">A4</ref>. Notice that, in contrast to the previous case, input samples correspond to natural high-resolution images and are encoded without any scaling. Results show a good color and edge preservation from our AR autoencoder, while inverting standard features show bogus components and noticeable color distortions.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A2.3 ResNet-18: Robustness Level vs. Reconstruction Accuracy</head><p>We take the ResNet-18 model trained on CIFAR-10 from the Robustness library <ref type="bibr" target="#b68">[69]</ref>, invert its third residual block (4 × 4 × 512) based on our approach using pixel and feature losses, and evaluate its reconstruction accuracy for standard and AR cases.</p><p>We measure the reconstruction accuracy for different robustness levels by training six AR classifiers via 2 PGD attacks (Madry et al.) with attack radii ε covering from 0 to 3.5 (see Tab. A3). Accuracy for each model is measured in terms of PSNR, SSIM and LPIPS. We also report the robustness obtained by each model against 2 PGD attacks.</p><p>Results show the best accuracy is reached for ε = 1.5 in terms of PSNR and for ε = 1 in terms of SSIM and LPIPS. Quality increases almost monotonically for models with low robustness and reaches a peak of approximately 19.62 dB PSNR. Models with higher robustness slowly decrease in accuracy, yet obtaining a significant boost over the standard model (ε = 0).</p><formula xml:id="formula_14">G. truth L = 1 L = 2 L = 3 L = 4 L = 5 L = 6 L = 7 L = 8 L = 9 L = 10</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A2.4 Comparison Against Alternative Methods</head><p>Feature inversion accuracy obtained by our proposed model is compared against DeePSiM <ref type="bibr" target="#b18">[19]</ref> and RI <ref type="bibr" target="#b22">[23]</ref> methods. Fig. <ref type="figure" target="#fig_13">A5</ref> illustrates the reconstruction accuracy obtained by each method. As previously explained, our generator yields photorealistic results with 37% the trainable parameters required by the DeePSiM generator. Qualitatively, the color distribution obtained by our AR autoencoder is closer to that obtained by DeepSiM. Specifically, without any postprocessing, DeePSiM's results show severe edge distortions, while out method shows minor edge distortions. On the other hand, the optimization based approach from RI introduces several artifacts, despite its use of robust representations. In contrast, our method takes advantage of AR features and minimizes the distortions in a much more efficient manner by replacing the iterative process by a feature inverter (image generator). Architecture details and training parameters used to train out proposed model are included in Sec. A4.1. DeePSiM results were obtained using its official Caffe implementation. RI results were obtained using its official PyTorch implementation, modified to invert AlexNet conv5 layer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A3 Additional Results on Downstream Tasks</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A3.1 Style Transfer</head><p>Fig. <ref type="figure">A6</ref> shows additional stylization results obtained via the Universal Style Transfer algorithm using standard and AR AlexNet autoencoders. Qualitatively, the multi-level stylization approach used in our experiments show that AR representations allow a good texture transferring while better preserving the content image structure. Regardless the type of scene being stylized (e.g. landscapes, portraits or single objects), aligning AR robust features allows to preserve sharp edges and alleviates the distortions generated by aligning standard features. Ar-  </p><formula xml:id="formula_15">(a) (b) (c) (d) (e)<label>(f) (g) (h)</label></formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A3.2 Image Denoising</head><p>Fig. <ref type="figure" target="#fig_15">A7</ref> shows additional denoising results using our standard and AR autoencoders for the CBSDS68, Kodak24 and McMaster datasets. As previously discussed, we leverage the low-level feature representations by adding skip connections to our proposed autoencoder. Low-level features complement the contracted feature map obtained from AlexNet conv5, improving the detail preservation. This is observed in the results, both with standard and AR autoencoders.</p><p>On the other hand, despite the effect of using skip connections, reconstructions from AR representations show a notorious improvement with respect to standard reconstructions. Specifically, by combining skip connections with the rich information already encapsulated in robust representations, results on all three datasets show a substantial denoising improvement.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A4 Implementation Details</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A4.1 Architecture and Training Details</head><p>Encoder. For all downstream tasks, our adversarially robust AlexNet classifier was trained using PGD attacks <ref type="bibr" target="#b21">[22]</ref>. The process was performed on ImageNet using stochastic gradient descent. The AR training parameters are as follows:</p><p>-Perturbation constraint: 2 with ε = 3 -PGD attack steps: 7 -Step size: 0.5 -Training epochs: 90 On the other hand, the standard AlexNet classifier was trained using crossentropy loss as optimization criteria. For both cases, the training parameters were the following:</p><p>-Initial learning rate: 0. </p><formula xml:id="formula_16">(a) (b) (c) (d)<label>(e) (f) (g) (h)</label></formula><p>Fig. <ref type="figure">A6</ref>: Style transfer results using standard and robust AlexNet representations. Stylization obtained using the universal style transfer algorithm <ref type="bibr" target="#b1">[2]</ref>.</p><p>AR training was performed using the Robustness library <ref type="bibr" target="#b68">[69]</ref> on four Tesla V100 GPUs. Additional details about the model architecture and training parameters used for each experiment and downstream task are as follows.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Feature Inversion Experiments.</head><p>A fully convolutional architecture is used for the decoder or image generator. Tab. A4 describes the decoder architecture used to invert both standard and AR representations, where conv2d denotes a 2D convolutional layer, tconv2d a 2D transposed convolutional layer, BN batch normalization, ReLU the rectified linear unit operator and tanh the hyperbolic tangent operator.</p><p>Tab. A5 shows the discriminator architecture, where leakyReLU corresponds to the leaky rectified linear unit, linear to a fully-connected layer, apooling to average pooling and sigmoid to the Sigmoid operator. Motivated by the architecture proposed by Dosovitskiy &amp; Brox <ref type="bibr" target="#b18">[19]</ref>, the discriminator takes as input both a real or fake image and its target conv5 feature map to compute the probability of the sample being real. Fig. <ref type="figure" target="#fig_16">A8</ref> shows the discriminator architecture. Standard and AR autoencoders were trained on ImageNet using 1 pixel, feature and GAN losses using ADAM. In both cases, all convolutional and transposed convolutional layers are regularized using spectral normalization <ref type="bibr" target="#b69">[70]</ref>. Training was performed using Pytorch-only code on two Tesla V100 GPUs.</p><p>The loss weights and training setup for both standard and AR cases correto: -Generator weights: λ pix = 2 × 10 −6 , λ feat = 1 × 10 −2 , λ GAN = 100 -Discriminator weight: λ disc = 2 × 10 −6 -Training epochs: 90 -Generator initial learning rate: 3 × 10 −4 (divided by a factor of 10 every 30 epochs). -Discriminator initial learning rate: 12 × 10 −4 (divided by a factor of 10 every 30 epochs). -LeakyReLU factor: 0.2 -ADAM β ∈ [0, 0.9] -Batch size: 128</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A4.2 Style Transfer</head><p>While, for standard and AR scenarios, the autoencoder associated to conv5 corresponds to the model described in Sec. A4.1, those associated to conv1 and conv2 use Nearest neighbor interpolation instead of transposed convolution layers to improve the reconstruction accuracy and to avoid the checkerboard effect generated by transposed convolutional layers. Tab. A6, and Tab. A7 describe their architecture details.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A4.3 Image Denoising</head><p>Our image denoising model consists of standard and AR autoencoders equipped with skip connections to better preserve image details. Fig. <ref type="figure">A9</ref> illustrates the proposed denoising model, where skip connections follow the Wavelet Pooling approach <ref type="bibr" target="#b2">[3]</ref>. Tab. A8 and Tab. A9 include additional encoder and decoder architecture details, respectively. Encoder pooling layers are replaced by Haar wavelet analysis operators, generating an approximation component, denoted as {w k,LL }, and three detail components, denoted as {w k,LH , w k,HL , w k,HH }, where k corresponds to the pooling level. While the approximation (low-frequency) component is passed to the next encoding layer, details are skip-connected to their corresponding stages in the decoder. Following this, transposed convolutional layers in the decoder are replaced by unpooling layers (Haar wavelet synthesis operators), reconstructing a signal with well-preserved details at each level and improving reconstruction.</p><p>In contrast to the AlexNet architecture, all convolutional layers on the decoder use kernels of size 3 × 3. Also, given the striding factor of the first two AlexNet convolutional layers, two additional interpolation layers of striding factor 2 are used to recover the original input size (224 × 224).</p><p>Standard and AR robust generators were trained using exclusively 1 pixel and feature losses. Training was performed on ImageNet using Pytorch-only code on four Tesla V100 GPUs. Generator loss weights and training parameters for both cases correspond to:</p><p>-Generator weights: λ pix = 2 × 10 −6 , λ feat = 1 × 10 −2 .</p><p>-Training epochs: 90.</p><p>-Generator initial learning rate: 3 × 10 −4 (divided by a factor of 10 every 30 epochs). -ADAM β ∈ [0, 0.9].</p><p>-Batch size: 128.   </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Proposed Adversarially Robust Model (b) Feature Inversion (224 × 224 px.)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Fig. 2 :</head><label>2</label><figDesc>Fig. 2: Example-based Style Transfer using adversarially robust features.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 3 :</head><label>3</label><figDesc>Fig.3: Image denoising using our adversarially robust autoencoder.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 4 :</head><label>4</label><figDesc>Fig. 4: AlexNet feature inversion on ImageNet. Conv5 features are inverted using our proposed generator under three different training criteria. Reconstructions from AR features are more faithful to the ground-truth image.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 5 :</head><label>5</label><figDesc>Fig. 5: AR VGG-16 reconstruction on ImageNet.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 7 :</head><label>7</label><figDesc>Fig. 7: Upscaled ImageNet samples reconstructed from their standard (top row) and AR (bottom row) features.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Scenario 2 :Fig. 8 :</head><label>28</label><figDesc>Fig. 8: At a resolution of 2040 × 1536 px., 10 times larger than training samples, standard reconstructions on DIV2K show color and structure degradation. In contrast, reconstructions from our AR model do not suffer from distortions.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>(</head><label></label><figDesc>Fig. A1: Anomaly Detection using adversarially robust features.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head></head><label></label><figDesc>(a) Ground-truth images. (b) Inverting standard (top) and AR (bottom) features using pixel losses. (c) Inverting standard (top) and AR (bottom) features using pixel and feature losses. (d) Inverting standard (top) and AR (bottom) features using pixel, feature and GAN losses.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Fig. A2 :</head><label>A2</label><figDesc>Fig. A2: CNN-based feature inversion of standard and AR representations. AlexNet Conv5 standard (top) and AR (bottom) features are inverted using an image generator trained on (a) 1 Pixel loss, (b) Pixel and feature losses, and (c) Pixel, feature and GAN losses.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Fig. A3 :</head><label>A3</label><figDesc>Fig. A3: Reconstructing upscaled images. Upscaled ImageNet samples are inverted from their standard and AR representations. While standard representations (top row) are severely degraded, AR representations (bottom row) show an outstanding accuracy that improves with the scaling factor.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_11"><head>Fig. A4 :</head><label>A4</label><figDesc>Fig. A4: At a resolution of 2040 × 1536, 10 times higher than the training resolution, standard reconstructions show color and structure degradation. In contrast, reconstructions from our AR autoencoder do not suffer from such distortions and are closer to target DIV2K images.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_12"><head></head><label></label><figDesc>(a) Ground-truth images. (b) DeePSiM inversion results [19]. (c) RI results [23]. (d) Standard autoencoder. (e) Robust autoencoder (ours).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_13"><head>Fig. A5 :</head><label>A5</label><figDesc>Fig. A5: Feature inversion accuracy contrast between our proposed model and alternative inversion methods.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_14"><head></head><label></label><figDesc>All generators were fully-trained on ImageNet using Pytorch-only code on two Tesla V100 GPUs. The regularization parameters and training setup for both cases are as follows:-Standard generator weights:λ pix = 2 × 10 −4 , λ feat = 1 × 10 −2 .-AR generator weights:λ pix = 2 × 10 −6 , λ feat = 1 × 10 −2 .-Training epochs: 90.-Generator initial learning rate: 3 × 10 −4 (divided by a factor of 10 every 30 epochs). -ADAM β ∈ [0, 0.9]. -Batch 128.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_15"><head>Fig. A7 :</head><label>A7</label><figDesc>Fig. A7: Image denoising results using standard and AR encoders (AlexNet) from the CBSD68 and Kodak24 sets. Samples corrupted by clipped white Gaussian noise (σ = 50 255 ).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_16"><head>Fig. A8 :</head><label>A8</label><figDesc>Fig. A8: Discriminator model.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_17"><head></head><label></label><figDesc>Fig. A9: Proposed denoising autoencoder including skip connections.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>AlexNet feature inversion on ImageNet. Under distinct training losses, inverting AR features via our proposed generator is consistently more accurate than inverting standard features.</figDesc><table><row><cell>Losses</cell><cell>Model</cell><cell>PSNR (dB)↑</cell><cell>SSIM↑</cell><cell>LPIPS↓</cell></row><row><cell>Pixel</cell><cell cols="4">Standard AR (ours) 19.904 ± 2.892 0.505 ± 0.169 0.596 ± 0.104 17.562 ± 2.564 0.454 ± 0.167 0.624 ± 0.099</cell></row><row><cell>Pixel, Feature</cell><cell cols="4">Standard AR (ours) 17.182 ± 2.661 0.284 ± 0.111 0.601 ± 0.034 14.462 ± 1.884 0.103 ± 0.044 0.713 ± 0.046</cell></row><row><cell>Pixel, Feature,</cell><cell>Standard</cell><cell>15.057 ± 2.392</cell><cell>0.307 ± 0.158</cell><cell>0.547 ± 0.055</cell></row><row><cell>GAN</cell><cell cols="3">AR (ours) 17.227 ± 2.725 0.358 ± 0.163</cell><cell>0.567 ± 0.056</cell></row><row><cell cols="5">moments of the style distribution. An intermediate stylized image x 1,cs incorpo-</cell></row><row><cell cols="4">rating the style at the first scale is then generated as x 1,cs</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>AR VGG-16<ref type="bibr" target="#b51">[52]</ref> feature inversion on ImageNet. Training our generator via pixel and feature losses, reconstruction largely improves by inverting AR representations.</figDesc><table><row><cell></cell><cell cols="2">Standard Model AR Model (ours)</cell></row><row><cell>Standard Accuracy</cell><cell>65.0</cell><cell>48.7</cell></row><row><cell>∞ PGD Accuracy</cell><cell>0</cell><cell>23.0</cell></row><row><cell>PSNR (dB) ↑</cell><cell cols="2">18.35 ± 2.471 21.063 ± 3.132</cell></row><row><cell>SSIM ↑</cell><cell>0.466 ± 0.2</cell><cell>0.538 ± 0.165</cell></row><row><cell>LPIPS ↓</cell><cell>0.327 ± 0.101</cell><cell>0.225 ± 0.057</cell></row></table><note>G. truth Standard AR (Ours)</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc> feature inversion on CIFAR-10. Inverting AR features via our generator trained on pixel and feature losses significantly improves reconstruction.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell>G. truth Standard AR (Ours)</cell></row><row><cell></cell><cell cols="2">Standard Model AR Model (ours)</cell></row><row><cell>Standard Accuracy</cell><cell>93.8</cell><cell>89.36</cell></row><row><cell>AutoAttack [54]</cell><cell>0</cell><cell>59.64</cell></row><row><cell>PSNR (dB) ↑</cell><cell>17.38 ± 2.039</cell><cell>22.14 ± 1.626</cell></row><row><cell>SSIM ↑ LPIPS ↓</cell><cell cols="2">0.59 ± 0.1 0.2547 ± 0.055 0.2318 ± 0.0833 0.81 ± 0.067</cell><cell>Fig. 6: AR WideResNet-28-10 reconstruction on CIFAR-10.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Reconstruction vs. Robustness. Experiments on ImageNet show that learning to invert AlexNet features with different AR levels can significantly improve the reconstruction accuracy.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell>2 PGD Attack (ε)</cell><cell></cell><cell></cell></row><row><cell></cell><cell>0</cell><cell>0.5</cell><cell>2</cell><cell>3</cell><cell>4</cell></row><row><cell>Standard Accuracy</cell><cell>53.69</cell><cell>49.9</cell><cell>43.8</cell><cell>39.83</cell><cell>36.31</cell></row><row><cell cols="6">AutoAttack [54] 8.19 (ε = 0.5) 48.0 (ε = 0.5) 28.0 (ε = 2) 22.27 (ε = 3) 14.9 (ε = 4)</cell></row><row><cell>PSNR (dB) ↑</cell><cell>13.12</cell><cell>14.41</cell><cell>15.5</cell><cell>15.53</cell><cell>15.61</cell></row><row><cell>SSIM ↑</cell><cell>0.20</cell><cell>0.26</cell><cell>0.3</cell><cell>0.26</cell><cell>0.25</cell></row><row><cell>LPIPS ↓</cell><cell>0.657</cell><cell>0.625</cell><cell>0.614</cell><cell>0.629</cell><cell>0.644</cell></row></table><note>ing AR features increases PSNR in 4.8 dB on average over standard features. Visually, the AR WideResNet-28-10 autoencoder reduces bogus components and preserves object contours on CIFAR-10 test samples.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5 :</head><label>5</label><figDesc>Reconstructing upscaled Im-ageNet samples. Images upscaled by a factor L are reconstructed from their standard and AR AlexNet features. In contrast to the degraded standard reconstructions, AR reconstructions show an outstanding accuracy that improves for large scaling factors.</figDesc><table><row><cell></cell><cell>Standard</cell><cell></cell><cell>Robust</cell></row><row><cell>L</cell><cell>AlexNet</cell><cell></cell><cell>AlexNet</cell></row><row><cell>PSNR (dB)↑</cell><cell>SSIM↑ LPIPS↓</cell><cell>PSNR (dB)↑</cell><cell>SSIM↑ LPIPS↓</cell></row><row><cell cols="4">1 15.057 0.3067 0.5473 17.2273 0.3580 0.5665</cell></row><row><cell cols="4">4 15.4258 0.4655 0.4136 22.575 0.5892 0.4012</cell></row><row><cell cols="4">7 13.8922 0.4852 0.4587 23.5778 0.6588 0.3898</cell></row><row><cell cols="4">10 13.1013 0.4969 0.486 23.9566 0.7244 0.3892</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6 :</head><label>6</label><figDesc>High-resolution images inverted using our AR AlexNet model (trained on low resolution images) show improved quality over standard inversions.</figDesc><table><row><cell>Encoder</cell><cell>PSNR (dB)↑</cell><cell>SSIM↑</cell><cell>LPIPS↓</cell></row><row><cell cols="2">Standard 14.266± 1.9015</cell><cell>0.3874± 0.151</cell><cell>0.5729± 0.0465</cell></row><row><cell cols="4">AR (ours) 18.3606± 2.6012 0.4388± 0.1508 0.5673± 0.0337</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 7 :</head><label>7</label><figDesc>Comparison against state-of-the-art inversion techniques. By inverting AR features, our autoencoder outperforms the optimization-based RI method by a large margin. Despite having 63% less parameters, we also obtain favorable results against DeepSiM, showing a significant PSNR improvement.</figDesc><table><row><cell>Algorithm</cell><cell>Encoder</cell><cell cols="2">Trainable Pars. PSNR (dB)↑</cell><cell>SSIM↑</cell><cell>LPIPS↓</cell></row><row><cell>RI [23]</cell><cell>AR AlexNet</cell><cell>−</cell><cell cols="3">16.724 ± 2.434 0.181 ± 0.071 0.63 ± 0.04</cell></row><row><cell cols="2">Standard Autoencoder Standard AlexNet</cell><cell>4, 696, 026</cell><cell cols="3">15.057 ± 2.392 0.307 ± 0.158 0.547 ± 0.055</cell></row><row><cell>AR Autoencoder (ours)</cell><cell>AR AlexNet</cell><cell>4, 696, 026</cell><cell cols="3">17.227 ± 2.725 0.358 ± 0.163 0.567 ± 0.056</cell></row><row><cell>DeepSiM [19]</cell><cell cols="2">Standard CaffeNet 12, 702, 307</cell><cell cols="3">15.321 ± 2.011 0.417 ± 0.158 0.531 ± 0.059</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 8 :</head><label>8</label><figDesc>Universal Style Transfer. Our AR AlexNet autoencoder outperforms both its standard counterpart and the original VGG-19 model in terms of Gram loss, the latter using more layers, larger feature maps and feature blending.</figDesc><table><row><cell>Encoder</cell><cell>Stylization Levels</cell><cell>Smallest Feature Map</cell><cell>Feature Blending</cell><cell>Gram Loss↓ (xcs, xs)</cell><cell>SSIM↑ (xcs, xc)</cell></row><row><cell>Standard AlexNet</cell><cell>3</cell><cell>6 × 6 × 256</cell><cell></cell><cell>1.694</cell><cell>0.226</cell></row><row><cell>AR AlexNet (ours)</cell><cell>3</cell><cell>6 × 6 × 256</cell><cell></cell><cell>1.186</cell><cell>0.259</cell></row><row><cell>VGG-19 [27]</cell><cell>5</cell><cell>14 × 14 × 512</cell><cell></cell><cell>1.223</cell><cell>0.459</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 9 :</head><label>9</label><figDesc>Image denoising (σ = 50 255 ): Our AR denoiser outperforms its standard version on multiple datasets. On the largest one (CBSD68), it also outperforms alternative learn-based techniques. On smaller sets (Kodak24, McMaster), it improves in SSIM and gets comparable PSNR and LPIPS performance.</figDesc><table><row><cell>Refs</cell><cell>Standard</cell><cell></cell><cell cols="2">AR (ours)</cell><cell>Refs</cell><cell cols="2">Standard</cell><cell cols="2">AR (ours)</cell></row><row><cell cols="10">Fig. 9: Universal Style Transfer: By inverting AR features, our autoencoder im-</cell></row><row><cell cols="10">proves both content and style preservation, obtaining a better image stylization.</cell></row><row><cell></cell><cell cols="9">PSNR (dB)↑ SSIM↑ LPIPS↓ PSNR (dB)↑ SSIM↑ LPIPS↓ PSNR (dB)↑ SSIM↑ LPIPS↓</cell></row><row><cell>Encoder</cell><cell cols="2">CBSD68</cell><cell></cell><cell></cell><cell>Kodak24</cell><cell></cell><cell></cell><cell>McMaster</cell><cell></cell></row><row><cell>TNRD [59]</cell><cell>24.75</cell><cell>0.662</cell><cell>0.445</cell><cell>25.994</cell><cell>0.695</cell><cell>0.461</cell><cell>25.01</cell><cell>0.66</cell><cell>0.387</cell></row><row><cell>MLP [60]</cell><cell>25.184</cell><cell>0.663</cell><cell>0.46</cell><cell>26.31</cell><cell>0.691</cell><cell>0.478</cell><cell>26.039</cell><cell>0.693</cell><cell>0.402</cell></row><row><cell>Standard</cell><cell>22.6297</cell><cell>0.6178</cell><cell>0.567</cell><cell>23.1868</cell><cell cols="2">0.6001 0.4968</cell><cell>23.1493</cell><cell cols="2">0.6072 0.4458</cell></row><row><cell>AR (ours)</cell><cell>25.258</cell><cell cols="2">0.7095 0.4043</cell><cell>25.4946</cell><cell>0.701</cell><cell>0.447</cell><cell>25.3527</cell><cell cols="2">0.6914 0.3965</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table A1 :</head><label>A1</label><figDesc>AUROC of our proposed one-versus-all anomaly detection method for each class. Detection evaluated on CIFAR-10 and Cats vs. Dogs datasets. Best results highlighted in black.</figDesc><table><row><cell></cell><cell>Positive</cell><cell>ADGAN</cell><cell>Proposed</cell><cell>Proposed</cell></row><row><cell></cell><cell>Class</cell><cell>[12]</cell><cell>(Standard)</cell><cell>(AR)</cell></row><row><cell></cell><cell>0</cell><cell>0.649</cell><cell>0.6874</cell><cell>0.6533</cell></row><row><cell></cell><cell>1</cell><cell>0.39</cell><cell>0.3498</cell><cell>0.3755</cell></row><row><cell></cell><cell>2</cell><cell>0.652</cell><cell>0.6756</cell><cell>0.662</cell></row><row><cell></cell><cell>3</cell><cell>0.481</cell><cell>0.5708</cell><cell>0.6123</cell></row><row><cell></cell><cell>4</cell><cell>0.735</cell><cell>0.751</cell><cell>0.7538</cell></row><row><cell>CIFAR-10</cell><cell>5</cell><cell>0.476</cell><cell>0.5101</cell><cell>0.5278</cell></row><row><cell></cell><cell>6</cell><cell>0.623</cell><cell>0.6895</cell><cell>0.7113</cell></row><row><cell></cell><cell>7</cell><cell>0.487</cell><cell>0.4773</cell><cell>0.4526</cell></row><row><cell></cell><cell>8</cell><cell>0.66</cell><cell>0.7232</cell><cell>0.7008</cell></row><row><cell></cell><cell>9</cell><cell>0.378</cell><cell>0.362</cell><cell>0.4408</cell></row><row><cell></cell><cell cols="2">Average 0.553</cell><cell>0.5797</cell><cell>0.589</cell></row><row><cell></cell><cell>0</cell><cell>0.507</cell><cell>0.663</cell><cell>0.649</cell></row><row><cell>Cats vs. Dogs</cell><cell>1</cell><cell>0.481</cell><cell>0.392</cell><cell>0.427</cell></row><row><cell></cell><cell cols="2">Average 0.494</cell><cell>0.527</cell><cell>0.538</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table A2 :</head><label>A2</label><figDesc>Reconstructing upscaled images (L ∈ {1, . . . , 10}). Upscaled 224×224 ImageNet samples are reconstructed from standard and AR AlexNet features, the latter predominantly obtaining higher accuracy.</figDesc><table><row><cell>L</cell><cell cols="4">Standard AlexNet PSNR (dB)↑ SSIM↑ LPIPS↓ PSNR (dB)↑ SSIM↑ LPIPS↓ Robust AlexNet</cell></row><row><cell>1 (224 × 224)</cell><cell>15.057</cell><cell>0.3067 0.5473</cell><cell>17.2273</cell><cell>0.3580 0.5665</cell></row><row><cell>2 (448 × 448)</cell><cell>16.2777</cell><cell>0.4068 0.4234</cell><cell>20.3554</cell><cell>0.4859 0.469</cell></row><row><cell>3 (672 × 672)</cell><cell>16.0668</cell><cell>0.4317 0.4143</cell><cell>21.3696</cell><cell>0.5265 0.4376</cell></row><row><cell>4 (896 × 896)</cell><cell>15.4258</cell><cell>0.4655 0.4136</cell><cell>22.575</cell><cell>0.5892 0.4012</cell></row><row><cell>5 (1120 × 1120)</cell><cell>14.9726</cell><cell>0.4753 0.4235</cell><cell>22.9861</cell><cell>0.6074 0.4018</cell></row><row><cell>6 (1344 × 1344)</cell><cell>14.3093</cell><cell>0.4887 0.4358</cell><cell>23.4824</cell><cell>0.6527 0.383</cell></row><row><cell>7 (1568 × 1568)</cell><cell>13.8922</cell><cell>0.4852 0.4587</cell><cell>23.5778</cell><cell>0.6588 0.3898</cell></row><row><cell>8 (1792 × 1792)</cell><cell>13.4781</cell><cell>0.4967 0.4656</cell><cell>23.7604</cell><cell>0.70178 0.3638</cell></row><row><cell>9 (2016 × 2016)</cell><cell>13.2869</cell><cell>0.4882 0.4834</cell><cell>23.7907</cell><cell>0.6924 0.3906</cell></row><row><cell>10 (2240 × 2240)</cell><cell>13.1013</cell><cell>0.4969 0.486</cell><cell>23.9566</cell><cell>0.7244 0.3892</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table A4 :</head><label>A4</label><figDesc>Generator architecture used for feature inversion.</figDesc><table><row><cell>Layer</cell><cell>Layer Type</cell><cell>Kernel Size</cell><cell cols="2">Bias Stride Pad</cell><cell>Input Size</cell><cell>Output Size</cell><cell>Input Channels</cell><cell>Output Channels</cell></row><row><cell cols="3">1a conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell>1</cell><cell>6 × 6</cell><cell>6 × 6</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">2a tconv2d + BN + ReLU 4 × 4</cell><cell>1</cell><cell>1</cell><cell>6 × 6</cell><cell>7 × 7</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">2b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell>1</cell><cell>7 × 7</cell><cell>7 × 7</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">3a tconv2d + BN + ReLU 4 × 4</cell><cell>2</cell><cell>1</cell><cell>7 × 7</cell><cell>14 × 14</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">3b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell cols="3">1 14 × 14 14 × 14</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">4a tconv2d + BN + ReLU 4 × 4</cell><cell>2</cell><cell cols="3">1 14 × 14 28 × 28</cell><cell>256</cell><cell>256</cell></row><row><cell cols="3">4b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell cols="3">1 28 × 28 28 × 28</cell><cell>256</cell><cell>128</cell></row><row><cell cols="3">5a tconv2d + BN + ReLU 4 × 4</cell><cell>2</cell><cell cols="3">1 28 × 28 56 × 56</cell><cell>128</cell><cell>128</cell></row><row><cell cols="3">5b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell cols="3">1 56 × 56 56 × 56</cell><cell>128</cell><cell>64</cell></row><row><cell cols="3">6a tconv2d + BN + ReLU 4 × 4</cell><cell>2</cell><cell cols="3">1 56 × 56 112 × 112</cell><cell>64</cell><cell>64</cell></row><row><cell cols="3">6b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell cols="3">1 112 × 112 112 × 112</cell><cell>64</cell><cell>32</cell></row><row><cell cols="3">7a tconv2d + BN + ReLU 4 × 4</cell><cell>2</cell><cell cols="3">1 112 × 112 224 × 224</cell><cell>32</cell><cell>32</cell></row><row><cell cols="3">7b conv2d + BN + ReLU 3 × 3</cell><cell>1</cell><cell cols="3">1 224 × 224 224 × 224</cell><cell>32</cell><cell>3</cell></row><row><cell>7c</cell><cell>conv2d + tanh</cell><cell>3 × 3</cell><cell>1</cell><cell cols="3">1 224 × 224 224 × 224</cell><cell>3</cell><cell>3</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table A5 :</head><label>A5</label><figDesc>Discriminator architecture used for feature inversion.</figDesc><table><row><cell>Layer</cell><cell>Layer Type</cell><cell>Kernel Size</cell><cell cols="4">Bias Stride Pad</cell><cell>Input Size</cell><cell>Output Size</cell><cell>Input Channels</cell><cell>Output Channels</cell></row><row><cell></cell><cell></cell><cell cols="6">Feature Extractor 1 (D1)</cell><cell></cell></row><row><cell cols="3">1a conv2d + ReLU 3 × 3</cell><cell></cell><cell></cell><cell>4</cell><cell cols="3">1 256 × 256 56 × 56</cell><cell>3</cell><cell>32</cell></row><row><cell cols="3">2a conv2d + ReLU 5 × 5</cell><cell></cell><cell></cell><cell>1</cell><cell cols="3">1 56 × 56 52 × 52</cell><cell>32</cell><cell>64</cell></row><row><cell cols="3">2b conv2d + ReLU 3 × 3</cell><cell></cell><cell></cell><cell>2</cell><cell cols="3">1 52 × 52 23 × 23</cell><cell>64</cell><cell>128</cell></row><row><cell cols="3">3a conv2d + ReLU 3 × 3</cell><cell></cell><cell></cell><cell>1</cell><cell cols="3">1 23 × 23 21 × 21</cell><cell>128</cell><cell>256</cell></row><row><cell cols="3">3b conv2d + ReLU 3 × 3</cell><cell></cell><cell></cell><cell>2</cell><cell cols="3">1 21 × 21 11 × 11</cell><cell>256</cell><cell>256</cell></row><row><cell>4</cell><cell>ave. pooling</cell><cell cols="3">11 × 11 −</cell><cell>−</cell><cell cols="3">− 11 × 11 1 × 1</cell><cell>256</cell><cell>256</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="4">Classifier 1 (D2)</cell><cell></cell></row><row><cell>4a</cell><cell>Linear + ReLU</cell><cell>−</cell><cell></cell><cell></cell><cell>−</cell><cell>1</cell><cell>9216</cell><cell>1024</cell><cell>−</cell><cell>−</cell></row><row><cell>4b</cell><cell>Linear + ReLU</cell><cell>−</cell><cell></cell><cell></cell><cell>−</cell><cell>1</cell><cell>1024</cell><cell>512</cell><cell>−</cell><cell>−</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="4">Classifier 2 (D3)</cell><cell></cell></row><row><cell>5a</cell><cell>Linear + ReLU</cell><cell>−</cell><cell></cell><cell></cell><cell>−</cell><cell>1</cell><cell>768</cell><cell>512</cell><cell>−</cell><cell>−</cell></row><row><cell cols="2">5b Linear + Sigmoid</cell><cell>−</cell><cell></cell><cell></cell><cell>−</cell><cell>1</cell><cell>512</cell><cell>1</cell><cell>−</cell><cell>−</cell></row><row><cell>Layer</cell><cell>Layer Type</cell><cell cols="2">Kernel Size</cell><cell cols="3">Bias Stride Pad</cell><cell>Input Size</cell><cell>Output Size</cell><cell>Input Channels</cell><cell>Output Channels</cell></row><row><cell cols="4">1a conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 27 × 27 27 × 27</cell><cell>64</cell><cell>64</cell></row><row><cell cols="4">2a tconv2d + BN + ReLU 4 × 4</cell><cell></cell><cell>1</cell><cell cols="3">1 27 × 27 28 × 28</cell><cell>64</cell><cell>64</cell></row><row><cell cols="4">2b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 28 × 28 28 × 28</cell><cell>64</cell><cell>64</cell></row><row><cell>3a</cell><cell>NN interpolation</cell><cell>−</cell><cell></cell><cell>−</cell><cell>2</cell><cell cols="3">− 28 × 28 56 × 56</cell><cell>64</cell><cell>64</cell></row><row><cell cols="4">3b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 56 × 56 56 × 56</cell><cell>64</cell><cell>64</cell></row><row><cell cols="4">3c conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 56 × 56 56 × 56</cell><cell>64</cell><cell>32</cell></row><row><cell>4a</cell><cell>NN interpolation</cell><cell>−</cell><cell></cell><cell>−</cell><cell>2</cell><cell cols="4">− 56 × 56 112 × 112</cell><cell>32</cell><cell>32</cell></row><row><cell cols="4">4b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="4">1 112 × 112 112 × 112</cell><cell>32</cell><cell>32</cell></row><row><cell>5a</cell><cell>NN interpolation</cell><cell>−</cell><cell></cell><cell>−</cell><cell>2</cell><cell cols="4">− 112 × 112 224 × 224</cell><cell>32</cell><cell>32</cell></row><row><cell cols="4">5b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="4">1 224 × 224 224 × 224</cell><cell>32</cell><cell>16</cell></row><row><cell cols="4">5c conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="4">1 224 × 224 224 × 224</cell><cell>16</cell><cell>3</cell></row><row><cell>5d</cell><cell>conv2d + tanh</cell><cell cols="2">3 × 3</cell><cell></cell><cell>1</cell><cell cols="4">1 224 × 224 224 × 224</cell><cell>3</cell><cell>3</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_16"><head>Table A6 :</head><label>A6</label><figDesc>Conv1 generator architecture used for style transfer.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table A7 :</head><label>A7</label><figDesc>Conv2 generator architecture used for style transfer.</figDesc><table><row><cell>Layer</cell><cell>Layer Type</cell><cell>Kernel Size</cell><cell cols="3">Bias Stride Pad</cell><cell>Input Size</cell><cell>Output Size</cell><cell>Input Channels</cell><cell>Output Channels</cell></row><row><cell cols="3">1a conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 13 × 13 13 × 13</cell><cell>192</cell><cell>192</cell></row><row><cell cols="3">2a tconv2d + BN + ReLU 4 × 4</cell><cell></cell><cell>1</cell><cell cols="3">1 13 × 13 14 × 14</cell><cell>192</cell><cell>192</cell></row><row><cell cols="3">2b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 14 × 14 14 × 14</cell><cell>192</cell><cell>96</cell></row><row><cell>3a</cell><cell>NN interpolation</cell><cell>−</cell><cell>−</cell><cell>2</cell><cell cols="3">− 14 × 14 28 × 28</cell><cell>96</cell><cell>96</cell></row><row><cell cols="3">3b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 28 × 28 28 × 28</cell><cell>96</cell><cell>96</cell></row><row><cell cols="3">3c conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 28 × 28 28 × 28</cell><cell>96</cell><cell>64</cell></row><row><cell>4a</cell><cell>NN interpolation</cell><cell>−</cell><cell>−</cell><cell>2</cell><cell cols="3">− 28 × 28 56 × 56</cell><cell>64</cell><cell>64</cell></row><row><cell cols="3">4b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 56 × 56 56 × 56</cell><cell>64</cell><cell>64</cell></row><row><cell>5a</cell><cell>NN interpolation</cell><cell>−</cell><cell>−</cell><cell>2</cell><cell cols="3">− 56 × 56 112 × 112</cell><cell>64</cell><cell>64</cell></row><row><cell cols="3">5b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 112 × 112 112 × 112</cell><cell>64</cell><cell>64</cell></row><row><cell>6a</cell><cell>NN interpolation</cell><cell>−</cell><cell>−</cell><cell>2</cell><cell cols="3">− 112 × 112 224 × 224</cell><cell>64</cell><cell>64</cell></row><row><cell cols="3">6b conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 224 × 224 224 × 224</cell><cell>64</cell><cell>32</cell></row><row><cell cols="3">6c conv2d + BN + ReLU 3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 224 × 224 224 × 224</cell><cell>32</cell><cell>3</cell></row><row><cell>6d</cell><cell>conv2d + tanh</cell><cell>3 × 3</cell><cell></cell><cell>1</cell><cell cols="3">1 224 × 224 224 × 224</cell><cell>3</cell><cell>3</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Code available at https://github.com/renanrojasg/adv_robust_autoencoder arXiv:2106.06927v5 [cs.CV] 21 Oct 2022</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Acknowledgements. AN was supported by NSF Grant No. 1850117 &amp; 2145767, and donations from NaphCare Foundation &amp; Adobe Research. We are grateful for Kelly Price's tireless assistance with our GPU servers at Auburn University.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Image style transfer using convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">A</forename><surname>Gatys</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Ecker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bethge</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page">5</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Universal style transfer via feature transforms</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">H</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 31st International Conference on Neural Information Processing Systems. NIPS&apos;17</title>
+				<meeting>the 31st International Conference on Neural Information Processing Systems. NIPS&apos;17<address><addrLine>Red Hook, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Curran Associates Inc</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">27</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Photorealistic style transfer via wavelet transforms</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yoo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Uh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Kang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W</forename><surname>Ha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE International Conference on Computer Vision</title>
+				<meeting>the IEEE International Conference on Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page">30</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">High-resolution image inpainting using multi-scale neural patch synthesis</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Shechtman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="6721" to="6729" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Plug &amp; play generative networks: Conditional iterative generation of images in latent space</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Clune</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yosinski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">14</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Semantic pyramid for image generation</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Shocher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Gandelsman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Mosseri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Yarom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Irani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">T</forename><surname>Freeman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Dekel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="7457" to="7466" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Synthesizing the preferred inputs for neurons in neural networks via deep generator networks</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yosinski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brox</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Clune</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">14</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Network-to-network translation with conditional invertible neural networks</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rombach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Esser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ommer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="page" from="2784" to="2797" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Image synthesis with a single (robust) classifier</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Santurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ilyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tsipras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Engstrom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Madry</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="1262" to="1273" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">The unreasonable effectiveness of deep features as a perceptual metric</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Isola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Efros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Shechtman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="586" to="595" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">Deep learning book</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Goodfellow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Courville</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<publisher>MIT Press</publisher>
+			<biblScope unit="volume">521</biblScope>
+			<biblScope unit="page">3</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Image anomaly detection with generative adversarial networks</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Deecke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Vandermeulen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ruff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mandt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kloft</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Joint european conference on machine learning and knowledge discovery in databases</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2018">2018) 3-17 1, 2, 5, 19</date>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="page">21</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">I</forename><surname>Golan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>El-Yaniv</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1805.10917</idno>
+		<title level="m">Deep anomaly detection using geometric transformations</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page">20</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Understanding neural networks via feature visualization: A survey</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yosinski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Clune</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Explainable AI: interpreting, explaining and visualizing deep learning</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page">14</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Evolving images for visual neurons using a deep generative network reveals coding principles and neuronal preferences</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">R</forename><surname>Ponce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">F</forename><surname>Schade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">S</forename><surname>Hartmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Kreiman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">S</forename><surname>Livingstone</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cell</title>
+		<imprint>
+			<biblScope unit="volume">177</biblScope>
+			<biblScope unit="page">14</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Invertible neural networks for understanding semantics of invariances of cnn representations</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rombach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Esser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Blattmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ommer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Deep Neural Networks and Data for Automated Driving</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2022">2022</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="197" to="224" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Large scale adversarial representation learning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Donahue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Simonyan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="volume">1</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brox</surname></persName>
+		</author>
+		<title level="m">Inverting visual representations with convolutional networks. In: CVPR</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page">1</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Generating images with perceptual similarity metrics based on deep networks</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brox</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2016">2016) 658-666 1, 2, 3, 4, 12, 14, 23</date>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="page">27</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Taming transformers for high-resolution image synthesis</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Esser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rombach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ommer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+			<biblScope unit="page" from="12873" to="12883" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Imagebart: Bidirectional context with multinomial diffusion for autoregressive image synthesis</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Esser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Rombach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Blattmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ommer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Advances in Neural Information Processing Systems</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page" from="3518" to="3532" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Towards deep learning models resistant to adversarial attacks</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Madry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Makelov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Schmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tsipras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vladu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1706.06083</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">26</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">iclr. arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><forename type="first">L</forename><surname>Engstrom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ilyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Santurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tsipras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Madry</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.00945</idno>
+		<title level="m">Adversarial robustness as a prior for learned representations</title>
+				<imprint>
+			<date type="published" when="2019">2019) 2, 4, 11, 12</date>
+			<biblScope unit="volume">23</biblScope>
+			<biblScope unit="page">26</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Generating diverse high-fidelity images with vq-vae-2</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Razavi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van Den Oord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Vinyals</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="14866" to="14876" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Neural discrete representation learning. Advances in neural information processing systems</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van Den Oord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Vinyals</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Imagenet classification with deep convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Krizhevsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">E</forename><surname>Hinton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="1097" to="1105" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<author>
+			<persName><forename type="first">K</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zisserman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1409.1556</idno>
+		<title level="m">Very deep convolutional networks for large-scale image recognition</title>
+				<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">12</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Deep residual learning for image recognition</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="770" to="778" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Learning multiple layers of features from tiny images</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Krizhevsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Hinton</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="page">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Imagenet large scale visual recognition challenge</title>
+		<author>
+			<persName><forename type="first">O</forename><surname>Russakovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Krause</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Satheesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Karpathy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Khosla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bernstein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of computer vision</title>
+		<imprint>
+			<biblScope unit="volume">115</biblScope>
+			<biblScope unit="page" from="211" to="252" />
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Ntire 2017 challenge on single image super-resolution: Dataset and study</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agustsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Timofte</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops</title>
+				<meeting>the IEEE Conference on Computer Vision and Pattern Recognition Workshops</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">11</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brox</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1506.02753</idno>
+		<title level="m">Inverting convolutional networks with convolutional networks</title>
+				<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page">11</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Understanding deep image representations by inverting</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mahendran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vedaldi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">3</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Visualizing deep convolutional neural networks using natural pre-images</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mahendran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vedaldi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Computer Vision</title>
+		<imprint>
+			<biblScope unit="volume">120</biblScope>
+			<biblScope unit="page" from="233" to="255" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<author>
+			<persName><forename type="first">H</forename><surname>Salman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ilyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Engstrom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kapoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Madry</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2007.08489</idno>
+		<title level="m">Do adversarially robust imagenet models transfer better</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">10</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">The secret revealer: Generative model-inversion attacks against deep neural networks</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Jia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Pei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Song</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="253" to="261" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Distribution augmentation for generative modeling</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Jun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schulman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ramesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Sutskever</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="5006" to="5019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">P</forename><surname>Kingma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Welling</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1312.6114</idno>
+		<title level="m">Auto-encoding variational bayes</title>
+				<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page">13</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ng</surname></persName>
+		</author>
+		<title level="m">Sparse autoencoder. CS294A Lecture notes</title>
+				<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="volume">72</biblScope>
+			<biblScope unit="page" from="1" to="19" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">A survey on transfer learning</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Yang</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="page" from="1345" to="1359" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Perceptual losses for real-time style transfer and super-resolution</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Alahi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Fei-Fei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">European conference on computer vision</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="694" to="711" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<author>
+			<persName><forename type="first">K</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vedaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zisserman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1312.6034</idno>
+		<title level="m">Deep inside convolutional networks: Visualising image classification models and saliency maps</title>
+				<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="page">3</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<author>
+			<persName><forename type="first">I</forename><forename type="middle">J</forename><surname>Goodfellow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shlens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Szegedy</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1412.6572</idno>
+		<title level="m">Explaining and harnessing adversarial examples</title>
+				<imprint>
+			<date type="published" when="2014">2014</date>
+			<biblScope unit="page">3</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Obfuscated gradients give a false sense of security: Circumventing defenses to adversarial examples</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Athalye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Carlini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wagner</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1802.00420</idno>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page">3</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Deep image prior</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Ulyanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vedaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lempitsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="9446" to="9454" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Stacked denoising autoencoders: Learning useful representations in a deep network with a local denoising criterion</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Vincent</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Larochelle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Lajoie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">A</forename><surname>Manzagol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Bottou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of machine learning research</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="page">13</biblScope>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Optimal whitening and decorrelation</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kessy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lewin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Strimmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The American Statistician</title>
+		<imprint>
+			<biblScope unit="volume">72</biblScope>
+			<biblScope unit="page">5</biblScope>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<author>
+			<persName><forename type="first">X</forename><forename type="middle">J</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">B</forename><surname>Yang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1603.09056</idno>
+		<title level="m">Image restoration using very deep convolutional encoder-decoder networks with symmetric skip connections</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page">6</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Blind universal bayesian image denoising with gaussian noise level learning</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>El Helou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Süsstrunk</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Image Processing</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="page" from="4885" to="4897" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Ffdnet: Toward a fast and flexible solution for cnn-based image denoising</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zuo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Image Processing</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="page" from="4608" to="4622" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Learning nonlinear spectral filters for color image reconstruction</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Moeller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Diebold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Gilboa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Cremers</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE International Conference on Computer Vision</title>
+				<meeting>the IEEE International Conference on Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="289" to="297" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<monogr>
+		<author>
+			<persName><forename type="first">X</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">J</forename><surname>Hsieh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.01279</idno>
+		<title level="m">Adv-bnn: Improved adversarial defense through robust bayesian neural network</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">7</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Niu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sugiyama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kankanhalli</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.01736</idno>
+		<title level="m">Geometryaware instance-reweighted adversarial training</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page">9</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Reliable evaluation of adversarial robustness with an ensemble of diverse parameter-free attacks</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Croce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International conference on machine learning</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page">9</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<monogr>
+		<author>
+			<persName><forename type="first">I</forename><surname>Sosnovik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Szmaja</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Smeulders</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1910.11093</idno>
+		<title level="m">Scale-equivariant steerable networks</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page">10</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Scale-wise convolution for image restoration</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">S</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Artificial Intelligence</title>
+				<meeting>the AAAI Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page">10</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<monogr>
+		<author>
+			<persName><forename type="first">P</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nguyen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2006.09373</idno>
+		<title level="m">The shape and simplicity biases of adversarially robust imagenet-trained cnns</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page">10</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">Contractive auto-encoders: Explicit invariance during feature extraction</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Rifai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Vincent</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Muller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Glorot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bengio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Icml</title>
+		<imprint>
+			<biblScope unit="page">13</biblScope>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<monogr>
+		<title level="m" type="main">Trainable nonlinear reaction diffusion: A flexible framework for fast and effective image restoration</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pock</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="page" from="1256" to="1272" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">Image denoising: Can plain neural networks compete with bm3d</title>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Burger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">J</forename><surname>Schuler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Harmeling</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2012 IEEE conference on computer vision and pattern recognition</title>
+				<imprint>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="2392" to="2399" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Color demosaicking by local directional interpolation and nonlocal adaptive thresholding</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Buades</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Electronic imaging</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="page">13</biblScope>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">A database of human segmented natural images and its application to evaluating segmentation algorithms and measuring ecological statistics</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Martin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fowlkes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Malik</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 8th Int&apos;l Conf. Computer Vision</title>
+				<meeting>8th Int&apos;l Conf. Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2001">2001</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="416" to="423" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Real image denoising with feature attention</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Anwar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Barnes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF International Conference on Computer Vision</title>
+				<meeting>the IEEE/CVF International Conference on Computer Vision</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="3155" to="3164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Toward convolutional blind denoising of real photographs</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Zuo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE/CVF Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1712" to="1722" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Image-to-image translation with conditional adversarial networks</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Isola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">Y</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Efros</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE conference on computer vision and pattern recognition</title>
+				<meeting>the IEEE conference on computer vision and pattern recognition</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1125" to="1134" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<monogr>
+		<title level="m" type="main">Deep semi-supervised anomaly detection</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ruff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">A</forename><surname>Vandermeulen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Görnitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Binder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">R</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kloft</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.02694</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page">19</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">Effective end-toend unsupervised outlier detection via inlier priority of discriminative network</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zeng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kloft</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NeurIPS</title>
+		<imprint>
+			<biblScope unit="page">19</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">Cats and dogs</title>
+		<author>
+			<persName><forename type="first">O</forename><forename type="middle">M</forename><surname>Parkhi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vedaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zisserman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Jawahar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2012 IEEE conference on computer vision and pattern recognition</title>
+				<imprint>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page">20</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<monogr>
+		<title level="m" type="main">Robustness (python library</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Engstrom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ilyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Salman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Santurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tsipras</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="page">27</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><surname>Miyato</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Kataoka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Koyama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Yoshida</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1802.05957</idno>
+		<title level="m">Spectral normalization for generative adversarial networks</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page">28</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Quantum Data Compression and Quantum Cross Entropy</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-24">24 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Zhou</forename><surname>Shangnan</surname></persName>
+							<email>snzhou@stanford.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Stanford Institute for Theoretical Physics</orgName>
+								<orgName type="institution">Stanford University</orgName>
+								<address>
+									<postCode>94305</postCode>
+									<settlement>Stanford</settlement>
+									<region>CA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Quantum Data Compression and Quantum Cross Entropy</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-24">24 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">A05F0F40402EC9FFB74FC58DB5240A87</idno>
+					<idno type="arXiv">arXiv:2106.13823v2[quant-ph]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Quantum machine learning is an emerging field at the intersection of machine learning and quantum computing. A central quantity for the theoretical foundation of quantum machine learning is the quantum cross entropy. In this paper, we present one operational interpretation of this quantity, that the quantum cross entropy is the compression rate for sub-optimal quantum source coding. To do so, we give a simple, universal quantum data compression protocol, which is developed based on quantum generalization of variable-length coding, as well as quantum strong typicality. Moreover, since data compression can be viewed as a machine learning task, quantum cross entropy also serves as a loss function, whose minimum is the von Neumann entropy. This is consistent with the result that von Neumann entropy is the optimal compression rate.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Machine learning has attracted interests from various fields as a powerful tool for finding patterns in data. With the advancement of quantum information science and technology, there is increasing interest in developing machine learning algorithms that are suitable for quantum data and quantum computers <ref type="bibr" target="#b0">[1]</ref>. Despite many attempts in designing quantum machine learning architectures <ref type="bibr" target="#b1">[2,</ref><ref type="bibr" target="#b2">3,</ref><ref type="bibr" target="#b3">4,</ref><ref type="bibr" target="#b4">5]</ref>, there are many unanswered questions and unresolved issues, partly due to a lack of theoretical foundation. A central concept of classical machine learning is the classical cross entropy, and its quantum generalization, the quantum cross entropy <ref type="bibr" target="#b5">[6]</ref>, is a building block of the theoretical foundation of quantum machine learning.</p><p>One interesting and important question on quantum cross entropy is its operational meaning from an information-theoretic perspective. Classical cross entropy H(p, q) = − i p i log q i is a measure of the compression rate when we mistakenly use probability distribution q for source coding, instead of the true distribution p. To demonstrate that this holds in the quantum case as well, we develop a protocol that can do lossless data compression when we don't have perfect knowledge of the quantum information source. Moreover, suppose that the true source is ρ, and we carry out the protocol under the assumption that the source is σ, the compression rate is the quantum cross entropy S(ρ, σ) = − tr(ρ log σ). When our knowledge of the source is perfect, which means ρ = σ, the compression rate agrees with the optimal compression rate S(ρ) = − tr(ρ log ρ). Furthermore, since data compression extracts the key features of the original source, it can be seen as a machine learning task. In this case, the quantum cross entropy serves as a loss function, whose minimum is the von Neumann entropy S(ρ). This is consistent with the result that von Neumann entropy is the optimal compression rate.</p><p>There have been mainly two approaches in doing quantum data compression with perfect information of the source: one is to only encode quantum states that are in the typical subspace <ref type="bibr" target="#b6">[7,</ref><ref type="bibr" target="#b7">8]</ref>, the other is to do quantum indeterminate-length coding <ref type="bibr" target="#b8">[9]</ref>, a quantum version of classical variable-length coding. Other related works include <ref type="bibr" target="#b9">[10,</ref><ref type="bibr" target="#b10">11,</ref><ref type="bibr" target="#b11">12]</ref>. Our protocol is inspired by a combination of these two ideas, in which we define the length observable <ref type="bibr" target="#b8">[9]</ref>, and project ρ ⊗N to the subspace where the expectation length of the states are typical, which is an extension of the former approach.</p><p>In section 2, we review the definition of classical and quantum information source, as well as classical and quantum typicality, with a focus on strong typicality. In section 3, we show a simple protocol that does lossless quantum data compression even when our knowledge of the quantum source is wrong, and unveil the physical meaning of the quantum cross entropy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Information source and strong typicality</head><p>There are different models in defining an information source. We start from one simple but fruitful model for a classical information source <ref type="bibr" target="#b12">[13]</ref>. The source emits a letter from a finite alphabet I with D letters at each single use. We assume that different uses of the source are independent and identically distributed. A possible output from N consecutive uses is a sequence i N = i 1 , i 2 , ..., i n , ..., i N sampled from N random variables I 1 , I 2 , ..., I n , ..., I N . We denote the probability of emitting letter i on any given use of the source as P (i) = p i . Typically, the frequency of occurrence of any given letter i in a sequence output is close to p i . To formalize this intuition, we first define the empirical probability mass function of i N (also referred to as its type) as</p><formula xml:id="formula_0">π(i|i N ) = |{n : i n = i}| N , for i ∈ I.<label>(1)</label></formula><p>For example, if i N = (0, 1, 1, 0, 0, 1, 0), then π(i|i N ) = 4 7 for i = 0, and π(i|i N ) = 3 7 for i = 1. When N is large, by the law of large numbers, for each i ∈ I, π(i|i N ) − → P (i) in probability.</p><p>(</p><formula xml:id="formula_1">)<label>2</label></formula><p>We can then define the set of ǫ-strong-typical N -sequences i N (or the strong typical set in short) as</p><formula xml:id="formula_2">T (N ) ǫ (I) = {i N : |π(i|i N ) − P (i)| ≤ ǫP (i) for all i ∈ I}.<label>(3)</label></formula><p>Another useful definition is the set of ǫ-weak-typical N -sequences i N (or the weak typical set in short), which is</p><formula xml:id="formula_3">U (N ) ǫ (I) = i N : 1 N log 1 P (i N ) − H(p) ≤ ǫ ,<label>(4)</label></formula><p>where H(p) = − i∈I P (i) log P (i) is the Shannon entropy, and P (i N ) is the probability that a certain sequence i N occurs.</p><p>A sequence that is ǫ-strong-typical is definitely ǫ-weak-typical, while the reverse doesn't always hold. One useful property is the unit probability property <ref type="bibr" target="#b12">[13]</ref>, which holds for both strong and weak typical sequences.</p><p>Unit Probability Theorem. Given ǫ &gt; 0. For any δ &gt; 0, when N is sufficiently large,</p><formula xml:id="formula_4">P i N ∈ T (N ) ǫ (I) ≥ 1 − δ,<label>(5)</label></formula><p>and</p><formula xml:id="formula_5">P i N ∈ U (N ) ǫ (I) ≥ 1 − δ.<label>(6)</label></formula><p>This means that as N approaches infinity, the probability that a given sequence i N is typical approaches one. Now we move on to the quantum case. The definition of a quantum information source <ref type="bibr" target="#b7">[8]</ref> we use here is based on the idea that entanglement is what we are trying to compress and decompress. Formally, an identical, independently distributed (i.i.d) quantum source is described by a Hilbert space H and a density matrix ρ on that Hilbert space, represented by (ρ, H). We can view the state ρ as part of a larger system which is in a pure state, and the mixed nature of ρ is due to the entanglement between H and the remainder of the system. At each use, a quantum source emits a quantum state that is on average ρ. After N consecutive uses, the average output is ρ ⊗N . We now develop a quantum version of the strong typicality.</p><p>Suppose the density matrix ρ can be decomposed as</p><formula xml:id="formula_6">ρ = i∈I P (i)|i i|,<label>(7)</label></formula><p>where the |i 's form an orthonormal set, and P (i)'s are eigenvalues of ρ, which obey the same rules as a probability distribution. An ǫ-strong-typical product state is a state</p><formula xml:id="formula_7">|i 1 |i 2 • • • |i N where i N = i 1 , i 2 , ..., i N forms a (classical) ǫ-strong-typical sequence.</formula><p>We define the ǫ-strong-typical subspace T (N, ρ, ǫ) as the subspace spanned by all ǫstrong-typical product states. These product states form a basis of T (N, ρ, ǫ). The projector</p><formula xml:id="formula_8">Q(N, ρ, ǫ) onto the subspace T (N, ρ, ǫ) is Q(N, ρ, ǫ) = i N is ǫ-strong-typical |i 1 i 1 | ⊗ |i 2 i 2 | ⊗ • • • ⊗ |i N i N |.<label>(8)</label></formula><p>By generalizing the properties of strong-typical sequences to the quantum form, we have the strong-typical subspace theorems: Unit Probability Theorem. Given ǫ &gt; 0. For any δ &gt; 0, when N is sufficiently large,</p><formula xml:id="formula_9">tr Q(N, ρ, ǫ)ρ ⊗N ≥ 1 − δ.<label>(9)</label></formula><p>Proof.</p><formula xml:id="formula_10">tr Q(N, ρ, ǫ)ρ ⊗N = i N is ǫ-strong-typical P (i 1 )P (i 2 ) • • • P (i N ) = i N is ǫ-strong-typical P (i N ). (<label>10</label></formula><formula xml:id="formula_11">)</formula><p>When i N is ǫ-strong-typical, it is also ǫ-weak-typical, and the result follows from the unit probability theorem of weak typicality.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Quantum data compression with wrong source</head><p>Now we present a lossless quantum data compression protocol that works even when our knowledge of the information source is wrong. We show that in this non-ideal scenario, the compression rate is the quantum cross entropy, and the fidelity approaches one as N approaches infinity.</p><p>Suppose we develop our compression and decompression protocol with the belief that our quantum source is described by density matrix σ 0 and Hilbert space H, despite that in reality, the quantum source is (ρ 0 , H). Usually, this misinformation includes mismatches on both eigenvalues and eigenbasis:</p><formula xml:id="formula_12">σ 0 = D i=1 q i |a i a i |, ρ 0 = D i=1 p i |b i b i |, {q i } = {p i }, {|a i } = {|b i }.<label>(11)</label></formula><p>Unlike the case when we have perfect knowledge of the source <ref type="bibr" target="#b6">[7,</ref><ref type="bibr" target="#b7">8]</ref>, direct projection to the typical subspace of σ 0 doesn't work, because the overlap between typical subspaces T (N, ρ 0 , ǫ) and T (N, σ 0 , ǫ) becomes empty when N becomes large and ǫ stays small. Also, the typical subspace T (N, σ 0 , ǫ) has dimension 2 N S(σ 0 ) , which suggests a compression rate of S(σ 0 ). When S(ρ 0 ) &gt; S(σ 0 ), this implies a compression rate below the optimal lossless compression rate for the true state ρ 0 , meaning a failure in preserving fidelity.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Revisit the classical case</head><p>We turn to the classical case to find inspirations. Suppose our classical information source emits the i-th letter with probability p i , instead of the wrong, perceived q i . One simple way of source coding is to assign the i-th letter with a codeword of length l i = log 1 q i . The expectation length l of a single codeword is</p><formula xml:id="formula_13">l = D i=1 p i l i = D i=1 p i log 1 q i = H(p, q). (<label>12</label></formula><formula xml:id="formula_14">)</formula><p>Hence, the compression rate is the classical cross entropy H(p, q). In practice, we can only assign integer length of codewords. One simple way is to let</p><formula xml:id="formula_15">l i = log 1 q i .</formula><p>By the properties of ceiling functions,</p><formula xml:id="formula_16">H(p, q) ≤ l &lt; H(p, q) + 1. (<label>13</label></formula><formula xml:id="formula_17">)</formula><p>This idea is called the variable-length coding, which means that we assign shorter codewords to letters with higher probability of occurrence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">A simple quantum protocol</head><p>The quantum generalization can be tricky, since we have to deal with superposition of basis states, making the lengths of codes indeterminate <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b13">14]</ref>.</p><p>Our protocol starts from some preparation work. We first treat q i 's as some probability distribution which represents a classical source, and assign codeword C i with length l i = log 1 q i to the i-th letter. In practice, we can only deal with integer number of qubits, so the precise version is l i = log 1 q i . For simplicity, we will carry out our discussion without worrying about this subtlety, and take it into account in the end. As we believe that the quantum source is (σ 0 , H), we construct each unit of computational basis |i by assigning the first l i available qubits to |C i . To keep track of a codeword's length, we define the length observable L = D i=1 l i |i i|. When dealing with N copies of the source state, the computational basis we use is {|i</p><formula xml:id="formula_18">1 |i 2 • • • |i N }.</formula><p>We then do a unitary evolution U = D i=1 |i a i | to map the true source state ρ 0 to the computational basis |i . In the new basis, we have</p><formula xml:id="formula_19">ρ = U ρ 0 U † = j,k a j |ρ 0 |a k |j k|.<label>(14)</label></formula><p>For simplicity, let r jk = a j |ρ 0 |a k , r j = r jj .</p><p>The expectation length of a single codeword is</p><formula xml:id="formula_20">l = tr(ρL) = i a i |ρ 0 |a i l i = i a i |ρ 0 |a i log 1 q i = − i r i log q i .<label>(15)</label></formula><p>By the definition of the quantum cross entropy, we have</p><formula xml:id="formula_21">S(ρ 0 , σ 0 ) = − tr(ρ 0 log σ 0 ) = − i a i |ρ 0 |a i log a i |σ 0 |a i = − i r i log q i = l .<label>(16)</label></formula><p>From ( <ref type="formula" target="#formula_21">16</ref>), we can see that r i 's give the "true" probability distribution in the "wrong" basis, which relates quantum cross entropy and classical cross entropy:</p><formula xml:id="formula_22">S(ρ 0 , σ 0 ) = H(r, q), r i = a i |ρ 0 |a i , q i = a i |σ 0 |a i .<label>(17)</label></formula><p>Here, r and q are probability distributions viewed in the orthonormal basis of σ 0 . When the quantum source emits N copies, the state we need to compress is</p><formula xml:id="formula_23">ρ ⊗N = j 1 ,k 1 r j 1 k 1 |j 1 k 1 | ⊗ j 2 ,k 2 r j 2 k 2 |j 2 k 2 | ⊗ • • • ⊗ j N ,k N r j N k N |j N k N | . (<label>18</label></formula><formula xml:id="formula_24">)</formula><p>The total length l total of the codewords is just an addition of each codeword, and the total length observable Λ can be defined as Λ</p><formula xml:id="formula_25">= L 1 + L 2 + • • • + L N . For a basis state |i N = |i 1 |i 2 • • • |i N , l total = N n=1 log 1</formula><p>q in . The expectation length of N codewords is l total = N l = N S(ρ 0 , σ 0 ). We now show that the first N S(ρ 0 , σ 0 ) qubits contains all the information of ρ ⊗N as N goes to infinity.</p><p>Fix ǫ &gt; 0. We define a projector Π:</p><formula xml:id="formula_26">Π = length condition |i 1 i 1 | ⊗ |i 2 i 2 | ⊗ • • • ⊗ |i N i N |,<label>(19)</label></formula><p>where the length condition for i</p><formula xml:id="formula_27">N = i 1 , i 2 , ..., i N is 1 N N n=1 log 1 q in − S(ρ 0 , σ 0 ) ≤ ǫ. (<label>20</label></formula><formula xml:id="formula_28">)</formula><p>When i N is ǫ-strongly typical, define i.i.d random variables I 1 , I 2 , ..., I N such that I n = log 1 q in . The expectation value is E(I) = i r i log 1 q i . For any δ &gt; 0, when N is sufficiently large, by the law of large numbers,</p><formula xml:id="formula_29">P 1 N N n=1 I n − E(I) ≤ ǫ = P 1 N N n=1 log 1 q in − S(ρ 0 , σ 0 ) ≤ ǫ ≥ 1 − δ,<label>(21)</label></formula><p>which fulfills the length condition. Hence, Q(N, ρ, ǫ) ≤ Π, and</p><formula xml:id="formula_30">tr(Πρ ⊗N ) ≥ tr Q(N, ρ, ǫ)ρ ⊗N ≥ 1 − δ.<label>(22)</label></formula><p>We apply Π to project ρ ⊗N onto the subspace where the total codeword length l total ∈ [N S(ρ 0 , σ 0 ) − ǫ, N S(ρ 0 , σ 0 ) + ǫ]:</p><formula xml:id="formula_31">γ = Πρ ⊗N Π tr(Πρ ⊗N ) .<label>(23)</label></formula><p>We calculate the quantum fidelity to show that our data compression is indeed faithful:</p><formula xml:id="formula_32">F (ρ ⊗N , γ) = tr ρ ⊗N γ ρ ⊗N 2 = tr(Πρ ⊗N ) ≥ 1 − δ.<label>(24)</label></formula><p>When i N doesn't satisfy the length condition, it doesn't satisfy strong typicality. When we project onto fewer qubits than N S(ρ 0 , σ 0 ), we miss out all the typical states, which composes the majority of all possible quantum states, and the data compression fails. Hence, S(ρ 0 , σ 0 ) is also the optimal compression rate under this protocol.</p><p>For the last step, we apply unitary operator U † to turn the state back into its original basis, and complete our data compression protocol.</p><p>If we take into account the fact that the number of qubits has to be integer, then we have l ∈ [S(ρ 0 , σ 0 ), S(ρ 0 , σ 0 ) + 1), and we need no more than N S(ρ 0 , σ 0 ) + N qubits for a successful data compression even when our knowledge of the quantum source is wrong. Of course, if our perceived source state σ 0 is far from the true source state ρ 0 , S(ρ 0 , σ 0 ) is huge and we will be better off by just sending all the information-bearing qubits, which gives a compression rate of ⌈log D⌉ qubits.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusion</head><p>In this work, we present a simple quantum protocol that does lossless quantum source coding, and show that the corresponding compression rate is the quantum cross entropy. Since data compression can be viewed as a machine learning task, quantum cross entropy also acts as a loss function, whose minimum is the von Neumann entropy. This is consistent with the result that von Neumann entropy is the optimal compression rate. It will be interesting to evaluate time and query complexity <ref type="bibr" target="#b14">[15,</ref><ref type="bibr" target="#b15">16,</ref><ref type="bibr" target="#b16">17,</ref><ref type="bibr" target="#b17">18]</ref> required in carrying out this protocol on quantum computers. With a quantitative measure like complexity, it enables us to compare this protocol with other quantum compression protocols and find improvements. It will also be desirable if any connections between the quantum cross entropy and the holographic codes can be drawn <ref type="bibr" target="#b18">[19,</ref><ref type="bibr" target="#b19">20]</ref>. Ultimately, a broader and deeper understanding of the quantum cross entropy can guide us in designing efficient quantum machine learning algorithms, which leads to solutions to challenging problems like modeling our universe on a quantum computer.</p></div>		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgement</head><p>We thank Yuri Lensky for helpful comments. We thank Xie Chen and Joel E. Moore for encouragement. This work is supported by the Simons Foundation.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Quantum machine learning</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Biamonte</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Wittek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicola</forename><surname>Pancotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Rebentrost</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Wiebe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Lloyd</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">549</biblScope>
+			<biblScope unit="issue">7671</biblScope>
+			<biblScope unit="page" from="195" to="202" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Supervised learning with quantumenhanced feature spaces</title>
+		<author>
+			<persName><forename type="first">Vojtěch</forename><surname>Havlíček</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Antonio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristan</forename><surname>Córcoles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aram</forename><forename type="middle">W</forename><surname>Temme</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhinav</forename><surname>Harrow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jerry</forename><forename type="middle">M</forename><surname>Kandala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jay</forename><forename type="middle">M</forename><surname>Chow</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gambetta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">567</biblScope>
+			<biblScope unit="issue">7747</biblScope>
+			<biblScope unit="page" from="209" to="212" />
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Quantum machine learning in feature hilbert spaces</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Schuld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Killoran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review Letters</title>
+		<imprint>
+			<biblScope unit="volume">122</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page">40504</biblScope>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Barren plateaus in quantum neural network training landscapes</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jarrod R Mcclean</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Boixo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Vadim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Smelyanskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hartmut</forename><surname>Babbush</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Neven</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature communications</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Training deep quantum neural networks</title>
+		<author>
+			<persName><forename type="first">Kerstin</forename><surname>Beer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmytro</forename><surname>Bondarenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terry</forename><surname>Farrelly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tobias</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Osborne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Salzmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramona</forename><surname>Scheiermann</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wolf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature communications</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhou</forename><surname>Shangnan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yixu</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2102.11887</idno>
+		<title level="m">Quantum cross entropy and maximum likelihood principle</title>
+				<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Quantum coding</title>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Schumacher</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. A</title>
+		<imprint>
+			<biblScope unit="volume">51</biblScope>
+			<biblScope unit="page" from="2738" to="2747" />
+			<date type="published" when="1995-04">Apr 1995</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nielsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Isaac</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chuang</surname></persName>
+		</author>
+		<title level="m">Quantum Computation and Quantum Information</title>
+				<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Indeterminate-length quantum coding</title>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Schumacher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Westmoreland</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review A</title>
+		<imprint>
+			<biblScope unit="volume">64</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page">42304</biblScope>
+			<date type="published" when="2001">2001</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Universal quantum information compression and degrees of prior knowledge</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Jozsa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stuart</forename><surname>Presnell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Proceedings of the Royal Society of London. Series A: Mathematical, Physical and Engineering Sciences</title>
+		<imprint>
+			<biblScope unit="volume">459</biblScope>
+			<biblScope unit="page" from="3061" to="3077" />
+			<date type="published" when="2003">2040. 2003</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Stationary quantum source coding</title>
+		<author>
+			<persName><forename type="first">Dénes</forename><surname>Petz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Milán</forename><surname>Mosonyi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Mathematical Physics</title>
+		<imprint>
+			<biblScope unit="volume">42</biblScope>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page" from="4857" to="4864" />
+			<date type="published" when="2001">2001</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Universal quantum data compression via nondestructive tomography</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Charles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aram</forename><forename type="middle">W</forename><surname>Bennett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Harrow</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lloyd</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review A</title>
+		<imprint>
+			<biblScope unit="volume">73</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page">32336</biblScope>
+			<date type="published" when="2006">2006</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Network information theory</title>
+		<author>
+			<persName><forename type="first">Abbas</forename><forename type="middle">El</forename><surname>Gamal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Young-Han</forename><surname>Kim</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<publisher>Cambridge university press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">A quantum analog of huffman coding</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">L</forename><surname>Braunstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">A</forename><surname>Fuchs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Gottesman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hoi-Kwong</forename><surname>Lo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Information Theory</title>
+		<imprint>
+			<biblScope unit="volume">46</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1644" to="1649" />
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Quantum computations without definite causal structure</title>
+		<author>
+			<persName><forename type="first">Giulio</forename><surname>Chiribella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giacomo</forename><surname>Mauro D'ariano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Perinotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benoit</forename><surname>Valiron</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. A</title>
+		<imprint>
+			<biblScope unit="volume">88</biblScope>
+			<biblScope unit="page">22318</biblScope>
+			<date type="published" when="2013-08">Aug 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Quantum circuits for the unitary permutation problem</title>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Facchini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Perdrix</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Theory and Applications of Models of Computation</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="324" to="331" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<author>
+			<persName><forename type="first">Zhou</forename><surname>Shangnan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1902.10538</idno>
+	</analytic>
+	<monogr>
+		<title level="m">entropy, and markov chains</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Understanding quantum algorithms via query complexity</title>
+		<author>
+			<persName><forename type="first">Andris</forename><surname>Ambainis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Congress of Mathematicians: Rio de</title>
+				<meeting>the International Congress of Mathematicians: Rio de</meeting>
+		<imprint>
+			<publisher>World Scientific</publisher>
+			<date type="published" when="2018">2018. 2018</date>
+			<biblScope unit="page" from="3265" to="3285" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Bidirectional holographic codes and sub-ads locality</title>
+		<author>
+			<persName><forename type="first">Zhao</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Hayden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiao-Liang</forename><surname>Qi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of High Energy Physics</title>
+		<imprint>
+			<biblScope unit="volume">2016</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">175</biblScope>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Code properties from holographic geometries</title>
+		<author>
+			<persName><forename type="first">Fernando</forename><surname>Pastawski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Preskill</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Physical Review X</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">21022</biblScope>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

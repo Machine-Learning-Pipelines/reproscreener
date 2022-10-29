@@ -1,0 +1,2565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Imitation Learning: Progress, Taxonomies and Challenges</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-21">21 Oct 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Boyuan</forename><surname>Zheng</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Sunny</forename><surname>Verma</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Jianlong</forename><surname>Zhou</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Ivor</forename><surname>Tsang</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Fang</forename><surname>Chen</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">Uni-versity of Technology Sydney</orgName>
+								<address>
+									<region>Autralia</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Technology Sydney</orgName>
+								<address>
+									<postBox>PO Box 123</postBox>
+									<postCode>2007</postCode>
+									<settlement>Sydney, Autralia</settlement>
+									<region>New South Wales</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Imitation Learning: Progress, Taxonomies and Challenges</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-21">21 Oct 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">1AFA8EC4B5E53FE66C766DB369F02DB8</idno>
+					<idno type="arXiv">arXiv:2106.12177v2[cs.LG]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:47+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>datasets</term>
+					<term>neural networks</term>
+					<term>gaze detection</term>
+					<term>text tagging</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Imitation learning aims to extract knowledge from human experts' demonstrations or artificially created agents in order to replicate their behaviours. Its success has been demonstrated in areas such as video games, autonomous driving, robotic simulations and object manipulation. However, this replicating process could be problematic, such as the performance is highly dependent on the demonstration quality, and most trained agents are limited to perform well in task-specific environments. In this survey, we provide a systematic review on imitation learning. We first introduce the background knowledge from development history and preliminaries, followed by presenting different taxonomies within Imitation Learning and key milestones of the field. We then detail challenges in learning strategies and present research opportunities with learning policy from suboptimal demonstration, voice instructions and other associated optimization schemes.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">INTRODUCTION</head><p>Imitation learning (IL), also known as learning from demonstration, makes responses by mimicking behavior in a relatively simple approach. It extracts useful knowledge to reproduce the behavior in the environment which is similar to the demonstrations'. The presence of IL facilitates the research on autonomous control system and designing artificially intelligent agents, as it demonstrates good promise in real-world scenario and efficiency to train a policy. Recent developments in machine learning field like deep learning, online learning and Generative Adversarial Network (GAN) <ref type="bibr" target="#b22">[23]</ref> make further improvement on IL, not only alleviating existing problems like dynamic environment, frequent inquiries and high-dimensional computation, but also achieving faster convergence, more robust to the noise and more sample-efficient learning process. These improvements of IL promote the applications in both continuous and discrete control domains. For example, in the continuous control domain, imitation learning could be applied to autonomous vehicle manipulation to reproduce appropriate driving behavior in a dynamic environment <ref type="bibr" target="#b10">[11,</ref><ref type="bibr" target="#b12">13,</ref><ref type="bibr" target="#b13">14,</ref><ref type="bibr" target="#b21">22,</ref><ref type="bibr" target="#b30">31,</ref><ref type="bibr" target="#b52">52,</ref><ref type="bibr" target="#b53">53,</ref><ref type="bibr" target="#b80">80]</ref>. In addition, imitation learning is also applied to robotic, ranging from basic grabbing and placing to surgical assistance <ref type="bibr" target="#b20">[21,</ref><ref type="bibr" target="#b36">37,</ref><ref type="bibr" target="#b42">43,</ref><ref type="bibr" target="#b45">46,</ref><ref type="bibr" target="#b47">48,</ref><ref type="bibr" target="#b48">49,</ref><ref type="bibr" target="#b67">67,</ref><ref type="bibr" target="#b79">79]</ref>. In the discrete control domain, imitation learning makes contribution to fields like game theory <ref type="bibr" target="#b4">[5,</ref><ref type="bibr" target="#b18">19,</ref><ref type="bibr" target="#b23">24,</ref><ref type="bibr" target="#b55">55]</ref>, navigation tasks <ref type="bibr" target="#b27">[28,</ref><ref type="bibr" target="#b62">62,</ref><ref type="bibr" target="#b76">76]</ref>, cache management <ref type="bibr" target="#b37">[38]</ref> and so on.</p><p>It is worth noting that the demonstrations could be gathered either from human experts or artificial agents. In most cases, the demonstration is collected from human experts, but there are also some studies that obtain the demonstration through another artificial agent. For example, Chen et al. <ref type="bibr" target="#b12">[13]</ref> proposed a teacher-student training structure, they train a teacher agent with additional information and use this trained agent to teach a student agent without additional information. This process is not redundant, using the demonstration from other agent benefits the training process as student agents can rollout their own policy by frequently querying trained agents and learn policies from similar configurations while classic IL needs to overcome the kinematic shifting problem.</p><p>IL has a close relationship with Reinforcement Learning (RL). Both IL and RL commonly solve the problem under Markov Decision Process, and improvements like TRPO <ref type="bibr" target="#b60">[60]</ref> in RL could benefit IL as well, but they reproduce the behavior in a different manner. In comparing to RL, IL is more efficient, accessible, and human-interactive. In terms of efficiency, comparing with trial and error, the IL agents usually spend less time to produce the desired behavior by using the demonstrations as guidance. In terms of accessibility, achieving autonomous behavior in the RL approach requires human experts who are familiar with the problem setting, together with hard-coded reward functions which could be impractical and non-intuitive in some settings. For example, people learn to swim and walk almost from demonstration instead of math functions, and it is hard to formulate these behavior mathematically. IL also prompts interdisciplinary integration, experts who are novice to programming can contribute to the design and evaluating paradigms. In terms of human-interaction, IL highlights human's influence through providing demonstration or preference to accelerate the learning process, which efficiently leverages and transfers the experts' knowledge. Although IL presents the above merits, it also faces challenges and opportunities, and this content will be detailed in the following sections.</p><p>This survey is organized as follows:</p><p>• Systematic review This survey presents research in imitation learning under categories behavioural cloning vs. inverse reinforcement learning and model-free vs. model-based. It then summarizes IL research into two new categories namely low-level tasks vs. high-level tasks and BC vs. IRL vs. Adversarial Structured IL, which are more adapted to the development of IL. • Background knowledge A comprehensive description of IL's evolution is presented in Section 2, followed by fundamental knowledge in Section 3 and the most common learning framework in Sections 5.</p><p>• Future direction This survey presents the remaining challenges of IL, like learning diverse behavior, leveraging various demonstration and better representation. Then we discuss the future directions with respect to methods like transfer learning and importance sampling.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">BACKGROUND</head><p>One of the earliest well-known research on IL is the Autonomous Land Vehicle In a Neural Network (ALVINN) project at Carnegie Mellon University proposed by Pomerleau <ref type="bibr" target="#b52">[52]</ref>. In 1998, a formal definition of Inverse Reinforcement Learning (IRL) was proposed by Russell <ref type="bibr" target="#b58">[58]</ref>. Inverse reinforcement learning aims to recover reward function from demonstrations. A year after, a formal definition of another important category -Behavioural Cloning (BC) was proposed in <ref type="bibr" target="#b5">[6]</ref>. BC works in a supervised learning fashion and seeks to learn a policy that builds a direct mapping between states and actions, then output a control strategy for control tasks. Although BC demonstrates significant advantage in efficiency, it also suffers from various problems. In 2010, SMiLe <ref type="bibr" target="#b55">[55]</ref> was proposed, it mixed a new policy π𝑛+1 with a fixed probability 𝛼 as next policy, this method promotes the development of IL and set up the foundation for the later proposed DAgger <ref type="bibr" target="#b57">[57]</ref>. DAgger was proposed by Ross et al. and it updates the dataset in each iteration and trains a new policy in the subsequent iteration based on the updated dataset. Compared with previous methods like SMILe <ref type="bibr" target="#b55">[55]</ref> and SEARN <ref type="bibr" target="#b15">[16]</ref>, DAgger alleviates the problem on the unseen scenario and achieve data-efficiency. Later research like <ref type="bibr" target="#b37">[38,</ref><ref type="bibr" target="#b56">56,</ref><ref type="bibr" target="#b67">67]</ref> were proposed to make improvements on DAgger. Besides DAgger and its derivatives, other BC methods also make contribution to the development of IL like MMD-IL <ref type="bibr" target="#b31">[32]</ref>, LOLS <ref type="bibr" target="#b11">[12]</ref>. As for applications, one of the notable applications of BC was proposed by Abbeel et al. <ref type="bibr" target="#b0">[1]</ref>, a model-free BC method on autonomous helicopter project, developed an open-loop iterative learning control. Another famous BC application was an autonomous surgical knot-tying robotic proposed by Osa et al. <ref type="bibr" target="#b48">[49]</ref>, which achieved online trajectory planning and updating in a dynamic system. Besides these real-world applications, BC was also implemented into other research fields like cybernetics, for example, DAgger was used for scheduling in <ref type="bibr" target="#b75">[75]</ref> and Liu et al. leveraged Belagy's optimal policy (proof-of-concept) as oracle to solve the cache replacement problem by predicting reuse distance when cache miss happens <ref type="bibr" target="#b37">[38]</ref>.</p><p>In terms of IRL, Ziebart et al. <ref type="bibr" target="#b82">[82]</ref> proposed Maximum Entropy IRL, which uses maximum entropy distribution to develop a convex procedure for good promise and efficient optimization. This method played a pivotal role in the development of subsequent IRL and GAIL. In 2016, Finn et al. <ref type="bibr" target="#b20">[21]</ref> made significant contributions to IRL and proposed a model-based IRL method called guided cost learning, neural network is used for representing cost to enhance expressive power, combining with sample-based IRL to handle the unknown dynamics. Later in 2017, Hester et al. proposed DQfD <ref type="bibr" target="#b23">[24]</ref> which uses small amount of demonstration to significantly accelerate the training process by doing pre-training to kick-off and learning from both demonstration and self-generated data. Later methods like T-REX <ref type="bibr" target="#b8">[9]</ref>, SQIL <ref type="bibr" target="#b54">[54]</ref>, SILP <ref type="bibr" target="#b40">[41]</ref> make improvements on IRL from different aspects.</p><p>Another novel method called Generative Adversarial Imitation Learning (GAIL), it was proposed in 2016 by Ho and Ermon <ref type="bibr" target="#b24">[25]</ref> and became one of the hot topics in IL. Later research like <ref type="bibr" target="#b16">[17,</ref><ref type="bibr" target="#b32">33,</ref><ref type="bibr" target="#b65">65,</ref><ref type="bibr" target="#b76">76]</ref> were proposed inspired by GAIL and other generative models were gradually adopted in IL. Besides GAIL, another important research direction is inspired by Stadie et al. <ref type="bibr" target="#b65">[65]</ref>. Since first-person demonstrations are hard to obtain in practice, and people usually learn by observing the demonstration of others through the perspective of a third party, learning from third-person viewpoint demonstrations was proposed. The change of viewpoint facilitates the following research like <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b18">19]</ref>, which includes IfO <ref type="bibr" target="#b39">[40]</ref>. IfO focus on simplifying input to use raw video only (i.e. no longer use state-action pairs), many following methods advocate this new setting. These methods measure the distance between observations to replace the need for ground-truth actions and widen the available input for training, foe example, using YouTube videos for training <ref type="bibr" target="#b4">[5]</ref>. Other interesting research fields like meta-learning <ref type="bibr" target="#b17">[18,</ref><ref type="bibr" target="#b19">20,</ref><ref type="bibr" target="#b26">27]</ref>, multi-agent learning <ref type="bibr" target="#b78">[78]</ref> are also thrived because of the development of IL. Figure <ref type="figure" target="#fig_0">1</ref> shows some featured approaches and annual publication numbers for each class and focuses on the research after 2016, it shows that the class of BC(Behavioural Cloning) has maintained a stable increment in publications, while the research in the class of Adversarial Structured IL and IRL(Inverse Reinforcement Learning) have grown rapidly due to the recent advance in other research fields like deep learning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">PRELIMINARY KNOWLEDGE</head><p>This section provides some basic concepts for better understanding of the IL methodology.</p><p>In IL, the demonstrated trajectories are commonly represented as pairs of states 𝑠 and actions 𝑎, sometimes other parameters such as high-level commands and conditional goals will also be included to form the dataset. The way to collect the dataset could be either online or offline. Offline IL prepares the dataset in advance and obtains policies from the dataset while involves fewer interactions with the environment. This could be beneficial when interacting with the environment is expensive or risky. Contrary to offline learning, online learning assumes the data would be accessible in sequence and uses this updated data to learn the best predictor for future data. This method facilitates imitation learning to be more robust in a dynamic system. For example, in <ref type="bibr" target="#b47">[48,</ref><ref type="bibr" target="#b48">49,</ref><ref type="bibr" target="#b57">57]</ref>, online learning is used in surgical robotics. The online learning agent will provide a policy in iteration n, then the opponent will choose a loss function 𝑙 𝑛 based on current policy and the new observed loss will affect the choice of next iteration 𝑛 + 1's policy. The performance is measured through regret, i.e. KL divergence is not symmetric, i.e., 𝐷 𝐾𝐿 (𝑝 (𝑥) ∥ 𝑞(𝑥)) ≠ 𝐷 𝐾𝐿 (𝑞(𝑥) ∥ 𝑝 (𝑥)). Many algorithms such as <ref type="bibr" target="#b7">[8,</ref><ref type="bibr" target="#b60">60]</ref> use KL divergence as the loss function as it could be useful when dealing with the stochastic policy learning problem. For many methods, especially those under the class of IRL and Adversarial structured IL, the environment is modeled as Markov Decision Process(MDP). MDP is the process satisfying the property that the next state 𝑠 𝑡 +1 only depends on the current state 𝑠 𝑡 at any time 𝑡. Typically, a MDP is defined as a tuple (S,A,P,𝛾,D,R), where S is the finite set of states, A is the corresponding set of actions, P is the set of state transition probabilities and the successor states 𝑠 𝑡 +1 is drawn from this transition model, i.e. 𝑠 𝑡 +1 = 𝑃 (•|𝑠 𝑡 , 𝑎 𝑡 ), 𝛾 ∈ [1, 0) is the discount factor, D is the set of initial state distribution and R is the reward function S ↦ → R, and in IL setting, the reward function is not available. The Markov property assists imitation learning to simplify the input since the earlier state is helpless to determine the next state. The use of MDP inspires research to make use of other MDP variants to solve various problems, for example, Partially Observable MDP is used to model the scheduling problem in <ref type="bibr" target="#b75">[75]</ref> and Markov games is used in multi-agent scenario <ref type="bibr" target="#b63">[63]</ref>.</p><p>The learning process of IL could be either on-policy or off-policy (there exists research using a hierarchical combination of these two <ref type="bibr" target="#b12">[13]</ref>). On-policy learning estimates the return and updates the action using the same policy, the agent adopting on-policy will pick actions by themselves and rollout their own policy while training; Off-policy learning estimates the return and chooses the action using different policy, the agent adopting off-policy will update their policy greedily and October 2022.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Classes</head><p>Examples and Publications</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Behavioural Cloning</head><p>Few-shots learning <ref type="bibr" target="#b17">[18]</ref> Input optimization <ref type="bibr" target="#b12">[13]</ref> Latent policy learning <ref type="bibr" target="#b41">[42]</ref> Real-world application <ref type="bibr" target="#b79">[79]</ref> Inverse Reinforcement Learning</p><p>Improving efficiency <ref type="bibr" target="#b8">[9]</ref> Raw video as inputs <ref type="bibr" target="#b61">[61]</ref> Adversarial structured <ref type="bibr" target="#b66">[66]</ref> Sparse reward problem <ref type="bibr" target="#b43">[44]</ref> imitate action with the help of other sources. Some recent IL research such as [84? ? ] advocates off-policy actor-critic architecture to optimize the agent policy and achieve sample efficiency comparing with on-policy learning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">CATEGORIZATION AND FRAMEWORKS</head><p>In this section, four kinds of taxonomies are presented (see Figure <ref type="figure" target="#fig_2">2</ref>). The first two taxonomies (BC vs. IRL and model-free vs. model-based) follow the classifications in <ref type="bibr" target="#b46">[47,</ref><ref type="bibr" target="#b72">72]</ref> and the other two (Low=level Manipulation Tasks vs. High-Level Tasks and BC vs. IRL vs. adversarial structured IL are new proposed taxonomies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Behavioural Cloning vs. Inverse Reinforcement Learning</head><p>IL is conventionally divided into BC and IRL. These two classes flourish by combining various techniques and then extend into different domains. Generally speaking, BC and IRL methods use different methodology to reproduce the expert behavior. BC commonly uses a direct mapping from the states to the actions, while IRL tries to recover the reward function from the demonstrations. This difference could be why BC methods are commonly applied to real-world problems while most IRL methods still do simulations in the environment with less invention. Compared with direct mapping, recovering a reward function needs stronger computational power and technologies to obtain the unique reward function and solve the sparse reward problem. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Classes</head><p>Examples and Publications</p><p>Model-based IL Forward model <ref type="bibr" target="#b18">[19,</ref><ref type="bibr" target="#b20">21]</ref> Inverse model <ref type="bibr" target="#b42">[43]</ref> Model-free IL BC method <ref type="bibr" target="#b41">[42]</ref> Reward engineering <ref type="bibr" target="#b8">[9]</ref> Adversarial style <ref type="bibr" target="#b70">[70]</ref> The inner loop reinforcement learning could also cause IRL methods to be impractical in realworld problems. For the computational problem, recent development in GPU gradually alleviate the problem of high-dimensional computation; for the technology aspect, recent algorithms like Trust Region Policy Optimization <ref type="bibr" target="#b60">[60]</ref> and attention models <ref type="bibr" target="#b25">[26]</ref> provide more robust and efficient approaches for IRL methods; as for the sparse reward function, Hindsight Experience Replay <ref type="bibr" target="#b1">[2]</ref> is commonly adopted for this problem. On the other hand, BC also suffers from the "compounding error" <ref type="bibr" target="#b57">[57]</ref> where a small error could destroy the final performance. Besides these problems, other problems like better representation and diverse behavior learning are still open, many approaches are proposed for these problems, such as <ref type="bibr" target="#b28">[29,</ref><ref type="bibr" target="#b38">39,</ref><ref type="bibr" target="#b76">76]</ref>. Table <ref type="table" target="#tab_0">1</ref> lists some of the recent research in IL categorized into BC and IRL. Recent BC methods mainly focus on the topics such as: meta-learning that the agent is learning to learn by pretraining on a broader range of behaviors <ref type="bibr" target="#b17">[18]</ref>; combining BC with other technique like VR equipment <ref type="bibr" target="#b79">[79]</ref>. On the other hand, recent IRL methods mainly focus on the topics such as: extending GAIL with other methods or problem settings <ref type="bibr" target="#b16">[17]</ref>; recovering reward function from raw videos <ref type="bibr" target="#b4">[5]</ref>; developing more efficient model-based IRL approaches by using the current development in reinforcement learning like TRPO <ref type="bibr" target="#b60">[60]</ref> and HER <ref type="bibr" target="#b1">[2]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Model-Based vs. Model-Free</head><p>Another classical taxonomy divides IL into model-based and model-free methods. The main difference between these two classes is whether the algorithm adopts a forward model to learn from the environmental context/dynamics. Before GAIL <ref type="bibr" target="#b24">[25]</ref> was proposed, most IRL methods are developed in the model-based setting because IRL methods commonly involve iterative algorithms evaluate the environment, while BC methods are commonly model-free since the low-level controller is commonly available. After GAIL was proposed, various adversarial structured IL are proposed following the GAIL's model-free setting. Although learning from the environment sounds beneficial for all kinds of methods, it might not be necessary for a given problem setting or impractical to apply. Integrating environment context/dynamics could obtain more useful information so that the algorithm can achieve data-efficiency and feasibility, while the drawback is learning the model is expensive and challenging. For example, in robotics, the equipment is commonly precise, the spatial position, velocity and other parameters could be easily obtained, the system dynamics might provides relatively little help to reproduce the behavior. On the other hand, in autonomous car tasks, the system dynamics might be crucial to avoid hitting pedestrians. In this case, the choice of model-free or model-based depends on the tasks.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Low-Level Tasks vs. High-Level Tasks</head><p>This subsection introduces a novel taxonomy, which divides IL into manipulation tasks and highlevel tasks according to their evaluation approach. The idea is inspired by a control diagram (See Figure <ref type="figure">4</ref>) in <ref type="bibr" target="#b46">[47]</ref>. Although some IL benchmark systems are proposed, such as <ref type="bibr" target="#b33">[34]</ref>, there is still no widely accepted one. In this case, the evaluation approaches and focus could vary from method to method, ranging from performance in sparse reward scenario to the smoothness of autonomous driving in dynamic environment. This taxonomy could draw clearer boundary and might alleviate the difficulty of designing appropriate benchmark from performance perspective.</p><p>The low-level manipulator tasks could be either real-world or virtual, and are not limited to robotics and autonomous driving problems. The robotic task can be object manipulation by robotic arm like PR2, KUKA robot arm, and simulation tasks commonly experimented on OPEN AI gym, MuJoCo simulation platform and so on. For real-world object manipulation tasks, the tasks could be push the object to the desired area, avoiding obstacles and operation soft object like rope. The autonomous driving tasks commonly implemented by simulation, and which is more related to the high-level planning. There are two widely-used benchmark system for simulation: CARLA CoRL2017 and NoCrash benchmark system, these two benchmark systems mainly focus on the urban scenario under various weather condition while the agent is evaluated on whether it can reach the destination on time, but CARLA CoRL2017 ignores the collision and traffic rules violation. Besides simulation, there are also some research doing experiment in real-world using cars <ref type="bibr" target="#b80">[80]</ref> and smaller remote-controlled cars <ref type="bibr" target="#b13">[14]</ref>, but other kinds of equipment are also used like remote control helicopter <ref type="bibr" target="#b0">[1]</ref>. As for the high-level controller, the tasks could be navigation tasks and gameplay. The navigation tasks are mainly route recommendation and in-door room-to-room navigation. Most of the evaluated games are 2D Atari games on OpenAI Gym, such as MontezumaRevenge is commonly Fig. <ref type="figure">4</ref>. Control diagram adapted from <ref type="bibr" target="#b46">[47]</ref> evaluated for performance on hard expolration and sparse reward scenario. Others are evaluated on 3D games like GTAV or Minecraft for evaluation. This taxonomy could be meaningful since it clearly reflects the target domain of the proposed algorithm, as the variance on their evaluation methods could be smaller, this may help to design a unified evaluation metric for IL. Figure <ref type="figure" target="#fig_3">3</ref> provides various popular evaluation tasks in IL.</p><p>From the Figure <ref type="figure">4</ref>, the target of imitation could be either learning a policy for high-level controllers while assuming the low-level manipulator is working correctly or learning a policy to reproduce the simpler behavior on the low-level controller. Generally speaking, the high-level controller learns a policy to plan a sequence of motion primitives, such as <ref type="bibr" target="#b48">[49]</ref>. As for the low-level controller, it learns a policy to reproduce the primitive behavior, such as <ref type="bibr" target="#b61">[61]</ref>, this forms the hierarchical structure of IL. Although some of the methods propose general frameworks which are evaluated on both domains, most of them are presenting "bias" on selecting tasks to demonstrate their improvement in either higher-level or low-level domain. For example, in <ref type="bibr" target="#b9">[10]</ref>, the proposed algorithm is evaluated on both Atari and Mujoco environments, but the amount of the evaluated tasks in each environment is obviously unequal. In this case, the ambiguity of classifying these general methods could be simply eliminated based on their tendency on evaluation tasks.</p><p>Table <ref type="table" target="#tab_3">3</ref> lists some of the recent research under this taxonomy. The majority of current imitation methods tend to use low-level manipulation tasks to evaluate the proposed method, since reinforcement learning performs acceptably in high-level controller tasks like games, and commonly performs poorly on the low-level manipulation tasks where the reward function might be impractical to obtain. Nevertheless, IL in the high-level controller tasks is non-trivial, since for the 3D tasks or hard exploration games, reinforcement learning can be time-consuming on the huge state and action space.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">BC vs. IRL vs. Adversarial Structured IL</head><p>This taxonomy is extended from the first taxonomy (BC vs. IRL). This new taxonomy divides IL into three categories: Behavioural Cloning (BC), Inverse Reinforcement Learning (IRL) and adversarial structured IL. With the recent development of IL, adversarial structured IL brings new insights for researchers and alleviate problems existing in previous work, such as high-dimensional problem. Inspired by the presence of GAIL, many recent papers adopt this adversarial structure, and inevitably, GAIL becomes baseline for comparison. But this is not enough to establish an </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Classes</head><p>Examples and Publications</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Low-level manipulation</head><p>Surgical assistance <ref type="bibr" target="#b48">[49,</ref><ref type="bibr" target="#b68">68]</ref> Vehicle manipulation <ref type="bibr" target="#b80">[80]</ref> Robotic arm <ref type="bibr" target="#b61">[61]</ref> VR teleoperation <ref type="bibr" target="#b79">[79]</ref> High-level tasks 2D gameplay <ref type="bibr" target="#b59">[59]</ref> 3D gameplay <ref type="bibr" target="#b3">[4]</ref> Navigation <ref type="bibr" target="#b27">[28]</ref> Sports analysis <ref type="bibr" target="#b78">[78]</ref> independent category in IL, the true reason making it distinguishable is that GAIL is not belongs to either BC or IRL. Although adversarial structured IL has close connection with IRL, most adversarial structured IL does not recover the reward function. In this case, the taxonomy of IL could be more specific. GAIL and its derivations are separated from the traditional IRL category and classified as adversarial structured IL in this survey. Compared with the traditional taxonomies, the proposed new taxonomy is more adapted to the development of IL and eliminates the vagueness of classifying these adversarial structured methods. Figure <ref type="figure">5</ref> roughly evaluate the proposed three classes through two kinds of aspects which are commonly compared between research. Since different methods evaluate on various tasks, the overall performance is hard to quantify and rank, in this case, we evaluate three classes from Efficiency and Robustness from an empirical perspective.</p><p>In terms of Efficiency, we mainly focus on environmental interaction, computation, and expert interaction. BC methods commonly take advantage of interaction with expert while have less interaction in the environment, and due to these characteristics, the computational cost for BC is more likely to be the lowest; IRL methods commonly have abundant interaction with the environment in their inner-loop, and the evaluation on system dynamic makes IRL suffers from high computational cost, but IRL methods hardly enquiry the expert during training; Adversarial structured IL methods also involve frequent interaction with the environment when they iteratively update the policy parameter and discriminator parameter, and get rid of the interaction with expert. As adversarial structured IL methods are commonly model-free, in the evaluation of computational efficiency, we rank it as the second.</p><p>In terms of Robustness, we mainly focus on robustness in high-dimensional space, robustness when demonstrations are suboptimal (includes the consideration on noise in demonstration), and robustness in dynamic system. BC methods commonly have better performance in highdimensional space so that they are widely evaluation on robotics, while the performance in dynamic environment and suboptimal dataset are limited; IRL methods optimize the parameter in their inner-loop, which becomes a burden limiting their performance in high-dimensional space, but the recovered reward function would benefit the agent to do prediction in dynamic system. Since adversarial structured IL methods commonly derive from GAIL, they inherit the merits of GAIL: robustness in high-dimensional space and when changes occur in distribution. Because recent research such as <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b16">17,</ref><ref type="bibr" target="#b84">84]</ref> in both IRL and Adversarial structured IL make progress in suboptimal Fig. <ref type="figure">5</ref>. Web plot for taxonomy: BC vs. IRL vs. Adversarial Structured IL. We collected 6 popular evaluation criteria from the research and empirically ranked them into three levels based on research consensus. The outer the point, the higher the ranking, which means that it scores higher in the evaluation from the empirical perspective.</p><p>demonstration problem, we give them the same rank in the evaluation of robustness on suboptimal demonstration.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">MAIN RESEARCH TOPICS AND METHODS</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Behavioural Cloning</head><p>Behavioural Cloning directly maps the states/contexts to actions/trajectories by leveraging the demonstration provided by expert/oracle. After generating the control input or trajectories, the loss function L will be designed according to the problem formulation and optimized in a supervised learning fashion. The state-of-the-art behavioural cloning uses negative log-likelihood loss to update the policy, i.e.</p><formula xml:id="formula_0">argmin 𝜋 L (𝜋) = − 1 𝑁 𝑁 ∑︁ 𝑘=1 log 𝜋 (𝑎 𝑘 |𝑠 𝑘 )</formula><p>Algorithm 1 outlines the state-of-the-art behavioural cloning process. As traditional BC has less connection to MDP comparing with other prevalent methods, its efficiency is guaranteed, the tradeoff is that it suffers from the scenario when the agent visits an unseen state. Loss function L could be customized for specific problem formulation. Loss function (objective function) significantly influences the training process and there are many existing lost function available to measure the differences (in most cases, the difference means the 1 step deviation) such as ℓ 1 loss, ℓ 2 loss, KL divergence, Hinge Loss, etc. For example, when using KL divergence as the loss function, the objective policy could be obtained by minimizing the deviation between expert distribution 𝑞𝜋 𝐸 BC could be subdivided into model-free BC and model-based BC methods. The main difference is whether the method learns a forward model to estimate the system dynamics. Since model-free BC methods take no consideration on the context, model-free BC methods perform well in industry applications where accurate controllers are available and experts could control and modify the robot joints. However, model-free BC methods typically are hard to predict future states and could not guarantee the output's feasibility under the environment that an accurate controller is not available. Under this kind of "imperfect" environment, the agent would have limited information of system dynamics and usually gets stuck into the unseen scenarios due to the "compounding error" <ref type="bibr" target="#b55">[55]</ref>. While model-based BC methods leverage the environment information and learn the dynamics iteratively to produce feasible output, the trade-off is that model-based BC methods usually have greater time-complexity since the iterative learning involvement process.</p><p>One of the significant BC method is DAgger, which is a model-free BC method proposed by Ross et al. <ref type="bibr" target="#b57">[57]</ref> and the idea is to use dataset aggregation to improve the generalization on unseen scenario. Algorithm 2 presents the abstract process of DAgger. DAgger adopts iterative learning process and mixes a new policy π𝑛+1 with probability 𝛽 to construct the next policy. The mixing parameter is a set of {𝛽 𝑖 } that satisfies 1 𝑁 𝑁 𝑖=1 𝛽 𝑖 → 0. The start-up policy is learned by BC and records the trajectory into the dataset. Since a small difference can lead to compounding error, new unseen trajectories will be recorded combining with the expert's corrections. In this case, the algorithm gradually updates the possible state and fully leverages the presence of expert. Later research like <ref type="bibr" target="#b28">[29,</ref><ref type="bibr" target="#b37">38,</ref><ref type="bibr" target="#b56">56,</ref><ref type="bibr" target="#b67">67,</ref><ref type="bibr" target="#b73">73,</ref><ref type="bibr" target="#b75">75]</ref> were proposed to make improvements on DAgger. This method alleviates the problem that traditional BC methods perform poorly on the unseen scenario and achieve data-efficiency comparing with previous methods like SMILe <ref type="bibr" target="#b55">[55]</ref>. However, it does have drawbacks, such as DAgger involves frequent interaction with the expert which might not be available and expensive in some cases (e.g., enquiring expert correction could be expensive in interdisciplinary tasks). Recent methods such as <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b24">25]</ref> successfully alleviate this problem. Another problem of DAgger could be that cost of each action is ignored. Since DAgger is evaluated on video games where the actions have equal cost, the cost of implementing each action is not obvious like tasks such as navigation tasks. This problem is solved later by Ross and Bagnell <ref type="bibr" target="#b56">[56]</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Inverse Reinforcement Learning</head><p>Inverse reinforcement learning was firstly proposed by Russell <ref type="bibr" target="#b58">[58]</ref>. Unlike BC, the IRL agent is recovering and evaluating the reward function from expert demonstrations iteratively instead of establishing a mapping from states to actions. The choice of choosing BC or IRL depends on the problem settings. When the problem setting weights more on system dynamics and future prediction is necessary, choosing IRL methods can be more likely to evaluate the given context iteratively and provide a more accurate prediction. On the other hand, when an accurate controller Algorithm 2 DAgger <ref type="bibr" target="#b57">[57]</ref> 1: Initialize D ← ∅; 2: Initialize π1 to any policy in Π; 3: for 𝑖 = 1 → 𝑁 do 4:</p><p>Let 𝜋 𝑖 = 𝛽 𝑖 𝜋 * + (1 − 𝛽 𝑖 ) π𝑖 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>5:</head><p>Sample T-step trajectory using 𝜋 𝑖 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>6:</head><p>Get dataset D 𝑖 = {(𝑠, 𝜋 * (𝑠))} of visited states by 𝜋 𝑖 and action given by expert. Update the policy parameter 𝜃 in the inner loop RL method using the updated reward parameter 𝜔; 7: until 8: return optimized policy representation 𝜋 𝜃 ; and abundant demonstrations are available, choosing BC methods usually takes less time and performs better.</p><p>IRL commonly assumes that the demonstrations are under Markov Decision Process setting and since the reward R is unknown, the set of states is used to estimate the feature vector (i.e. 𝜙 : X ↦ → [0, 1] 𝑘 ) instead of the true reward function (i.e. X ↦ → R). The process of classic IRL method (see Algorithm 3) is based on iteratively update the reward function parameter 𝜔 and policy parameter 𝜃 . The reward function parameter 𝜔 is updated after the state-action visitation frequency 𝑢 are evaluated, and the way that 𝜔 is updated could vary, for example, Ziebart et al. <ref type="bibr" target="#b82">[82]</ref> updated 𝜔 by maximizing the likelihood of the demonstration over maximum entropy distribution, i.e. 𝜔 * = argmax 𝜔 𝜏 ∈𝐷 log 𝑃 (𝜏 ∥𝜔). On the other hand, the policy parameter 𝜃 is updated in the inner loop reinforcement learning process. This iterative and embedded structure can be problematic: the learning process could be time-consuming and impractical for high-dimensional problems like the high Degree Of Freedom (DOF) robotic problem. Another significant problem is "ill-posed" which means the many different cost functions could lead to the same action. In this case, the good IRL methods need to have more expressive power and a more efficient framework. Research such as <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b14">15,</ref><ref type="bibr" target="#b20">21,</ref><ref type="bibr" target="#b29">30,</ref><ref type="bibr" target="#b40">41,</ref><ref type="bibr" target="#b49">50,</ref><ref type="bibr" target="#b54">54]</ref> was proposed to alleviate the above problems by using more expressive models like neural network and optimizing the input like ranking the demonstration in advance.</p><p>October 2022.</p><p>Several recent IRL methods are gradually integrated with various methods such as selfsupervised learning. Self-supervised learning means learning a function from a partially given context to the remaining or surrounding context. Nair et al. <ref type="bibr" target="#b42">[43]</ref> could be one of the earliest researchers who adopt self-supervised learning into imitation learning. One important problem that integrating self-supervised learning with imitation learning has to solve is the huge amount of data, since the state and action space is extensive for real-world manipulation tasks. Nair et al. solved this problem by using the Baxter robot which automatically records data for a rope manipulation task. This method achieves practical improvement and provides a novel viewpoint for later research and leads the tendency of learning from the past. In 2018, Oh et al. <ref type="bibr" target="#b44">[45]</ref> proposed self-IL, which tries to leverage past good experience to get better exploration result. The proposed method takes a initial policy as input. It then iteratively uses the current policy to generate trajectories, calculates the accumulated return value 𝑅, update the dataset 𝐷 ← 𝐷 {(𝑠 𝑡 , 𝑎 𝑡 , 𝑅)} 𝑇 𝑡 =0 and finally uses the deviation between accumulated return and the agent estimate value 𝑅 − 𝑉 𝜃 to optimize the policy parameter 𝜃 . The process gradually ranks the state-action pairs and updates the policy parameter from the high-ranked pairs. In addition, Self-IL integrates Q learning with policy gradient under the actor-critic framework. As the component of the loss function, policy gradient loss was used to determine the good experience and lower bound Q learning was used to exploit the good experience, this helps Self-IL perform better in the hard exploration tasks. Similarly, in <ref type="bibr" target="#b74">[74]</ref>, Selfsupervised Imitation Learning (SIL) also tries to learn from its good experience but in a different structure. SIL creatively uses voice instruction in the imitation learning process. One language encoder is used to extract textual feature {𝜔 𝑖 } 𝑛 𝑖=1 and an attention-based trajectory encoder LSTM is use to encode the previous state-action as a history context vector from visual state {𝑣 𝑗 } 𝑚 𝑗=1 , i.e. ℎ 𝑡 = 𝐿𝑆𝑇 𝑀 ( [𝑣 𝑡 , 𝑎 𝑡 −1 ], ℎ 𝑡 −1 ). Then visual context 𝑐 𝑣𝑖𝑠𝑢𝑎𝑙 𝑡 and language context 𝑐 𝑡𝑒𝑥𝑡 𝑡 could be obtained based on the historical context vector, finally the action is predicted based on these parameters. The obtained experience is evaluated on a match critic, and the "good" experience is stored in a replay buffer for future prediction.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Generative Adversarial Imitation Learning (GAIL)</head><p>In order to mitigate problems in BC and IRL, Ho and Ermon <ref type="bibr" target="#b24">[25]</ref> proposed a novel general framework called Generative adversarial imitation learning in 2016. GAIL builds a connection between GAN <ref type="bibr" target="#b22">[23]</ref> and maximum entropy IRL <ref type="bibr" target="#b82">[82]</ref>. Inheriting from the structure of GAN, GAIL consists of a generative model G and a discriminator D, while G generates data distribution 𝜌 𝜋 integrating with true data distribution 𝜌 𝜋𝐸 to confuse D. GAIL works in an iterative fashion, and the formal objective of GAIL could be denoted as</p><formula xml:id="formula_1">min 𝜋 max 𝐷 ∈ (0,1) S×A Ê𝜏 𝑖 [log(𝐷 𝜔 (𝑠, 𝑎))] + Ê𝜏 𝐸 [log(1 − 𝐷 𝜔 (𝑠, 𝑎))].</formula><p>GAIL firstly samples trajectories from initial policy, then these generated trajectories are used to update the discriminator weight 𝜔 by applying an Adam gradient step on equation</p><formula xml:id="formula_2">Ê𝜏 𝑖 [∇ 𝜔 log(𝐷 𝜔 (𝑠, 𝑎))] + Ê𝜏 𝐸 [∇ 𝜔 log(1 − 𝐷 𝜔 (𝑠, 𝑎))],</formula><p>and maximize this equation with respect to D. Then adopting the TRPO <ref type="bibr" target="#b60">[60]</ref> with the cost function log(𝐷 𝜔 𝑖+1 (𝑠, 𝑎)) to update the policy parameter 𝜃 and minimize the above function with respect to 𝜋, combining with a causal entropy regularizer controlled by non-negative parameter 𝜆, i.e.</p><formula xml:id="formula_3">Ê𝜏 𝑖 [∇ 𝜃 log 𝜋 𝜃 (𝑎|𝑠)Q (𝑠, 𝑎))] − 𝜆∇ 𝜃 𝐻 (𝜋 𝜃 ) where Q (s, ā) = Ê𝜏 𝑖 [log(𝐷 𝜔 𝑖+1 (𝑠, 𝑎))|𝑠 0 = s, 𝑎 0 = ā].</formula><p>The abstract training process is presented in Algorithm 4. By adopting TRPO, the policy could be more resistant and stable to the noise in the policy gradient. Unlike DAgger and other previous Algorithm 4 GAIL <ref type="bibr" target="#b24">[25]</ref> Require: Expert trajectories 𝜏 𝐸 ∼ 𝜋 𝐸 , initial policy and discriminator parameter 𝜃 0 , 𝜔 0 for 𝑖 = 0, </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>GAILs Methods</head><p>Make further improvement MGAIL <ref type="bibr" target="#b6">[7]</ref>, InfoGAIL <ref type="bibr" target="#b34">[35]</ref> Apply to other research question MAGAIL <ref type="bibr" target="#b63">[63]</ref>, GAIfO <ref type="bibr" target="#b70">[70]</ref> Other generative model Diverse GAIL <ref type="bibr" target="#b76">[76]</ref>, GIRL <ref type="bibr" target="#b77">[77]</ref> algorithms, GAIL is more sample-efficiency from the perspective of using expert data and does not require expert interaction during the training process, it also presents adequate capacity dealing with the high-dimensional domain and changes in distribution. While the trade-off is the training process involves frequent interaction with the environment and could be more fragile and not stable for saddle point problem. As for the first problem, the authors suggested to initialize the policy with BC so that the amount of environment interaction would reduce. As for the second problem, recent research such as <ref type="bibr" target="#b2">[3]</ref> tries to alleviate this problem by formulating the distribution-matching problem as an iterative lower-bound optimization problem.</p><p>Inspired by GAIL's presence, there is a bunch of research proposed to make further development on GAIL (see Table <ref type="table" target="#tab_5">4</ref>) and adversarial structured IL gradually becomes a category. In terms of "make further improvement", many proposed methods modify and improve GAIL from different perspectives. For example, MGAIL <ref type="bibr" target="#b6">[7]</ref> uses an advanced forward model to make the model differentiable so that the Generator could use the exact gradient of the Discriminator. InfoGAIL <ref type="bibr" target="#b34">[35]</ref> modifies GAIL by adopting WGAN instead of GAN. Other recent work like GoalGAIL <ref type="bibr" target="#b16">[17]</ref>, TRGAIL <ref type="bibr" target="#b32">[33]</ref> and DGAIL <ref type="bibr" target="#b83">[83]</ref> are all making improvement on GAIL by combining with other method like hindsight relabeling and Deep Deterministic Policy Gradient (DDPG) <ref type="bibr" target="#b35">[36]</ref> to achieve faster convergence and better final performance. In terms of "apply to other research question", some of the proposed methods combine other method with GAIL and apply to various problems. For example, in <ref type="bibr" target="#b66">[66]</ref>, FAIL outperforms GAIL on sparse reward problem without using the ground truth action and achieves both sample and computational efficiency. It integrates adversarial structure with minimax theory, which is used to determines the next time step policy 𝜋 ℎ under the assumption that {𝜋 1 , 𝜋 2 , ..., 𝜋 ℎ−1 } is learned and fixed. GAIL is also applied into the other research area, such as multiagent settings <ref type="bibr" target="#b7">[8,</ref><ref type="bibr" target="#b63">63,</ref><ref type="bibr" target="#b78">78]</ref> and IfO settings <ref type="bibr" target="#b70">[70]</ref> to effectively deal with more dynamic environment. In terms of "combine IL with other generative model", a number of recent research adopt other generative models to facilitate learning process, for example, in <ref type="bibr" target="#b76">[76]</ref>, Variational AutoEncoder(VAE) is integrated with IL by using encoder to map from trajectories to an embedding vector 𝑧, which makes the proposed algorithm to behave diversely with relatively less demonstration and achieve one-shot learning for the new trajectory. Other research like GIRL <ref type="bibr" target="#b77">[77]</ref> also achieves the outstanding performance from limited demonstrations using VAE. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Publication Description</head><p>IfO <ref type="bibr" target="#b39">[40]</ref> Learning policy from aligned observation only BCO <ref type="bibr" target="#b69">[69]</ref> Adopting IfO setting and integrating with BC TCN <ref type="bibr" target="#b61">[61]</ref> Multi-viewpoint self-supervised IfO method One-shot IfO <ref type="bibr" target="#b4">[5]</ref> Extracting features from unlabeled and unaligned gameplay footage Zero-Shot Visual Imitation <ref type="bibr" target="#b50">[51]</ref> Using distance between observations to predict and penalize the actions IfO survey <ref type="bibr" target="#b72">[72]</ref> Detailed classified recent IfO methods Imitating Latent Policies from Observation <ref type="bibr" target="#b18">[19]</ref> Infering latent policies directly from state observations GAIfO <ref type="bibr" target="#b70">[70]</ref> Generative adversarial structure aggregating with IfO IfO Leveraging Proprioception <ref type="bibr" target="#b71">[71]</ref> Leveraging internal information of the agent OPOLO <ref type="bibr" target="#b81">[81]</ref> Using dual-form of the expectation function and adversarial structure to achieve off-policy IfO</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Imitation from Observation (IfO)</head><p>The prevalent methods introduced above is almost using sequences of state-action pairs to form trajectories as the input data. This kind of data preparation process could be laborious and this is a kind of waste for the abundant raw unlabeled videos. This problem got mitigated after IfO <ref type="bibr" target="#b39">[40]</ref> was proposed, and IL algorithms start to advocate this novel settings and make use of raw videos to learn policies. Comparing with traditional IL methods, this algorithm is more intuitive, and it follows the nature of how human and animal imitate. For example, people learn to dance by following a video, this kind of following process is achieved though detecting the changes of poses and taking actions to match the pose, which is similar to how IfO solves the problem. Different from traditional IL, the ground truth action sequence is not given. Similar to IRL, the main objective of IfO is the reward function from demonstration videos. Imitation from observation tries to build connection for different context so that the VAE structure is adopted to encode both the context (environment) of demonstrator (expert) 𝑠 as source observation and target observation respectively) as input, then using these two sets to predict the future observation in target context under the assumption that source observation and target observation are time aligned. The translator 𝑧 3 translates features in 𝑧 1 produced by source encoder into the context of 𝑧 2 produced by another encoder, i.e. 𝑧 3 = 𝑇 (𝑧 1 , 𝑧 2 ), then the translated feature vector 𝑧 3 is decoded into the observation ô 𝑗 𝑡 . The model is working in a supervised learning process with the loss function</p><formula xml:id="formula_4">L 𝑡𝑟𝑎𝑛𝑠 = ∥ ( ô 𝑗 𝑡 ) − 𝑜 𝑗 𝑡 ∥ 2 2 .</formula><p>To improve the performance, the final objective of the proposed model is combined with the loss of VAE reconstruction and the loss of time alignment, i.e.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>L = ∑︁</head><p>(𝑖,𝑗)</p><formula xml:id="formula_5">(L 𝑡𝑟𝑎𝑛𝑠 + 𝜆 1 L 𝑟𝑒𝑐 + 𝜆 2 L 𝑎𝑙𝑖𝑔𝑛 ),</formula><p>where 𝜆 1 and 𝜆 2 are the hyperparameter predetermined in advance. The output reward function consists of two parts, the first one is deviation penalty on squared Euclidean distance, which measures the difference between the encoded learner's observation feature and translated expert observation feature in learner's context, i.e.</p><formula xml:id="formula_6">R𝑓 𝑒𝑎𝑡 (0 𝑙 𝑡 ) = −∥𝐸𝑛𝑐 1 (𝑜 𝑙 𝑡 ) − 1 𝑛 𝑇 ∑︁ 𝑡 =0 𝑇 (𝑜 𝑖 𝑡 , 𝑜 𝑙 0 ) ∥ 2 2</formula><p>The second part is the penalty which ensures the current observation keeping similar with translated observations, i.e.</p><formula xml:id="formula_7">R𝑖𝑚𝑔 (0 𝑙 𝑡 ) = −∥𝑜 𝑙 𝑡 − 1 𝑛 𝑇 ∑︁ 𝑡 =0 𝑀 (𝑜 𝑖 𝑡 , 𝑜 𝑙 0 ) ∥ 2 2 ,</formula><p>where M is the full observation translation model. The proposed reward function could be applied into the any reinforcement learning algorithm, Liu et al. uses TRPO <ref type="bibr" target="#b60">[60]</ref> for the simulation experiments.</p><p>After IfO being proposed, measuring observation distance to replace the ground truth action becomes a prevalent setting in imitation learning. In Table <ref type="table" target="#tab_6">5</ref>, we present some of the research advocate this new insight and apply this idea into various domain. Both BC, IRL and GAIL start to adopt this setting to simplify the input. For example, in <ref type="bibr" target="#b4">[5]</ref>, raw unaligned YouTube videos are used for imitation to reproduce the behavior for games. YouTube videos are relatively noisy and varying in settings like resolution. The proposed method successfully handled these problems by using a novel self-supervised objective to learn a domain-invariant representation from videos. Similarly, in <ref type="bibr" target="#b61">[61]</ref>, multi-viewpoint self-supervised IL method Time-Contrastive Network (TCN) was proposed. Different viewpoints introduce a wide range of contexts about the task environment and the goal is to learn invariant representation about the task. By measuring the distance between the input video frames and "looking at itself in the mirror", the robot could learn its internal joint to learn the mapping and achieve imitating demonstration.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">CHALLENGES AND OPPORTUNITIES</head><p>Although improvements like integrating novel techniques, reducing human interaction during training and simplifying inputs alleviate difficulties in learning behaviour, there are still some open challenges for IL:</p><p>Diverse behavior learning: Current IL methods commonly use task-specific training datasets to learn to reproduce single behavior. Research like <ref type="bibr" target="#b76">[76]</ref> presented diverse behavior learning by combining structure and variational autoencoder, but this is still an open challenge. Other methods could be adopted to optimize IL, such as transfer learning might help the agent to learn from similar tasks so that the training process could be more efficient.</p><p>Sub-optimal demonstration for training: Current IL methods generally require a highquality set of demonstrations for training. However, the number of high-quality demonstrations could be limited and expensive to obtain. Existing research like <ref type="bibr" target="#b8">[9,</ref><ref type="bibr" target="#b16">17,</ref><ref type="bibr" target="#b64">64]</ref> have shown the possibility to use sub-optimal demonstration for training, but performance can be improved by extracting common intent from the dataset.</p><p>Imitation not just from observation: Current IfO methods commonly use raw videos and the deviation of observations to recover the reward function. But the video is not just observation, October 2022. maybe the voice instruction could also be used to get a better reward function. Wang et al. <ref type="bibr" target="#b74">[74]</ref> demonstrated using natural language for navigation tasks, but it could be an interesting topic to explore in the IfO settings.</p><p>Better representation: Good policy representation could benefit the training process to achieve data-efficiency and computation-efficiency. Finding better policy representation is still an active research topic for IL. Besides policy representation, how to represent the demonstration is another problem in IL. The representation of demonstration needs to be more efficient and expressive.</p><p>Find globally optimal solution: Most research is finding a locally optimal solution based on demonstration, which might set the upper-bound for the agent performance. The future direction could be finding the global optimal for a specific task, which requires the agent to understand the intent of the behavior instead of copy-pasting. Current research like <ref type="bibr" target="#b77">[77]</ref> successfully surpasses the demonstrator's performance, but finding the global optimal still needs effort.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">CONCLUSION</head><p>Imitation learning achieves outstanding performance in a wide range of problems, ranging from solving hard exploration Atari games to achieving object manipulation while avoiding obstacles by robotic arm. Different kinds of imitation learning methods make contribution to this significant development, such as BC methods replicate behavior more intuitively where the environmental parameters could be easily obtained; IRL methods achieve data-efficiency and future behavior prediction when problems weight more on environment dynamics and care less about training time; adversarial structured IL methods eliminate expert interaction during the training process and present adequate capacity dealing with the high-dimensional problem. While IL methods to grow and develop, IL is also seeking breakthroughs in settings, like IfO methods simplify the input by replacing the need of action labels when the input demonstrations are raw video. Although recent work presents a superior advantage in replicating behavior, taxonomy ambiguity exists as the presence of GAIL and its derivatives break out of the previous classification framework. To alleviate this ambiguity, we analyzed the traditional taxonomies of IL and proposed new taxonomies that draw clearer boundaries between methods. Despite the success of IL, challenges and opportunities exist, such as diverse behavior learning, leveraging sub-optimal demonstration and voice instruction, better representation, and finally finding the globally optimal solution. Future work is expected to unravel IL and its practical applications.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Featured approaches and annual publication numbers for each class of approaches. The blue text indicates some of the most active research topics in IL and the background histogram plot is the number of annual publications. The data was collected from Web of Science until 31 May 2021, filtered by setting up each class and their abbreviation as keywords (like "Behavioural Cloning OR BC", only cover records within computer science).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>𝑙</head><label></label><figDesc>𝑛 (𝜋 𝑛 ) − min 𝜋 ∈Π 𝑁 ∑︁ 𝑛=1 𝑙 𝑛 (𝜋), and the loss function could vary from iteration to iteration. One of the most common ways to calculate loss is Kullback-Leibler (KL) Divergence. KL Divergence measures the difference between 2 probability distribution, i.e., 𝐷 𝐾𝐿 (𝑝 (𝑥) ∥ 𝑞(𝑥))</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 2 .</head><label>2</label><figDesc>Fig. 2. Taxonomies in this review.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3. Prevalent Tasks in IL. Top-left: HalfCheetah in Mujoco; Top-mid: CARLA simulator; Top-right: Minecraft scenario in MineRL dataset; Bottom-left: FetchPickAndPlace-v1 in OpenAI Gym; Bottom-mid: Driving scenario in Xi'an [80]; Bottom-right: Atari game-MontezumaRevenge</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Algorithm 1 behavioural cloning method 1 :</head><label>11</label><figDesc>Basic Collect expert demonstration into dataset D; 2: Select policy representation 𝜋 𝜃 and loss function L; 3: Use D to optimize the loss function L based on policy representation 𝜋 𝜃 ; 4: return optimized policy representation 𝜋 𝜃 ; and induced distribution 𝑞(𝜋), i.e. 𝜋 * = argmin 𝜋 𝐷 𝐾𝐿 (𝑞(𝜋 𝐸 ) ∥𝑞(𝜋)).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 .</head><label>1</label><figDesc>Categorization of IL: BC vs. IRL</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 .</head><label>2</label><figDesc>Categorization of IL: Model-based vs. Model-free</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head></head><label></label><figDesc>Table 2 lists some of the recent research topics in IL categorized into model-based and model-free.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 .</head><label>3</label><figDesc>Categorization of IL: Low-level Tasks vs. High-level Tasks</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 .</head><label>4</label><figDesc>1, 2, ... do Sample trajectories 𝜏 𝑖 ∼ 𝜋 𝜃 𝑖 . Update the discriminator parameters 𝜔 𝑖 to 𝜔 𝑖+1 . Update the policy parameter 𝜃 𝑖 to 𝜃 𝑖+1 . end for Different Kinds of Derivative on GAIL</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 .</head><label>5</label><figDesc>Publication Related to IfO</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>1 and target context 𝑠 2 . The proposed model has four components: a source observation encoder 𝐸𝑛𝑐 1 (𝑜 𝑖 𝑡 ) which extracts feature vector 𝑧 1 , a target observation encoder 𝐸𝑛𝑐 2 (𝑜 𝑗 0 ) which extracts feature vector 𝑧 2 , a translator 𝑧 3 and a target context decoder 𝐷𝑒𝑐 (𝑧 3 ). The model takes two sets of observations (𝐷 𝑖 = [𝑜 𝑖 𝑡 ] 𝑇 𝑡 =0 and 𝐷 𝑗 = [𝑜 𝑗 𝑡 ] 𝑇 𝑡 =0</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot">October 2022.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Autonomous Helicopter Aerobatics through Apprenticeship Learning</title>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Coates</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">Y</forename><surname>Ng</surname></persName>
+		</author>
+		<idno type="DOI">10.1177/0278364910371999</idno>
+		<ptr target="https://doi.org/10.1177/0278364910371999" />
+	</analytic>
+	<monogr>
+		<title level="j">The International Journal of Robotics Research</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">13</biblScope>
+			<biblScope unit="page" from="1608" to="1639" />
+			<date type="published" when="2010-11">2010. Nov. 2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">OpenAI Pieter Abbeel, and Wojciech Zaremba</title>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Wolski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Ray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Fong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Welinder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bob</forename><surname>Mcgrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josh</forename><surname>Tobin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="5048" to="5058" />
+		</imprint>
+	</monogr>
+	<note>Hindsight experience replay</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<author>
+			<persName><forename type="first">Oleg</forename><surname>Arenz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Neumann</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2008.03525</idno>
+		<idno>arXiv: 2008.03525</idno>
+		<ptr target="http://arxiv.org/abs/2008.03525" />
+		<title level="m">Non-Adversarial Imitation Learning and its Connections to Adversarial Methods</title>
+				<imprint>
+			<date type="published" when="2020-08">2020. Aug. 2020</date>
+		</imprint>
+	</monogr>
+	<note>cs, math, stat</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<author>
+			<persName><forename type="first">Dilip</forename><surname>Arumugam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ki</forename><surname>Jun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophie</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">L</forename><surname>Saskin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Littman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1902.04257</idno>
+		<title level="m">Deep reinforcement learning from policydependent human feedback</title>
+				<imprint>
+			<date type="published" when="2019">2019. 2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Playing hard exploration games by watching YouTube</title>
+		<author>
+			<persName><forename type="first">Yusuf</forename><surname>Aytar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tobias</forename><surname>Pfaff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Budden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Paine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ziyu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nando</forename><surname>De Freitas</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/7557-playing-hard-exploration-games-by-watching-youtube.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Larochelle</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">K</forename><surname>Grauman</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">N</forename><surname>Cesa-Bianchi</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="page" from="2930" to="2941" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A framework for behavioural cloning</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Bain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claude</forename><surname>Sammut</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine Intelligence 15</title>
+				<imprint>
+			<publisher>Oxford University Press</publisher>
+			<date type="published" when="1999">1999</date>
+			<biblScope unit="page" from="103" to="129" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">End-to-end differentiable adversarial imitation learning</title>
+		<author>
+			<persName><forename type="first">Nir</forename><surname>Baram</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oron</forename><surname>Anschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Itai</forename><surname>Caspi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shie</forename><surname>Mannor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2017-10">2017. October 2022</date>
+			<biblScope unit="page" from="390" to="399" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">P</forename><surname>Raunak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Derek</forename><forename type="middle">J</forename><surname>Bhattacharyya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Blake</forename><surname>Phillips</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Wulfe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Morton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mykel</forename><forename type="middle">J</forename><surname>Kuefler</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kochenderfer</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.01044</idno>
+		<idno>arXiv: 1803.01044</idno>
+		<ptr target="http://arxiv.org/abs/1803.01044" />
+		<title level="m">Multi-Agent Imitation Learning for Driving Simulation</title>
+				<imprint>
+			<date type="published" when="2018-03">2018. March 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Extrapolating beyond suboptimal demonstrations via inverse reinforcement learning from observations</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wonjoon</forename><surname>Goo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prabhat</forename><surname>Nagarajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Niekum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="783" to="792" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Better-than-Demonstrator Imitation Learning via Automatically-Ranked Demonstrations</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><forename type="middle">S</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wonjoon</forename><surname>Goo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Niekum</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.03976</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note>cs.LG</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Bühler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adrien</forename><surname>Gaidon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrei</forename><surname>Cramariuc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rares</forename><surname>Ambrus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guy</forename><surname>Rosman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wolfram</forename><surname>Burgard</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2008.12969</idno>
+		<title level="m">Driving Through Ghosts: Behavioral with False Positives</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+	<note>cs.CV</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Learning to search better than your teacher</title>
+		<author>
+			<persName><forename type="first">Kai-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akshay</forename><surname>Krishnamurthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alekh</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hal</forename><surname>Daume</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Langford</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="2058" to="2066" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Learning by cheating</title>
+		<author>
+			<persName><forename type="first">Dian</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brady</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladlen</forename><surname>Koltun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Krähenbühl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Conference on Robot Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="66" to="75" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">End-to-End Driving Via Conditional Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Codevilla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>López</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladlen</forename><surname>Koltun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICRA.2018.8460487</idno>
+		<ptr target="https://doi.org/10.1109/ICRA.2018.8460487" />
+	</analytic>
+	<monogr>
+		<title level="j">IEEE International Conference on Robotics and Automation</title>
+		<idno type="ISSN">2577-087X</idno>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<author>
+			<persName><forename type="first">Neha</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarah</forename><surname>Bechtle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Davchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dinesh</forename><surname>Jayaraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akshara</forename><surname>Rai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franziska</forename><surname>Meier</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.09034</idno>
+		<idno>arXiv: 2010.09034</idno>
+		<ptr target="http://arxiv.org/abs/2010.09034" />
+		<title level="m">Model-Based Inverse Reinforcement Learning from Visual Demonstrations</title>
+				<imprint>
+			<date type="published" when="2020-10">2020. Oct. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Search-based structured prediction</title>
+		<author>
+			<persName><forename type="first">Hal</forename><surname>Daumé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Langford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Marcu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Machine learning</title>
+		<imprint>
+			<biblScope unit="volume">75</biblScope>
+			<biblScope unit="page" from="297" to="325" />
+			<date type="published" when="2009">2009. 2009</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Florensa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariano</forename><surname>Phielipp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.05838</idno>
+		<title level="m">Goal-conditioned imitation learning</title>
+				<imprint>
+			<date type="published" when="2019">2019. 2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">One-Shot Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bradly</forename><surname>Stadie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Openai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Ho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wojciech</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zaremba</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/6709-one-shot-imitation-learning.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">I</forename><surname>Guyon</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">U</forename><forename type="middle">V</forename><surname>Luxburg</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Fergus</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Vishwanathan</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="1087" to="1098" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Imitating latent policies from observation</title>
+		<author>
+			<persName><forename type="first">Ashley</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Himanshu</forename><surname>Sahni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Schroecker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Isbell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="1755" to="1763" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Model-agnostic meta-learning for fast adaptation of deep networks</title>
+		<author>
+			<persName><forename type="first">Chelsea</forename><surname>Finn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1126" to="1135" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Guided cost learning: Deep inverse optimal control via policy optimization</title>
+		<author>
+			<persName><forename type="first">Chelsea</forename><surname>Finn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International conference on machine learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="49" to="58" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera</title>
+		<author>
+			<persName><forename type="first">Laurent</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thibault</forename><surname>Buhet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emilie</forename><surname>Wirbel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaetan</forename><surname>Le-Gall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xavier</forename><surname>Perrotton</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1812.05841</idno>
+		<idno>arXiv: 1812.05841</idno>
+		<ptr target="http://arxiv.org/abs/1812.05841" />
+		<imprint>
+			<date type="published" when="2018-12">2018. Dec. 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Ian</forename><forename type="middle">J</forename><surname>Goodfellow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Pouget-Abadie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mehdi</forename><surname>Mirza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Warde-Farley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sherjil</forename><surname>Ozair</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aaron</forename><surname>Courville</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1406.2661</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Generative Adversarial Networks</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+	<note>stat.ML</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<author>
+			<persName><forename type="first">Todd</forename><surname>Hester</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matej</forename><surname>Vecerik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivier</forename><surname>Pietquin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Lanctot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Schaul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bilal</forename><surname>Piot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Horgan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Quan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Sendonaris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabriel</forename><surname>Dulac-Arnold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ian</forename><surname>Osband</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Agapiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joel</forename><forename type="middle">Z</forename><surname>Leibo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Audrunas</forename><surname>Gruslys</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1704.03732</idno>
+		<idno>arXiv: 1704.03732</idno>
+		<ptr target="http://arxiv.org/abs/1704.03732" />
+		<title level="m">Deep Q-learning from Demonstrations</title>
+				<imprint>
+			<date type="published" when="2017-11">2017. Nov. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Generative Adversarial Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Ho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Ermon</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/6391-generative-adversarial-imitation-learning.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">D</forename><forename type="middle">D</forename><surname>Lee</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Sugiyama</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">U</forename><forename type="middle">V</forename><surname>Luxburg</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">I</forename><surname>Guyon</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="page" from="4565" to="4573" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Fine-Grained 3D-Attention Prototypes for Few-Shot Learning</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/neco_a_01302</idno>
+		<ptr target="https://doi.org/10.1162/neco_a_01302" />
+	</analytic>
+	<monogr>
+		<title level="j">Neural Computation</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="1664" to="1684" />
+			<date type="published" when="2020">2020. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Two-Stage Model-Agnostic Meta-Learning With Noise Mechanism for One-Shot Imitation</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Gan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">Z</forename><surname>Wen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ACCESS.2020.3029220</idno>
+		<idno>182720-182730</idno>
+		<ptr target="https://doi.org/10.1109/ACCESS.2020.3029220ConferenceName" />
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Access</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<date type="published" when="2020">2020. 2020</date>
+			<publisher>IEEE Access</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Deep imitation learning for 3D navigation tasks</title>
+		<author>
+			<persName><forename type="first">Ahmed</forename><surname>Hussein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eyad</forename><surname>Elyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><forename type="middle">Medhat</forename><surname>Gaber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chrisina</forename><surname>Jayne</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s00521-017-3241-z</idno>
+		<ptr target="https://doi.org/10.1007/s00521-017-3241-z" />
+	</analytic>
+	<monogr>
+		<title level="j">Neural Comput &amp; Applic</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">7</biblScope>
+			<biblScope unit="page" from="389" to="404" />
+			<date type="published" when="2018-04">2018. April 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<author>
+			<persName><forename type="first">Mostafa</forename><surname>Hussein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brendan</forename><surname>Crowe</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2101.01251</idno>
+		<title level="m">Marek Petrik, and Momotaz Begum. 2021. Robust Maximum Entropy Behavior Cloning</title>
+				<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Reward learning from human preferences and demonstrations in atari</title>
+		<author>
+			<persName><forename type="first">Borja</forename><surname>Ibarz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Leike</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tobias</forename><surname>Pohlen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Irving</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shane</forename><surname>Legg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Amodei</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1811.06521</idno>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Deep imitation learning for autonomous vehicles based on convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Parham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abbas</forename><surname>Kebria</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Khosravi</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/JAS.2019.1911825</idno>
+		<ptr target="https://doi.org/10.1109/JAS.2019.1911825ConferenceName" />
+	</analytic>
+	<monogr>
+		<title level="j">IEEE/CAA Journal of Automatica Sinica</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="82" to="95" />
+			<date type="published" when="2020-01">2020. Jan. 2020</date>
+		</imprint>
+	</monogr>
+	<note>IEEE/CAA Journal of Automatica Sinica</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Maximum Mean Discrepancy Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Beomjoon</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joelle</forename><surname>Pineau</surname></persName>
+		</author>
+		<idno type="DOI">10.15607/RSS.2013.IX.038</idno>
+		<ptr target="https://doi.org/10.15607/RSS.2013.IX.038" />
+	</analytic>
+	<monogr>
+		<title level="m">Robotics: Science and Systems IX. Robotics: Science and Systems Foundation</title>
+				<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Integration of imitation learning using GAIL and reinforcement learning using task-achievement rewards via probabilistic graphical model</title>
+		<author>
+			<persName><forename type="first">Akira</forename><surname>Kinose</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tadahiro</forename><surname>Taniguchi</surname></persName>
+		</author>
+		<idno type="DOI">10.1080/01691864.2020.1778521</idno>
+		<ptr target="https://doi.org/10.1080/01691864.2020.1778521" />
+	</analytic>
+	<monogr>
+		<title level="j">Advanced Robotics</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="13" />
+			<date type="published" when="2020-06">2020. June 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Open-source benchmarking for learned reaching motion generation in robotics. Paladyn</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lemme</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Meirovitch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Khansari-Zadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Flash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Billard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">J</forename><surname>Steil</surname></persName>
+		</author>
+		<idno type="DOI">10.1515/pjbr-2015-0002</idno>
+		<ptr target="https://doi.org/10.1515/pjbr-2015-0002" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Behavioral Robotics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<date type="published" when="2015-01">2015. Jan. 2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">InfoGAIL: Interpretable Imitation Learning from Visual Demonstrations</title>
+		<author>
+			<persName><forename type="first">Yunzhu</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiaming</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Ermon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">;</forename><forename type="middle">I</forename><surname>Guyon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><forename type="middle">V</forename><surname>Luxburg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Fergus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/6971-infogail-interpretable-imitation-learning-from-visual-demonstrations.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">R</forename><surname>Vishwanathan</surname></persName>
+		</editor>
+		<editor>
+			<persName><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="3812" to="3822" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">Timothy</forename><forename type="middle">P</forename><surname>Lillicrap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><forename type="middle">J</forename><surname>Hunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Pritzel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Heess</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Erez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuval</forename><surname>Tassa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Silver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daan</forename><surname>Wierstra</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1509.02971</idno>
+		<title level="m">Continuous control with deep reinforcement learning</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+	<note>cs.LG</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Learning movement primitive libraries through probabilistic segmentation</title>
+		<author>
+			<persName><forename type="first">Rudolf</forename><surname>Lioutikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guilherme</forename><surname>Maeda</surname></persName>
+		</author>
+		<idno type="DOI">10.1177/0278364917713116</idno>
+		<ptr target="https://doi.org/10.1177/0278364917713116Publisher" />
+	</analytic>
+	<monogr>
+		<title level="j">The International Journal of Robotics Research</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="879" to="894" />
+			<date type="published" when="2017-01">Jan Peters. 2017. July 2017</date>
+			<publisher>SAGE Publications Ltd STM</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">An imitation learning approach for cache replacement</title>
+		<author>
+			<persName><forename type="first">Evan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Milad</forename><surname>Hashemi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Swersky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junwhan</forename><surname>Parthasarathy Ranganathan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ahn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="6237" to="6247" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">AHNG: representation learning on attributed heterogeneous network</title>
+		<author>
+			<persName><forename type="first">Mengyue</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yihe</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Meng</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qinghua</forename><surname>Zheng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Information Fusion</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page" from="221" to="230" />
+			<date type="published" when="2019">2019. 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Imitation from observation: Learning to imitate behaviors from raw video via context translation</title>
+		<author>
+			<persName><forename type="first">Yuxuan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhishek</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE International Conference on Robotics and Automation (ICRA)</title>
+		<imprint>
+			<biblScope unit="page" from="1118" to="1125" />
+			<date type="published" when="2018">2018. 2018</date>
+			<publisher>IEEE</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<author>
+			<persName><forename type="first">Sha</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hamidreza</forename><surname>Kasaei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lambert</forename><surname>Schomaker</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2103.13834</idno>
+		<title level="m">Self-Imitation Learning by Planning</title>
+				<imprint>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Learning latent plans from play</title>
+		<author>
+			<persName><forename type="first">Corey</forename><surname>Lynch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohi</forename><surname>Khansari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vikash</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Tompson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pierre</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sermanet</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Conference on Robot Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="1113" to="1132" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Combining self-supervised learning and imitation for vision-based rope manipulation</title>
+		<author>
+			<persName><forename type="first">Ashvin</forename><surname>Nair</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dian</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pulkit</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phillip</forename><surname>Isola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jitendra</forename><surname>Malik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2017 IEEE international conference on robotics and automation (ICRA)</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="2146" to="2153" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Overcoming exploration in reinforcement learning with demonstrations</title>
+		<author>
+			<persName><forename type="first">Ashvin</forename><surname>Nair</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bob</forename><surname>Mcgrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Andrychowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wojciech</forename><surname>Zaremba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE International Conference on Robotics and Automation (ICRA)</title>
+		<imprint>
+			<biblScope unit="page" from="6292" to="6299" />
+			<date type="published" when="2018">2018. 2018</date>
+			<publisher>IEEE</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Self-imitation learning</title>
+		<author>
+			<persName><forename type="first">Junhyuk</forename><surname>Oh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yijie</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Satinder</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Honglak</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="3878" to="3887" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Guiding Trajectory Optimization by Demonstrated Distributions</title>
+		<author>
+			<persName><forename type="first">Takayuki</forename><surname>Osa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Amir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rustam</forename><surname>Ghalamzan Esfahani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rudolf</forename><surname>Stolkin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Lioutikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Neumann</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/LRA.2017.2653850</idno>
+		<ptr target="https://doi.org/10.1109/LRA.2017.2653850" />
+	</analytic>
+	<monogr>
+		<title level="m">Conference Name: IEEE Robotics and Automation Letters</title>
+				<imprint>
+			<date type="published" when="2017-04">2017. April 2017</date>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="819" to="826" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Takayuki</forename><surname>Osa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joni</forename><surname>Pajarinen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">Andrew</forename><surname>Bagnell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Peters</surname></persName>
+		</author>
+		<idno type="DOI">10.1561/2300000053</idno>
+		<ptr target="https://doi.org/10.1561/2300000053" />
+	</analytic>
+	<monogr>
+		<title level="j">An Algorithmic Perspective on Imitation Learning. FNT in Robotics</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="1" to="179" />
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Online Trajectory Planning in Dynamic Environments for Surgical Task Automation</title>
+		<author>
+			<persName><forename type="first">Takayuki</forename><surname>Osa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naohiko</forename><surname>Sugita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mamoru</forename><surname>Mitsuishi</surname></persName>
+		</author>
+		<idno type="DOI">10.15607/RSS.2014.X.011</idno>
+		<ptr target="https://doi.org/10.15607/RSS.2014.X.011" />
+	</analytic>
+	<monogr>
+		<title level="m">Robotics: Science and Systems X. Robotics: Science and Systems Foundation</title>
+				<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Online Trajectory Planning and Force Control for Automation of Surgical Tasks</title>
+		<author>
+			<persName><forename type="first">Takayuki</forename><surname>Osa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naohiko</forename><surname>Sugita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mamoru</forename><surname>Mitsuishi</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/TASE.2017.2676018</idno>
+		<ptr target="https://doi.org/10.1109/TASE.2017.2676018" />
+	</analytic>
+	<monogr>
+		<title level="m">Conference Name: IEEE Transactions on Automation Science and Engineering</title>
+				<imprint>
+			<date type="published" when="2018-04">2018. April 2018</date>
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="675" to="691" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<monogr>
+		<author>
+			<persName><forename type="first">Malayandi</forename><surname>Palan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><forename type="middle">C</forename><surname>Landolfi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gleb</forename><surname>Shevchuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dorsa</forename><surname>Sadigh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.08928</idno>
+		<idno>arXiv: 1906.08928</idno>
+		<ptr target="http://arxiv.org/abs/1906.08928" />
+		<title level="m">Learning Reward Functions by Integrating Human Demonstrations and Preferences</title>
+				<imprint>
+			<date type="published" when="2019-06">2019. June 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Zero-Shot Visual Imitation</title>
+		<author>
+			<persName><forename type="first">Deepak</forename><surname>Pathak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parsa</forename><surname>Mahmoudieh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guanghao</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pulkit</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dian</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fred</forename><surname>Shentu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evan</forename><surname>Shelhamer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jitendra</forename><surname>Malik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexei</forename><forename type="middle">A</forename><surname>Efros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Trevor</forename><surname>Darrell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE</title>
+		<imprint>
+			<date type="published" when="2018-10">2018. 2018. October 2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<monogr>
+		<title level="m" type="main">on Computer Vision and Pattern Recognition Workshops (CVPRW)</title>
+		<idno type="DOI">10.1109/CVPRW.2018.00278</idno>
+		<ptr target="https://doi.org/10.1109/CVPRW.2018.00278" />
+		<imprint>
+			<publisher>IEEE</publisher>
+			<biblScope unit="page" from="2131" to="21313" />
+			<pubPlace>Salt Lake City, UT, USA</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">ALVINN: An Autonomous Land Vehicle in a Neural Network</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dean</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pomerleau</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/95-alvinn-an-autonomous-land-vehicle-in-a-neural-network.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">D</forename><forename type="middle">S</forename><surname>Touretzky</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Morgan-Kaufmann</publisher>
+			<date type="published" when="1989">1989</date>
+			<biblScope unit="page" from="305" to="313" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Efficient training of artificial neural networks for autonomous navigation</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dean</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pomerleau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neural computation</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="88" to="97" />
+			<date type="published" when="1991">1991. 1991</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<monogr>
+		<author>
+			<persName><forename type="first">Siddharth</forename><surname>Reddy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anca</forename><forename type="middle">D</forename><surname>Dragan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.11108</idno>
+		<idno>arXiv: 1905.11108</idno>
+		<ptr target="http://arxiv.org/abs/1905.11108" />
+		<title level="m">SQIL: Imitation Learning via Reinforcement Learning with Sparse Rewards</title>
+				<imprint>
+			<date type="published" when="2019-09">2019. Sept. 2019</date>
+		</imprint>
+	</monogr>
+	<note>cs, stat</note>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Efficient reductions for imitation learning</title>
+		<author>
+			<persName><forename type="first">Stéphane</forename><surname>Ross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Drew</forename><surname>Bagnell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the thirteenth international conference on artificial intelligence and statistics. JMLR Workshop and Conference Proceedings</title>
+				<meeting>the thirteenth international conference on artificial intelligence and statistics. JMLR Workshop and Conference Proceedings</meeting>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="661" to="668" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<monogr>
+		<title level="m" type="main">Reinforcement and imitation learning via interactive no-regret learning</title>
+		<author>
+			<persName><forename type="first">Stephane</forename><surname>Ross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Bagnell</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1406.5979</idno>
+		<imprint>
+			<date type="published" when="2014">2014. 2014</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">A reduction of imitation learning and structured prediction to no-regret online learning</title>
+		<author>
+			<persName><forename type="first">Stéphane</forename><surname>Ross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Gordon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Drew</forename><surname>Bagnell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the fourteenth international conference on artificial intelligence and statistics. JMLR Workshop and Conference Proceedings</title>
+				<meeting>the fourteenth international conference on artificial intelligence and statistics. JMLR Workshop and Conference Proceedings</meeting>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="627" to="635" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Learning agents for uncertain environments (extended abstract)</title>
+		<author>
+			<persName><forename type="first">Stuart</forename><surname>Russell</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/279943.279964</idno>
+		<ptr target="https://doi.org/10.1145/279943.279964" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the eleventh annual conference on Computational learning theory -COLT&apos; 98</title>
+				<meeting>the eleventh annual conference on Computational learning theory -COLT&apos; 98<address><addrLine>Madison, Wisconsin, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM Press</publisher>
+			<date type="published" when="1998">1998</date>
+			<biblScope unit="page" from="101" to="103" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<monogr>
+		<title level="m" type="main">Learning Montezuma&apos;s Revenge from a Single Demonstration</title>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Salimans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Chen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1812.03381</idno>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Trust region policy optimization</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Schulman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Moritz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International conference on machine learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="1889" to="1897" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">Time-contrastive networks: Self-supervised learning from video</title>
+		<author>
+			<persName><forename type="first">Pierre</forename><surname>Sermanet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Corey</forename><surname>Lynch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yevgen</forename><surname>Chebotar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jasmine</forename><surname>Hsu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Jang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Schaal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Levine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Google</forename><surname>Brain</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE International Conference on Robotics and Automation (ICRA)</title>
+		<imprint>
+			<biblScope unit="page" from="1134" to="1141" />
+			<date type="published" when="2018">2018. 2018</date>
+			<publisher>IEEE</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Optimal passenger-seeking policies on E-hailing platforms using Markov decision process and imitation learning</title>
+		<author>
+			<persName><forename type="first">Zhenyu</forename><surname>Shou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuan</forename><surname>Di</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jieping</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongtu</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Hampshire</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.trc.2019.12.005</idno>
+		<ptr target="https://doi.org/10.1016/j.trc.2019.12.005" />
+	</analytic>
+	<monogr>
+		<title level="j">Transportation Research Part C: Emerging Technologies</title>
+		<imprint>
+			<biblScope unit="volume">111</biblScope>
+			<biblScope unit="page" from="91" to="113" />
+			<date type="published" when="2020-02">2020. Feb. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Multi-Agent Generative Adversarial Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Jiaming</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dorsa</forename><surname>Hongyu Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Sadigh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ermon</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/7975-multi-agent-generative-adversarial-imitation-learning.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Larochelle</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">K</forename><surname>Grauman</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">N</forename><surname>Cesa-Bianchi</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="page" from="7461" to="7472" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Weakly Supervised Group Mask Network for Object Detection</title>
+		<author>
+			<persName><forename type="first">Lingyun</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingxuan</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuequn</forename><surname>Shang</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s11263-020-01397-w</idno>
+		<ptr target="https://doi.org/10.1007/s11263-020-01397-w" />
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Computer Vision</title>
+		<imprint>
+			<date type="published" when="2020">2020. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<monogr>
+		<author>
+			<persName><forename type="first">C</forename><surname>Bradly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Stadie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Abbeel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sutskever</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1703.01703</idno>
+		<title level="m">Third-person imitation learning</title>
+				<imprint>
+			<date type="published" when="2017">2017. 2017</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">Provably efficient imitation learning from observation alone</title>
+		<author>
+			<persName><forename type="first">Wen</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anirudh</forename><surname>Vemula</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="6036" to="6045" />
+		</imprint>
+	</monogr>
+	<note>Byron Boots, and Drew Bagnell</note>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">Deeply aggrevated: Differentiable imitation learning for sequential prediction</title>
+		<author>
+			<persName><forename type="first">Wen</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arun</forename><surname>Venkatraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><forename type="middle">J</forename><surname>Gordon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Byron</forename><surname>Boots</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J Andrew</forename><surname>Bagnell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="3309" to="3318" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">Mo-tion2Vec: Semi-supervised representation learning from surgical videos</title>
+		<author>
+			<persName><forename type="first">Ajay</forename><surname>Kumar Tanwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pierre</forename><surname>Sermanet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raghav</forename><surname>Anand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariano</forename><surname>Phielipp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Goldberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2020 IEEE International Conference on Robotics and Automation (ICRA)</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="2174" to="2181" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<monogr>
+		<author>
+			<persName><forename type="first">Faraz</forename><surname>Torabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Warnell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Stone</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1805.01954</idno>
+		<title level="m">Behavioral cloning from observation</title>
+				<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<monogr>
+		<author>
+			<persName><forename type="first">Faraz</forename><surname>Torabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Warnell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Stone</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1807.06158</idno>
+		<title level="m">Generative adversarial imitation from observation</title>
+				<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<monogr>
+		<author>
+			<persName><forename type="first">Faraz</forename><surname>Torabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Warnell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Stone</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.09335</idno>
+		<idno>arXiv: 1905.09335</idno>
+		<ptr target="http://arxiv.org/abs/1905.09335" />
+		<title level="m">Imitation Learning from Video by Leveraging Proprioception</title>
+				<imprint>
+			<date type="published" when="2019-06">2019. June 2019</date>
+		</imprint>
+	</monogr>
+	<note>cs, stat</note>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<monogr>
+		<author>
+			<persName><forename type="first">Faraz</forename><surname>Torabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Warnell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Stone</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.13566</idno>
+		<title level="m">Recent advances in imitation learning from observation</title>
+				<imprint>
+			<date type="published" when="2019">2019. 2019</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<title level="m" type="main">Closing the closed-loop distribution shift in safe imitation learning</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Tu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Robey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolai</forename><surname>Matni</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2102.09161</idno>
+		<imprint>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<analytic>
+		<title level="a" type="main">Reinforced cross-modal matching and self-supervised imitation learning for vision-language navigation</title>
+		<author>
+			<persName><forename type="first">Xin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiuyuan</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asli</forename><surname>Celikyilmaz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dinghan</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuan-Fang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">Yang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lei</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</title>
+				<meeting>the IEEE Conference on Computer Vision and Pattern Recognition</meeting>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+			<biblScope unit="page" from="6629" to="6638" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<analytic>
+		<title level="a" type="main">Minimizing the age-of-criticalinformation: an imitation learning-based scheduling approach under partial observations</title>
+		<author>
+			<persName><forename type="first">Xiaojie</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhaolong</forename><surname>Ning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Song</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miaowen</forename><surname>Wen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Poor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Mobile Computing</title>
+		<imprint>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<analytic>
+		<title level="a" type="main">Robust Imitation of Diverse Behaviors</title>
+		<author>
+			<persName><forename type="first">Ziyu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josh</forename><forename type="middle">S</forename><surname>Merel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Scott</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Reed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Nando De Freitas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Wayne</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Heess</surname></persName>
+		</author>
+		<ptr target="http://papers.nips.cc/paper/7116-robust-imitation-of-diverse-behaviors.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">I</forename><surname>Guyon</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">U</forename><forename type="middle">V</forename><surname>Luxburg</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Fergus</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">S</forename><surname>Vishwanathan</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="5320" to="5329" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">Intrinsic reward driven imitation learning via generative model</title>
+		<author>
+			<persName><forename type="first">Xingrui</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yueming</forename><surname>Lyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivor</forename><surname>Tsang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning. PMLR</title>
+				<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="10925" to="10935" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<monogr>
+		<title level="m" type="main">Generating multi-agent trajectories using programmatic weak supervision</title>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Zhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephan</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yisong</forename><surname>Yue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Long</forename><surname>Sha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Lucey</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.07612</idno>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<analytic>
+		<title level="a" type="main">Deep Imitation Learning for Complex Manipulation Tasks from Virtual Reality Teleoperation</title>
+		<author>
+			<persName><forename type="first">Tianhao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zoe</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Owen</forename><surname>Jow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dennis</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pieter</forename><surname>Abbeel</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICRA.2018.8461249</idno>
+		<ptr target="https://doi.org/10.1109/ICRA.2018.8461249" />
+	</analytic>
+	<monogr>
+		<title level="m">2018 IEEE International Conference on Robotics and Automation (ICRA)</title>
+				<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="5628" to="5635" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<analytic>
+		<title level="a" type="main">Modeling Car-Following Behaviors and Driving Styles with Generative Adversarial Imitation Learning</title>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rui</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruibin</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="DOI">10.3390/s20185034</idno>
+		<ptr target="https://doi.org/10.3390/s20185034" />
+	</analytic>
+	<monogr>
+		<title level="j">Sensors</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="page">5034</biblScope>
+			<date type="published" when="2020-09">2020. Sept. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhuangdi</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kaixiang</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiayu</forename><surname>Zhou</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2102.13185</idno>
+		<title level="m">Off-policy imitation learning from observations</title>
+				<imprint>
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<analytic>
+		<title level="a" type="main">Maximum entropy inverse reinforcement learning</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Brian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">L</forename><surname>Ziebart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Maas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anind K</forename><surname>Bagnell</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Aaai</title>
+				<meeting><address><addrLine>Chicago, IL, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008">2008</date>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="1433" to="1438" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Deterministic generative adversarial imitation learning</title>
+		<author>
+			<persName><forename type="first">Guoyu</forename><surname>Zuo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kexin</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiahao</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiangsheng</forename><surname>Huang</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.neucom.2020.01.016</idno>
+		<ptr target="https://doi.org/10.1016/j.neucom.2020.01.016" />
+	</analytic>
+	<monogr>
+		<title level="j">Neurocomputing</title>
+		<imprint>
+			<biblScope unit="volume">388</biblScope>
+			<biblScope unit="page" from="60" to="69" />
+			<date type="published" when="2020-05">2020. May 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Off-policy adversarial imitation learning for robotic tasks with low-quality demonstrations</title>
+		<author>
+			<persName><forename type="first">Guoyu</forename><surname>Zuo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qishen</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kexin</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiangeng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daoxiong</forename><surname>Gong</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.asoc.2020.106795</idno>
+		<ptr target="https://doi.org/10.1016/j.asoc.2020.106795" />
+	</analytic>
+	<monogr>
+		<title level="j">Applied Soft Computing Journal</title>
+		<imprint>
+			<biblScope unit="volume">97</biblScope>
+			<biblScope unit="page">106795</biblScope>
+			<date type="published" when="2020">2020. 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

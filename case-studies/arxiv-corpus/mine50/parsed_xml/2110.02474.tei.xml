@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Can an AI agent hit a moving target? *</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+				<date type="published" when="2022-10-25">October 25, 2022</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Aruhan</forename><surname>Shi</surname></persName>
+							<email>a.shi@warwick.ac.uk.</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Economics</orgName>
+								<orgName type="institution">University of Warwick</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Can an AI agent hit a moving target? *</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2022-10-25">October 25, 2022</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">A1D1011C5A67856EEC1261657434CC00</idno>
+					<idno type="arXiv">arXiv:2110.02474v3[econ.TH]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.7.1" ident="GROBID" when="2022-10-27T19:46+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>C45</term>
+					<term>D83</term>
+					<term>D84</term>
+					<term>E31</term>
+					<term>E40</term>
+					<term>E50</term>
+					<term>E70 expectation formation</term>
+					<term>exploration</term>
+					<term>experience</term>
+					<term>deep reinforcement learning</term>
+					<term>bounded rationality</term>
+					<term>monetary policy</term>
+					<term>regime change</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>I model the belief formation and decision making processes of economic agents during a monetary policy regime change (an acceleration in the money supply) with a deep reinforcement learning algorithm in the AI literature. I show that when the money supply accelerates, the learning agents only adjust their actions, which include consumption and demand for real balance, after gathering learning experience for many periods. This delayed adjustments leads to low returns during transition periods. Once they start adjusting to the new environment, their welfare improves. Their changes in beliefs and actions lead to temporary inflation volatility. I also show that, 1. the AI agents who explores their environment more adapt to the policy regime change quicker, which leads to welfare improvements and less inflation volatility, and 2. the AI agents who have experienced a structural change adjust their beliefs and behaviours quicker than an inexperienced learning agent.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Inflation is rising around the world, adding further disturbance to an already uncertain global economy. It is more important than ever for policy makers to understand transition dynamics. In this paper, I adopt a deep reinforcement learning (DRL) algorithm from the artificial intelligence (AI) literature to model economic agents' learning processes, and present transition dynamics of an economy with a change in the monetary policy regime in a dynamic stochastic general equilibrium (DSGE) model. I model agents' belief formation and decision-making processes during an acceleration of money supply. Through simulation experiments, I show how agents pick up such an acceleration, how their beliefs and decisions adapt to this change, and how their actions change the aggregate economic dynamics. I also show that agents have heterogeneous responses to the same macro environment.</p><p>DRL algorithms produce many successes in fields outside of economics. For example, WaveNet is used for Google Assistant and the latest android devices for voice recognition (van den Oord and Walters, 2017); Deepmind AI reduces the Google data centre cooling bill by 40% <ref type="bibr" target="#b10">(Gamble and Gao, 2018)</ref>. I apply a DRL algorithm in a general equilibrium model for three reasons:</p><p>• a DRL learning agent picks up structural changes, such as an acceleration of the money supply, and their beliefs and actions impact the aggregate transition dynamics of the economy;</p><p>• learning agents have heterogeneous beliefs and actions owing to the behavioural parameter exploration and a memory component that stores past experience;</p><p>• the memory component provides a theoretical framework to model experience-based learning.</p><p>In this setting, the agent first interacts with an environment by taking random actions and receiving rewards. This process of learning based on rewards received is inspired by learning through trial and error in the psychology of animal learning <ref type="bibr" target="#b32">(Sutton and Barto, 2018)</ref>. The randomness of the action is linked to how exploratory the agent is in terms of trying different options in an action space. This can be viewed as a hardwired trait in the agent. The agent has to exploit what it has already experienced to obtain rewards, but it also has to explore to make better selections in the future.</p><p>Different levels of exploration also lead to different learning behaviours. This means that in the same environment and facing the same state variables, learning agents behave differently based on their willingness to explore. With a high level of exploration, the agent experiences a wide range of possibilities. This ensures the agent has sufficient experience to learn and adapt to environmental changes.</p><p>The agent uses samples from past experience to update beliefs. Beliefs are embedded in the value function of the agent. When the agent's beliefs change, the policy function adjusts and generates different decisions. Both the decision-making strategy and the value function are approximated by randomly initialised artificial neural networks (ANNs). ANNs can be viewed as flexible function approximators. Functional forms (e.g., linear or quadratic) of the policy and the value functions need not to be known before learning. This implies that the agent is not learning about a particular model parameter or group of model parameters, but is learning how to make decisions based on past experience, and adjust subjective beliefs about the world. This adjustment of beliefs does not follow Bayes' rule.</p><p>I set up the monetary authority to increase the inflation target and accelerate the nominal money supply. This setup is inspired by the early literature on the accelerationist controversy. An accelerationist or backward-looking Phillips curve with adaptive expectation permits a trade-off between inflation and unemployment. It was argued that a government could exploit such an opportunity to maintain a low rate of unemployment by accelerating the money supply process.</p><p>As the agent in this AI algorithm learns from past experience, it is a form of adaptive expectation.</p><p>Through this exercise, I show how AI agents are "smart" enough to adjust to the new policy regime in a general equilibrium model, and how past experiences impact their behaviours during a regime shift. This is important for policy experiments in a realistic learning environment with many (heterogeneous) artificial agents living in a general equilibrium framework.</p><p>The rest of the paper is organized as follows. Section 2 provides a literature review. Section 3 describes the economic model. Section 4 introduces and discusses the AI framework of bounded rationality. Section 5 and 6 discuss the experiments conducted, the results, and the discussions.</p><p>The last section concludes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Literature</head><p>This paper contributes to the literature on modelling agents' expectation formation processes.</p><p>Keynes invoked the importance of agents' expectations' when he showed how expectations determine output and employment <ref type="bibr" target="#b14">(Keynes, 1936)</ref>. Two decades later, <ref type="bibr" target="#b4">Cagan (1956)</ref> and <ref type="bibr" target="#b9">Friedman (1957)</ref> formalised the idea of adaptive expectations. In combination with the Phillips curve, their proposal generated a large debate about whether and how a government could exploit a possible negative relationship between inflation and unemployment. However, it was criticised for the assumption that an agent would make an inflation forecast that was the same as past period inflation.</p><p>The alternative, which revolutionised macroeconomics, was the rational expectations hypothesis <ref type="bibr" target="#b17">(Lucas, 1972</ref><ref type="bibr" target="#b18">(Lucas, , 1976;;</ref><ref type="bibr" target="#b23">Sargent, 1971;</ref><ref type="bibr" target="#b25">Sargent and Wallace, 1973)</ref>. This assumes that agents make model-consistent beliefs, and they understand the economy. In other words, the agents go from very naive (adaptive expectation) to very smart. It has many advantages, one of which is its usefulness for thinking about policy experiments in a relatively stationary environment.</p><p>It also has some disadvantages, one of which is that it does not offer convincing dynamics of inflation in response to shocks. Many techniques have been proposed to take the middle ground between rational expectations, in which agents are too smart, and adaptive expectations, in which agents are too naive. These can be broadly classified into two groups.</p><p>One group explores the implications of information rigidities, and this includes sticky information <ref type="bibr" target="#b20">(Mankiw and Reis, 2002;</ref><ref type="bibr" target="#b2">Ball et al., 2005)</ref>, noisy information <ref type="bibr" target="#b34">(Woodford, 2001)</ref> and rational inattention <ref type="bibr">(Sims, 2003)</ref>. The main focus is that agents are constrained in obtaining or processing information, and thus only use a portion of the full information to make 'optimal' decisions, i.e., still hold model-consistent beliefs but with less than full information. Similar to this literature, I argue that agents are constrained in the amount of information they can collect and process at any given time. However, the difference is that the agents do not form model-consistent beliefs.</p><p>They form decision-making strategies based on their own experiences.</p><p>The other group focuses on bounded rationality <ref type="bibr" target="#b24">(Sargent, 1993)</ref> and adaptive learning <ref type="bibr" target="#b8">(Evans and Honkapohja, 1999)</ref>. <ref type="bibr" target="#b26">Schorfheide (2005)</ref>, <ref type="bibr" target="#b22">Ozden and Wouters (2021)</ref>, <ref type="bibr">Airaudo and Hajdini (2021)</ref> look at combining adaptive learning with Markov switching specifications to model learning agents with policy regime changes. The agents in the adaptive learning literature are believed to be as smart as econometricians, and learn about model parameters by running a regression with past data or applying Bayesian updating. Using AI algorithms to model decision making processes is also a form of adaptive learning, since the learning is based on past experience. However, the AI learning agents learn from their own experiences in the environment by making exploratory actions.</p><p>This paper is similar to recent literature that uses ANNs to model economies. <ref type="bibr" target="#b1">Ashwin et al. (2021)</ref> study the stability properties of multiple equilibria with learning agents. Their agents learn with ANNs. Similarly, Kuriksha (2021) models economic agents with deep ANNs in a macro-financial environment. My learning agents generate their own experiences by interacting with an environment. This differs from <ref type="bibr" target="#b1">Ashwin et al. (2021)</ref> and <ref type="bibr" target="#b15">Kuriksha (2021)</ref> in using only deep learning methods (deep ANNs).</p><p>I use an algorithm from the fast-moving AI literature, which belongs to deep reinforcement learning (DRL) algorithms. For example, machines trained with the deep Q network algorithm <ref type="bibr" target="#b21">(Mnih et al., 2013)</ref> are capable of human-level performance on many Atari video games using unprocessed pixels for input. However, the deep Q network algorithm can only handle discrete action spaces. The deep deterministic policy gradient algorithm (DDPG) from <ref type="bibr" target="#b16">Lillicrap et al. (2015)</ref> is often used in learning settings with continuous action spaces. This algorithm is more applicable in an economic model, given that economic decision-making processes often involve continuous action spaces.</p><p>The application of DRL algorithms in macroeconomic models represents a new branch of research.</p><p>In a companion paper, Shi (2021) adopts a DRL algorithm in a stochastic growth model. She shows that an AI agent learns from no information on the economic structure nor its preference, and it has the ability to adapt to transitory and permanent income shocks. Most recent literature look into using DRL algorithms as a solution method. <ref type="bibr" target="#b6">Chen et al. (2021)</ref> apply a DRL algorithm in a model with different monetary and fiscal policy regimes, and show evidence that a DRL agent can locally converge to all equilibria in the model. <ref type="bibr" target="#b13">Hinterlang and Tänzer (2021)</ref> use a DRL algorithm to solve for the optimal policy response function. <ref type="bibr" target="#b12">Hill et al. (2021)</ref> and <ref type="bibr" target="#b7">Curry et al. (2022)</ref> look into using a DRL algorithm to solve for multi-agent macroeconomic models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">An Economic Model with the Rational Expectations Assumption</head><p>In this section, I present a general equilibrium model with a representative agent that follows the rational expectations assumption. The model is similar to <ref type="bibr" target="#b29">Sims (1994)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">A Representative Household</head><p>A representative household aims to maximise its lifetime utility.</p><formula xml:id="formula_0">E 0 ∞ t=0 β t u(c t ),<label>(3.1)</label></formula><p>where β ∈ (0, 1), subject to a nominal budget constraint,</p><formula xml:id="formula_1">P t c t (1 − f (v t )) + P t s t + M t ≤ P t y t + M t−1 + P t r t−1 s t−1 − P t τ t (3.2)</formula><p>where P t is the price level at period t, c t denotes the consumption at t, M t is nominal money balance, s t−1 is the saved stock of goods that a household enters period t with, and there is a storage technology that pays out an interest rate r t−1 . y t is the endowment or income of the agent.</p><p>τ t is the government transfer at t. Velocity is defined as v t ≡ ct mt , and f (v) is the transaction cost function (per consumption unit). It is assumed to take the form f (v t ) = v t . In real terms, the budget constraint is as follows,</p><formula xml:id="formula_2">c t (1 − f (v t )) + s t + m t = y t + m t−1 P t−1 P t + r t−1 s t−1 − τ t (3.3)</formula><p>where real balance is defined as m t ≡ Mt Pt . Inflation is defined as π t ≡ Pt Pt−1 . Inflation has an effect on the real economy through the transaction cost function. Transaction costs take away real resources.</p><p>The endowment depends on a constant ȳ and an exogenous process y t ,</p><formula xml:id="formula_3">y t = ȳ + y t (3.4)</formula><p>The interest rate is determined exogenously, and depends on a constant r and an exogenous process r t ,</p><formula xml:id="formula_4">r t = r + r t (3.5)</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Government: Fiscal and Monetary Policies</head><p>The government supplies money based on a money growth rule.</p><formula xml:id="formula_5">M t = δ M M t−1 (3.6)</formula><p>δ M is a policy variable that determines the speed of money supply.</p><p>The government's budget constraint is</p><formula xml:id="formula_6">g t − τ t = m t − m t−1 π t . (3.7)</formula><p>The government sets initial nominal money supply M 0 and the policy variable δ M . It also determines the taxation τ t . Government spending g t reacts in response to changes in inflation.</p><p>4 An AI Learning Framework with a DRL Algorithm I introduce the DDPG algorithm 1 and show how to use it to model economic agents' decision-making process in the model specified in section 3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">An AI Learning Framework: the Actor-Critic Model</head><p>The DRL algorithm adopted here was first introduced by <ref type="bibr" target="#b16">Lillicrap et al. (2015)</ref>, namely deep deterministic policy gradient (DDPG). Chen et al. ( <ref type="formula">2021</ref>) also adopt the DDPG algorithm in their study of learnability of rational expectations equilibrium in different policy regimes. This algorithm mainly follows the actor-critic model of reinforcement learning, and it uses the formal framework of a Markov Decision Process (MDP) to define the interactions between a learning agent and its environment in terms of states, actions, and rewards (Figure <ref type="figure">1</ref>).</p><p>Figure <ref type="figure">1</ref>: The agent-environment interaction in a reinforcement learning setting Source: <ref type="bibr" target="#b32">Sutton and Barto (2018)</ref> State S is a random variable from a state space, which is a bounded and compact set, 2 i.e., S ∈ S.</p><p>The agent takes an action A, which belongs to an action space A, A ∈ A. The state evolves through time following a probability function, p : S × S × A → [0, 1], which is defined as</p><formula xml:id="formula_7">p(S |S, A) ≡ P r{S t = S |S t−1 = S, A t−1 = A}. (4.8)</formula><p>It shows the probability of a random variable state S occurring at time t, given the preceding values of state, S, and action, A.</p><p>Reward is a random variable and can be generated from a reward function, R : S × A → R.</p><p>The return from a state is defined as the sum of discounted future rewards,</p><formula xml:id="formula_8">G t ≡ R t + R t+1 + ... = ∞ k=0 β k R t+k , (4.9)</formula><p>where β is the discount factor.</p><p>A RL learning agent's behaviours follow a policy function, also known as the actor network. The policy function can be both stochastic and deterministic. A stochastic policy maps states to probabilities of selecting each possible action. A deterministic policy, which is used in this paper, maps a state from a state space to an action from an action space, and it is denoted by µ : S → A.</p><p>A value function 3 , also known as the critic network, shows the 'expected' returns of taking an action in a state and thereafter following policy µ. Expectations here are subjective beliefs that depend on learning agents' past experiences. A value function is defined as,</p><formula xml:id="formula_9">Q µ (S, A) ≡ E µ [G t |S t = S, A t = A],<label>(4.10)</label></formula><p>where Q µ means the action value function follows policy µ, and E µ reflects that it's a subjective belief that depends on a policy µ that is formed by past experience. 4</p><p>Many approaches in reinforcement learning make use of the recursive relationship known as the Bellman equation,</p><formula xml:id="formula_10">Q µ (S, A) = R(S, A) + βE µ Q(S , A ),<label>(4.11)</label></formula><p>where A = µ(S ).</p><p>RL methods focus on how the learning agents' policy and value functions change as a result of their experience. These changes can be a functional form change or parameter value updates.</p><p>The DDPG algorithm uses ANNs to approximate policy and value functions: the actor network is denoted as µ(S|θ µ ), where θ µ represents parameters of the ANNs; the critic network is denoted as Q(S, A|θ Q ), and θ Q is its parameters. θ µ and θ Q are updated during learning, and can be viewed as the coefficients of two functions and the probabilities involved in making subjective expectations.</p><p>Two ANNs are updated with respect to each other. In the following paragraphs, I highlight key elements on how the actor and critic networks are updated. The full algorithm is presented in Section 4.3.</p><p>The goal of RL learning agents is to continuously update their subjective beliefs about the world based on experience, and to form a decision-making strategy (approximated by the actor network)</p><p>that produces the highest discounted future returns (approximated by the critic network). The actor network is updated with the goal of maximising the corresponding critic network. In other words, the actor network is updated based on what the agent believes, at that time, to be a strategy that produces high 'expected' returns. The critic networks evolves over time. What the agent follows as the critic network at period t is different from what it is at t + 1. Expectations are the learning agents' subjective beliefs that are formed from past experience.</p><p>The critic network is updated with the goal of minimising a TD error (a temporal difference error). 5</p><p>The TD error follows the form,</p><formula xml:id="formula_11">T − Q(S, A|θ Q ), (4.12)</formula><p>where T is called a TD target, and it adds the reward given a state-action pair to the discounted values of the next state and action, i.e.,</p><formula xml:id="formula_12">T = R(S, A) + βQ(S , A |θ Q ) (4.13)</formula><p>and the next period action A is assumed to follow the actor network µ(S|θ µ ) at that time.</p><formula xml:id="formula_13">6 A = µ(S |θ µ ). (4.14)</formula><p>Intuitively, TD targets represent the best possible returns learning agents receive following a state-action pair and their subjective beliefs.</p><p>Neural science research shows that the dopamine neuron firing rates in the brain resemble the TD error sequence during learning <ref type="bibr">(Botvinick et al., 2019)</ref>. This motivates research in neural science to model decision-making in connection with RL algorithms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.1">Exploration</head><p>Explorations play a crucial rule because learning agents that make exploratory actions collect a wide range of information. An exploratory policy is defined as, This exploratory policy produces random actions. The randomness decreases over time (by design)</p><formula xml:id="formula_14">µ (S t ) = µ(S t |θ µ ) + N t . (<label>4</label></formula><p>but it never disappears. The implication is that in a stationary environment, the agents learn their policy functions, and the learnt functions can be similar to the true policy function but may never be identical. However, in a non-stationary environment, explorations allow the policy network to adjust and be flexible to changes in the environment.</p><p>The exploration strategy implies that the policy function can converge to a close region of the rational expectation solution (if it exists), but will not be identical to it. In an environment with structural breaks or regime changes, this exploratory policy allows the learning agent to adjust its expectations and adapt its policy to a new regime.</p><p>I focus on the learning process and the transition dynamics using the DDPG algorithm. Most RL algorithms also aim to achieve similar results as dynamic programming but with less computation and without assuming a perfect model of the environment <ref type="bibr" target="#b32">(Sutton and Barto, 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Connecting to the DSGE Model</head><p>To implement this expectations formation framework in a DSGE model, I first translate the economic model into components of a MDP, which are presented in Table <ref type="table" target="#tab_1">1</ref>.</p><p>7 There is a strain of literature in computer science that solely focuses on different exploration strategies to achieve the best performance for a given task. It is out of the scope of the current exercise, and not discussed here. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Full Algorithm and Sequence of Events</head><p>The full algorithm 8 consists of three main steps: initialisation, interaction, and learning.</p><p>Step I: Initialisation</p><p>• In a given environment, design a state space S, a continuous bounded and compact set for random variables specified in Table <ref type="table" target="#tab_1">1</ref>; design an action space A, a continuous bounded and compact set for the action (random) variables.</p><p>8 The use of the DDPG algorithm comes from discussions with colleagues at the Bank of England.</p><p>• Set up two deep ANNs: an actor network µ(S|θ µ ) takes the argument of a state from the state space and generates an action within the action space; a critic network Q(S, A|θ Q ) takes the argument of a realised state-action pair and generates a value. Setting up two ANNs involves determining the input and output dimensions, the specific architectures, the number of layers, the number of nodes per layer, and how nodes are connected.</p><p>• θ µ represents the parameters of the actor network, and θ Q represents the parameters of the critic network.</p><p>• Define a replay buffer B (called transitions in the DRL literature), which is a memory that stores information that is collected by a DRL agent during the agent-environment interactive process. A transition is characterised by a sequence of variables (S t , A t , R t , S t+1 ).</p><p>• Define a length N , which is the size of a mini-batch. A mini-batch refers to a sample drawn from the memory, B.</p><p>• Define the total number of episodes E and simulation periods per episode. The higher the episodes, the longer the learning periods. 9</p><p>For each episode, define the initial state, 10 and loop Steps II and III.</p><p>Step II: The AI agent starts to interact with its environment. This step involves how agents' actions are chosen and how their actions impact the aggregate economy.</p><p>• Assume τ t = 0.5, δ M = 1.02 (or 1.1, depends on the regime) and other variables that are known to the agent at period t: y t , r t−1 , τ t , π t−1 , m t−1 , s t−1 .</p><p>• The agent selects a random (based on the randomly initialised actor network) of action variables, A t = µ(S t |θ µ ) + N t , and A t contains λ s t and λ m t , and N t is a noise attached to the action to ensure exploration, which is sampled from an AR(1) process.</p><p>• The demand for real balance is m t = (1 + λ m t )m t−1 .</p><p>• Given the exogenous (to the AI agent) nominal money supply from the government, M t = δ M M t−1 , with aggregate money demand equal to aggregate money supply, price level 9 In the DRL literature, the AI agent is usually set to learn a particular task or an Atari game. An episode thus means re-starting the game or task, and it ends with a terminal state (i.e., the end result of a game). In an economic environment, however, a clear terminal state can be difficult to specify. Therefore, the concept of episodes only correlates to how long an agent has been learning.</p><p>10 Initial state variables can also be randomly drawn from the state space.</p><p>inflation can be derived as π</p><formula xml:id="formula_15">t = Mt Mt−1 mt−1 mt = δ M mt−1 mt .</formula><p>In a one-agent case, aggregate money demand at period t is m t .</p><p>• The amount stored is s</p><formula xml:id="formula_16">t = λ s t (y t + mt−1 πt + r t−1 s t−1 − τ − m t ).</formula><p>• c t is reached from the budget constraint equation 3.3.</p><p>• The new state variables are S t+1 = {y t+1 , r t , τ t+1 , π t , m t , s t }, where y t+1 = ȳ + y t+1 and r t = r + r t , in which y t+1 = ȳ + y t+1 , y t+1 is sampled from a distribution N (0, 0.1), ȳ = 1, and r t = r + r t , r t is sampled from a distribution N (0, 0.1), r = 1.</p><p>• The reward the agent receives is, R t = u(c t ).</p><p>• Store a transition (S t , A t , R t , S t+1 ) in the memory B.</p><p>Step III: Training the AI agent (when the AI agent starts to learn) for period N ≤ t ≤ T .</p><p>• Sample a random mini-batch of N transitions (S i , A i , R i , S i+1 ) from the memory B.</p><p>• Calculate the TD-target values T i for each transition i ∈ N following</p><formula xml:id="formula_17">T i = R i + βQ µ (S i+1 , µ(S i+1 |θ µ )|θ Q ) (4.16)</formula><p>where Q µ (S i+1 , µ(S i+1 |θ µ )|θ Q ) is a prediction made by the critic network with state-action pair (S i+1 , µ(S i+1 |θ µ )), and µ(S i+1 |θ µ ) is a prediction made by the actor network with input S i+1 .</p><p>• Obtain Q(S i , A i |θ Q ) from the critic network with input state-action pair (S i , A i )</p><p>• Calculate the average loss for this sample of N transitions</p><formula xml:id="formula_18">= 1 N i T i − Q(S i , A i |θ Q ) 2 (4.17)</formula><p>• Update the critic network with the objective of minimising the loss function L. 11</p><p>• For the policy function, i.e., the actor network, the objective is to maximise the value function predictions. Define the objective function as,</p><formula xml:id="formula_19">J(θ µ ) = Q µ (S i , µ(S i |θ µ )|θ Q ).</formula><p>(4.18)</p><p>• Maximising this objective function is equivalent to minimising −J(θ µ ). Update the actor network parameters θ µ with the objective of minimising −J(θ µ ). 12 5 Experiments</p><p>In my experiment I follow the example from the early literature on the accelerationist controversy.</p><p>I set up an environment with an inflation target of 2%. I then shift the inflation target to 10%. 13   The AI learning agents are born in the environment with a 2% inflation target. They learn in this environment until the inflation target changes, and this change is unknown to the agents. The aim is to observe their behaviours in response to this unforeseen change, and how the economy transitions.</p><p>This methodological setup and experiment do not contemplate the role of central bank communications. 14 Learning and belief updating only happen through learning agents' direct experience, which is consistent with empirical evidence on experience based belief formation. 12 Similar to the critic network, the specific steps of updating ANN's parameters by minimising an objective function involve backpropagation and gradient descent.</p><p>13 I do not dive into the reason for this change or the probability of its occurrence. Results also available for a regime change from a constant money supply to accelerating money supply.</p><p>14 It is possible to include the channel of central bank communications, which is left for future research.</p><p>2 shows that in the first regime with a 2% inflation target, the steady state velocity is 0.17.</p><p>The discount factor is chosen as 0.99. Exploration level is the standard deviation of the added noise to the policy function (i.e., Equation <ref type="formula" target="#formula_9">4</ref>.15). 0.3 represents a low exploration level, 0.5 represents medium exploration, and 0.7 represents high exploration. 15</p><p>Following the simulation protocol I run two experiments:</p><p>• The first experiment studies the adaptive behaviours of AI agents, and how their different exploration levels impact their beliefs and decisions during an unexpected change in the money supply. 16 To show the impact of exploration solely on agents' transition behaviours during a structural change, I have three AI agents with the same experience but different exploration levels live through the regime change.</p><p>• The second experiment studies the impact of past experience on agents' beliefs and behaviours during a regime change. To alienate the effect of experience on agents' behaviours, I impose an identical exploration level on all agents.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results and Discussion</head><p>I present the transition dynamics and highlight two main findings: 1. an AI agent that is not expecting a change in the policy target has the ability to its beliefs to this change, and this is reflected by its consumption and demand for real balance decisions. More importantly, AI agents with different levels of exploration behave differently when facing changes in the environment; 2.</p><p>how quickly the agent response to the changes in its environment depends on its past experience.</p><p>An agent who has experienced regime shifts will have a smoother transition than an agent who experiences a change for the first time. For all agents, the change happens unexpectedly.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Transition Dynamics and Exploration Heterogeneity</head><p>I consider three exploration levels: low, medium and high. Agents with these exploration levels live in the same environment with the same income and interest rate shocks. They also experience the same shifts of inflation target.</p><p>15 Exploration levels are chosen arbitrarily to reflect their qualitative importance in generating heterogeneous beliefs and behaviours. The quantitative importance of this behavioural parameter is left for future work. 16 The exploration parameter has an impact on agents' experience, and it affects agents' learning stages, shown by <ref type="bibr" target="#b28">Shi (2021)</ref>. This means agents (with different exploration levels) have different beliefs and behaviours in the same aggregate environment facing the identical shock.  Once the inflation target shifts, figure <ref type="figure">3</ref> shows that agents' real balance demand reduces slightly and then maintains similar levels to their demands before the inflation target change. Money market clearing means that inflation rises to around 10% (i.e., increased nominal balance and constant real balance) between period 0 and 600. This increase in inflation leads to 40% reduction in agents' consumption after the regime change (figure <ref type="figure">4</ref>). Lower consumption leads to fewer rewards for these agents. Figure <ref type="figure">5</ref> shows that the transaction cost decreases marginally given the reduced consumption.</p><p>As inflation persists, the agents gather more experience and learn that maintaining a low transaction cost is not beneficial in the inflation environment with fewer real resources available. A high demand for real balance corresponds to a low transaction cost keeping consumption fixed. They then reduce their real balance demand around period 700, as shown in figure <ref type="figure">3</ref>. Their consumption increases around the same period, as shown in figure <ref type="figure">4</ref>. In relation to the rational expectations steady states, figure <ref type="figure">5</ref> shows that the AI agents shift from close to 0.17 (steady state value of velocity at 2% inflation) to the region close to 0.32 (steady state value at 10% inflation). 17</p><p>Figure <ref type="figure" target="#fig_0">2</ref> shows that inflation becomes volatile around period 700, and this is due to learning agents' changes in their demand for real balance.</p><p>Figures <ref type="figure">3, and 5</ref> show that the periods when the agents adjust their behaviours are different, which highlights the importance of the exploration parameter during learning. Figure shows that at period 600 the high exploration agent (green line) adjusts first, followed by the medium exploration agent. The low exploration agent adjusts last. I observe a similar order of adjustment in figures 3 and 5. This shows that a high exploration agent tends to notice a change in the environment earlier than a low exploration agent. Their differences in adjustment lead to differences in aggregate dynamics. Figure <ref type="figure" target="#fig_0">2</ref> shows that when the learning agent explores more and adjusts quicker, inflation is less volatile (the green line). Are there any welfare implications from these different speeds of adjustment during a structural change?  Figure <ref type="figure" target="#fig_2">6</ref> shows the reward distributions during transition periods. Transition periods are defined as 50 periods before and 1200 periods after the policy regime change. The figure shows that the reward distribution for the high exploration has the highest mean, which means that on average the high exploration agent makes decisions that achieve the highest welfare among the three agents. Figure <ref type="figure">7</ref> plots the reward distributions for the total simulation periods, and it shows that the middle exploration agent's reward distribution has the highest mean. This implies that in an environment that involves changes, undertaking more exploration enables the learning agent to notice and adapt quicker and achieve higher rewards. However, in a stationary environment, this translates into random actions and leads to low overall rewards.</p><p>The result presented in this subsection suggests that with exploration and constant learning, AI agents adjust their actions with respect to a new regime (with a delay). Given the general equilibrium setup of the economic environment, their behaviours impact the aggregate dynamics -that the economy shifts from the neighbourhood of one rational expectation equilibrium to the other. The result shows that, unlike the process in the naive adaptive expectations and the accelerationist controversy literature, AI agents learn to adapt their beliefs with respect to an accelerating money supply. They have exploration levels, which lead to different learning behaviours and lifetime rewards, and they are less likely to make systematic mistakes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">More or Less Experience</head><p>Experience matters to learning, as shown in many empirical studies. I give the learning agent a memory to store all the experience, and belief updating is done by drawing samples from memory. I run simulations for agents with different past experiences. Their exploration levels are identical.</p><p>Three agents are considered:</p><p>• agent 1 has never experienced a shift in inflation target;</p><p>• agent 2 has experienced the shift once in the past;</p><p>• agent 3 has experienced shifts twice in the past. I compare their simulated paths of consumption during a permanent increase of the inflation target. The agent who has never experienced a regime shift adjusts slower than the other two. Their consumption level goes down when the inflation target increases to 10%, and at around period 1000 after this shift, their consumption path starts to adjust to a level that is similar to the other two agents. This lower consumption level translates to lower rewards for this inexperienced agent. these simulations I show that lifetime experience matters for individual behaviours, and is a source of divergence in expectations. This is similar to the empirical evidence presented by <ref type="bibr" target="#b19">Malmendier and Nagel (2016)</ref>. They show that individuals of different ages disagree significantly in their inflation expectations, and this can be explained by differences in their lifetime experiences of inflation. In the simulation experiments here, as an AI agent experiences changes in the monetary policy target, it learns, and reacts more smoothly to a similar shift in the future. Agents who have not experienced a shift, (e.g., similar to the blue-line agent in Figure <ref type="figure" target="#fig_4">8</ref>), adjust more slowly and face higher costs (in terms of rewards received). This experience-based learning depends on the sampling strategies. I draw random samples from agents' memories for all the experiments. Other sampling strategies can be considered, for example, drawing samples from the most recent experiences. It is out of the scope of this paper to discuss which sampling strategy is best; I leave that to the behavioural evidence from the neural science and psychology literature. AI agents under the DRL algorithm becomes aware of policy changes by interacting with their economic environment. This means making a decision given a current state, and observing the next state and the reward signal corresponding to their decision. When the decision-making strategy stops generating a high reward, the agents changes their policy to obtain a higher reward in the long run: this is how an agent adapts their behaviours with respect to a monetary policy target change. <ref type="bibr" target="#b5">Cavallo et al. (2017)</ref> observe in their experiments. They show that private agents are more likely to adjust their inflation expectations with respect to supermarket price changes than actual inflation statistics. Price changes in supermarkets are more likely to have a direct impact on consumers' perceived welfare than the observed inflation statistics or a central bank announcement on changes to an inflation target.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">Discussions</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>This is consistent with what</head><p>One key parameter in this algorithm is exploration. With exploration, agents take random actions, and notice and adapt to structural changes. Another feature is that in a large economy with many learning agents, this parameter can be used to simulate different learning behaviours. This could be an alternative macro simulation lab for policy experiments.</p><p>A prominent criticism of DRL algorithms is the speed of learning. In this paper, it takes a significant number of simulation periods for the agent to adjust their behaviours after a policy shift. This can be accelerated by modifying several training parameters, but the number of simulation periods remains high. As explained by <ref type="bibr">Botvinick et al. (2019)</ref>, the slow learning is mainly due to the incremental parameter adjustment and weak inductive bias within the algorithm. However, as it is a fast-evolving literature, many new DRL algorithms are proposed to mitigate this and speed up the learning process. For example, inspired by <ref type="bibr" target="#b11">Gershman and Daw (2017)</ref>, DRL algorithms with episodic memory are being developed. DRL agents can learn from experience gathered by other agents, and this can also reduce the amount of simulation periods.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Summary</head><p>I explore an alternative to the rational expectations hypothesis. I a deep reinforcement learning algorithm from the artificial intelligence literature to model economic agents' learning process, and present transition dynamics for an economy with an acceleration in the money supply. The learning agents do not know their own preferences, the underlying economic structure, or how their actions affect the transition dynamics.</p><p>An AI learning agent born in an unknown environment learns by interacting with the environment. involves taking exploratory actions and observing stimulus signals (reinforcement learning).</p><p>The experience is processed by artificial neural networks (deep learning) with the goal of forming a decision-making that maximises the agent's expected (subjective beliefs) future returns.</p><p>The subjective beliefs evolve based on the agent's experience.</p><p>I simulate an economy to run several experiments. The economy follows a general equilibrium structure with an accelerating money supply.</p><p>With the increase in money supply, the agent (unaware of the change in the money supply) maintains a similar level of real money demand. Money market clearing means that inflation shifts to 10% (i.e., increased nominal balance and constant real balance). This high inflation takes away real resources, and leads to less consumption, which means fewer rewards for the agent relative to the inflation scenario. As inflation persists, the agent gathers more experience and learns that maintaining a low transaction cost is not beneficial in the high inflation environment, given the limited real resource. They then reduce their real balance demand and increase consumption to achieve high rewards.</p><p>I focus on exploration and its impact on learning and transition behaviours. With a higher level of exploration, the AI agent adjusts more quickly to this shift in inflation target, and obtains higher cumulative rewards during transition periods. A quicker adjustment also leads to a less volatile inflation. However, higher exploration may not be sustainable when the economy is stable over a long period. Randomness leads to low long term rewards in an environment with no shocks. I show that when an agent has already experienced a change in monetary policy, they respond more quickly and more smoothly to a fresh change, compared to an inexperienced agent. This is similar to empirical evidence presented by <ref type="bibr" target="#b5">Cavallo et al. (2017)</ref>.</p><p>In future studies, I will simulate economies with heterogeneous learning agents to explore issues such as generational disagreements in inflation expectations and their actions, and cross-country differences in responses to the same macro shocks.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 2</head><label>2</label><figDesc>Figure2plots the inflation sequence in environments with different exploring AI agents. Period 0 is when the inflation target shifts from 2% to 10%. Figure3, 4 and 5 plot the real money demand, consumption, and velocity paths of all three agents. The x-axis denotes simulation periods. The vertical black dashed line shows the timing of this target change.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Inflation, three exploration levels</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figures 6</head><label>6</label><figDesc>Figures 6 and 7 plot the distribution of rewards for the three types of agents. The blue distribution shows rewards for the high exploration agent. The green distribution shows rewards for the middle exploration agent, and the pink distribution is for the low exploration agent.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 6 :</head><label>6</label><figDesc>Figure 6: Distribution of rewards, transition periods for three exploration levels</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 8 :</head><label>8</label><figDesc>Figure 8: Consumption Comparison</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>I</head><label></label><figDesc>present an expectation formation model. I show a transition dynamic for an economy facing a change in monetary policy regime. I also present the mechanism behind agents' adaptive responses to unexpected regime changes.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>.15)   This shows that the final action the agent takes, i.e., what µ (S t ) generates, depends on the actor network µ(S t |θ µ ), and a random variable sampled from a noise process N t . Following<ref type="bibr" target="#b16">Lillicrap et al. (2015)</ref>, N t is sampled from a discretised Ornstein-Uhlenbeck (OU) process. 7</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>RL components and the economic environmentS t = {y t , r t−1 , τ t , π t−1 , m t−1 , s t−1 }</figDesc><table><row><cell>Terminologies</cell><cell>Description</cell><cell>Representation in the</cell></row><row><cell></cell><cell></cell><cell>economic environment</cell></row><row><cell>State, S t</cell><cell>A random variable from a state space,</cell><cell></cell></row><row><cell></cell><cell>S t ∈ S</cell><cell></cell></row><row><cell>Actions, A t</cell><cell>A random variable from an action space,</cell><cell>A t = {λ s t , λ m t }</cell></row><row><cell></cell><cell>A t ∈ A</cell><cell></cell></row><row><cell>Rewards, R t</cell><cell>A function of state and action</cell><cell>R t = ln(c t )</cell></row><row><cell></cell><cell></cell><cell>Approximated by a neural network,</cell></row><row><cell>Policy function,</cell><cell>A mapping from state to action,</cell><cell>i.e., actor network;</cell></row><row><cell>µ(S|θ µ )</cell><cell>µ : S → A</cell><cell>parameterised by θ µ</cell></row><row><cell></cell><cell></cell><cell>to be updated during learning</cell></row><row><cell></cell><cell></cell><cell>Approximated by a neural network,</cell></row><row><cell>Value function,</cell><cell>The 'expected' (subjective belief)</cell><cell>i.e., critic network;</cell></row><row><cell>Q(S, A|θ Q )</cell><cell>return from taking an action in a state</cell><cell>parameterised by θ Q</cell></row><row><cell></cell><cell></cell><cell>to be updated during learning</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Main Parameters and Steady State Values under Two Policy Targets</figDesc><table><row><cell>Target I Target II</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">For a comprehensive review of reinforcement learning, please see<ref type="bibr" target="#b32">Sutton and Barto (2018)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The latest research on reinforcement learning also investigates the setting with unbounded state space, e.g.,<ref type="bibr" target="#b27">Shah et al. (2020)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">In reinforcement learning literature, two types of value functions are defined: action-value function and value function. To not complicate the matter, I use value function as action-value function throughout this paper.4 This forms of notation, e.g., E µ , largely follows The Handbook for Reinforcement Learning by<ref type="bibr" target="#b32">Sutton and Barto (2018)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The full algorithm is in the next section. 6 It need not be the same as the true policy.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">This involves applying backpropagation and gradient descent procedures.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="17">This result plots simulations during a regime shift for agents that have learned in the 2% inflation for periods, hence the velocity value is already close to the steady state value. The learning behaviours to reach this steady state are available upon request.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Consistent expectations equilibria in markov regime switching models and inflation dynamics</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Airaudo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Hajdini</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/iere.12529</idno>
+		<ptr target="https://doi.org/10.1111/iere.12529.URLhttps://onlinelibrary.wiley.com/doi/abs/10.1111/iere.12529" />
+	</analytic>
+	<monogr>
+		<title level="j">International Economic Review</title>
+		<imprint>
+			<biblScope unit="page">2021</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">The unattractiveness of indeterminate dynamic equilibria</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ashwin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Beaudry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ellison</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Monetary policy for inattentive economies</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ball</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">Gregory</forename><surname>Mankiw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reis</surname></persName>
+		</author>
+		<ptr target="https://ideas.repec.org/a/eee/moneco/v52y2005i4p703-725.html" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Monetary Economics</title>
+		<imprint>
+			<biblScope unit="volume">52</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="703" to="725" />
+			<date type="published" when="2005-05">May 2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Reinforcement learning, fast and slow</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Botvinick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Kurth-Nelson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Blundell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hassabis</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.tics.2019.02.006</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Trends in Cognitive Sciences</title>
+		<imprint>
+			<biblScope unit="volume">23</biblScope>
+			<biblScope unit="page">2019</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">The Monetary Dynamics Hyperinflation</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Cagan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1956">1956</date>
+			<publisher>University of Chicago Press</publisher>
+			<biblScope unit="page" from="25" to="117" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Inflation expectations, learning, and supermarket prices: Evidence from survey experiments</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Cavallo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Cruces</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Perez-Truglia</surname></persName>
+		</author>
+		<idno type="DOI">https://www.aeaweb.org/articles?id=10.1257/mac.20150147</idno>
+		<ptr target="https://www.aeaweb.org/articles?id=10.1257/mac.20150147" />
+	</analytic>
+	<monogr>
+		<title level="j">American Economic Journal: Macroeconomics</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1" to="35" />
+			<date type="published" when="2017-07">July 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Deep reinforcement learning in a monetary model</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kumhof</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhou</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Analyzing micro-founded general equilibrium models with many agents using deep reinforcement learning</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Curry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Trott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Phade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Zheng</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2201.01163" />
+		<imprint>
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Learning dynamics</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Honkapohja</surname></persName>
+		</author>
+		<ptr target="https://EconPapers.repec.org/RePEc:eee:macchp" />
+	</analytic>
+	<monogr>
+		<title level="m">Handbook of Macroeconomics</title>
+				<editor>
+			<persName><forename type="first">J</forename><forename type="middle">B</forename><surname>Taylor</surname></persName>
+		</editor>
+		<editor>
+			<persName><forename type="first">M</forename><surname>Woodford</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Elsevier</publisher>
+			<date type="published" when="1999">1999</date>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1" to="07" />
+		</imprint>
+	</monogr>
+	<note>1 edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">A Theory of the Consumption Function</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Friedman</surname></persName>
+		</author>
+		<ptr target="https://www.nber.org/books-and-chapters/theory-consumption-function" />
+		<imprint>
+			<date type="published" when="1957">1957</date>
+			<publisher>Princeton University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">Safety-first ai for autonomous data centre cooling and industrial control</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Gamble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gao</surname></persName>
+		</author>
+		<ptr target="https://deepmind.com/blog/article/safety-first-ai-autonomous-data-centre-cooling-and-industrial-control" />
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Reinforcement learning and episodic memory in humans and animals: An integrative Annual Review of Psychology</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Gershman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">D</forename><surname>Daw</surname></persName>
+		</author>
+		<idno type="DOI">10.1146/annurev-psych-122414-033625</idno>
+		<idno type="PMID">27618944</idno>
+		<ptr target="https://doi.org/10.1146/annurev-psych-122414-033625" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">68</biblScope>
+			<biblScope unit="page" from="101" to="128" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Solving heterogeneous general equilibrium economic models with deep reinforcement learning</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bardoscia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Turrell</surname></persName>
+		</author>
+		<ptr target="https://arxiv.org/abs/2103.16977" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Optimal monetary policy using reinforcement learning. Deutsche Bundesbank Discussion Paper No</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Hinterlang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Tänzer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021">2021, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">The General Theory of Employment, Interest and Money</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Keynes</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1936">1936. 1973</date>
+			<publisher>Macmillan</publisher>
+		</imprint>
+	</monogr>
+	<note>14th edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">An economy of neural networks: Learning from heterogeneous experiences</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kuriksha</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2110.11582</idno>
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><surname>Lillicrap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Pritzel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Heess</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Erez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Tassa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Silver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wierstra</surname></persName>
+		</author>
+		<title level="m">Continuous control with deep reinforcement learning. arXiv e-prints</title>
+				<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Expectations and the neutrality of money</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">E</forename><surname>Lucas</surname></persName>
+		</author>
+		<idno type="DOI">org/10.1016/0022-0531(72)90142-1</idno>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/0022053172901421" />
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Economic Theory</title>
+		<idno type="ISSN">0022-0531</idno>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="103" to="124" />
+			<date type="published" when="1972">1972</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Econometric policy evaluation: A critique</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">E</forename><surname>Lucas</surname></persName>
+		</author>
+		<ptr target="https://doi.org/10" />
+	</analytic>
+	<monogr>
+		<title level="j">Carnegie-Rochester Conference Series on Public Policy</title>
+		<idno type="ISSN">0167-2231</idno>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="19" to="46" />
+			<date type="published" when="1976">1976</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Learning from Inflation Experiences *</title>
+		<author>
+			<persName><forename type="first">U</forename><surname>Malmendier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Nagel</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/qje/qjv037</idno>
+		<ptr target="https://doi.org/10.1093/qje/qjv037" />
+	</analytic>
+	<monogr>
+		<title level="j">The Quarterly Journal of Economics</title>
+		<idno type="ISSN">0033-5533</idno>
+		<imprint>
+			<biblScope unit="volume">131</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="53" to="87" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Sticky Information versus Sticky Prices: A Proposal to Replace the New Keynesian Phillips Curve</title>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">G</forename><surname>Mankiw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reis</surname></persName>
+		</author>
+		<ptr target="https://ideas.repec.org/a/oup/qjecon/v117y2002i4p1295-1328..html" />
+	</analytic>
+	<monogr>
+		<title level="j">The Quarterly Journal of Economics</title>
+		<imprint>
+			<biblScope unit="volume">117</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1295" to="1328" />
+			<date type="published" when="2002">2002</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Playing atari with deep reinforcement learning</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Mnih</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kavukcuoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Silver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Graves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Antonoglou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wierstra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Riedmiller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Deep Learning Workshop</title>
+				<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Restricted Perceptions, Regime Switches and the Effective Lower Bound</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Ozden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Wouters</surname></persName>
+		</author>
+		<ptr target="https://www.tolgaozden.net/doc/ozdenwouters2020_draft.pdf" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">A note on the &apos;accelerationist&apos; controversy</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Sargent</surname></persName>
+		</author>
+		<idno>https://EconPapers.repec.org/RePEc:mcb:jmoncb:v:3:y:1971:i: 3</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Money, Credit and Banking</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="721" to="725" />
+			<date type="published" when="1971">1971</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Bounded Rationality in Macroeconomics</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Sargent</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1993">1993</date>
+			<publisher>Oxford University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Rational expectations and the dynamics of hyperinflation</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Sargent</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Wallace</surname></persName>
+		</author>
+		<idno>https://EconPapers.repec.org/RePEc:ier: iecrev:v:14:y:1973:i:2</idno>
+	</analytic>
+	<monogr>
+		<title level="j">International Economic Review</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="328" to="350" />
+			<date type="published" when="1973">1973</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Learning and Monetary Policy Shifts</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Schorfheide</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.red.2005.01.001</idno>
+		<ptr target="https://ideas.repec.org/a/red/issued/v8y2005i2p392-419.html" />
+	</analytic>
+	<monogr>
+		<title level="j">Review of Economic Dynamics</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="392" to="419" />
+			<date type="published" when="2005-04">April 2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<title level="m" type="main">Stable reinforcement learning with unbounded state space</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Shah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Xu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Learning from zero: How to make consumption-saving decisions in a stochastic environment with an ai algorithm</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">A</forename><surname>Shi</surname></persName>
+		</author>
+		<ptr target="https://ssrn.com/abstract=3907739" />
+		<imprint>
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">A simple model for study of the determination of the price level and the interaction of monetary and fiscal policy</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Sims</surname></persName>
+		</author>
+		<idno>spr:joecth:v:4:y:1994:i:3</idno>
+		<ptr target="https://EconPapers.repec.org/RePEc" />
+	</analytic>
+	<monogr>
+		<title level="j">Economic Theory</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="381" to="399" />
+			<date type="published" when="1994">1994</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Implications of rational inattention</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">A</forename><surname>Sims</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Monetary Economics</title>
+		<imprint>
+			<biblScope unit="page">50</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<idno>S0304-3932(03)00029-1</idno>
+		<ptr target="https://www.sciencedirect.com/science/article/pii/S0304393203000291" />
+		<title level="m">Swiss National Bank/Study Center Gerzensee Conference on Monetary Policy under Incomplete Information</title>
+				<imprint>
+			<date type="published" when="2003">2003</date>
+			<biblScope unit="page" from="665" to="690" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Reinforcement Learning: An Introduction</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sutton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Barto</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Wavenet launches in the google assistant</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van Den Oord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Walters</surname></persName>
+		</author>
+		<ptr target="https://deepmind.com/blog/article/wavenet-launches-google-assistant" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Imperfect Common Knowledge and the Effects of Monetary Policy</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Woodford</surname></persName>
+		</author>
+		<ptr target="https://ideas.repec.org/p/nbr/nberwo/8673.html" />
+	</analytic>
+	<monogr>
+		<title level="j">National Bureau of Economic Research</title>
+		<imprint>
+			<biblScope unit="volume">8673</biblScope>
+			<date type="published" when="2001-12">Dec. 2001</date>
+		</imprint>
+	</monogr>
+	<note>NBER Working Papers</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
