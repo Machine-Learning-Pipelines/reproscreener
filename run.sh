@@ -6,5 +6,5 @@ then
     ./grobid-service/bin/grobid-service &>/dev/null &
     cd ..
 fi
-python ./pipeline/scrape_arxiv.py
+python ./src/scrape_arxiv.py
 
