@@ -4,32 +4,31 @@ ReproScreener aims to address challenges in robustness, transparency and interpr
 
 ## Project structure
 
-- `case-studies` contain the papers that ReproScreener is tested on
-- `guidance` contain the set of metrics that ReproScreener will check for 
+- `run.sh` is the script used to run ReproScreener
+- `case-studies` contains the papers that ReproScreener is developed and tested on
+- `guidance` contains the set of metrics that ReproScreener will check for 
+- `tests` contains scripts and notebooks used during development
+- `src` contains the main python scripts
 
 ## Features
 
-- Automatically check specific guidances to improve correctness of ML models
-- Predict, capture and identify differences in model output at scale (due to architecture, non-determinism, etc.)
-- Enable comparison of model code through
+- [x] *In Progress:* Automatically check specific guidances to improve correctness of ML models
+- [] Predict, capture and identify differences in model output at scale (due to architecture, non-determinism, etc.)
+- [] Enable comparison of model code through
     - Checks for modularity, file structure, dependencies
     - Checks for steps/scripts to create figures & visualizations
     - Track model benchmarks and provenance
 
 ## Case studies
 
-## Requirements
+The initial development dataset `mine50` contains the 50 most recent articles from [arxiv.org in the cs.LG subcategory](https://arxiv.org/list/cs.LG/recent), between the dates 2022-10-24 and 2022-10-25.
 
-conda install lxml
-pip install flashtext
-pip install exrex
+## Requirements
 
 ## References
 
 `references.bib` contains references used in this project.
 
 ## Installation instructions
-
-grobid_client --input /Users/adb/stuff/repro-screener/case-studies/arxiv-corpus/mine50/pdf/ --output /Users/adb/stuff/repro-screener/case-studies/arxiv-corpus/mine50/parsed_xml/ processFulltextDocument
 
 ## Run instructions
