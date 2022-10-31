@@ -1,2 +1,11 @@
-hyper-parameters
-experimental setup
+- hyper-parameters
+- experimental setup
+- objective: (~objective function, ~objective functional)
+- data
+    - 70% training x% test/testing
+    - good test case: 1903.09668 they refer to other papers that provide data
+- prediction
+    - we predict that...
+- experiment_setup
+    - model parameter or just parameters
+- results: experimental results
