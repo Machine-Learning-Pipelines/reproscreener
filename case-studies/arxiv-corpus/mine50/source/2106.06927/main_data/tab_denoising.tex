@@ -1,0 +1,25 @@
+\begin{table}[t]
+\vspace{0.3 cm}
+\small
+\def\arraystretch{1.25}
+\setlength\tabcolsep{4pt}
+\caption{\label{tab:denoising}Image denoising $(\sigma= \frac{50}{255})$: Our AR denoiser outperforms its standard version on multiple datasets. On the largest one (CBSD68), it also outperforms alternative learn-based techniques. On smaller sets (Kodak24, McMaster), it improves in SSIM and gets comparable PSNR and LPIPS performance.}
+\vspace{-0.2 cm}
+\begin{center}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c}
+\specialrule{.15em}{.05em}{.05em} 
+& PSNR (dB)$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ & PSNR (dB)$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ & PSNR (dB)$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$\\
+\hline
+Encoder & \multicolumn{3}{c|}{CBSD68} & \multicolumn{3}{c|}{Kodak24} & \multicolumn{3}{c}{McMaster}\\
+\hline
+\makecell{TNRD \cite{chen_2016_trainable}} & $24.75$ & $0.662$ & $0.445$ & $25.994$ & $0.695$ & $0.461$ & $25.01$ & $0.66$ & $\mathbf{0.387}$\\
+\makecell{MLP \cite{burger_2012_image}} & $25.184$ & $0.663$ & $0.46$ & \makecell{$\mathbf{26.31}$} & $0.691$ & $0.478$ & \makecell{$\mathbf{26.039}$} & \makecell{$\mathbf{0.693}$} & \makecell{$0.402$}\\
+\makecell{Standard} & \makecell{$22.6297$} & \makecell{$0.6178$} & \makecell{$0.567$} & \makecell{$23.1868$} & \makecell{$0.6001$} & \makecell{$0.4968$} & \makecell{$23.1493$} & \makecell{$0.6072$} & \makecell{$0.4458$}\\
+\makecell{AR (ours)} & \makecell{$\mathbf{25.258}$} & \makecell{$\mathbf{0.7095}$} & \makecell{$\mathbf{0.4043}$} & \makecell{$25.4946$} & \makecell{$\mathbf{0.701}$} & \makecell{$\mathbf{0.447}$} & \makecell{$25.3527$}& \makecell{$0.6914$} & \makecell{$0.3965$}\\
+\specialrule{.15em}{.05em}{.05em} 
+\end{tabular}
+}
+\end{center}
+\vspace{-0.7 cm}
+\end{table}

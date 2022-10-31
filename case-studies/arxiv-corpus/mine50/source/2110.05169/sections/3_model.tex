@@ -1,0 +1,98 @@
+
+\section{Learning subspaces of policies}
+\label{sec:model}
+\vspace{-0.3cm}
+ \paragraph{Motivation and Idea: } To illustrate our idea, let us consider a toy example where the train environment contains states with correlated and redundant features, in such a way that multiple subsets of state features can be used to compute good actions to execute. Traditional RL algorithms will discover one policy $\pi_{\theta^*}$  that is optimal w.r.t the environment. This policy will typically use the state features in a particular way to decide the optimal action at each step. If some  features become noisy (at test time) while, unluckily, $\pi_{\theta^*}$  particularly relies on these noisy features, the performance of the policy will drastically drop. Now, let us consider that, instead of learning just one optimal policy, we also learn a second optimal policy $\pi_{\theta^{*'}}$, but enforcing $\theta^{*'}$ to be different than $\theta^*$. This second policy may tend to make use of various features to compute actions. We thus obtain two policies instead of one, and we have more chances that at least one of these policies is efficient at test time. Identifying which of these two policies is the best for the test environment (i.e., adaptation)  can simply be done by evaluating each policy over few episodes, keeping the best one. Our  model  is built on top of this intuition, extending this example to an infinite set of policies and to variable environment dynamics.
+ 
+ Inspired by \cite{LearningSubspaces}  proposing to learn a subspace of models for supervised learning, we study the approach of  \textbf{learning a subspace of policies in the parameter space}, and the use of such a model for online adaptation in reinforcement learning. Studying the structure of the parameter space has seen a recent surge of interest through the \textit{mode connectivity} concept \citep{BentonMLW21,KuditipudiWLZLH19,LearningSubspaces} and obtain good results in generalization, but it has never been involved in the RL setting. As motivated in the previous paragraph,  we expect that, given a variation of the training environment, having access to a subspace of policies that process information differently instead of a single policy will facilitate the adaptation. As a result, our method is very simple, does not need any extra hyper-parameter tuning and achieves good performance.
+  
+\subsection{Subspaces of Policies}
+\label{sec:subspaces}
+\vspace{-0.3cm}
+Given $\Theta$ the space of all possible parameters, a subspace of policies is a subset $\bar{\Theta} \subset \Theta$ that defines a set of corresponding policies $\bar{\Pi} = \{\pi_\theta\}_{\theta \in \bar{\Theta}}$.
+
+Since our objective is to learn such a subspace, we have to rely on a parametric definition of such a subspace and consider $\bar{\Theta}$ as a simplex in ${\Theta}$. Let us define $N$ anchor parameter values $\bar{\theta}_1,....\bar{\theta}_N \in \Theta$. We define the $\mathcal{Z}$-space as the set of possible weighted sum of the anchor parameters: $\mathcal{Z}=\left \{z=(z_1,...z_N)\in[0,1]^N \:| \: \sum z_i=1\right \}$. The subspace we aim to learn is defined by:
+\begin{equation}
+    \bar{\Theta}=\{ \sum\limits_{k=1}^N z_k \bar{\theta}_k, \forall z \in \mathcal{Z} \} \vspace{-0.1cm} 
+    \label{convexHull}
+\end{equation}
+In other words, we aim to learn a convex hull of $N$ vertices in $\Theta$. Note that policies in this subspace can be obtained by sampling $z \sim p(z)$ uniformly over $\mathcal{Z}$.
+
+The advantages of this approach are: a) the number of parameters of the model can be controlled by choosing the number $N$ of anchor parameters, b) since policies are sharing parameters (instead of learning a set of independent policies), we can expect that the learning will be sample efficient.
+Such a subspace is illustrated in Figure \ref{fig:3} through the "pentagon" (i.e., $N=5$) in which angles correspond to the anchor parameters and the surface corresponds to all the policies in the built subspace.
+
+
+\paragraph{K-shot adaptation:} 
+\label{sec:adaptation}
+
+Given a subspace of policies $\bar{\Theta}$, different methods can be achieved to find the best policy over the test environment. For instance, it could be done by optimizing the distribution $p(z)$ at test time. In this article, we use the same yet effective K-shot adaptation technique than \cite{SMERL} and \cite{Tokyo}: we sample $K$ episodes using different policies defined by different values of $z$ that are uniformly spread over $\mathcal{Z}$. In our example, it means that we evaluate policies uniformly distributed within the pentagon to identify a good test policy (blue star). Note that, when the environment is deterministic, only one episode per value of $z$ needs to be executed to find the best policy, which leads to a very fast adaptation.
+
+\subsection{Learning Algorithm}
+\label{subsec:learningsubspaces}
+\vspace{-0.3cm}
+Learning a subspace of policies can be done by considering the RL learning problem as maximizing:
+\begin{equation}
+    \mathcal{L}(\bar{\Theta}) = \int_{\theta \in \bar{\Theta}} \mathbb{E}_{\tau \sim \pi_\theta}[R(\tau)] d\theta  \vspace{-0.1cm} 
+    \label{eq:eqq}
+\end{equation}
+Considering that $\bar{\Theta}$ is a convex hull as defined in Equation \ref{convexHull}, and using the uniform distribution $p(z)$ over $\mathcal{Z}$, the loss function of Equation \ref{eq:eqq} can be rewritten as:
+\begin{equation}
+    \mathcal{L}(\bar{\theta}_1,....\bar{\theta}_N) \:=  \mathbb{E}_{z \sim p(z)} \left[ \mathbb{E}_{\tau \sim \pi_{\theta}}[R(\tau)] \right] \text{ with } \:\theta=\sum\limits_{k=1}^N z_k \bar{\theta}_k  \vspace{-0.1cm} 
+\end{equation}
+Maximizing such an objective function over $\bar{\theta}_1,....\bar{\theta}_N$ outputs a (uniform) distribution of policies trained to maximize the reward, all these policies sharing common parameters. 
+
+\paragraph{Avoiding subspace collapse: } One possible effect when optimizing $\mathcal{L}(\bar{\theta}_1,....\bar{\theta}_N)$ is to reach a solution where all $\theta_k$ values are similar. In that case, all the policies would have the same parameters value, and will thus all achieve the same performance at test-time. Since we want to encourage the policies to process information differently, and following \cite{LearningSubspaces}, we encourage the anchor policies to have different parameters. This is implemented through the use of a regularization term  denoted $C(\bar{\theta}_1,....\bar{\theta}_N)$ that measures how much anchor policies are similar in the parameter space. This auxiliary loss is defined as a pairwise loss between pairs of anchor parameters:
+\begin{equation}
+    C(\bar{\theta}_1,....\bar{\theta}_N) = \sum\limits_{i \neq j} cosine^2(\theta_i,\theta_j)  \vspace{-0.1cm} 
+\end{equation}
+The final optimization loss is then:
+%\begin{equation}
+\begin{equation*}
+    \mathcal{L}(\bar{\theta}_1,....\bar{\theta}_N) \:=  \mathbb{E}_{z \sim p(z)} \left[ \mathbb{E}_{\tau \sim \pi_{\theta}}[R(\tau)] \right]  - \beta \sum\limits_{i \neq j} cosine^2(\bar{\theta_i},\bar{\theta_j}) \\
+    \text{ with }\:\theta=\sum\limits_{k=1}^N z_k \bar{\theta}_k   \vspace{-0.15cm} 
+\end{equation*}
+%\end{equation}
+where $\beta$ is an hyper-parameter (see Section \ref{sec:res} for a discussion abot the tuning of this term) that weights the auxiliary term. 
+
+% \textcolor{orange}{When comparing to other methods where the auxiliary loss encourages a functional diversity (e.g a diversity in terms of state distributions), we expect our auxiliary loss to be less strong since it allows two policies to have different parameters but to generate the same states distribution -- see Section XX. As a consequence, we hope that our approach will have less impact over the training performance than methods like \citep{Tokyo,SMERL}} 
+
+% One good property of this loss (in comparison to a method introducing an intrinsic reward) is that this loss does not modify the reward objective of the learned policies and thus does not encourage the model to learn policies that are sub-optimal at train time \laure{assumption not training sub-optimal trop fort, faut smoother}. In Section \ref{sec:res}, we show that adding this auxiliary loss does not modify the performance of the model over the training environment, and does not need to be balanced by using any additional hyper-parameters. 
+%\ludo{J'ai vire le paragraphe suivant}
+% Note that the models proposed in \citep{Tokyo,SMERL} share some similarities with our approach with two differences: i) the auxiliary loss is based on an additional neural network used to enforce diversity in the behaviour of the policies. \textcolor{red}{ii)} Moreover, in \citep{SMERL}, this term is integrated to the reward while in \citep{Tokyo}, the auxiliary loss can be used only with continuous actions.  \laure{et la différence avec nous ? bizarre, je crois qu'il manque un truc, en relisant.}
+
+
+\subsection{Line of Policies (LoP)}
+\label{LoP}
+\vspace{-0.2cm}
+In the case of $N=2$, the subspace of policies corresponds to a simple segment in the parameter space defined by $\bar{\theta}_1$ and $\bar{\theta}_2$ as extremities. $\bar{\theta}_1$ and $\bar{\theta}_2$ are combined through a  scalar value $z \in [0;1]$:
+\begin{equation}
+    \theta = z \bar{\theta}_1 + (1-z) \bar{\theta}_2   \vspace{-0.15cm} 
+\end{equation}
+Computationally, learning a line of policies\footnote{Other ways to control the shape of the subspace can be used and we investigate some of them in Section \ref{sec:Experiments}} is similar to learning a single policy for which the number of parameters is doubled, making this particular case a good trade-off between expressivity and training speed. It corresponds to the following objective function:
+\begin{equation}
+    \mathcal{L}(\bar{\theta}_1,\bar{\theta}_2) =  \mathbb{E}_{z \sim \mathcal{U}[0;1]} \left[ \mathbb{E}_{\tau \sim \pi_{z \bar{\theta}_1 + (1-z) \bar{\theta}_2 }}[R(\tau)] \right]  -   cosine^2(\bar{\theta_1},\bar{\theta_2})  \vspace{-0.15cm} 
+\end{equation}
+
+We provide in Algorithm \ref{alg:lop_ppo} the adapted version of the clipped PPO algorithm \citep{ppo} for learning a subspace of policies. In comparison to the classical approach, the batch of trajectories is first acquired by multiple policies sampled following $p(z)$ (line 2-3). Then the PPO objective is optimized taking into account the policies used when sampling trajectories (line 4). At last, the critic is updated (line 5), taking as an input the $z$ value so that it can make robust estimations of the expected reward for all the policies in the subspace. Adapting off-policy algorithms would be similar. Additional details are provided in appendix. Note that, for environments with discrete actions, we have made the same adaptation based on the A2C algorithm since A2C has less hyper-parameters than PPO and is easier to tune, with similar results.
+
+\begin{figure}[t]
+%    \begin{subfigure}{.5\textwidth}
+            \begin{algorithm}[H]
+            \input{algorithms/algorithm1.tex}
+            \end{algorithm}
+    \label{alg:lop_ppo}
+   % \caption{LoP-PPO with $N=2$}
+    % \end{subfigure}
+    % \hspace{0.2cm}
+    % \begin{subfigure}{.5\textwidth}
+        % \includegraphics[width=1.0\textwidth]{images/k-shot_ant.png}
+        % \caption{Qualitative example of k-shot adaptation on a modified Ant environment (20\% of observations masked). 5 policies are tested on one episode. For $z=0.$, one can see that the Ant is able to adapt to this new environment. More example of LoP trajectories in Figures \ref{fig:bigshin} and \ref{fig:hugetorso}. See XXX for videos of the learned behaviors.}
+        %  \label{fig:k-shot_ant}
+%    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{The adaptation of the PPO Algorithm with the LoP model. The different with the standard PPO algorithm is that: a) trajectories are sampled using multiple policies $\theta_{z_i}$ b) The policy loss is augmented with the auxiliary loss, and c) The critic takes the values $z_i$ as an input.}
+    \vspace{-0.3cm}
+\end{figure}
+
+
+

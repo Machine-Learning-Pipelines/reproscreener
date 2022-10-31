@@ -1,0 +1,46 @@
+\sectiontinyvert{Architecture details} \label{sec:architecture_details}
+
+\input{./figures/fusion}
+\input{./figures/architecture_detail}
+\input{./figures/attention_arch}
+\input{./figures/layer_detail}
+
+The architectural blocks in our implementation are the multi-view feature fusion layers $F_S$ and $F_Q$, the two encoders, $E_S$ and $E_Q$, a forward kinematics layer $FK$ and a discriminator $D$.
+Our discriminator $D$ is a linear component that contains two convolution layers and one fully connected layer. We base it on Kanazawa~\etal~\shortcite{Kanazawa:2018}). 
+%Its output value is between 0 and 1.
+The $FK$ layer is based on Villegas \etal~\shortcite{Villegas:2018}. 
+
+There are two novel building blocks contained in the new fusion layers, $F_S$ and $F_Q$. The first is a multi-view convolutional layer; that is, a convolution that is aware of features stemming from  multiple views as well as multiple frames. This convolutional layer is used in $F_Q$ only.
+The second is a multi-head attention layer, used in both $F_S$ and $F_Q$.
+\sr{A standard attention mechanism looks at the data as a \emph{sequence} of \emph{embeddings}. In our mechanism, the \emph{views} form the sequence, and the \emph{channels} form the embeddings.}
+Our attention layer is based on the LiftFormer~\cite{llopart2020liftformer}. While the LiftFormer attends to time, we attend to views. 
+\sr{The embedding size is 1024, and we use 64 heads (see \Cref{tab:layer_detail}), so for the Query, Key and Value (each), we have 64 learned linear filters of size $K\times 16$, where $K$ is the number of views and 16 is the result of 1024/64.}
+
+
+A key architectural choice in our fusion layers, $F_S$ and $F_Q$, is at which stage to fuse the input views. In \Cref{fig:fusion} we depict the conceptual idea of fusing. Each fusing scheme has its own advantages and disadvantages. Following the insight that early convolutional layers yield coarse features and late ones yield semantic features, we observe early fusion as generating all features (coarse and semantic) when a network is aware to all input branches, and observe middle fusion as first generating coarse features that are distinct for each branch, and only then fuse the coarse features together to generate common semantic features. When applying late fusion, the network creates distinct coarse and semantic features for each branch and only then fuses them together.
+During the development of our model, we have experimented with different fusion schemes, and found out that for our setting the early fusion works best.
+
+\Cref{fig:architecture_detail} depicts diagrams of the multi-view fusion layers and the encoders. The input to both fusion layers is $\bV_{s,q,r}\in\bbr^{T\times 3J\times K}$ (described in \ifappendix{\Cref{sec:architecture}}\else{the Architecture section of the main paper})\fi. 
+In order to make the diagram more intuitive, we sketch $V$ as $K$ temporal sequences. 
+%Each temporal sequence is a $T\times 3J$ 2D tensor, with data size $T$ and $3J$ channels. 
+Each temporal sequence is a 2D tensor, where channels are formed by the joints.
+The fusion layer first streams these temporal sequences through an expansion layer, increasing their channel size. 
+Next, our fusion layer concatenates the expanded data and obtains a 3D tensor, on which it applies multi-view convolutional filters. These filters consider the data from all views. At the next stage we apply a multi-head attention layer that attends to views. Our network uses the attention layer output to create a 2D tensor representing one 'fused' view. The features are then passed to the encoder. 
+The encoder block $E_Q$ consists of three parallel 1D convolutional layers of different kernel sizes, followed by a final additional 1D convolution. The encoder $E_S$ starts with an adaptive max pooling to collapse the time dimension and then runs a final 1D convolution.
+After each convolution block, we apply batch normalization, a leaky rectified linear unit and dropout. 
+Finally, we run a shrinking filter to decrease the number of channels to the desired output size. 
+Table~\ref{tab:layer_detail} describes the weight parameters of each layer.
+
+\sr{
+In \Cref{fig:attention_detail} we zoom into the attention block (item (d) in \Cref{fig:architecture_detail}). 
+Each slice of one temporal frame is separately forwarded through this block. 
+Such a slice contains features from all the views. Within the attention block, we concatenate an additional view, which we call the \emph{fusion view}. 
+This additional view is a learned token~\cite{BERT}, in which the attention mechanism combines significant information from all views. 
+Our model attends to all views, including the added one.
+After exiting the attention block we omit the data related to the given views and keep the learned fusion view only.
+This fusion view is then concatenated with the outputs of the other temporal frames.
+}
+
+
+
+

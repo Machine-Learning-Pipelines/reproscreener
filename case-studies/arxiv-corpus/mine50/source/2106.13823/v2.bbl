@@ -1,0 +1,112 @@
+\begin{thebibliography}{10}
+
+\bibitem{QMLNature}
+Jacob Biamonte, Peter Wittek, Nicola Pancotti, Patrick Rebentrost, Nathan
+  Wiebe, and Seth Lloyd.
+\newblock Quantum machine learning.
+\newblock {\em Nature}, 549(7671):195--202, 2017.
+
+\bibitem{KernelNature}
+Vojt{\v{e}}ch Havl{\'\i}{\v{c}}ek, Antonio~D C{\'o}rcoles, Kristan Temme,
+  Aram~W Harrow, Abhinav Kandala, Jerry~M Chow, and Jay~M Gambetta.
+\newblock Supervised learning with quantum-enhanced feature spaces.
+\newblock {\em Nature}, 567(7747):209--212, 2019.
+
+\bibitem{KernelPRL}
+Maria Schuld and Nathan Killoran.
+\newblock Quantum machine learning in feature hilbert spaces.
+\newblock {\em Physical Review Letters}, 122(4):040504, 2019.
+
+\bibitem{Barren}
+Jarrod~R McClean, Sergio Boixo, Vadim~N Smelyanskiy, Ryan Babbush, and Hartmut
+  Neven.
+\newblock Barren plateaus in quantum neural network training landscapes.
+\newblock {\em Nature communications}, 9(1):1--6, 2018.
+
+\bibitem{deepqnn}
+Kerstin Beer, Dmytro Bondarenko, Terry Farrelly, Tobias~J Osborne, Robert
+  Salzmann, Daniel Scheiermann, and Ramona Wolf.
+\newblock Training deep quantum neural networks.
+\newblock {\em Nature communications}, 11(1):1--6, 2020.
+
+\bibitem{max}
+Zhou Shangnan and Yixu Wang.
+\newblock Quantum cross entropy and maximum likelihood principle.
+\newblock {\em arXiv preprint arXiv:2102.11887}, 2021.
+
+\bibitem{qcoding}
+Benjamin Schumacher.
+\newblock Quantum coding.
+\newblock {\em Phys. Rev. A}, 51:2738--2747, Apr 1995.
+
+\bibitem{NielsenChuang}
+Michael~A Nielsen and Isaac~L Chuang.
+\newblock {\em Quantum Computation and Quantum Information}.
+\newblock Cambridge University Press, 2011.
+
+\bibitem{indeter}
+Benjamin Schumacher and Michael~D Westmoreland.
+\newblock Indeterminate-length quantum coding.
+\newblock {\em Physical Review A}, 64(4):042304, 2001.
+
+\bibitem{universal}
+Richard Jozsa and Stuart Presnell.
+\newblock Universal quantum information compression and degrees of prior
+  knowledge.
+\newblock {\em Proceedings of the Royal Society of London. Series A:
+  Mathematical, Physical and Engineering Sciences}, 459(2040):3061--3077, 2003.
+
+\bibitem{stationary}
+D{\'e}nes Petz and Mil{\'a}n Mosonyi.
+\newblock Stationary quantum source coding.
+\newblock {\em Journal of Mathematical Physics}, 42(10):4857--4864, 2001.
+
+\bibitem{universal06}
+Charles~H Bennett, Aram~W Harrow, and Seth Lloyd.
+\newblock Universal quantum data compression via nondestructive tomography.
+\newblock {\em Physical Review A}, 73(3):032336, 2006.
+
+\bibitem{network}
+Abbas El~Gamal and Young-Han Kim.
+\newblock {\em Network information theory}.
+\newblock Cambridge university press, 2011.
+
+\bibitem{qhuffman}
+S.L. Braunstein, C.A. Fuchs, D.~Gottesman, and Hoi-Kwong Lo.
+\newblock A quantum analog of huffman coding.
+\newblock {\em IEEE Transactions on Information Theory}, 46(4):1644--1649,
+  2000.
+
+\bibitem{complexity2}
+Giulio Chiribella, Giacomo~Mauro D'Ariano, Paolo Perinotti, and Benoit Valiron.
+\newblock Quantum computations without definite causal structure.
+\newblock {\em Phys. Rev. A}, 88:022318, Aug 2013.
+
+\bibitem{complexityunitary}
+Stefano Facchini and Simon Perdrix.
+\newblock Quantum circuits for the unitary permutation problem.
+\newblock In {\em International Conference on Theory and Applications of Models
+  of Computation}, pages 324--331. Springer, 2015.
+
+\bibitem{shangnan2019complexity}
+Zhou Shangnan.
+\newblock Complexity, entropy, and markov chains.
+\newblock {\em arXiv preprint arXiv:1902.10538}, 2019.
+
+\bibitem{querycomplexity}
+Andris Ambainis.
+\newblock Understanding quantum algorithms via query complexity.
+\newblock In {\em Proceedings of the International Congress of Mathematicians:
+  Rio de Janeiro 2018}, pages 3265--3285. World Scientific, 2018.
+
+\bibitem{holo1}
+Zhao Yang, Patrick Hayden, and Xiao-Liang Qi.
+\newblock Bidirectional holographic codes and sub-ads locality.
+\newblock {\em Journal of High Energy Physics}, 2016(1):175, 2016.
+
+\bibitem{holo2}
+Fernando Pastawski and John Preskill.
+\newblock Code properties from holographic geometries.
+\newblock {\em Physical Review X}, 7(2):021022, 2017.
+
+\end{thebibliography}

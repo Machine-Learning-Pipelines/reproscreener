@@ -1,0 +1,192 @@
+\subsubsection{Approximate Independence Between Layer Inputs and Outputs}
+Let us first recall some definitions and notations of the inputs and outputs of layers. The input $\rvx$ follows the $d$-dimensional multivariate rectified Gaussian distribution with identity covariance for the pre-rectified Gaussian, namely $\rvx\sim\rectNormal(0, \mI_d)$. The input propagates through the first layer to $\rvu\triangleq\mW^{(1)}\rvx$, and is multiplied element-wise by the ReLU activation to the input of the second layer $\rvy\triangleq \sigma(\rvu)$. Here we denote that activation of ReLU function by the random matrix $\rmD\triangleq \diag(\ind[\rvu\geq 0])\in\R^{n\times n}$. Finally we get the logit output of the network $\rvz\triangleq \mW^{(2)}\rvy$. The output Hessian of the last layer is $\rmA=\diag(\rvp)-\rvp\rvp^\T\in\R^{c\times c}$.
+
+In this section we will show that when $n$ goes to infinity, both $\rvy$ and $\rvz$ will converge in distribution to rectified Gaussian. Moreover, when we condition on two entries of $\rvx$ and two entries of $\rvy$, the output Hessian $\rmA$ will be invariant in the limiting case.
+
+\begin{lemma}
+\label{lemma:y-gaussian}
+When $d\to \infty$, with probability 1 over $\mW^{(1)}$,
+\begin{equation*}
+    \lim_{d\to\infty}\rvy\xrightarrow{d}\cN^{\emph{R}}\left(0,\frac{\pi-1}{2\pi}\mI_n\right).
+\end{equation*}
+\end{lemma}
+
+\begin{proofof}{\lemmaref{lemma:y-gaussian}}
+We will prove this lemma using the multivariate Lindeberg-Feller CLT.
+Given that $\ervx_i$'s are i.i.d. sampled from $\rectNormal(0,1)$ with bounded moments:
+\begin{equation}
+     \E[\ervx_i] = \frac{1}{\sqrt{2\pi}},\qquad \E[(\ervx_i - \E[\ervx_i])^2] = \frac{\pi-1}{2\pi},\qquad \E[(\ervx_i - \E[\ervx_i])^4] = \frac{6\pi^2-10\pi-3}{4\pi^2} < 1.
+\end{equation}
+For each $i\in[d]$, let $\vw_i^{(1)}\in\R^d$ denote the $i$-th column vector of $\mW^{(1)}$. Let 
+$\rvs_i = \vw_i^{(1)}(\ervx_i - \E[\ervx_i])$,
+then we have \begin{equation}
+\label{eqn:z-expression-w1}
+    \rvy = \sum_{i=1}^d\vw_i^{(1)}\ervx_i = \sum_{i=1}^d\rvs_i + \sum_{i=1}^d\E[\ervx_i]\vw_i^{(1)} = \sum_{i=1}^d\rvs_i + \frac{1}{\sqrt{2\pi}}\sum_{i=1}^d\vw_i^{(1)}.
+\end{equation}
+It follows that 
+\begin{equation}
+   Var[\rvs_i] = Var[\vw_i^{(1)}\ervx_i] = \frac{\pi-1}{2\pi}\vw_i^{(1)}\vw_i^{(1)^\T}.
+\end{equation}
+Let $\mS = \sum_{i=1}^d Var[\rvs_i]$,
+\begin{equation}
+    \mS = \frac{\pi-1}{2\pi}\sum_{i=1}^d\vw_i^{(1)}\vw_i^{(1)^\T} = \frac{\pi-1}{2\pi}\mW^{(1)}\mW^{(1)\T}.
+\end{equation}
+As $d\to\infty$, from \corollaryref{cor:WW-Identity} we have $\mW^{(1)}\mW^{(1)\T}\to \mI_n$ in probability, therefore
+\begin{equation}
+\lim_{d\to\infty}\mS = \frac{\pi-1}{2\pi}\mI_n.
+\end{equation}
+
+We now verify the Lindeberg condition of independent random vectors $\{\rvs_1,\ldots, \rvs_n\}$.
+First observe that the fourth moments of the $\rvs_i$'s are sufficiently small.
+\begin{equation}
+\begin{split}
+    \lim_{d\to\infty}\sum_{i=1}^d\E\left[\left\Vert\rvs_i\right\Vert^4\right] &= \lim_{d\to\infty}\sum_{i=1}^d\E\left[\left(\sum_{j=1}^n \left(\mW^{(1)}_{ji}\left(\ervx_i - \E[\ervx_i]\right)\right)^2\right)^2\right]\\
+    & \leq\lim_{d\to\infty} \sum_{i=1}^d\E\left[c^2\left(\left(\max_{j\in[n]}\mW^{(1)}_{ji}\right)^2\left(\ervx_i - \E[\ervx_i]\right)^2\right)^2\right]\\
+    & \leq\lim_{d\to\infty} c^2\left(\max_{i\in[d],j\in[n]}\mW^{(1)}_{ji}\right)^4\sum_{i=1}^d\E\left[\left(\ervx_i - \E[\ervx_i]\right)^4\right].
+\end{split}
+\end{equation}
+Since $\E[(\ervx_i - \E[\ervx_i])^4] < 1$ and $\max_{i\in[d],j\in[n]}|\mW^{(1)}_{ji}| < 2d^{-\frac13}$, with probability 1 over $\mW^{(1)}$ from \lemmaref{lemma:w-not-too-large}, it follows that
+\begin{equation}
+\begin{split}
+    \lim_{d\to\infty}\sum_{i=1}^d\E\left[\left\Vert\rvs_i\right\Vert^4\right] \leq c^2\lim_{d\to\infty}\left(2d^{-\frac13}\right)^4\sum_{i=1}^d 1 = c^2 \lim_{d\to\infty}16d^{-\frac43}n =  16c^2 \lim_{d\to\infty}d^{-\frac13} =0.
+\end{split}
+\end{equation}
+For any $\epsilon > 0$, since $\left\Vert\rvs_{i}\right\Vert > \epsilon$ in the domain of integration (when $\ind[\norm{\rvs_i} > \eps]$),
+\begin{equation}
+\begin{split}
+\lim_{d\to\infty}\sum_{i=1}^d\E\left[\left\Vert\rvs_i\right\Vert^2\ind\left[\left\Vert\rvs_{i}\right\Vert > \epsilon\right]\right] & < \lim_{d\to\infty}\sum_{i=1}^d\E\left[\frac{\left\Vert\rvs_i\right\Vert^2}{\epsilon^2}\left\Vert\rvs_i\right\Vert^2\ind\left[\left\Vert\rvs_{i}\right\Vert > \epsilon\right]\right]\\
+&\leq \frac{1}{\epsilon^2}\lim_{d\to\infty}\sum_{i=1}^d\E\left[\left\Vert\rvs_i\right\Vert^4\right] = 0.
+\end{split}
+\end{equation}
+As the Lindeberg Condition is satisfied, with $\lim_{d\to\infty}\mS = \frac{\pi-1}{2\pi}\mI_n$ we have
+\begin{equation}
+\label{eqn:lemma:sumv-convergence-w1}
+    \lim_{d\to\infty}\sum_{i=1}^d\rvs_i\xrightarrow{d}\gN\left(0,\frac{\pi-1}{2\pi}\mI_n\right).
+\end{equation}
+
+By \lemmaref{lemma:W-expectation}, we have $\lim_{d\to\infty}\vw_i^{(1)} = \overrightarrow{0}$ with probability 1 over $\mW^{(1)}$, therefore plugging \equationref{eqn:lemma:sumv-convergence-w1} into \equationref{eqn:z-expression-w1} we have\begin{equation}
+    \lim_{d\to\infty} \rvy\xrightarrow{d}\gN\left(0,\frac{\pi-1}{2\pi}\mI_n\right).
+\end{equation}
+Which completes the proof.
+\end{proofof}
+
+
+\begin{lemma}
+\label{lemma:z-gaussian}
+$\lim_{n\to\infty}\rvz\xrightarrow{d} \gN(0, \frac{(\pi-1)^2}{4\pi^2}\mI_c)$ with probability 1 over $\mW^{(2)}$.
+\end{lemma}
+
+\begin{proofof}{\lemmaref{lemma:z-gaussian}}
+The proof technique for $\rvz$ is identical to that of $\rvy$. For completeness we will redo it for $\mW^{(2)}$.
+From \lemmaref{lemma:y-gaussian}, $\ervy_i$'s are i.i.d. from $\rectNormal(0,\frac{\pi-1}{2\pi})$ with bounded moments:
+\begin{equation}
+    \E[\ervy_i] = \frac{\sqrt{\pi-1}}{2\pi},\ 
+    \E[(\ervy_i - \E[\ervy_i])^2] = \frac{(\pi-1)^2}{4\pi^2},\ \E[(\ervy_i - \E[\ervy_i])^4] = \frac{(6\pi^2-10\pi-3)(\pi-1)}{8\pi^3} < 1.
+\end{equation}
+For each $i\in[n]$, let $\vw_i^{(2)}\in\R^c$ denote the $i$-th column vector of $\mW^{(2)}$. Let 
+$\rvv_i = \vw_i^{(2)}(\ervy_i - \E[\ervy_i])$,
+then we have \begin{equation}
+\label{eqn:z-expression}
+    \rvz = \sum_{i=1}^n\vw_i^{(2)}\ervy_i = \sum_{i=1}^n\rvv_i + \sum_{i=1}^n\E[\ervy_i]\vw_i^{(2)} = \sum_{i=1}^n\rvv_i + \frac{\sqrt{\pi-1}}{2\pi}\sum_{i=1}^n\vw_i^{(2)}.
+\end{equation}
+It follows that 
+\begin{equation}
+   Var[\rvv_i] = Var[\vw_i^{(2)}\ervy_i] = \frac{(\pi-1)^2}{4\pi^2}\vw_i^{(2)}\vw_i^{(2)\T}.
+\end{equation}
+Let $\mV = \sum_{i=1}^n Var[\rvv_i]$,
+\begin{equation}
+    \mV = \frac{(\pi-1)^2}{4\pi^2}\sum_{i=1}^n\vw_i^{(2)}\vw_i^{(2)\T} = \frac{(\pi-1)^2}{4\pi^2}\mW^{(2)}\mW^{(2)\T}.
+\end{equation}
+As $n\to\infty$, from \corollaryref{cor:WW-Identity} we have $\mW^{(2)}\mW^{(2)\T}\to \mI_c$ in probability, therefore
+\begin{equation}
+\lim_{n\to\infty}\mV = \frac{(\pi-1)^2}{4\pi^2}\mI_c.
+\end{equation}
+
+We now verify the Lindeberg condition of independent random vectors $\{\rvv_1,\ldots, \rvv_n\}$.
+First observe that the fourth moments of the $\rvv_i$'s are sufficiently small.
+\begin{equation}
+\begin{split}
+    \lim_{n\to\infty}\sum_{i=1}^n\E\left[\left\Vert\rvv_i\right\Vert^4\right] &= \lim_{n\to\infty}\sum_{i=1}^n\E\left[\left(\sum_{j=1}^c \left(\mW^{(2)}_{ji}\left(\ervy_i - \E[\ervy_i]\right)\right)^2\right)^2\right]\\
+    & \leq\lim_{n\to\infty} \sum_{i=1}^n\E\left[c^2\left(\left(\max_{j\in[c]}\mW^{(2)}_{ji}\right)^2\left(\ervy_i - \E[\ervy_i]\right)^2\right)^2\right]\\
+    & \leq\lim_{n\to\infty} c^2\left(\max_{i\in[n],j\in[c]}\mW^{(2)}_{ji}\right)^4\sum_{i=1}^n\E\left[\left(\ervy_i - \E[\ervy_i]\right)^4\right].
+\end{split}
+\end{equation}
+Since $\E[(\ervy_i - \E[\ervy_i])^4] < 1$ and $\max_{i\in[n],j\in[c]}|\mW^{(2)}_{ji}| < 2n^{-\frac13}$ with probability 1 from \corollaryref{cor:w-not-too-large}, it follows that
+\begin{equation}
+\begin{split}
+    \lim_{n\to\infty}\sum_{i=1}^n\E\left[\left\Vert\rvv_i\right\Vert^4\right] \leq c^2\lim_{n\to\infty}\left(2n^{-\frac13}\right)^4\sum_{i=1}^n 1 = c^2 \lim_{n\to\infty}16n^{-\frac43}n =  16c^2 \lim_{n\to\infty}n^{-\frac13} =0.
+\end{split}
+\end{equation}
+For any $\epsilon > 0$, since $\left\Vert\rvv_{i}\right\Vert > \epsilon$ in the domain of integration (when $\ind[\norm{\rvv_i} > \eps]$),
+\begin{equation}
+\begin{split}
+\lim_{n\to\infty}\sum_{i=1}^n\E\left[\left\Vert\rvv_i\right\Vert^2\ind\left[\left\Vert\rvv_{i}\right\Vert > \epsilon\right]\right] & < \lim_{n\to\infty}\sum_{i=1}^n\E\left[\frac{\left\Vert\rvv_i\right\Vert^2}{\epsilon^2}\left\Vert\rvv_i\right\Vert^2\ind\left[\left\Vert\rvv_{i}\right\Vert > \epsilon\right]\right]\\
+&\leq \frac{1}{\epsilon^2}\lim_{n\to\infty}\sum_{i=1}^n\E\left[\left\Vert\rvv_i\right\Vert^4\right] = 0.
+\end{split}
+\end{equation}
+As the Lindeberg Condition is satisfied, with $\lim_{n\to\infty}\mV = \frac{(\pi-1)^2}{4\pi^2}\mI_c$ we have
+\begin{equation}
+\label{eqn:lemma:sumv-convergence}
+    \lim_{n\to\infty}\sum_{i=1}^n\rvv_i\xrightarrow{d}\gN\left(0,\frac{(\pi-1)^2}{4\pi^2}\mI_c\right).
+\end{equation}
+
+By \lemmaref{lemma:W-expectation}, we have $\lim_{n\to\infty}\vw_i^{(2)} = \overrightarrow{0}$ with probability 1 over $\mW^{(2)}$, therefore plugging \equationref{eqn:lemma:sumv-convergence} into \equationref{eqn:z-expression} we have\begin{equation}
+    \lim_{n\to\infty} \rvz\xrightarrow{d}\gN\left(0,\frac{(\pi-1)^2}{4\pi^2}\mI_c\right).
+\end{equation}
+Which completes the proof.
+\end{proofof}
+
+Now we will show a key lemma for proving the main theorem, which suggests that when reasonably conditioning on two entries of the input $\rvx$ and two entries of the activation $\rmD$, the distribution of $\rvz$ converges in distribution to $\rvz$ without conditioning as $n\to\infty$.
+
+\begin{lemma}
+\label{lemma:z-invariant}
+With probability 1 over $\mW^{(1)}$ and $\mW^{(2)}$, fix any $\beta < \frac\alpha2$ (recall that $d=n^{1+\alpha}$), fix any $a,b\in (-n^{\beta}, n^{\beta})$, for any $p,q\in[n]$ and $k,l\in[d]$, we have the following convergence in distribution\begin{equation}
+    \rvz\vert(\rmD_{pp}=1, \rmD_{qq}=1, \rvx_k=a, \rvx_l=b)\xrightarrow{d} \rvz.
+\end{equation}
+\end{lemma}
+
+\begin{proofof}{\lemmaref{lemma:z-invariant}} For simplicity of notation, we will use subscript $|_\rvx$ and $|_\rmD$ to denote the conditions we impose. For example, we will denote $\rvz\vert(\rmD_{pp}=1, \rmD_{qq}=1, \rvx_k=a, \rvx_l=b)$ by $\rvz|_{\rmD,\rvx}$, and denote $\rvx|(\rvx_k=a, \rvx_l=b)$ by $\rvx|_\rvx$ etc.
+
+First claim that with probability 1 over $\mW^{(1)}$, $\rvu$ is invariant upon the conditioning on $\rvx$. Let $\ve^{(i)}\in\R^d$ be the standard basis vector such that $\ve^{(i)}_j=\ind[i=j]$. Then \begin{equation}
+\begin{split}
+    \norm{\rvu-\rvu|_\rvx} &= \norm{\mW^{(1)}\rvx - \mW^{(1)}\rvx|_\rvx}\\
+    &= \norm{\mW^{(1)}(\rvx -\rvx|_\rvx)}\\
+    &= \norm{\mW^{(1)}((\rvx_k-a)\ve^{(k)} + (\rvx_l-b)\ve^{(l)})}\\
+    &= \norm{\vw^{(1)}_k}|\rvx_k-a| + \norm{\vw^{(1)}_l}|\rvx_l-b|\\
+    &\leq 5n^{-\frac\alpha2}(|\rvx_k|+|\rvx_l|+|a|+|b|)\\
+    &\leq 5n^{-\frac\alpha2}(\rvx_k+\rvx_l) + 10n^{-\frac\alpha2}n^{\frac\beta2}.
+\end{split}
+\end{equation}
+The norms of $\vw_k^{(1)}$ and $\vw_l^{(1)}$ are bounded from \lemmaref{lemma:w1-col-norm}.
+Note that as $n\to\infty$ we have $n^{-\frac\alpha2}$ and $n^{-\frac{\alpha-\beta}{2}}$ converging to 0 as we set $\beta < \alpha$.
+Since $\rvx$ is of bounded expectation and variance, $5n^{-\frac\alpha2}(\rvx_k+\rvx_l)$ converges in distribution to $0$. Therefore $\norm{\rvu-\rvu|_\rvx}\converged 0$ and hence $\rvy|_\rvx\converged\rvy$. Since $\rvz$ is determined by $\rvy$, to prove $\rvz|_{\rmD,\rvx}\converged \rvz$, we now only ne
+ed to show $\rvz|_{\rmD}\converged \rvz$.
+
+Note that conditioning on $\rmD_{pp}=\rmD_{qq}=1$ is equivalent to conditioning on $\rvu_p>0$ and $\rvu_q>0$. Which is again equivalent to conditioning on $\rvy_p$ and $\rvy_q$ to be a half Gaussian distribution truncated at 0 instead of the rectified Gaussian. Recall that $\rvz=\mW^{(2)}\rvy = \sum_{i=1}^n\vw^{(2)}_i\rvy_i.$ Since only $\rvy_p$ and $\rvy_q$ are affected by conditioning on $\rmD$, we have\begin{equation}
+\begin{split}
+\norm{\rvz - \rvz|_\rmD} &=\lnorm{ \sum_{i=1}^n\vw^{(2)}_i\rvy_i - \sum_{i=1}^n\vw^{(2)}_i(\rvy|_\rmD)_i}\\
+&= \lnorm{\vw^{(2)}_p(\rvy_p-(\rvy|_\rmD)_p) + \vw^{(2)}_q(\rvy_q-(\rvy|_\rmD)_q)}\\
+&\leq \norm{\vw^{(2)}_p}|\rvy_p-(\rvy|_\rmD)_p| + \norm{\vw^{(2)}_q}|\rvy_q-(\rvy|_\rmD)_q|.
+\end{split}
+\end{equation}
+Note that $\rvy_p-(\rvy|_\rmD)_p$ and $\rvy_q-(\rvy|_\rmD)_q$ are difference between a rectified Gaussian with finite variance and its corresponding truncated Gaussian, both are of bounded expectation and variance. Meanwhile, by \lemmaref{cor:w-not-too-large}, for all $i\in[n]$ we have that with probability 1 over $\mW^{(2)}$,
+\begin{equation}
+    \left\Vert\vw^{(2)}_i\right\Vert \leq \sqrt{c\left(\max_{i\in[c],j\in[n]}\mW^{(2)}_{ij}\right)^2} < \sqrt{4cn^{-\frac{2}{3}}}.
+\end{equation}
+Since $\lim_{n\to\infty}\sqrt{4cn^{-\frac{2}{3}}}=0$, as $n$ goes to infinity we have \begin{equation}
+\norm{\vw^{(2)}_p}|\rvy_p-(\rvy|_\rmD)_p| + \norm{\vw^{(2)}_q}|\rvy_q-(\rvy|_\rmD)_q|\converged \overrightarrow{0}.
+\end{equation}
+Therefore $\rvz|_\rmD\converged\rvz$, and hence
+\begin{equation}
+    \rvz\vert(\rmD_{pp}=1, \rmD_{qq}=1, \rvx_k=a, \rvx_l=b)\xrightarrow{d} \rvz.
+\end{equation}
+\end{proofof}
+
+Given that $\rvp=\softmax(\rvz)$ and $\rmA=\diag(\rvp)-\rvp\rvp^\T$, the mapping from $\rvz$ to $\rmA$ is bounded and continuous. Thus by the Portmanteau Theorem, we have the following corollary,
+\begin{corollary}
+\label{cor:A-invariant}
+For any $\epsilon>0$, with probability 1 over $\mW^{(1)}$ and $\mW^{(2)}$, fix any $\beta < \frac\alpha2$ (recall that $d=n^{1+\alpha}$), fix any $a,b\in (-n^{\beta}, n^{\beta})$, for any $p,q\in[n]$, $k,l\in[d]$, and $i,j\in[c]$,  we have \begin{equation}
+    |\ex{\rmA_{ij}\vert(\rmD_{pp}=1, \rmD_{qq}=1, \rvx_k=a, \rvx_l=b)} - \ex{\rmA_{ij}}| < \eps.
+\end{equation}
+By the proof of \lemmaref{lemma:z-invariant}, this property holds when dropping the conditioning on $\rmD$ or $\rvx$. 
+\end{corollary}

@@ -1,0 +1,436 @@
+\begin{thebibliography}{64}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agarwal et~al.(2020)Agarwal, Kakade, Lee, and
+  Mahajan]{agarwal2019optimality}
+Alekh Agarwal, Sham~M. Kakade, Jason~D. Lee, and Gaurav Mahajan.
+\newblock Optimality and approximation with policy gradient methods in markov
+  decision processes.
+\newblock In \emph{Proceedings of the Conference on Learning Theory}, 2020.
+
+\bibitem[Asis et~al.(2018)Asis, Hernandez{-}Garcia, Holland, and
+  Sutton]{de2018multi}
+Kristopher~De Asis, J.~Fernando Hernandez{-}Garcia, G.~Zacharias Holland, and
+  Richard~S. Sutton.
+\newblock Multi-step reinforcement learning: {A} unifying algorithm.
+\newblock In \emph{Proceedings of the {AAAI} Conference on Artificial
+  Intelligence}, 2018.
+
+\bibitem[Beck(2017)]{beck2017first}
+Amir Beck.
+\newblock \emph{First-order methods in optimization}.
+\newblock SIAM, 2017.
+
+\bibitem[Benveniste et~al.(1990)Benveniste, M{\'{e}}tivier, and
+  Priouret]{DBLP:books/sp/BenvenisteMP90}
+Albert Benveniste, Michel M{\'{e}}tivier, and Pierre Priouret.
+\newblock \emph{Adaptive Algorithms and Stochastic Approximations}.
+\newblock Springer, 1990.
+
+\bibitem[Bertsekas and Tsitsiklis(1996)]{bertsekas1996neuro}
+Dimitri~P Bertsekas and John~N Tsitsiklis.
+\newblock \emph{Neuro-Dynamic Programming}.
+\newblock Athena Scientific Belmont, MA, 1996.
+
+\bibitem[Bhatnagar et~al.(2009)Bhatnagar, Sutton, Ghavamzadeh, and
+  Lee]{bhatnagar2009natural}
+Shalabh Bhatnagar, Richard~S Sutton, Mohammad Ghavamzadeh, and Mark Lee.
+\newblock Natural actor--critic algorithms.
+\newblock \emph{Automatica}, 2009.
+
+\bibitem[Borkar(2009)]{borkar2009stochastic}
+Vivek~S Borkar.
+\newblock \emph{Stochastic approximation: a dynamical systems viewpoint}.
+\newblock Springer, 2009.
+
+\bibitem[Chen et~al.(2020)Chen, Maguluri, Shakkottai, and
+  Shanmugam]{chen2020finite}
+Zaiwei Chen, Siva~Theja Maguluri, Sanjay Shakkottai, and Karthikeyan Shanmugam.
+\newblock Finite-sample analysis of contractive stochastic approximation using
+  smooth convex envelopes.
+\newblock \emph{arXiv preprint arXiv:2002.00874}, 2020.
+
+\bibitem[Chen et~al.(2021)Chen, Maguluri, Shakkottai, and
+  Shanmugam]{chen2021lyapunov}
+Zaiwei Chen, Siva~Theja Maguluri, Sanjay Shakkottai, and Karthikeyan Shanmugam.
+\newblock A lyapunov theory for finite-sample guarantees of asynchronous
+  q-learning and td-learning variants.
+\newblock \emph{arXiv preprint arXiv:2102.01567}, 2021.
+
+\bibitem[Chen et~al.(2022)Chen, Khodadadian, and
+  Maguluri]{chen2021finitesample}
+Zaiwei Chen, Sajad Khodadadian, and Siva~Theja Maguluri.
+\newblock Finite-sample analysis of off-policy natural actor-critic with linear
+  function approximation.
+\newblock \emph{{IEEE} Control Systems Letters}, 2022.
+
+\bibitem[Ciosek and Whiteson(2020)]{ciosek2017expected}
+Kamil Ciosek and Shimon Whiteson.
+\newblock Expected policy gradients for reinforcement learning.
+\newblock \emph{Journal of Machine Learning Research}, 2020.
+
+\bibitem[Dai et~al.(2018)Dai, Shaw, Li, Xiao, He, Liu, Chen, and
+  Song]{dai2017sbeed}
+Bo~Dai, Albert Shaw, Lihong Li, Lin Xiao, Niao He, Zhen Liu, Jianshu Chen, and
+  Le~Song.
+\newblock {SBEED:} convergent reinforcement learning with nonlinear function
+  approximation.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2018.
+
+\bibitem[Degris et~al.(2012)Degris, White, and Sutton]{degris2012off}
+Thomas Degris, Martha White, and Richard~S. Sutton.
+\newblock Linear off-policy actor-critic.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2012.
+
+\bibitem[Dulac-Arnold et~al.(2019)Dulac-Arnold, Mankowitz, and
+  Hester]{dulac2019challenges}
+Gabriel Dulac-Arnold, Daniel Mankowitz, and Todd Hester.
+\newblock Challenges of real-world reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1904.12901}, 2019.
+
+\bibitem[Espeholt et~al.(2018)Espeholt, Soyer, Munos, Simonyan, Mnih, Ward,
+  Doron, Firoiu, Harley, Dunning, Legg, and Kavukcuoglu]{espeholt2018impala}
+Lasse Espeholt, Hubert Soyer, R{\'{e}}mi Munos, Karen Simonyan, Volodymyr Mnih,
+  Tom Ward, Yotam Doron, Vlad Firoiu, Tim Harley, Iain Dunning, Shane Legg, and
+  Koray Kavukcuoglu.
+\newblock {IMPALA:} scalable distributed deep-rl with importance weighted
+  actor-learner architectures.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2018.
+
+\bibitem[Gelada and Bellemare(2019)]{gelada2019off}
+Carles Gelada and Marc~G. Bellemare.
+\newblock Off-policy deep reinforcement learning by bootstrapping the covariate
+  shift.
+\newblock In \emph{Proceedings of the {AAAI} Conference on Artificial
+  Intelligence}, 2019.
+
+\bibitem[Haarnoja et~al.(2018)Haarnoja, Zhou, Abbeel, and
+  Levine]{haarnoja2018soft}
+Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine.
+\newblock Soft actor-critic: Off-policy maximum entropy deep reinforcement
+  learning with a stochastic actor.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2018.
+
+\bibitem[Hallak and Mannor(2017)]{hallak2017consistent}
+Assaf Hallak and Shie Mannor.
+\newblock Consistent on-line off-policy evaluation.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2017.
+
+\bibitem[Huang and Jiang(2021)]{huang2021convergence}
+Jiawei Huang and Nan Jiang.
+\newblock On the convergence rate of off-policy policy optimization methods
+  with density-ratio correction.
+\newblock \emph{arXiv preprint arXiv:2106.00993}, 2021.
+
+\bibitem[Kakade(2001)]{kakade2001natural}
+Sham~M Kakade.
+\newblock A natural policy gradient.
+\newblock \emph{Advances in Neural Information Processing Systems}, 2001.
+
+\bibitem[Khodadadian et~al.(2021)Khodadadian, Chen, and
+  Maguluri]{khodadadian2021finite}
+Sajad Khodadadian, Zaiwei Chen, and Siva~Theja Maguluri.
+\newblock Finite-sample analysis of off-policy natural actor-critic algorithm.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2021.
+
+\bibitem[Khodadadian et~al.(2022)Khodadadian, Doan, Maguluri, and
+  Romberg]{khodadadian2021finitesample}
+Sajad Khodadadian, Thinh~T Doan, Siva~Theja Maguluri, and Justin Romberg.
+\newblock Finite sample analysis of two-time-scale natural actor-critic
+  algorithm.
+\newblock \emph{{IEEE} Transactions on Automatic Control}, 2022.
+
+\bibitem[Konda(2002)]{konda2002thesis}
+Vijay~R. Konda.
+\newblock \emph{Actor-Critic Algorithms}.
+\newblock PhD thesis, Massachusetts Institute of Technology, 2002.
+
+\bibitem[Konda and Tsitsiklis(1999)]{konda2000actor}
+Vijay~R. Konda and John~N. Tsitsiklis.
+\newblock Actor-critic algorithms.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 1999.
+
+\bibitem[Kumar et~al.(2019)Kumar, Koppel, and Ribeiro]{kumar2019sample}
+Harshat Kumar, Alec Koppel, and Alejandro Ribeiro.
+\newblock On the sample complexity of actor-critic method for reinforcement
+  learning with function approximation.
+\newblock \emph{arXiv preprint arXiv:1910.08412}, 2019.
+
+\bibitem[Kushner and Yin(2003)]{kushner2003stochastic}
+Harold Kushner and G~George Yin.
+\newblock \emph{Stochastic approximation and recursive algorithms and
+  applications}.
+\newblock Springer Science \& Business Media, 2003.
+
+\bibitem[Laroche and Tachet(2021)]{laroche2021dr}
+Romain Laroche and Remi Tachet.
+\newblock Dr {J}ekyll and {M}r {H}yde: the strange case of off-policy policy
+  updates.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2021.
+
+\bibitem[Levin and Peres(2017)]{levin2017markov}
+David~A Levin and Yuval Peres.
+\newblock \emph{Markov chains and mixing times}.
+\newblock American Mathematical Soc., 2017.
+
+\bibitem[Levine(2018)]{levine2018reinforcement}
+Sergey Levine.
+\newblock Reinforcement learning and control as probabilistic inference:
+  Tutorial and review.
+\newblock \emph{arXiv preprint arXiv:1805.00909}, 2018.
+
+\bibitem[Lin(1992)]{lin1992self}
+Long~Ji Lin.
+\newblock Self-improving reactive agents based on reinforcement learning,
+  planning and teaching.
+\newblock \emph{Machine Learning}, 1992.
+
+\bibitem[Liu et~al.(2018)Liu, Li, Tang, and Zhou]{liu2018breaking}
+Qiang Liu, Lihong Li, Ziyang Tang, and Dengyong Zhou.
+\newblock Breaking the curse of horizon: Infinite-horizon off-policy
+  estimation.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2018.
+
+\bibitem[Liu et~al.(2020)Liu, Zhang, Basar, and Yin]{liu2020improved}
+Yanli Liu, Kaiqing Zhang, Tamer Basar, and Wotao Yin.
+\newblock An improved analysis of (variance-reduced) policy gradient and
+  natural policy gradient methods.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2020.
+
+\bibitem[Liu et~al.(2019)Liu, Swaminathan, Agarwal, and Brunskill]{liu2019off}
+Yao Liu, Adith Swaminathan, Alekh Agarwal, and Emma Brunskill.
+\newblock Off-policy policy gradient with state distribution correction.
+\newblock \emph{arXiv preprint arXiv:1904.08473}, 2019.
+
+\bibitem[Marbach and Tsitsiklis(2001)]{marbach2001simulation}
+Peter Marbach and John~N. Tsitsiklis.
+\newblock Simulation-based optimization of markov reward processes.
+\newblock \emph{{IEEE} Transactions on Automatic Control}, 2001.
+
+\bibitem[Mei et~al.(2020)Mei, Xiao, Szepesv{\'{a}}ri, and
+  Schuurmans]{mei2020global}
+Jincheng Mei, Chenjun Xiao, Csaba Szepesv{\'{a}}ri, and Dale Schuurmans.
+\newblock On the global convergence rates of softmax policy gradient methods.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2020.
+
+\bibitem[Mnih et~al.(2016)Mnih, Badia, Mirza, Graves, Lillicrap, Harley,
+  Silver, and Kavukcuoglu]{mnih2016asynchronous}
+Volodymyr Mnih, Adri{\`{a}}~Puigdom{\`{e}}nech Badia, Mehdi Mirza, Alex Graves,
+  Timothy~P. Lillicrap, Tim Harley, David Silver, and Koray Kavukcuoglu.
+\newblock Asynchronous methods for deep reinforcement learning.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2016.
+
+\bibitem[Nachum et~al.(2017)Nachum, Norouzi, Xu, and
+  Schuurmans]{nachum2017bridging}
+Ofir Nachum, Mohammad Norouzi, Kelvin Xu, and Dale Schuurmans.
+\newblock Bridging the gap between value and policy based reinforcement
+  learning.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2017.
+
+\bibitem[Nachum et~al.(2019)Nachum, Chow, Dai, and Li]{nachum2019dualdice}
+Ofir Nachum, Yinlam Chow, Bo~Dai, and Lihong Li.
+\newblock Dualdice: Behavior-agnostic estimation of discounted stationary
+  distribution corrections.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2019.
+
+\bibitem[Peters and Schaal(2008)]{peters2008natural}
+Jan Peters and Stefan Schaal.
+\newblock Natural actor-critic.
+\newblock \emph{Neurocomputing}, 2008.
+
+\bibitem[Qiu et~al.(2021)Qiu, Yang, Ye, and Wang]{qiu2021finite}
+Shuang Qiu, Zhuoran Yang, Jieping Ye, and Zhaoran Wang.
+\newblock On finite-time convergence of actor-critic algorithm.
+\newblock \emph{IEEE Journal on Selected Areas in Information Theory}, 2021.
+
+\bibitem[Rummery and Niranjan(1994)]{rummery1994line}
+Gavin~A Rummery and Mahesan Niranjan.
+\newblock \emph{On-line Q-learning using connectionist systems}.
+\newblock University of Cambridge, Department of Engineering Cambridge, UK,
+  1994.
+
+\bibitem[Schmitt et~al.(2020)Schmitt, Hessel, and Simonyan]{schmitt2020off}
+Simon Schmitt, Matteo Hessel, and Karen Simonyan.
+\newblock Off-policy actor-critic with shared experience replay.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2020.
+
+\bibitem[Silver et~al.(2016)Silver, Huang, Maddison, Guez, Sifre, van~den
+  Driessche, Schrittwieser, Antonoglou, Panneershelvam, Lanctot, Dieleman,
+  Grewe, Nham, Kalchbrenner, Sutskever, Lillicrap, Leach, Kavukcuoglu, Graepel,
+  and Hassabis]{silver2016mastering}
+David Silver, Aja Huang, Chris~J. Maddison, Arthur Guez, Laurent Sifre, George
+  van~den Driessche, Julian Schrittwieser, Ioannis Antonoglou, Vedavyas
+  Panneershelvam, Marc Lanctot, Sander Dieleman, Dominik Grewe, John Nham, Nal
+  Kalchbrenner, Ilya Sutskever, Timothy~P. Lillicrap, Madeleine Leach, Koray
+  Kavukcuoglu, Thore Graepel, and Demis Hassabis.
+\newblock Mastering the game of go with deep neural networks and tree search.
+\newblock \emph{Nature}, 2016.
+
+\bibitem[Sutton(1988)]{sutton1988learning}
+Richard~S. Sutton.
+\newblock Learning to predict by the methods of temporal differences.
+\newblock \emph{Machine Learning}, 1988.
+
+\bibitem[Sutton and Barto(2018)]{sutton2018reinforcement}
+Richard~S Sutton and Andrew~G Barto.
+\newblock \emph{Reinforcement Learning: An Introduction (2nd Edition)}.
+\newblock MIT press, 2018.
+
+\bibitem[Sutton et~al.(1999)Sutton, McAllester, Singh, and
+  Mansour]{sutton2000policy}
+Richard~S. Sutton, David~A. McAllester, Satinder~P. Singh, and Yishay Mansour.
+\newblock Policy gradient methods for reinforcement learning with function
+  approximation.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 1999.
+
+\bibitem[Sutton et~al.(2009)Sutton, Maei, Precup, Bhatnagar, Silver,
+  Szepesv{\'{a}}ri, and Wiewiora]{sutton2009fast}
+Richard~S. Sutton, Hamid~Reza Maei, Doina Precup, Shalabh Bhatnagar, David
+  Silver, Csaba Szepesv{\'{a}}ri, and Eric Wiewiora.
+\newblock Fast gradient-descent methods for temporal-difference learning with
+  linear function approximation.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2009.
+
+\bibitem[Sutton et~al.(2011)Sutton, Modayil, Delp, Degris, Pilarski, White, and
+  Precup]{sutton2011horde}
+Richard~S. Sutton, Joseph Modayil, Michael Delp, Thomas Degris, Patrick~M.
+  Pilarski, Adam White, and Doina Precup.
+\newblock Horde: a scalable real-time architecture for learning knowledge from
+  unsupervised sensorimotor interaction.
+\newblock In \emph{Proceedings of the International Conference on Autonomous
+  Agents and Multiagent Systems}, 2011.
+
+\bibitem[Vinyals et~al.(2019)Vinyals, Babuschkin, Czarnecki, Mathieu, Dudzik,
+  Chung, Choi, Powell, Ewalds, Georgiev, Oh, Horgan, Kroiss, Danihelka, Huang,
+  Sifre, Cai, Agapiou, Jaderberg, Vezhnevets, Leblond, Pohlen, Dalibard,
+  Budden, Sulsky, Molloy, Paine, G{\"{u}}l{\c{c}}ehre, Wang, Pfaff, Wu, Ring,
+  Yogatama, W{\"{u}}nsch, McKinney, Smith, Schaul, Lillicrap, Kavukcuoglu,
+  Hassabis, Apps, and Silver]{vinyals2019grandmaster}
+Oriol Vinyals, Igor Babuschkin, Wojciech~M. Czarnecki, Micha{\"{e}}l Mathieu,
+  Andrew Dudzik, Junyoung Chung, David~H. Choi, Richard Powell, Timo Ewalds,
+  Petko Georgiev, Junhyuk Oh, Dan Horgan, Manuel Kroiss, Ivo Danihelka, Aja
+  Huang, Laurent Sifre, Trevor Cai, John~P. Agapiou, Max Jaderberg,
+  Alexander~Sasha Vezhnevets, R{\'{e}}mi Leblond, Tobias Pohlen, Valentin
+  Dalibard, David Budden, Yury Sulsky, James Molloy, Tom~L. Paine, {\c{C}}aglar
+  G{\"{u}}l{\c{c}}ehre, Ziyu Wang, Tobias Pfaff, Yuhuai Wu, Roman Ring, Dani
+  Yogatama, Dario W{\"{u}}nsch, Katrina McKinney, Oliver Smith, Tom Schaul,
+  Timothy~P. Lillicrap, Koray Kavukcuoglu, Demis Hassabis, Chris Apps, and
+  David Silver.
+\newblock Grandmaster level in starcraft {II} using multi-agent reinforcement
+  learning.
+\newblock \emph{Nature}, 2019.
+
+\bibitem[Wang et~al.(2019)Wang, Cai, Yang, and Wang]{wang2019neural}
+Lingxiao Wang, Qi~Cai, Zhuoran Yang, and Zhaoran Wang.
+\newblock Neural policy gradient methods: Global optimality and rates of
+  convergence.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations}, 2019.
+
+\bibitem[Wang and Zou(2020)]{wang2020finite}
+Yue Wang and Shaofeng Zou.
+\newblock Finite-sample analysis of greedy-gq with linear function
+  approximation under markovian noise.
+\newblock In \emph{Proceedings of the Conference on Uncertainty in Artificial
+  Intelligence}, 2020.
+
+\bibitem[Wang et~al.(2017)Wang, Bapst, Heess, Mnih, Munos, Kavukcuoglu, and
+  de~Freitas]{wang2016sample}
+Ziyu Wang, Victor Bapst, Nicolas Heess, Volodymyr Mnih, R{\'{e}}mi Munos, Koray
+  Kavukcuoglu, and Nando de~Freitas.
+\newblock Sample efficient actor-critic with experience replay.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations}, 2017.
+
+\bibitem[White(2017)]{white2017unifying}
+Martha White.
+\newblock Unifying task specification in reinforcement learning.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2017.
+
+\bibitem[Williams(1992)]{williams1992simple}
+Ronald~J. Williams.
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock \emph{Machine Learning}, 1992.
+
+\bibitem[Williams and Peng(1991)]{williams1991function}
+Ronald~J Williams and Jing Peng.
+\newblock Function optimization using connectionist reinforcement learning
+  algorithms.
+\newblock \emph{Connection Science}, 1991.
+
+\bibitem[Wu et~al.(2020)Wu, Zhang, Xu, and Gu]{wu2020finite}
+Yue Wu, Weitong Zhang, Pan Xu, and Quanquan Gu.
+\newblock A finite-time analysis of two time-scale actor-critic methods.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2020.
+
+\bibitem[Xu et~al.(2020)Xu, Wang, and Liang]{xu2020improving}
+Tengyu Xu, Zhe Wang, and Yingbin Liang.
+\newblock Improving sample complexity bounds for (natural) actor-critic
+  algorithms.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2020.
+
+\bibitem[Xu et~al.(2021)Xu, Yang, Wang, and Liang]{xu2021doubly}
+Tengyu Xu, Zhuoran Yang, Zhaoran Wang, and Yingbin Liang.
+\newblock Doubly robust off-policy actor-critic: Convergence and optimality.
+\newblock \emph{arXiv preprint arXiv:2102.11866}, 2021.
+
+\bibitem[Zahavy et~al.(2020)Zahavy, Xu, Veeriah, Hessel, Oh, van Hasselt,
+  Silver, and Singh]{zahavy2020self}
+Tom Zahavy, Zhongwen Xu, Vivek Veeriah, Matteo Hessel, Junhyuk Oh, Hado~P van
+  Hasselt, David Silver, and Satinder Singh.
+\newblock A self-tuning actor-critic algorithm.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2020.
+
+\bibitem[Zhang et~al.(2020{\natexlab{a}})Zhang, Koppel, Zhu, and
+  Basar]{zhang2020global}
+Kaiqing Zhang, Alec Koppel, Hao Zhu, and Tamer Basar.
+\newblock Global convergence of policy gradient methods to (almost) locally
+  optimal policies.
+\newblock \emph{{SIAM} Journal on Control and Optimization},
+  2020{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2020{\natexlab{b}})Zhang, Liu, and
+  Whiteson]{zhang2020gradientdice}
+Shangtong Zhang, Bo~Liu, and Shimon Whiteson.
+\newblock Gradient{DICE}: Rethinking generalized offline estimation of
+  stationary values.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2020{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2020{\natexlab{c}})Zhang, Liu, Yao, and
+  Whiteson]{zhang2019provably}
+Shangtong Zhang, Bo~Liu, Hengshuai Yao, and Shimon Whiteson.
+\newblock Provably convergent two-timescale off-policy actor-critic with
+  function approximation.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2020{\natexlab{c}}.
+
+\bibitem[Zhang et~al.(2021)Zhang, Yao, and Whiteson]{zhang2021breaking}
+Shangtong Zhang, Hengshuai Yao, and Shimon Whiteson.
+\newblock Breaking the deadly triad with a target network.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning}, 2021.
+
+\bibitem[Zou et~al.(2019)Zou, Xu, and Liang]{zou2019finite}
+Shaofeng Zou, Tengyu Xu, and Yingbin Liang.
+\newblock Finite-sample analysis for {SARSA} with linear function
+  approximation.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2019.
+
+\end{thebibliography}

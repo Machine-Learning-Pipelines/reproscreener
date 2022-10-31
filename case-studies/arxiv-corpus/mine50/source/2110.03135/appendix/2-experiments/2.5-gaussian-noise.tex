@@ -1,0 +1,26 @@
+
+% % \subsection{Gaussian noise}
+% % \label{sect:exp-gaussian-noise}
+% One may expect adversarial training 
+% % and adversarial augmentation~(see Section~\ref{sect: noise-variance}) 
+% produces double descent simply by perturbing the inputs, thus increasing the variance. To verify the implicit label noise induced by a mismatch between the true label distribution and the assigned label distribution is essential to produce double descent, we select one type of common corruption, Gaussian noise, to perturb the image inputs. We first briefly show that Gaussian noise does not cause a distribution mismatch. 
+
+% We follow the notation introduced in Section~\ref{sect:notation}, where $\delta \in \mathbbm{R}^d$ now refers to a Gaussian perturbation. Under a 1-st order approximation of $P(Y|x)$, the mismatch between the true label distribution and label distribution can be derived as (see proof of Theorem~\ref{theo:label-noise-perturbation} in Appendix~\ref{sect:label-noise-more-proof})
+% \begin{equation}
+%     \|P(Y^*_\delta | x_\delta) - P(\tilde{Y}_\delta | x_\delta)\|_{\text{TV}} \equiv \|P(Y^*_\delta | x_\delta) - P(Y | x)\|_{\text{TV}} = 
+%     \frac{1}{2} \sum_j \left| \nabla_x f^*(x)_{j} \cdot \delta + \frac{1}{2}\delta^T \nabla^2 f^*(z)_{j} \delta \right|
+%     % \\
+%     % \frac{1}{2} \sum_j \left| \nabla_x f^*(x)_j \cdot \delta +  \right|,
+% \end{equation}
+% where $\delta \sim \mathcal{N}(0, \sigma \cdot I_d)$.
+% Since the image inputs span a low-dimension subspace $\mathcal{X}$ and the dimensionality $d$ is large ($3072$ for CIFAR-10), it is highly likely that $\delta \bot \mathcal{X}$, which means $\nabla_x f^*(x)_j \cdot \delta = 0$ and $\delta^T \nabla^2 f^*(z)_{j} \delta = 0$ for all $j$. 
+% % \delta lie along the eigenvector where eigenvalue = 0
+% One can also empirically verify that a Gaussian perturbation is almost always orthogonal to the difference between any two images, while an adversarial perturbation is not.
+
+\smallsection{Gaussian augmentation}
+% We now experiment on dataset perturbed by Gaussian noise and verify our intuition. 
+We apply Gaussian noise to the $5000$ examples randomly sampled from CIFAR-10 training set. The perturbed examples along with their original labels are then grouped into a training set for Gaussian augmentation experiments. 
+% and then conduct standard training on the perturbed training set. We employ Adam to train a WRN-28-5 on randomly selected $5000$ examples for $1000$ epochs. As shown in Figure~\ref{fig:double-descent-gaussian}, Gaussian noise with a perturbation radius as high as $80/255$, which will reduce the accuracy of a classifier to the same level as an adversarial attack will, does not produce significant double descent. We note that similar observation has been made on common curruption benchmark CIFAR-10-C~\citep{Hendrycks2019BenchmarkingNN} in a previous work~\citep{Yang2020RethinkingBT}.
+
+
+

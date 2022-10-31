@@ -1,0 +1,68 @@
+% \begin{table}[tb]
+% \color{orange}
+% % \begin{wraptable}{r}{4.5cm}
+% % \vspace{-25pt}
+% \begin{center}
+% \begin{tabular}{|c|c|}
+% \hline
+% \textbf{Method} & \textbf{MPJPE} \\
+
+% \hline
+% Convolution layer & 31.9 \\
+% \hline
+% Transformer Encoder - 1 layer, 64 heads & 30.95 \\
+% \hline
+% Transformer Encoder - 2 layers, 64 heads & 37.81 \\
+% \hline
+% Multi-head Attention - 128 heads & 30.5 \\
+% \hline
+% Multi-head Attention - 64 heads & \textbf{30.18} \\
+% \hline
+% Multi-head Attention - 32 heads & 30.62 \\
+% %\hline
+% %Multi-head Attention - 16 heads & 30.86 \\
+% \hline
+
+% \end{tabular}
+% \end{center}
+% \vspace{-14pt}
+% % \caption{The impact of different configurations on our multi-view fusion layer. }
+% \caption{The impact of multi-view fusion architecture. }
+% \label{tab:ablation_mha_heads}
+% % \end{wraptable}
+% \vspace{-5pt}
+% \end{table}
+
+\begin{table}[t]
+\color{orange}
+% \begin{wraptable}{r}{4.5cm}
+% \vspace{-25pt}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Method} & \textbf{MPJPE} \\
+
+\hline
+Conv. layer & 31.9 \\
+\hline
+TE - 1$l$, 64$h$ & 30.95 \\
+\hline
+TE - 2$l$, 64$h$ & 37.81 \\
+\hline
+MHA - 128$h$ & 30.5 \\
+\hline
+MHA - 64$h$ & \textbf{30.2} \\
+\hline
+MHA - 32$h$ & 30.6 \\
+\hline
+MHA - 16$h$ & 30.9 \\
+\hline
+
+\end{tabular}
+\end{center}
+\vspace{-14pt}
+\caption{The impact of multi-view fusion architecture. Legend: TE - Transformer Encoder. MHA - Multi-head Attention. $l$ refer to no. of stacked layers. $h$ refer to no. of heads in attention layer.}
+\vspace{-5pt}
+\label{tab:fusion_arch}
+% \end{wraptable}
+\end{table}

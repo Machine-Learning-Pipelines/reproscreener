@@ -1,0 +1,10 @@
+\section{Conclusions}
+\label{sec:conclusions}
+A novel encoding-decoding model for synthesis tasks is proposed by exploiting the perceptual properties of AR features. We show the reconstruction improvement obtained by generators trained on AR features and how it generalizes to models of different complexity. We showcase our model on style transfer and image denoising tasks, outperforming standard approaches and attaining competitive performance against alternative methods. A potential limitation of our model is the loss of details due to its contracted features. Yet, experiments show that using shortcut connections allow preserving these, enabling enhancement and restoration tasks. Our method also requires pre-training an AR encoder prior to training the generator, which may increase its computational requirements.
+
+Learning how to invert AR features may be interestingly extended to conditional GANs for image-to-image translation tasks \cite{isola2017image} and to VAEs as a latent variable regularizer \cite{dosovitskiy_2016_generating}. Our AR autoencoder can also be seen as an energy-based model \cite{nguyen2017plug} for artificial and biological neural networks vizualization \cite{nguyen2016synthesizing,nguyen2019understanding,ponce2019evolving}.
+
+\vspace{\baselineskip}
+{\noindent \textbf{Acknowledgements.}}
+AN was supported by NSF Grant No. 1850117 \& 2145767, and donations from NaphCare Foundation \& Adobe Research.
+We are grateful for Kelly Price's tireless assistance with our GPU servers at Auburn University.

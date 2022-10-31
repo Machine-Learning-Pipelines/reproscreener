@@ -1,0 +1,105 @@
+
+\subsection{Proof of Remark 1}
+\label{sec:proof-remark-1}
+
+We recall the notations of \citet{tappenden2016Inexact}.
+For $\theta \in \RR^p$, $t \in \RR$ and $j \in [p]$, let
+$V_j(\theta, t) = \nabla_j(\theta) t + \frac{M_j}{2} \abs{t}^2 + \psi_j(\theta^k_j + t)$.
+For $\eta \in \RR$, we also define its noisy counterpart,
+$V_j^{\eta}(\theta, t) = (\nabla_j(\theta) + \eta) t + \frac{M_j}{2} \abs{t}^2 + \psi_j(\theta^k_j + t)$.
+We aim at finding $\delta_j$ such that for any $\theta^k \in \RR^p$ used in the
+inner loop of \Cref{algo:dp-cd}:
+\begin{align}
+  \expec{\eta_j}{V_j(\theta^k, -\gamma_j g_j)}
+  \le \min_{\widetilde g \in \RR} V_j(\theta^k, -\gamma_j \widetilde g) + \delta_j\enspace,
+\end{align}
+where the expectation is taken over the random noise $\eta_j$, and
+$- \gamma_j g_j = \prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j (\nabla_j f(\theta^k) + \eta_j)) - \theta^k_j$
+as defined in the analysis of \Cref{algo:dp-cd}.
+We need to link the proximal operator we use in DP-CD with the quantity
+$V_j^{\eta_j}$ that we just defined:
+\begin{align}
+  \prox_{\gamma_j \psi_j} ( \theta^k_j - \gamma_j (\nabla_j f(\theta^k) + \eta_j) )
+   & = \argmin_{v \in \RR}  \frac{1}{2} \norm{v - \theta^k_j + \gamma_j (\nabla_j f(\theta^k) + \eta_j)}_2^2                                                 \\
+   & = \argmin_{v \in \RR}  \scalar{\gamma_j (\nabla_j f(\theta^k_j) + \eta_j)}{v - \theta^k_j} + \frac{1}{2} \norm{v - \theta^k_j}_2^2 + \gamma_j \psi_j(v) \\
+   & = \argmin_{v \in \RR}  \scalar{\nabla_j f(\theta^k) + \eta_j}{v - \theta^k_j} + \frac{M_j}{2} \norm{v - \theta^k_j}_2^2 + \psi_j(v)                     \\
+   & = \theta^k_j + \argmin_{t \in \RR}  \scalar{\nabla_j f(\theta^k) + \eta_j}{t} + \frac{M_j}{2} \norm{t}_2^2 + \psi_j(\theta^k_j + t)\enspace.
+\end{align}
+Which means that
+$-\gamma_j g_j
+  =\prox_{\gamma_j \psi_j} ( \theta^k_j - \gamma_j (\nabla_j f(\theta^k) + \eta_j) ) -  \theta^k_j
+  \in \argmin_{t\in\RR} V_j^{\eta_j}(\theta^k,t)$.
+Let $-\gamma_j g_j^* = \prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j \nabla_j(\theta^k)) - \theta^k_j$
+be the non-noisy counterpart of $-\gamma_j g_j$.
+Since $-\gamma_j g_j$ is a minimizer of $V_j^{\eta_j}(\theta^k, \cdot)$, it holds that
+\begin{align}
+  V_j^{\eta_j}(\theta^k, -\gamma_j g_j)
+   & \le \scalar{\nabla_j f(\theta^k) + \eta_j}{-\gamma_j g_j^*} + \frac{M_j}{2} \norm{-\gamma_j g_j^*}_2^2 + \psi_j(\theta^k_j + -\gamma_j g_j^*) \\
+   & = \min_t V_j(\theta^k, t) + \scalar{\eta_j}{-\gamma_j g_j^*}\enspace,
+\end{align}
+which can be rewritten as $V_j(\theta^k, -\gamma_j g_j) \le \min_t V_j(\theta^k, t) + \scalar{\eta_j}{\gamma_j (g_j - g_j^*)}$.
+Taking the expectation yields
+\begin{align}
+  \expec{\eta_j}{V_j(\theta^k, -\gamma_j g_j)} \le \min_t V_j(\theta^k, t) + \expec{\eta_j}{\scalar{\eta_j}{\gamma_j (g_j - g_j^*)}}\enspace.
+\end{align}
+Finally, we remark that $\abs{g_j - g_j^*} \le \abs{\gamma_j \eta_j}$ and the
+non-expansiveness of the proximal operator gives
+\begin{align}
+  \expec{\eta_j}{V_j(\theta^k, -\gamma_j g_j)} \le \min_t V_j(\theta^k, t) + \gamma_j \sigma_j^2\enspace,
+\end{align}
+which implies an upper bound on the expectation of $\delta_j$:
+$\expec{j,\eta_j}{\delta_j}
+  = \frac{1}{p} \sum_{j=1}^p \expec{\eta_j}{\delta_j}
+  \le \frac{1}{p} \sum_{j=1}^p \gamma_j \sigma_j^2 = \frac{1}{p} \sum_{j=1}^p \sigma_j^2 / M_j$,
+when $\gamma_j = 1/M_j$.
+In the formalism of \citet{tappenden2016Inexact},
+this amounts to setting $\alpha = 0$ and $\beta = \frac{1}{p} \norm{\sigma}_{M^{-1}}^2$.
+
+\paragraph{Convex functions.}
+
+When the objective function $F$ is convex, we use \Cref{lemma:dp-cd-convergence-lemma}
+to obtain, since $\norm{\sigma}_{M^{-1}}^2 = \beta p$,
+\begin{align}
+  F(w^{1}) - F(w^*) \le \frac{2pR_M^2}{K} + \norm{\sigma}_{M^{-1}}^2
+  = \frac{2pR_M^2}{K} + \beta p\enspace.
+\end{align}
+Therefore, when $F$ is convex, we get $F(w^1) - F(w^*) \le \xi$, for $\xi > \beta p$,
+as long as $\frac{2pR_M^2}{K} \le \xi - \beta p$, that is $K \ge \frac{2pR_M^2}{\xi - \beta p}$.
+
+In comparison, \citet[Theorem 5.1 therein]{tappenden2016Inexact} gives
+convergence
+to $\xi > \sqrt{2pR_M^2 \beta}$ when $K \ge \frac{2pR_M^2}{\xi - \sqrt{2pR_M^2\beta} }$.
+We thus gain a factor $\sqrt{\beta p / 2R_M^2}$ in utility.
+Importantly, our utility upper bound does not depend on initialization in that
+setting, whereas the one of \citet{tappenden2016Inexact} does.
+
+
+\paragraph{Strongly-convex functions.}
+
+When the objective function $F$ is $\mu_M$-strongly-convex \wrt to $\norm{\cdot}_M$, then
+from~\eqref{lemma:dp-cd-strong-convexity-convergence:eq:conv} we obtain, as long
+as $K \ge 4/\mu_M$, that
+\begin{align}
+  \expec{}{F(w^T) - F(w^*)} \le \frac{F(w^0) - F(w^*)}{2^T} + 2 \beta p\enspace.
+\end{align}
+This proves that $\expec{}{F(w^T) - F(w^*)} \le \xi$ for $\xi > 2\beta p$ when
+$\frac{F(w^0) - F(w^*)}{2^T} \le \xi - 2 \beta p$ that is
+$T \ge \log\frac{F(w^0) - F(w^*)}{\xi - 2\beta p}$ and
+$TK \ge \frac{4p}{\mu_M}\log\frac{F(w^0) - F(w^*)}{\xi - 2\beta p}$.
+In comparison, \citet[Theorem 5.2 therein]{tappenden2016Inexact} shows
+convergence
+to $\xi > \frac{\beta p}{\mu_M}$ for
+$K \ge \frac{p}{\mu_M} \log \frac{F(w^0) - F(w^*) - \frac{\beta p}{\mu_M}}{\xi - \frac{\beta p}{\mu_M} }$.
+We thus gain a factor $\mu_M/2$ in utility.
+
+
+
+
+
+
+
+
+
+
+
+

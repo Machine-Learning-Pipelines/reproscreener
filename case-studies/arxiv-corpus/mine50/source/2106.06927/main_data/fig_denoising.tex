@@ -1,0 +1,19 @@
+\begin{figure}[t]
+\begin{minipage}{0.25\textwidth}
+\centering\textbf{\colorbox{white}{\scalebox{.8}{Ground-truth}}}
+\end{minipage}\begin{minipage}[t]{0.25\textwidth}
+\centering \textbf{\colorbox{white}{\scalebox{.8}{Observation}}}
+\end{minipage}\begin{minipage}[t]{0.25\textwidth}
+\centering \textbf{\colorbox{white}{\scalebox{.8}{Standard}}}
+\end{minipage}\begin{minipage}[t]{0.25\textwidth}
+\centering\textbf{\colorbox{white}{\scalebox{.8}{AR (ours)}}}
+\end{minipage}
+
+\vspace{-0.05 cm}
+\includegraphics[width=1\textwidth]{figs/denoising/cbsd68_tile20.jpg}
+
+\includegraphics[width=1\textwidth]{figs/denoising/kodak24_tile20.jpg}
+
+\caption{\label{fig:denoising}Image denoising $(\sigma= \frac{50}{255})$: While inverting standard features introduces artifacts and degrades color, limiting their use for restoration tasks, our AR denoiser reduces the artifacts and better preserves the original texture.}
+\vspace{-0.5 cm}
+\end{figure}

@@ -1,0 +1,11 @@
+\section{Related Work}
+\label{sec:related}
+
+$\quad$
+\textbf{Inverting Neural Networks.}
+Prior work exploring deep feature inversion using optimization approaches are either limited to per-pixel priors or require multiple steps to converge and are sensitive to initialization \cite{mahendran_2015_understanding,mahendran_2016_visualizing,engstrom_2019_adversarial,santurkar_2019_image}. Instead, we propose to map contracted features to images via a generator, following the work by Dosovitskiy et al. \cite{dosovitskiy_2016_generating} and similar synthesis techniques \cite{shocher_2020_semantic,nguyen2017plug,nguyen2016synthesizing}. By combining natural priors and AR features, we get a significant reconstruction improvement with much less trainable parameters.
+
+Our results are consistent to prior findings on AR features being more invertible via optimization \cite{engstrom_2019_adversarial} and more useful for transfer learning \cite{salman_2020_adversarially}. As part of our contribution, we complement these by showing that (i) learning a map from the AR feature space to the image domain largely outperforms the original optimization approach, (ii) such an improvement generalizes to models of different complexity, and (iii) inverting AR features shows remarkable robustness to scale changes. We also show AR encoders with higher robustness can be more easily decoded, revealing potential security issues \cite{zhang2020secret}.
+
+\textbf{Regularized Autoencoders.}
+Prior work requiring data augmentation to train generative and autoencoding models often requires learning an invertible transformation  that maps augmented samples back to real data \cite{jun2020distribution}. Instead, our approach can be seen as a novel way to regularize bottleneck features, providing an alternative to contractive, variational and sparse autoencoders \cite{goodfellow2016deep,kingma_2013_auto,ng2011sparse}.

@@ -1,0 +1,483 @@
+\section{Introduction} \label{sec:intro}
+A nonnegative set function $f:2^{\mathcal N} \to \reals$, defined on all subsets
+of a ground set $\mathcal N$ of size $n$,
+is \emph{submodular}
+if for all $A, B \subseteq \mathcal N$,
+$f(A) + f(B) \ge f(A \cup B) + f( A \cap B )$.
+Submodular set functions naturally arise in
+many learning applications, 
+including data summarization \cite{Simon2007,Sipos2012,Tschiatschek2014,Libbrecht2017}, viral
+marketing \cite{Kempe2003,Hartline2008}, and recommendation systems \cite{El-Arini2011}. 
+Some applications yield submodular functions
+that are not monotone (a set function is monotone if $A \subseteq B$ implies
+$f(A) \le f(B)$): for example, image summarization with
+diversity \cite{Mirzasoleiman2016} or revenue maximization on
+a social network \cite{Hartline2008}.
+In this work, we study the maximization of
+a (not necessarily monotone) submodular function subject to a cardinality constraint;
+that is, given submodular function $f$ and integer $k$, determine
+$\argmax_{|S| \le k} f(S)$ (\sm). Access to $f$
+is provided through a value query oracle, which
+when queried with the set $S$ returns the value $f(S)$.
+
+As the amount of data in applications has exhibited
+exponential growth in recent years 
+(\eg the growth of social networks \cite{Mislove2008}
+or genomic data \cite{Libbrecht2017}), it is 
+necessary to design algorithms for \sm that can scale to
+these large datasets. 
+One aspect of algorithmic efficiency is the \emph{query complexity},
+the total number
+of queries to the oracle for $f$; since evaluation of $f$
+is often expensive, the queries to $f$ often dominate the
+runtime of an algorithm. In addition to low query complexity,
+it is necessary to
+design algorithms that parallelize well  to take advantage of
+modern computer architectures. To quantify the degree
+of parallelizability of an algorithm,
+the \emph{adaptivity} or \emph{adaptive complexity} of an algorithm
+is the minimum number of sequential rounds such that
+in each round the algorithm makes $O(\text{poly}(n))$
+independent queries to the evaluation oracle.
+The lower the adaptive complexity of an algorithm,
+the more suited the algorithm is to parallelization,
+as within each adaptive round, the queries to $f$
+are independent and may be easily parallelized. 
+
+The design of algorithms with nontrivial
+adaptivity for \sm when $f$ is monotone 
+was initiated by \shortciteS{Balkanski2018},
+who also prove a lower bound of $\Omega ( \log( n) / \log \log (n) ) $
+adaptive rounds to achieve a constant approximation ratio. Recently, much
+work has focused on the design of adaptive algorithms for \sm
+with (not necessarily monotone) submodular functions,
+as summarized in Table~\ref{table:cmp}.
+However, although many algorithms with low adaptivity have been proposed,
+most of these algorithms exhibit at least a quadratic dependence
+of the query complexity on the size $n$ of the ground set, for $k = \Omega(n)$.
+For many applications, instances have grown too large
+for quadratic query complexity to be practical.
+Therefore, it is necessary
+to design adaptive algorithms that also have
+nearly linear query complexity.
+An algorithm in prior literature that
+meets this requirement is the
+algorithm developed by \shortciteS{Fahrbach2018a}, which has $O(n \log (k))$
+query complexity and $O( \log (n))$ adaptivity.
+However, the 
+approximation ratio stated in \shortciteS{Fahrbach2018a}
+for this algorithm does not hold,
+as discussed in Section \ref{sec:related_work} 
+and Appendix \ref{sec:counterexample}.
+%Recently, algorithms with nontrivial adaptivity
+%for \sm have been developed, both for the special
+%case when $f$ is monotone \cite{}, and in general
+%\cite{}. 
+% In this work, we will consider the problem \sm with
+% general, submodular $f$; that is, we will not assume monotonicity
+% of $f$.
+% Although algorithms with nearly optimal adaptivity of 
+% $O( \log n )$ have been developed for \sm, these 
+% algorithms all have total query complexity at least
+% quadratic in the size $n$ of the ground set, 
+\begin{table*}[t] \centering 
+  \begin{threeparttable}
+  \begin{minipage}{\textwidth}
+  \caption{Adaptive algorithms for \sm where objective $f$ is not 
+  necessarily monotone. } \label{table:cmp}
+\begin{tabular}{l|l|l|l} 
+  \toprule
+Reference         & Approximation & Adaptivity & Queries \\
+  \midrule
+  \shortciteS{Buchbinder2015a} & $1/e - \epsi$ & $O(k)$ & ${O(n)}$ \\
+  \midrule
+  \shortciteS{Balkanskia} & $1/(2e) - \epsi$ & $O\left( \log^2(n) \right)$ & $O \left( OPT^2 n \log^2(n) \log(k) \right) $\\
+  \midrule
+  \shortciteS{Chekuri2019a} & $3 - 2 \sqrt{2} - \epsi$ & $O( \log^2(n) )$ & $O \left( nk^4 \log^2(n) \right)$ \\
+  \midrule
+  \shortciteS{Ene2020} & $1/e - \epsi$ & ${O( \log(n) )}$ & $O \left( nk^2 \log^2(n) \right) $ \\
+  \midrule
+  \shortciteS{Fahrbach2018a}& $0.039 - \epsi$ \tnote{$\dagger$}
+  % \footnote{The approximation ratio of this algorithm does not hold,
+  % and is discussed in Section~\ref{sec:counterexample}.}
+  & ${O( \log (n))}$ & ${O(n \log (k))}$ \\
+  \midrule
+  \shortciteS{amanatidis2021submodular}& $0.172-\epsi$ 
+  & \makecell[l]{$\oh{\log(n)}$ \\ $\oh{\log(n)\log(k)}$} 
+  & \makecell[l]{$\oh{nk\log(n)\log(k)}$ \\ $\oh{n\log(n)\log^2(k)}$} \\
+  \midrule
+  Theorem~\ref{thm:atg} (\atg)            & $1/6 - \epsi$ & ${O( \log (n) )}$ & ${O(n \log (k) )}$ \\
+  Theorem~\ref{thm:latg} (\latg)      & $0.193 - \epsi$ & $O( \log(n)\log(k) )$ & ${O(n \log (k))}$ \\ 
+  \bottomrule
+\end{tabular}
+\end{minipage}
+\begin{tablenotes}\footnotesize
+  \item[$\dagger$] The approximation ratio of this algorithm does not hold,
+  and is discussed in Appendix~\ref{sec:counterexample}.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table*}
+
+\textbf{Contributions.}
+In this work, we propose two fast,
+combinatorial algorithms for \sm:
+the $(1/6 - \epsi)$-approximation algorithm 
+\algOnefullname (\atg)
+with adaptivity $O( \log (n) )$ and query complexity $O(n \log (k))$;
+and the $(0.193 - \epsi)$-approximation algorithm \algTwofullname (\latg) with
+adaptivity $O(\log (n) \log (k) )$ and query complexity $O(n \log (k))$. 
+
+The above algorithms both employ a lowly-adaptive
+subroutine to add
+multiple elements that satisfy a given marginal gain,
+on average.
+The conference version \cite{kuhnle2021nearly} of this paper
+used
+the \thresam subroutine of
+\shortciteS{Fahrbach2018,Fahrbach2018a} for this purpose.
+However, the theoretical guarantee (Lemma 2.3 of \shortciteS{Fahrbach2018a}) for non-monotone functions
+does not hold, as discussed further. 
+In Appendix~\ref{sec:counterexample}, we give a counterexample to the performance guarantee of \thresam.
+In this version,
+we introduce a new threshold subroutine \threseq,
+which not only fixes the problem that \thresam faced,
+but achieves its guarantees with high probability
+as opposed to in expectation; the high probability guarantees
+simplify the analysis of our approximation algorithms that
+rely upon the \threseq subroutine. 
+% \threseq calculates marginal gains in parallel and only keeps 
+% elements with positive marginal gains.
+% Due to submodularity, there is no loss on average marginal gain
+% after deleting elements with negative marginal gains.
+% Therefore, this algorithm returns a set with an average marginal 
+% gain of $(1-\epsi)\tau$.
+% Also, it is still a highly parallelizable algorithm with 
+% $\oh{\log(n)}$ adaptive rounds and $\oh{n}$ oracle queries.
+% And it returns a set with an average marginal gain of $(1-\epsi)\tau$
+% with high probability instead of the expected marginal gain.
+
+% \threseq is used to replace the \thresam(Fahrbach2018), since the
+% theoretical guarantee does not hold with non-monotone functions.
+% In section~\ref{sec:counter-example}, we give a counter example to
+% show that \thresam may fail to sample a set with an expected
+% average marginal gain.
+
+% In this work, we improve the best approximation factor for
+% nearly linear-time algorithms that are highly parallelizable 
+% to $0.193 - \epsi$. 
+
+Our algorithm \atg uses a double-threshold procedure to obtain
+its ratio of $1/6 - \epsi$. Our second algorithm \latg 
+is a low-adaptivity modification of the algorithm of \shortciteS{Gupta2010a}, for which 
+we improve the ratio from $1/6$ to $\approx$0.193 through a novel analysis.
+Both of our algorithms use the low-adaptivity, threshold sampling procedure
+\threseq and a subroutine for 
+unconstrained maximization of a submodular function \cite{Feige2011,Chen2018b}
+as components.
+More details are given in the related work
+discussion below and in Section~\ref{sec:latg}.
+
+The new \threseq does not rely on sampling to achieve
+concentration bounds, which
+significantly
+improves the practical efficiency of our algorithms
+over the conference version.
+Empirically, we demonstrate that both of our algorithms achieve
+superior objective value to current state-of-the-art algorithms while using a small
+number of queries and adaptive rounds on two applications of \sm. 
+% The empirical adaptivity and objective value of \anm and \algOnefullname is similar,
+% except for on small $k$ values, where the objective value of \anm
+% suffers. 
+% Further, \algTwofullname outperforms the objective value of the fastest deterministic approximation 
+% algorithm \fig of \shortciteS{Kuhnle2019} while using fewer queries.
+%  competitive with that of the iterated greedy algorithm of \shortciteS{Gupta2010}, 
+%  an algorithm with adaptivity $\Omega( k )$ and query complexity $\Omega( kn )$.
+  % Another interesting feature of \algTwofullname
+  % is that it does not use multiple, concurrent guesses of the optimal solution value, OPT.
+  % To the best of our knowledge, all other adaptive algorithms for \sm require $O ( \log (n) / \epsi )$
+  % many guesses for OPT to be run in parallel, which empirically require a high number
+  % of threads.
+%\end{itemize}
+\subsection{Related Work}
+\label{sec:related_work}
+\textbf{Theshold Procedures.}
+A recurring subproblem of \sm (and other submodular optimization problems)
+is to add all elements of the ground set that give a marginal gain of
+at least $\tau$, for some constant threshold $\tau$. 
+To solve this subproblem, 
+the algorithm \thresam is proposed in 
+\shortciteS{Fahrbach2018} for monotone submodular functions
+and applied in \shortciteS{Fahrbach2018a}
+and the conference version of this work \cite{kuhnle2021nearly} as subroutines
+for non-monotone \sm. However, theoretical guarantee
+(Lemma 2.3 of \shortciteS{Fahrbach2018a}) does not hold when the objective
+function is non-monotone. Counterexamples and pseudocode for \thresam are given in Appendix~\ref{sec:counterexample}.
+% The algorithm works by checking the expected value
+% of the marginal gain of adding a uniformly randomly
+% chosen element to a uniformly random set
+% of size $t$, for a range of values of $t$; standard
+% concentration bounds are used to determine how many
+% samples need to be taken to check this expected value.
+
+% However, in the case of non-monotone submodular functions,
+% \textit{it is not enough to check the gain of the ``last''
+%   element only,}
+% since some other elements in the randomly chosen set
+% of size $t$ may have negative marginal gains.
+% An element with negative marginal gain may result in 
+% a large decrease on the total value of the set,
+% which can cause the average marginal gain
+% to be less than $\tau$.
+% In Appendix~\ref{sec:counterexample}, we give counterexamples
+% to show that the theoretical guarantee does not hold.
+%\textbf{The \threseq Algorithms of \shortciteS{amanatidis2021submodular}.}
+
+Two alternative solutions to the non-monotone threshold problem were proposed 
+in \shortciteS{amanatidis2021submodular} for the case of non-monotone,
+submodular maximization subject to a knapsack constraint.
+Due to the complexity of the constraints, the thresholding procedures
+in \shortciteS{amanatidis2021submodular} have a high time complexity and
+require
+% Their algorithm selects a subset from the candidate with a good tradeoff of
+% including more elements with marginal gains larger than threshold $\tau$
+% and excluding more elements with negative marginal gains.
+% Briefly, the algorithm works as follows:
+% after sampling a sequence at the beginning of each iteration,
+% the marginal gain of each element with respect to each prefix of the sequence
+% is calculated; 
+% with the exact probability of choosing an element whose marginal gain is 
+% larger than $\tau$ or less than 0, a prefix is selected with average
+% marginal gain to be more than $(1-\epsi)^2\tau$.
+% Even though \threseq works and returns a valid subset, it is time-consuming with query calls
+% to the whole ground set multiple times; that
+$\oh{n^2}$ query calls within one iteration
+even when restricted to size constraint.
+Although a variant with binary search is proposed to get 
+% the prefix of the sequence with less query calls,
+fewer queries, the sequential binary search worsens
+the adaptivity of the algorithm.
+
+In this work, we propose the
+\threseq algorithm (Section \ref{sec:ts})
+that fixes the problems of \thresam and runs
+in linear time in the size $n$ of the ground
+set in $O( \log n )$ rounds. We solve these problems
+by bifurcating the solution found by the algorithm
+into two sets: an auxilliary set $A$ separate from the solution
+set $A'$ found by \threseq; the algorithm maintains that
+$A' \subseteq A$, and the larger set is used for filtering
+from the ground set, while the smaller set maintains desired
+bounds on the average marginal gain. 
+%znthe calculation of the bunch of marginal gains can not be well parallelized now.
+%At this time, the adapativity becomes $\oh{\log^2(n)}$.
+
+\textbf{Algorithms with Low Adaptive Complexity.}
+%\section{Preliminaries}
+%\paragraph{Adaptive Algorithms for \sm} 
+Since the study of parallelizable algorithms for
+submodular optimization was initiated by
+\shortciteS{Balkanski2018}, there have been a
+number of $O(\log n)$-adaptive algorithms designed
+for \sm. When $f$ is monotone, adaptive algorithms
+that obtain the optimal ratio \cite{Nemhauser1978a} of $1 - 1/e - \epsi$
+have been designed by \shortciteS{Balkanski,Fahrbach2018,Ene,chen2021best}.
+% Of these, the algorithms of \shortciteS{Fahrbach2018,Ene,chen2021best} also
+% have nearly optimal query complexity; that is, they have
+% query complexity $O(n \log k)$.
+Of these, the algorithm of \shortciteS{chen2021best} also has
+the state-of-the-art
+sublinear adapativity and linear query complexity.
+
+However, when the function $f$ is not monotone, the
+best approximation ratio with polynomial query complexity
+for \sm is unknown, but falls within the range $[0.385, 0.491]$
+\cite{Buchbinder2016,Gharan2011a}. For \sm,
+algorithms with nearly optimal adaptivity have been
+designed by \shortciteS{Balkanskia,Chekuri2019a,Ene2019b,Fahrbach2018a,amanatidis2021submodular};
+for the query complexity and approximation factors of
+these algorithms, see Table~\ref{table:cmp}.
+Of these, the best approximation ratio of $(1/e - \epsi) \approx 0.368$ 
+is obtained by the algorithm of
+\shortciteS{Ene2020}.
+However, this algorithm requires access to an oracle for
+the gradient of the continuous extension of a submodular
+set function, which requires $\Omega (nk^2 \log^2 (n) )$ 
+queries to sufficiently approximate; the practical performance
+of the algorithm of \shortciteS{Ene2020} is 
+investigated in our empirical evaluation of
+Section~\ref{sec:exp}.
+Other than the algorithms of \shortciteS{Fahrbach2018} and \shortciteS{amanatidis2021submodular}, 
+all parallelizable
+algorithms exhibit a runtime of at least quadratic dependence on $n$,
+% even the algorithm \textsc{ParKnapsack}\xspace of \shortciteS{amanatidis2021submodular} 
+% which achieves optimal logarithmic adaptivity;
+in contrast, our algorithms have query complexity of 
+$O( n \log k )$ and have $O( \log n )$ or $O( \log^2 n )$
+adaptivity.  
+
+After the conference version \cite{kuhnle2021nearly} of this paper,
+\shortciteS{amanatidis2021submodular} proposed a parallelizable algorithm,
+\park, for knapsack constraints,
+which is the first constant factor approximation with optimal
+adaptive complexity.
+In the paper, \park is directly applied to cardinality constraints.
+It achieves a $0.172-\epsi$ ratio with two different variants:
+one has $\oh{\log(n)}$ adaptive rounds and $\oh{nk\log(n)\log(k)}$ queries;
+another one has $\oh{\log(n)\log(k)}$ adaptive rounds and $\oh{n\log(n)\log^2(k)}$ queries.
+Compared to our nearly linear algorithms, 
+the first variant of \park requires total queries with more than quadratic dependence on $n$; 
+and the second variant gets a worse approximation ratio and worse number of queries than our algorithm (\latg) with the same adaptivity.
+
+\textbf{The \iter Algorithm.}
+Although the standard greedy algorithm performs arbitrarily
+badly for \sm,
+\shortciteS{Gupta2010a} showed that multiple repetitions of the
+greedy algorithm, combined with an approximation for
+the unconstrained maximization problem, yields an approximation
+for \sm. %Adaptations of this idea are used in both Sections
+%\ref{sec:atg} and~\ref{sec:latg}.
+Specifically, \shortciteS{Gupta2010a} provided
+the \iter algorithm, which
+achieves an approximation ratio of $1/6$
+for \sm when
+the $1/2$-approximation of \shortciteS{Naor2012} is used
+for the unconstrained maximization subproblems.
+Our algorithm \algTwofullname uses \threseq combined with
+the descending thresholds technique of \shortciteS{Badanidiyuru2014} to
+obtain an adaptive version
+of \iter, as described
+in Section~\ref{sec:latg}. Pseudocode for \iter is given in Appendix~\ref{apx:iter},
+where an improved ratio of $\approx$0.193 is proven for this algorithm; we
+also prove the ratio of nearly $0.193$ 
+for our adaptive algorithm \latg in Section~\ref{sec:latg}.
+
+% \paragraph{Standard Greedy}
+
+% The next two sections present the ingredients
+% used by our algorithms in Sections~\ref{sec:atg} and
+%~\ref{sec:latg}.
+\subsection{Preliminaries} \label{sec:prelim} 
+A submodular set function defined on all subsets of ground set 
+$\mathcal N$ is denoted by $f$. 
+The marginal gain of adding an element $s$ to a set 
+$S$ is denoted by $\marge{s}{S} = f( S \cup \{ s \} ) - f(S)$. 
+Let $\opt = \max_{|S|\le k}f(S)$.
+The restriction
+of $f$ to all subsets of a set $S \subseteq \mathcal N$ is denoted by
+$f \restriction_{S}$. 
+Next, we describe two subproblems both
+of our algorithms need to solve: namely, 
+unconstrained maximization subproblems and
+a threshold sampling subproblem.
+For both of these subproblems, procedures with low adaptivity are needed.
+
+\textbf{The Unconstrained Maximization Problem.} 
+The first subproblem is unconstrained maximization
+of a submodular function.
+When the function
+$f$ is non-monotone, the problem of maximizing $f$ without
+any constraints is NP-hard \cite{Feige2011}.
+% showed that a random set yields a $(1/4)$-approximation. This result
+% was improved by \shortciteS{Naor2012}, who designed a linear-time,
+% $(1/2)$-approximation.
+Recently, \shortciteS{Chen2018b} developed an algorithm that achieves
+nearly the optimal ratio of $1/2$ with constant adaptivity, as summarized in the
+following theorem. 
+\begin{theorem}[\shortciteS{Chen2018b}] \label{lemm:unc}
+  For each $\epsi > 0$,
+  there is an algorithm that
+  achieves a $(1/2 - \epsi)$-approximation
+  for unconstrained submodular maximization using
+  $O( \log (1/\epsi ) / \epsi )$ adaptive rounds 
+  and $O( n \log^3 (1/ \epsi ) / \epsi^4 )$ evaluation
+  oracle queries.
+\end{theorem}
+\noindent To achieve the approximation factor listed for
+our algorithms in
+Table~\ref{table:cmp}, the algorithm of \shortciteS{Chen2018b} is employed
+for unconstrained maximization subproblems.
+
+% The \iter algorithm works as follows: first, a standard
+% greedy procedure is run on the ground set; let $A$ be the
+% resulting set of size $k$. Next, a second greedy procedure is run
+% after removing $A$ from the ground set; let $B$
+% denote the resulting set of the second greedy procedure.
+% Next, a procedure for the unconstrained maximization problem
+% is run on both $A$,$B$ to produce sets $A'$,$B'$. Finally,
+% a set in $\{A,A',B,B'\}$ with the highest $f$ value is returned.
+% The adaptivity of IteratedGreedy is at least $2k$ from the
+% two standard greedy procedures, and the query complexity is
+% at least $2kn$.
+\textbf{The \tp Problem.}
+The second subproblem is the following:
+\begin{definition}[\tp]
+  Given a threshold $\tau \in \mathbb R$ and integer $k$,
+choose a set $S$ such that 1) $f(S) \ge \tau |S|$; 2)
+if $|S| < k$, then
+for any $x \not \in S$, $\marge{x}{S} < \tau$.
+\end{definition}
+Algorithms that can use a solution to this
+subproblem occur frequently, and so
+multiple algorithms in the literature
+for this subproblem
+have been formulated
+\cite{Fahrbach2018,Kazemi2019,amanatidis2021submodular,chen2021best}.
+We want a procedure that can solve
+$\tp$ with the following three properties:
+1) in linear time; 2) in $O( \log n )$
+adaptive rounds; 3) the function $f$ is non-monotone.
+
+None of the prior algorithms satisfy our
+requirements, since
+the procedures in \shortciteS{Fahrbach2018,Kazemi2019,chen2021best} only works when
+the submodular function is monotone;
+and the two procedures in \shortciteS{amanatidis2021submodular}
+have either $\oh{n^2 \log(n)}$ queries or $\oh{\log^2(n)}$ adaptivity.
+Moreover, in both \shortciteS{Fahrbach2018}
+and \shortciteS{amanatidis2021submodular}, the
+procedures for $\tp$ only guarantee
+$\ex{ f(S) } \ge \tau |S|$.
+
+In this paper, we propose 
+\threseq, which is linear time and has $O( \log n )$
+adaptivity.
+%% This algorithm is a non-monotone version of \threseq in \shortciteS{chen2021best}.
+This algorithm does not exactly solve $\tp$; instead,
+it returns two sets $A' \subseteq A$, such that
+$f(A') \ge \tau(1 - \epsi) |A|$ with high probability; 
+and $\marge{x}{A} < \tau$
+for all $x \not \in A$,
+which is enough for our algorithms.
+% To apply \threseq in the non-monotone cases, 
+% the algorithm returns two result sets: \todo{This needs to be discussed more: the fact that it returns two sets.}
+% one is the same as in monotone \threseq;
+% another one deletes the elements with negative marginal gains 
+% without decreasing the marginal gains of the other elements in the set.
+% In brief, \threseq
+% ensures the marginal gain of any singleton falls below a
+% given threshold $\tau$ on the first result set, while the average contribution of
+% elements added in the second result set is roughly $\tau$ 
+% with probability $1 - \delta/n$.
+
+\textbf{Organization.}
+% Section~\ref{sec:counterexample} goes over the 
+% \thresam algorithm in \cite{Fahrbach2018}
+% and gives a counterexample in the non-monotone case.
+In Section~\ref{sec:ts}, we introduce our threshold sampling
+algorithm: \threseq, with detailed analysis in Appendix~\ref{apx:threseq}.
+Then, in Sections~\ref{sec:atg} and~\ref{sec:latg}, 
+we analyze our algorithms
+using the \threseq and \unc procedures.
+Our empirical evaluation is reported in Section~\ref{sec:exp}
+with more discussions in Appendix~\ref{apx:exp}.
+%In \shortciteS{Fahrbach2018}, \thresam was used as a key
+%ingredient to formulate
+%an adaptive $1 - 1/e - \epsi$ approximation for \sm with monotone functions. In \cite{Fahrbach2018a}, \thresam was used
+%as the essential component of a $0.039 - \epsi$ approximation
+%for \sm, as discussed in Section~\ref{sec:intro}. 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

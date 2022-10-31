@@ -1,0 +1,16 @@
+\section{System Overview}
+\label{system_overview}
+
+Our pipeline (\Cref{fig:overview}) learns the material parameters of a soft robotic fish (see \Cref{fig:pneumatic_fish_tail}) using differentiable simulation and measurements from quasistatic experiments. Thrust force is simulated using a data-driven neural network predictor. We demonstrate that sim2real matching is good within $3\%$ positional error normalized to actuator length for our soft robotic fish prototypes even under significant bending.
+
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/overview.png}
+    \caption{Flow diagram of our differentiable simulation and learning pipeline. To learn the material parameters, we compute the loss as the Euclidean distance between the measured marker positions $\mathbf{x}_\textrm{m}$ and the simulated position data $\mathbf{x}_t$ and then minimize this loss using gradient-search enabled by our differentiable FEM simulation. The marker positions are 2D in-plane measurements primarily due to lateral displacement during flapping. Our neural network thrust predictor takes as input the positions and pressure at a previous time step and outputs the thrust force for the next time step.}
+    \label{fig:overview}
+\end{figure}
+
+In \Cref{simulation}, forward simulation is accomplished using implicit Euler time stepping and FEM spatial discretization. We leverage projective dynamics for a substantial speed up in computation\,\cite{du2021diffpd}.
+We describe our bollard-pull style experimental setup in \Cref{experimental_setup}.
+In \Cref{system identification}, the material properties of the body and spine are specified by two different corotated materials stitched together at the boundary.
+We verify the results (\Cref{fig:system_id}) of our system identification by comparing simulations to measurements from a gamut of dynamic experiments at varying amplitudes and frequencies. Finally, in \Cref{hydrodynamics} we describe the architecture and training of our thrust predictor network.

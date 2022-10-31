@@ -1,0 +1,23 @@
+\begin{myabstract}
+The increasing availability of video recordings made by multiple cameras has offered new means for mitigating occlusion and depth ambiguities in pose and motion reconstruction methods. Yet,  multi-view algorithms strongly depend on camera parameters, particularly on relative transformations between the cameras. 
+Such a dependency becomes a hurdle once shifting to dynamic capture in uncontrolled settings. 
+We introduce \algoname \, (\textbf{F}ree mu\textbf{L}ti-view r\textbf{E}constru\textbf{X}ion), an end-to-end extrinsic parameter-free multi-view model. FLEX is \emph{extrinsic parameter-free} (dubbed \emph{ep-free}) in the sense that it does not require extrinsic camera parameters. 
+Our key idea is that the 3D angles between skeletal parts, as well as bone lengths, are invariant to the camera position. 
+%
+Hence, learning 3D rotations and bone lengths rather than locations allows for predicting common values for all camera views. 
+%
+Our network takes multiple video streams, learns fused deep features through a novel multi-view fusion layer,
+and reconstructs a single consistent skeleton with temporally coherent joint rotations.
+%
+We demonstrate quantitative and qualitative results on three public data sets, and on multi-person synthetic video streams captured by dynamic cameras.
+%
+We compare our model to state-of-the-art methods that are not ep-free and show that in the absence of camera parameters, we outperform them by a large margin while obtaining comparable results when camera parameters are available.
+Code, trained models, and other materials are available on \ifanonymous{our project page.}\else{\projectpage.}\fi
+%our project page\ifanonymous{}\else{\footnote{\label{footnote_projectpage}Project page: \projectpage}}\fi.
+
+\ifeccv
+\keywords{Motion reconstruction, 
+Character animation, Pose estimation, Camera parameters, Deep learning.}
+\fi
+
+\end{myabstract}

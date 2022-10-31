@@ -1,0 +1,606 @@
+\begin{thebibliography}{100}
+
+\bibitem{alex2011numerical}
+A.~Alex, M.~Kalus, A.~Huckleberry, and J.~von Delft.
+\newblock A numerical algorithm for the explicit calculation of {SU($N$)} and
+  {SL($N, \mathbb C$)} {C}lebsch-{G}ordan coefficients.
+\newblock {\em Journal of Mathematical Physics}, 52(2):023507, 2011.
+
+\bibitem{anderson2019cormorant}
+B.~Anderson, T.~S. Hy, and R.~Kondor.
+\newblock Cormorant: Covariant molecular neural networks.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer, F.~d\textquotesingle
+  Alch\'{e}-Buc, E.~Fox, and R.~Garnett, editors, {\em Neural Information
+  Processing Systems}, volume~32. Curran Associates, Inc., 2019.
+
+\bibitem{aniyan2017radio}
+A.~K. Aniyan and K.~Thorat.
+\newblock Classifying radio galaxies with the convolutional neural network.
+\newblock {\em The Astrophysical Journal Supplement Series}, 230(2):20, Jun
+  2017.
+
+\bibitem{azizian2020characterizing}
+W.~Azizian and M.~Lelarge.
+\newblock Characterizing the expressive power of invariant and equivariant
+  graph neural networks.
+\newblock {\em arXiv:2006.15646}, 2020.
+
+\bibitem{beatson1997short}
+R.~Beatson and L.~Greengard.
+\newblock A short course on fast multipole methods.
+\newblock {\em Wavelets, Multilevel Methods and Elliptic PDEs}, 1:1--37, 1997.
+
+\bibitem{bengio2020machine}
+Y.~Bengio, A.~Lodi, and A.~Prouvost.
+\newblock Machine learning for combinatorial optimization: a methodological
+  tour d’horizon.
+\newblock {\em European Journal of Operational Research}, 2020.
+
+\bibitem{bietti2021sample}
+A.~Bietti, L.~Venturi, and J.~Bruna.
+\newblock On the sample complexity of learning with geometric stability.
+\newblock {\em arXiv preprint arXiv:2106.07148}, 2021.
+
+\bibitem{blum-smith}
+B.~Blum-Smith and S.~Villar.
+\newblock Equivariant maps from invariant functions, 2022.
+
+\bibitem{bogatskiy2020lorentz}
+A.~Bogatskiy, B.~Anderson, J.~Offermann, M.~Roussi, D.~Miller, and R.~Kondor.
+\newblock Lorentz group equivariant neural network for particle physics.
+\newblock In {\em International Conference on Machine Learning}, pages
+  992--1002. PMLR, 2020.
+
+\bibitem{bouritsas2020improving}
+G.~Bouritsas, F.~Frasca, S.~Zafeiriou, and M.~M. Bronstein.
+\newblock Improving graph neural network expressivity via subgraph isomorphism
+  counting.
+\newblock {\em arXiv:2006.09252}, 2020.
+
+\bibitem{boyda2020hsi}
+D.~Boyda, G.~Kanwar, S.~Racani\`ere, D.~J. Rezende, M.~S. Albergo, K.~Cranmer,
+  D.~C. Hackett, and P.~E. Shanahan.
+\newblock {Sampling using $SU(N)$ gauge equivariant flows}.
+\newblock {\em Phys. Rev. D}, 103(7):074504, 2021.
+
+\bibitem{Bronstein2021GeometricDL}
+M.~M. Bronstein, J.~Bruna, T.~Cohen, and P.~Velivckovi'c.
+\newblock Geometric deep learning: Grids, groups, graphs, geodesics, and
+  gauges.
+\newblock {\em ArXiv}, abs/2104.13478, 2021.
+
+\bibitem{candes2008exact}
+E.~J. Candes and B.~Recht.
+\newblock Exact low-rank matrix completion via convex optimization.
+\newblock In {\em 2008 46th Annual Allerton Conference on Communication,
+  Control, and Computing}, pages 806--812. IEEE, 2008.
+
+\bibitem{cappart2021combinatorial}
+Q.~Cappart, D.~Ch{\'e}telat, E.~Khalil, A.~Lodi, C.~Morris, and
+  P.~Veli{\v{c}}kovi{\'c}.
+\newblock Combinatorial optimization and reasoning with graph neural networks.
+\newblock {\em arXiv:2102.09544}, 2021.
+
+\bibitem{chen2020can}
+Z.~Chen, L.~Chen, S.~Villar, and J.~Bruna.
+\newblock Can graph neural networks count substructures?
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.~F. Balcan, and H.~Lin,
+  editors, {\em Neural Information Processing Systems}, volume~33, pages
+  10383--10395. Curran Associates, Inc., 2020.
+
+\bibitem{chen2019cdsbm}
+Z.~Chen, L.~Li, and J.~Bruna.
+\newblock Supervised community detection with line graph neural networks.
+\newblock {\em International Conference on Learning Representations}, 2019.
+
+\bibitem{chen2019equivalence}
+Z.~Chen, S.~Villar, L.~Chen, and J.~Bruna.
+\newblock On the equivalence between graph isomorphism testing and function
+  approximation with gnns.
+\newblock In {\em Neural Information Processing Systems}, pages 15868--15876,
+  2019.
+
+\bibitem{choo2018quantum}
+K.~Choo, G.~Carleo, N.~Regnault, and T.~Neupert.
+\newblock Symmetries and many-body excitations with neural-network quantum
+  states.
+\newblock {\em Physical Review Letters}, 121:167204, Oct 2018.
+
+\bibitem{cohen2019gauge}
+T.~Cohen, M.~Weiler, B.~Kicanaoglu, and M.~Welling.
+\newblock Gauge equivariant convolutional networks and the icosahedral cnn.
+\newblock In {\em International Conference on Machine Learning}, pages
+  1321--1330. PMLR, 2019.
+
+\bibitem{cranmer2020lagrangian}
+M.~D. Cranmer, S.~Greydanus, S.~Hoyer, P.~W. Battaglia, D.~N. Spergel, and
+  S.~Ho.
+\newblock Lagrangian neural networks.
+\newblock {\em arXiv:2003.04630}, 2020.
+
+\bibitem{defferrard2016convolutional}
+M.~Defferrard, X.~Bresson, and P.~Vandergheynst.
+\newblock Convolutional neural networks on graphs with fast localized spectral
+  filtering.
+\newblock In {\em neural information processing systems}, pages 3844--3852,
+  2016.
+
+\bibitem{dieleman2015gzoo}
+S.~Dieleman, K.~W. Willett, and J.~Dambre.
+\newblock Rotation-invariant convolutional neural networks for galaxy
+  morphology prediction.
+\newblock {\em Monthly Notices of the Royal Astronomical Society},
+  450(2):1441–1459, Apr 2015.
+
+\bibitem{dominguez-sanchez2018galaxy}
+H.~Domínguez~Sánchez, M.~Huertas-Company, M.~Bernardi, D.~Tuccillo, and J.~L.
+  Fischer.
+\newblock Improving galaxy morphologies for sdss with deep learning.
+\newblock {\em Monthly Notices of the Royal Astronomical Society},
+  476(3):3661–3676, Feb 2018.
+
+\bibitem{duvenaud2015convolutional}
+D.~K. Duvenaud, D.~Maclaurin, J.~Iparraguirre, R.~Bombarell, T.~Hirzel,
+  A.~Aspuru-Guzik, and R.~P. Adams.
+\newblock Convolutional networks on graphs for learning molecular fingerprints.
+\newblock In {\em Neural Information Processing systems}, pages 2224--2232,
+  2015.
+
+\bibitem{dym2020universality}
+N.~Dym and H.~Maron.
+\newblock On the universality of rotation equivariant point cloud networks.
+\newblock {\em arXiv:2010.02449}, 2020.
+
+\bibitem{einstein}
+A.~Einstein.
+\newblock {Die Grundlage der allgemeinen Relativit{\"a}tstheorie}.
+\newblock {\em Annalen der Physik}, 354(7):769--822, Jan. 1916.
+
+\bibitem{elesedy2021provably}
+B.~Elesedy and S.~Zaidi.
+\newblock Provably strict generalisation benefit for equivariant models.
+\newblock {\em arXiv preprint arXiv:2102.10333}, 2021.
+
+\bibitem{fenton2020jet}
+M.~J. Fenton, A.~Shmakov, T.-W. Ho, S.-C. Hsu, D.~Whiteson, and P.~Baldi.
+\newblock {Permutationless Many-Jet Event Reconstruction with Symmetry
+  Preserving Attention Networks}.
+\newblock {\em arXiv:2010.09206}, 2020.
+
+\bibitem{finzi2021practical}
+M.~Finzi, M.~Welling, and A.~G. Wilson.
+\newblock A practical method for constructing equivariant multilayer
+  perceptrons for arbitrary matrix groups.
+\newblock {\em arXiv:2104.09459}, 2021.
+
+\bibitem{fuchs2020se}
+F.~Fuchs, D.~Worrall, V.~Fischer, and M.~Welling.
+\newblock Se (3)-transformers: 3d roto-translation equivariant attention
+  networks.
+\newblock {\em Neural Information Processing Systems}, 33, 2020.
+
+\bibitem{gilmer2017neural}
+J.~Gilmer, S.~S. Schoenholz, P.~F. Riley, O.~Vinyals, and G.~E. Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In {\em Proceedings of the 34th International Conference on Machine
+  Learning-Volume 70}, pages 1263--1272. JMLR. org, 2017.
+
+\bibitem{gonzalez2018augment}
+R.~González, R.~Muñoz, and C.~Hernández.
+\newblock Galaxy detection and identification using deep learning and data
+  augmentation.
+\newblock {\em Astronomy and Computing}, 25:103--109, 2018.
+
+\bibitem{goodman2009symmetry}
+R.~Goodman and N.~R. Wallach.
+\newblock {\em Symmetry, representations, and invariants}, volume 255.
+\newblock Springer, 2009.
+
+\bibitem{gori2005new}
+M.~Gori, G.~Monfardini, and F.~Scarselli.
+\newblock A new model for learning in graph domains.
+\newblock In {\em Proceedings. 2005 IEEE International Joint Conference on
+  Neural Networks, 2005.}, volume~2, pages 729--734. IEEE, 2005.
+
+\bibitem{greydanus2019hamiltonian}
+S.~Greydanus, M.~Dzamba, and J.~Yosinski.
+\newblock Hamiltonian neural networks.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer, F.~d\textquotesingle
+  Alch\'{e}-Buc, E.~Fox, and R.~Garnett, editors, {\em Neural Information
+  Processing Systems}, volume~32. Curran Associates, Inc., 2019.
+
+\bibitem{gripaios2021lorentz}
+B.~Gripaios, W.~Haddadin, and C.~G. Lester.
+\newblock Lorentz-and permutation-invariants of particles.
+\newblock {\em Journal of Physics A: Mathematical and Theoretical},
+  54(15):155201, 2021.
+
+\bibitem{guo2020deep}
+Y.~Guo, H.~Wang, Q.~Hu, H.~Liu, L.~Liu, and M.~Bennamoun.
+\newblock Deep learning for 3d point clouds: A survey.
+\newblock {\em IEEE Transactions on Pattern Analysis and machine intelligence},
+  2020.
+
+\bibitem{haddadin2021invariant}
+W.~Haddadin.
+\newblock Invariant polynomials and machine learning.
+\newblock {\em arXiv preprint arXiv:2104.12733}, 2021.
+
+\bibitem{huang2021traffic}
+K.~Huang.
+\newblock Traffic agent movement prediction using resnet-based model.
+\newblock In {\em 2021 6th International Conference on Intelligent Computing
+  and Signal Processing (ICSP)}, pages 136--139. IEEE, 2021.
+
+\bibitem{huertas-company2015galaxy}
+M.~Huertas-Company, R.~Gravet, G.~Cabrera-Vives, P.~G. Pérez-González, J.~S.
+  Kartaltepe, G.~Barro, M.~Bernardi, S.~Mei, F.~Shankar, P.~Dimauro, and et~al.
+\newblock A catalog of visual-like morphologies in the 5 candels fields using
+  deep learning.
+\newblock {\em The Astrophysical Journal Supplement Series}, 221(1):8, Oct
+  2015.
+
+\bibitem{ibort2017new}
+A.~Ibort, A.~L{\'o}pez~Yela, and J.~Moro.
+\newblock A new algorithm for computing branching rules and {C}lebsch-{G}ordan
+  coefficients of unitary representations of compact groups.
+\newblock {\em Journal of Mathematical Physics}, 58(10):101702, 2017.
+
+\bibitem{jackson}
+J.~D. Jackson.
+\newblock {\em {Classical Electrodynamics; 2nd ed.}}
+\newblock Wiley, New York, NY, 1975.
+
+\bibitem{jalali2017variational}
+A.~Jalali, M.~Fazel, and L.~Xiao.
+\newblock Variational gram functions: Convex analysis and optimization.
+\newblock {\em SIAM Journal on Optimization}, 27(4):2634--2661, 2017.
+
+\bibitem{joshi2019efficient}
+C.~K. Joshi, T.~Laurent, and X.~Bresson.
+\newblock An efficient graph convolutional network technique for the travelling
+  salesman problem.
+\newblock {\em arXiv:1906.01227}, 2019.
+
+\bibitem{karalias2020erdos}
+N.~Karalias and A.~Loukas.
+\newblock Erdos goes neural: an unsupervised learning framework for
+  combinatorial optimization on graphs.
+\newblock {\em arXiv:2006.10643}, 2020.
+
+\bibitem{kashinath2021physics}
+K.~Kashinath, M.~Mustafa, A.~Albert, J.~Wu, C.~Jiang, S.~Esmaeilzadeh,
+  K.~Azizzadenesheli, R.~Wang, A.~Chattopadhyay, A.~Singh, et~al.
+\newblock Physics-informed machine learning: case studies for weather and
+  climate modelling.
+\newblock {\em Philosophical Transactions of the Royal Society A},
+  379(2194):20200093, 2021.
+
+\bibitem{keriven2019universal}
+N.~Keriven and G.~Peyr{\'e}.
+\newblock Universal invariant and equivariant graph neural networks.
+\newblock In {\em Neural Information Processing Systems}, pages 7092--7101,
+  2019.
+
+\bibitem{kipf2016semi}
+T.~N. Kipf and M.~Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock {\em arXiv:1609.02907}, 2016.
+
+\bibitem{klicpera2021gemnet}
+J.~Klicpera, F.~Becker, and S.~G{\"u}nnemann.
+\newblock Gemnet: Universal directional graph neural networks for molecules.
+\newblock {\em arXiv preprint arXiv:2106.08903}, 2021.
+
+\bibitem{kondor2018n}
+R.~Kondor.
+\newblock N-body networks: a covariant hierarchical neural network architecture
+  for learning atomic potentials.
+\newblock {\em arXiv:1803.01588}, 2018.
+
+\bibitem{kondor2018covariant}
+R.~Kondor, H.~T. Son, H.~Pan, B.~Anderson, and S.~Trivedi.
+\newblock Covariant compositional networks for learning graphs.
+\newblock {\em arXiv:1801.02144}, 2018.
+
+\bibitem{lecun2015deep}
+Y.~LeCun, Y.~Bengio, and G.~Hinton.
+\newblock Deep learning.
+\newblock {\em Nature}, 521(7553):436--444, 2015.
+
+\bibitem{lecun1989backpropagation}
+Y.~LeCun, B.~Boser, J.~S. Denker, D.~Henderson, R.~E. Howard, W.~Hubbard, and
+  L.~D. Jackel.
+\newblock Backpropagation applied to handwritten zip code recognition.
+\newblock {\em Neural Computation}, 1(4):541--551, 1989.
+
+\bibitem{lee2020jet}
+J.~S.~H. Lee, I.~Park, I.~J. Watson, and S.~Yang.
+\newblock {Zero-Permutation Jet-Parton Assignment using a Self-Attention
+  Network}.
+\newblock {\em arXiv:2012.03542}, 2020.
+
+\bibitem{leshno1993multilayer}
+M.~Leshno, V.~Y. Lin, A.~Pinkus, and S.~Schocken.
+\newblock Multilayer feedforward networks with a nonpolynomial activation
+  function can approximate any function.
+\newblock {\em Neural Networks}, 6(6):861--867, 1993.
+
+\bibitem{li2021hamnet}
+Z.~Li, S.~Yang, G.~Song, and L.~Cai.
+\newblock Hamnet: Conformation-guided molecular representation with hamiltonian
+  neural networks, 2021.
+
+\bibitem{ling2016machine}
+J.~Ling, R.~Jones, and J.~Templeton.
+\newblock Machine learning strategies for systems with invariance properties.
+\newblock {\em Journal of Computational Physics}, 318, 05 2016.
+
+\bibitem{ling2016reynolds}
+J.~Ling, A.~Kurzawski, and J.~Templeton.
+\newblock Reynolds averaged turbulence modelling using deep neural networks
+  with embedded invariance.
+\newblock {\em Journal of Fluid Mechanics}, 807:155–166, 2016.
+
+\bibitem{lintott2008gzoo}
+C.~J. Lintott, K.~Schawinski, A.~Slosar, K.~Land, S.~Bamford, D.~Thomas, M.~J.
+  Raddick, R.~C. Nichol, A.~Szalay, D.~Andreescu, P.~Murray, and J.~Vandenberg.
+\newblock {Galaxy Zoo: morphologies derived from visual inspection of galaxies
+  from the Sloan Digital Sky Survey*}.
+\newblock {\em Monthly Notices of the Royal Astronomical Society},
+  389(3):1179--1189, 2008.
+
+\bibitem{loukas2019graph}
+A.~Loukas.
+\newblock What graph neural networks cannot learn: depth vs width.
+\newblock In {\em International Conference on Learning Representations}, 2019.
+
+\bibitem{luo2020quantum}
+D.~Luo, G.~Carleo, B.~K. Clark, and J.~Stokes.
+\newblock Gauge equivariant neural networks for quantum lattice gauge theories,
+  2020.
+
+\bibitem{luo2021quantum}
+D.~Luo, Z.~Chen, K.~Hu, Z.~Zhao, V.~M. Hur, and B.~K. Clark.
+\newblock {Gauge Invariant Autoregressive Neural Networks for Quantum Lattice
+  Models}.
+\newblock {\em arXiv:2101.07243}, 2021.
+
+\bibitem{lutter2019lagrangian}
+M.~Lutter, C.~Ritter, and J.~Peters.
+\newblock Deep lagrangian networks: Using physics as model prior for deep
+  learning.
+\newblock In {\em 7th International Conference on Learning Representations
+  (ICLR)}. ICLR, May 2019.
+
+\bibitem{maron2018invariant}
+H.~Maron, H.~Ben-Hamu, N.~Shamir, and Y.~Lipman.
+\newblock Invariant and equivariant graph networks.
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{maron2019universality}
+H.~Maron, E.~Fetaya, N.~Segol, and Y.~Lipman.
+\newblock On the universality of invariant networks.
+\newblock In {\em International Conference on Machine Learning}, pages
+  4363--4371, 2019.
+
+\bibitem{maron2020learning}
+H.~Maron, O.~Litany, G.~Chechik, and E.~Fetaya.
+\newblock On learning sets of symmetric elements.
+\newblock In {\em International Conference on Machine Learning}, pages
+  6734--6744. PMLR, 2020.
+
+\bibitem{mei2021learning}
+S.~Mei, T.~Misiakiewicz, and A.~Montanari.
+\newblock Learning with invariances in random features and kernel models.
+\newblock {\em arXiv preprint arXiv:2102.13219}, 2021.
+
+\bibitem{morris2019higher}
+C.~Morris, M.~Ritzert, M.~Fey, W.~L. Hamilton, J.~E. Lenssen, G.~Rattan, and
+  M.~Grohe.
+\newblock Weisfeiler and leman go neural: Higher-order graph neural networks.
+\newblock {\em Association for the Advancement of Artificial Intelligence},
+  2019.
+
+\bibitem{murphy2019relational}
+R.~Murphy, B.~Srinivasan, V.~Rao, and B.~Ribeiro.
+\newblock Relational pooling for graph representations.
+\newblock In {\em International Conference on Machine Learning}, pages
+  4663--4673, 2019.
+
+\bibitem{noether}
+E.~Noether.
+\newblock Invariant variation problems.
+\newblock {\em Transport Theory and Statistical Physics}, 1(3):186--207, 1971.
+
+\bibitem{nowak2017note}
+A.~Nowak, S.~Villar, A.~S. Bandeira, and J.~Bruna.
+\newblock A note on learning algorithms for quadratic assignment with graph
+  neural networks.
+\newblock {\em arXiv:1706.07450}, 2017.
+
+\bibitem{pimentel2016characterization}
+D.~L. Pimentel-Alarc{\'o}n, N.~Boston, and R.~D. Nowak.
+\newblock A characterization of deterministic sampling patterns for low-rank
+  matrix completion.
+\newblock {\em IEEE Journal of Selected Topics in Signal Processing},
+  10(4):623--636, 2016.
+
+\bibitem{popov1994invariant}
+V.~L. Popov and E.~B. Vinberg.
+\newblock Invariant theory.
+\newblock In {\em Algebraic geometry IV}, pages 123--278. Springer, 1994.
+
+\bibitem{qi2017pointnet}
+C.~R. Qi, H.~Su, K.~Mo, and L.~J. Guibas.
+\newblock Pointnet: Deep learning on point sets for 3d classification and
+  segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 652--660, 2017.
+
+\bibitem{qi2017pointnet++}
+C.~R. Qi, L.~Yi, H.~Su, and L.~J. Guibas.
+\newblock Pointnet++ deep hierarchical feature learning on point sets in a
+  metric space.
+\newblock In {\em Neural Information Processing Systems}, pages 5105--5114,
+  2017.
+
+\bibitem{ravanbakhsh2017sharing}
+S.~Ravanbakhsh, J.~Schneider, and B.~Poczos.
+\newblock Equivariance through parameter-sharing.
+\newblock {\em Proceedings of the 34th International Conference on Machine
+  Learning}, 2017.
+
+\bibitem{ricci}
+M.~M.~G. Ricci and T.~Levi-Civita.
+\newblock M{\'e}thodes de calcul diff{\'e}rentiel absolu et leurs applications.
+\newblock {\em Mathematische Annalen}, 54(1):125--201, 1900.
+
+\bibitem{roth1981rigid}
+B.~Roth.
+\newblock Rigid and flexible frameworks.
+\newblock {\em The American Mathematical Monthly}, 88(1):6--21, 1981.
+
+\bibitem{roth2021quantum}
+C.~{Roth} and A.~H. {MacDonald}.
+\newblock {Group Convolutional Neural Networks Improve Quantum State Accuracy}.
+\newblock {\em arXiv:2104.05085}, 2021.
+
+\bibitem{sanchez-gonzalez2019hamiltonian}
+A.~Sanchez-Gonzalez, V.~Bapst, K.~Cranmer, and P.~Battaglia.
+\newblock {Hamiltonian Graph Networks with ODE Integrators}.
+\newblock {\em arXiv:1909.12790}, 2019.
+
+\bibitem{enequivariant}
+V.~G. Satorras, E.~Hoogeboom, and M.~Welling.
+\newblock E(n) equivariant graph neural networks.
+\newblock {\em arXiv:2102.09844}, 2021.
+
+\bibitem{scarselli2008graph}
+F.~Scarselli, M.~Gori, A.~C. Tsoi, M.~Hagenbuchner, and G.~Monfardini.
+\newblock The graph neural network model.
+\newblock {\em IEEE Transactions on Neural Networks}, 20(1):61--80, 2008.
+
+\bibitem{schutt2021equivariant}
+K.~T. Schütt, O.~T. Unke, and M.~Gastegger.
+\newblock Equivariant message passing for the prediction of tensorial
+  properties and molecular spectra, 2021.
+
+\bibitem{singer2010uniqueness}
+A.~Singer and M.~Cucuringu.
+\newblock Uniqueness of low-rank matrix completion by rigidity theory.
+\newblock {\em SIAM Journal on Matrix Analysis and Applications},
+  31(4):1621--1641, 2010.
+
+\bibitem{tahmasebi2020counting}
+B.~Tahmasebi and S.~Jegelka.
+\newblock Counting substructures with higher-order graph neural networks:
+  Possibility and impossibility results.
+\newblock {\em arXiv:2012.03174}, 2020.
+
+\bibitem{thomas2018tensor}
+N.~Thomas, T.~Smidt, S.~Kearnes, L.~Yang, L.~Li, K.~Kohlhoff, and P.~Riley.
+\newblock Tensor field networks: Rotation-and translation-equivariant neural
+  networks for 3d point clouds.
+\newblock {\em arXiv:1802.08219}, 2018.
+
+\bibitem{trefethen1997numerical}
+L.~N. Trefethen and D.~Bau~III.
+\newblock {\em Numerical linear algebra}, volume~50.
+\newblock Siam, 1997.
+
+\bibitem{velivckovic2017graph}
+P.~Veli{\v{c}}kovi{\'c}, G.~Cucurull, A.~Casanova, A.~Romero, P.~Li{\`o}, and
+  Y.~Bengio.
+\newblock Graph attention networks.
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{vieijra2020uantum}
+T.~Vieijra, C.~Casert, J.~Nys, W.~De~Neve, J.~Haegeman, J.~Ryckebusch, and
+  F.~Verstraete.
+\newblock Restricted boltzmann machines for quantum states with non-abelian or
+  anyonic symmetries.
+\newblock {\em Physical Review Letters}, 124(9), Mar 2020.
+
+\bibitem{wang2020towards}
+R.~Wang, K.~Kashinath, M.~Mustafa, A.~Albert, and R.~Yu.
+\newblock Towards physics-informed deep learning for turbulent flow prediction.
+\newblock In {\em Proceedings of the 26th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, pages 1457--1466, 2020.
+
+\bibitem{wang2021incorporating}
+R.~Wang, R.~Walters, and R.~Yu.
+\newblock Incorporating symmetry into deep dynamics models for improved
+  generalization.
+\newblock In {\em International Conference on Learning Representations}, 2021.
+
+\bibitem{wang2021molecular}
+Z.~Wang, C.~Wang, S.~Zhao, S.~Du, Y.~Xu, B.-L. Gu, and W.~Duan.
+\newblock Symmetry-adapted graph neural networks for constructing molecular
+  dynamics force fields, 2021.
+
+\bibitem{weiler2021coordinate}
+M.~Weiler, P.~Forré, E.~Verlinde, and M.~Welling.
+\newblock Coordinate independent convolutional networks -- isometry and gauge
+  equivariant convolutions on riemannian manifolds, 2021.
+
+\bibitem{weyl}
+H.~Weyl.
+\newblock {\em The Classical Groups}.
+\newblock Princeton University Press, 1946.
+
+\bibitem{xu2018powerful}
+K.~Xu, W.~Hu, J.~Leskovec, and S.~Jegelka.
+\newblock How powerful are graph neural networks?
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{yao2019experimental}
+W.~Yao, A.~S. Bandeira, and S.~Villar.
+\newblock Experimental performance of graph neural networks on random instances
+  of max-cut.
+\newblock In {\em Wavelets and Sparsity XVIII}, volume 11138, page 111380S.
+  International Society for Optics and Photonics, 2019.
+
+\bibitem{yao2021simple}
+W.~Yao, K.~Storey-Fisher, D.~W. Hogg, and S.~Villar.
+\newblock A simple equivariant machine learning method for dynamics based on
+  scalars, 2021.
+
+\bibitem{yarotsky2018universal}
+D.~Yarotsky.
+\newblock Universal approximations of invariant maps by neural networks.
+\newblock {\em arXiv:1804.10306}, 2018.
+
+\bibitem{yu-physics}
+R.~Yu, P.~Perdikaris, and A.~Karpatne.
+\newblock Physics-guided ai for large-scale spatiotemporal data.
+\newblock In {\em Proceedings of the 27th ACM SIGKDD Conference on Knowledge
+  Discovery \& Data Mining}, KDD '21, page 4088–4089, New York, NY, USA,
+  2021. Association for Computing Machinery.
+
+\bibitem{zaheer2017deep}
+M.~Zaheer, S.~Kottur, S.~Ravanbakhsh, B.~P{\'o}czos, R.~Salakhutdinov, and
+  A.~J. Smola.
+\newblock Deep sets.
+\newblock In {\em Neural Information Processing Systems}, pages 3394--3404,
+  2017.
+
+\bibitem{zhang2019rotation}
+Z.~Zhang, B.-S. Hua, D.~W. Rosen, and S.-K. Yeung.
+\newblock Rotation invariant convolutions for 3d point clouds deep learning.
+\newblock In {\em 2019 International Conference on 3D Vision (3DV)}, pages
+  204--213. IEEE, 2019.
+
+\bibitem{zhao2020quaternion}
+Y.~Zhao, T.~Birdal, J.~E. Lenssen, E.~Menegatti, L.~Guibas, and F.~Tombari.
+\newblock Quaternion equivariant capsule networks for 3d point clouds.
+\newblock In {\em European Conference on Computer Vision}, pages 1--19.
+  Springer, 2020.
+
+\bibitem{zhong2020symplectic}
+Y.~D. Zhong, B.~Dey, and A.~Chakraborty.
+\newblock Symplectic ode-net: Learning hamiltonian dynamics with control.
+\newblock In {\em 7th International Conference on Learning Representations
+  (ICLR)}. ICLR, May 2020.
+
+\end{thebibliography}

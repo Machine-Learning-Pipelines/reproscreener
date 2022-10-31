@@ -1,0 +1,594 @@
+\documentclass{article}
+\usepackage[final]{neurips_2021}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2021}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+\usepackage{xcolor}         % colors
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularx}
+\usepackage[inline]{enumitem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[ruled,norelsize,algo2e]{algorithm2e}
+\usepackage{multirow}
+\usepackage{dsfont}
+\usepackage{xspace}
+\def\UrlBreaks{\do\/\do-}
+
+\newcommand{\emecom}{\textsc{emecom\xspace}}
+\newcommand{\ltc}{\textsc{L2C\xspace}}
+\newcommand{\stp}{\textsc{S2P\xspace}}
+\newcommand{\gentrans}{\textsc{Gen.Trans.\xspace}}
+\newcommand{\sil}{\textsc{SIL\xspace}}
+
+
+\newcommand\newsubcap[1]{\phantomcaption%
+       \caption*{\figurename~\thefigure\thesubfigure: #1}}
+\newcommand\mycommfont[1]{\small\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\usepackage{xargs}   
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\angeliki}[2][1=]{
+\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\marc}[2][1=]{
+\todo[linecolor=green,backgroundcolor=green!25,bordercolor=green,#1]{#2}}
+\newcommandx{\abhinav}[2][1=]{
+\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+
+\title{Dynamic population-based meta-learning\\ for multi-agent communication\\ with natural language}
+
+\author{
+  Abhinav Gupta\thanks{Work partially done during an internship at DeepMind.} \\
+  MILA \\
+  \texttt{abhinavg@nyu.edu} \\
+   \And
+   Marc Lanctot \\
+   DeepMind \\
+   \texttt{lanctot@deepmind.com} \\
+   \And
+   Angeliki Lazaridou \\
+   DeepMind \\
+   \texttt{angeliki@deepmind.com} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this work, our goal is to train agents that can coordinate with seen, unseen as well as human partners in a multi-agent communication environment involving natural language. Previous work using a single set of agents has shown great progress in generalizing to known partners, however it struggles when coordinating with unfamiliar agents. To mitigate that, recent work explored the use of population-based approaches, where multiple agents interact with each other with the goal of learning more generic protocols. These methods, while able to result in good coordination between unseen partners, still only achieve so in cases of simple languages, thus failing to adapt to human partners using natural language. We attribute this to the use of \emph{static} populations and instead propose a \emph{dynamic} population-based meta-learning approach that builds such a population in an iterative manner. We perform a holistic evaluation of our method on two different referential games, and show that our agents outperform all prior work when communicating with seen partners and humans. Furthermore, we analyze the natural language generation skills of our agents, where we find that our agents also outperform strong baselines. Finally, we test the robustness of our agents when communicating with out-of-population agents and carefully test the importance of each component of our method through ablation studies.
+\end{abstract}
+
+\section{Introduction}
+Humans excel at large-group coordination, with natural language playing a key role in their problem solving ability~\citep{Tomasello:2010,barrett-royalsoc}. Inspired by these findings, in this work our goal is to endow artificial agents with communication skills in natural language, which can in turn allow them to coordinate effectively in three key situations when playing referential games (i) with agents they have been paired with during their training (ii) with new agents they have not been paired with before and (iii) with humans.
+
+Our starting point is recent work in the emergent communication literature, which proposes to learn protocols ``from scratch'', allowing like these agents that have been \emph{trained together} (and for a large number of iterations) to form conventions \citep{sukhbaatar2016learning,lazaridou_multi-agent_2016,foerster_learning_2016,kharitonov_information_2019}. While such communication approaches result in agents achieving higher rewards at test time \emph{when paired with their training partners} \citep{kottur2017natural,graesser_emergent_2019,lazaridou_emergence_2018}, there is growing evidence that these agents do not acquire communication skills with general properties \citep{lowe_pitfalls_2019,bouchacourt_miss_2019,DBLP:conf/acl/ChaabouniKBDB20,DBLP:journals/corr/abs-2003-02979} but rather learn to form communication protocols that are based solely on idiosyncratic conventions.
+
+Interestingly, these type of communication pathologies are also observed in natural languages, where they are linked to the size of a linguistic community~\citep{Reali:etal:2018, Wray:Grace:2007,Trudgill:2011,Lupyan:Dale:2010}, i.e. the smaller the community the more complex the languages get. This has recently inspired the use of population-based approaches to multi-agent communication in which agents within a population interact with one another~\citep{tieleman_shaping_2018,cogswell_emergence_2019,fitzgerald2019populate,gupta-etal-2019-seeded}. One such approach is \ltc\ \citep{lowe_learning_2019} which uses meta-learning approaches like MAML \citep{finn_model-agnostic_2017} combined with a static population of agents. Indeed, \ltc\ results in communication protocols with some primitive forms of compositionality, allowing agents to successfully communicate with unseen partners. Nevertheless, even in this case, the induced protocols fail to adapt to natural language, leaving open questions with regard to coordination with humans. We hypothesize that a potential bottleneck of this and related approaches lies in the use of static populations. Intuitively, the initial diversity induced by different random initializations of the population gradually vanishes when given enough capacity and training iterations, thus allowing all agents in the population to co-adapt to each other and converge to the same ad-hoc conventions. Simply put, it is challenging to maintain diversity in static populations, which is what drives the learning of generalizable protocols. 
+
+With this in mind, we propose to address this issue by dynamically building the population (\S\ref{sec:meta-learning}), to gradually induce constructive diversity within the population, so as to enable population-based algorithms (like meta-learning) to train agents that can then generalize to seen and unseen partners as well as humans.Since communication with humans is one of our goals, grounding to natural language is of paramount importance. Consequently, we want the agents to coordinate with humans using limited amount of human data while not drifting away from human behavior. In order to maximize efficiency and minimize the use task-specific language data, we combine two learning signals~\citep{lazaridou-etal-2020-multi,lowe*2020on}, each bootstrapping the other (\S\ref{sec:learning}). First, maximizing task rewards allows the agents to learn to communicate with one another in a purely self-play manner, but using emergent protocols not grounding in natural language. Hence, combining this signal with supervision from a \emph{limited} dataset of task-specific language data, allows grounding of the emergent protocols in natural language. All in all, our proposed approaches consists of three different phases (i.e., interactive reward-based learning, supervised learning, and meta-learning), each imposing an inductive bias.
+
+We present extensive experiments in two referential game environments (an image-based and a text-based defined in \S\ref{sec:exp-res}) using natural language communication and compare our model against previous approaches, strong baselines and ablations of our method. Moreover, we follow a holistic approach to evaluating multi-agent communication, reporting results on:
+(a) task performance measured by referential accuracy in (\S\ref{subsec:referential-acc})
+(b) the agents' natural language generation skills by computing BLEU score with language data (\S\ref{subsec:speaker-eval})
+(c) human evaluation of both agents in (\S\ref{subsec:human-eval})
+(d) cross-play evaluation with unseen partners in (\S\ref{subsec:diversity}), and
+(e) robustness against implict bias in the dataset (\S\ref{subsec:robustness}).
+
+\section{Learning in multi-agent games with natural language: The case of referential games}
+\label{sec:learning}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=\linewidth]{figs/game-image.pdf}
+\vspace{-6mm}
+\caption{Referential Game with images.}
+\label{fig:game-image}
+\end{wrapfigure}
+
+\paragraph{Referential Games}
+Referential games are a type of Lewis Signaling games \citep{lewis1969convention} that have been used in human as well as artificial language experiments \citep{havrylov_emergence_2017,lazaridou_emergence_2018,evtimova2018emergent,lee_emergent_2017,li_ease--teaching_2019,gupta-etal-2019-seeded}. This fully cooperative game consists of two players, a speaker $\mathcal{S}$ and a listener $\mathcal{L}$ who interact with each other to solve a common task. In our setup, both agents are parameterized using deep neural networks, where the speaker's and listener's parameters are denoted by $\theta$ and $\phi$ respectively. The speaker gets as input a target object $t$, encodes it in its own embedding space and sends a discrete message $m = \mathcal{S}(t)$ to the listener. The listener receives two inputs, the message $m$ and a set of distractor objects $D$ ($|D|=K$) and the target object $t$. The listener embeds both of these into a shared vector representation to compute a similarity score between the message and the objects and outputs a prediction $t'$ about the target object. Both agents are given a reward if the listener is able to correctly predict the target object. We denote the maximum length of the message $m$ with $l$ and the vocabulary set with $V$. In our work, we use two different types of objects: images and sentences as described in \S\ref{sec:exp-res}.
+\begin{figure*}
+    \centering
+    \begin{subfigure}{0.25\linewidth}
+    \includegraphics[width=\linewidth, height=4.5cm]{figs/static-schematic.pdf}
+    \vspace{5mm}
+    \caption{Train:Static Population}
+    \label{fig:static-schematic}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.55\linewidth}
+    \includegraphics[width=\linewidth, height=5.5cm]{figs/dynamic-schematic.pdf}
+    \vspace{-4mm}
+    \caption{Train:Dynamic Population}
+    \label{fig:adaptive-schematic}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.15\linewidth}
+    \includegraphics[width=\linewidth, height=4.5cm]{figs/test-human.pdf}
+    \vspace{5mm}
+    \caption{Test:Humans}
+    \label{fig:test-humans}
+    \end{subfigure}
+    \caption{Meta-learning a listener using two types of population. In Fig~\ref{fig:static-schematic}, a fixed set of speakers and listeners are trained using self-play. Then a meta-listener is trained by interacting with the fixed population of speakers. In Fig~\ref{fig:adaptive-schematic}, the meta-listener is trained using the current population of speakers at time $t$ in top-phase. Speakers are added to this population iteratively by training the latest speaker (obtained at $t-1$) with the updated meta-listener (denoted by dashed arrow) in the bottom-phase. In Fig~\ref{fig:test-humans}, the final trained meta-listener plays with human speakers during test time.}
+\end{figure*}
+
+\paragraph{Interactive Learning}
+The most common approach to train agents to solve the main communicative task in the multi-agent communication framework is by using interactive (reward-driven) learning \citep{evtimova2018emergent,mordatch_emergence_2017,havrylov_emergence_2017,li_ease--teaching_2019}. The reward function $r$ for both agents is the same and given by:
+$ r = 1 \mbox{ if } t = t' \mbox{ and } -0.1$ otherwise.
+We optimize the agents' parameters using reinforcement learning, and specifically, using policy gradients (REINFORCE \citep{williams1992simple}), similar to \citep{evtimova2018emergent,lazaridou-etal-2020-multi}. The listener is additionally optimized using a supervised learning (cross-entropy) loss since we know the ground truth label (which is the target object). The corresponding interactive loss functions for the speaker ($\mathcal{J}^\texttt{int}_{\mathcal{S}}$) and the listener ($\mathcal{J}^\texttt{int}_{\mathcal{L}}$) are given by:
+\begin{align}
+\mathcal{J}^\texttt{int}_{\mathcal{S}}(t;\theta) &= -\frac{r}{l} \sum_{j=1}^l \log p(m_j | m_{<j}, t; \theta) + \lambda_{hs} H_\mathcal{S}(\theta) \label{eq:spk_int} \\
+\mathcal{J}^\texttt{int}_{\mathcal{L}}(m,t,D;\phi) &= -r \log p(t' | m, t, D; \phi) + \lambda_s \log p(t'=t | m, t, D; \phi) + \lambda_{hl} H_{\mathcal{L}}(\phi) \label{eq:lis_int}
+\end{align}
+where $H_{\mathcal{S}}$ and $H_{\mathcal{L}}$ denote entropy regularization for the speaker and listener policies respectively. $\lambda_{hs}$ and $\lambda_{hl}$ are non-negative regularization coefficients and $\lambda_s \geq 0$ is a scalar quantity. 
+
+\paragraph{Behavior Grounding}
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=\linewidth]{figs/dataset.pdf}
+\caption{Limited human dataset $\mathcal{D}$.}
+\label{fig:dataset}
+\end{wrapfigure}
+If we wish to enable agents to communicate with humans, it is essential to ground their behavior into the corresponding human distribution. Recent work~\citep{lazaridou-etal-2020-multi,lowe*2020on,DBLP:journals/corr/abs-2003-12694} achieves this by performing supervised learning with the use of a natural language dataset. Consequently, the speaker needs to send messages that are human-interpretable while the listener should be able to understand natural language. To achieve this, we let humans provide descriptions of the objects and collect such (object, description) pairs to train our agents using supervised learning. Let us denote this dataset by $\mathcal{D}$ with $m^*$ being the description for the target object $t$ present in $\mathcal{D}$. Then the corresponding cross-entropy losses for the speaker ($\mathcal{J}^\texttt{sup}_\mathcal{S})$ and the listener ($\mathcal{J}^\texttt{sup}_\mathcal{L})$ are:
+\begin{align}
+\mathcal{J}_\mathcal{S}^\texttt{sup}(m^*,t;\theta) &= -\frac{1}{l}\sum_{j=1}^{l}\sum_{c=1}^{|V|} m^*_{j,c}\log p(m_{j,c} | m_{<j}, t; \theta) \label{eq:spk_sup} \\
+\mathcal{J}_\mathcal{L}^\texttt{sup}(m^*, t, D; \phi) &= -\sum_{j=1}^{K+1}\mathds{1}_{(t_j=t)} p(t_j | m^*, t, D; \phi) \label{eq:lis_sup}
+\end{align} 
+
+\section{Dynamic Population-based Meta-Learning}
+\label{sec:meta-learning}
+
+The previous two approaches help in learning protocols that are either closer to human prior or are ad-hoc conventions that get emerged during training. A common pitfall of training a single set of speaker/listener is that both agents tend to overfit to their partners resulting in loss of generalization across multiple partners including humans \citep{fitzgerald2019populate,cogswell_emergence_2019,li_ease--teaching_2019}. Since our objective is for the agents to learn robust protocols that match the human distribution and are high rewarding, we adopt a population-based approach to train agents that generalize across diverse agents in a population. 
+
+Previous approaches have used population as means to regularize the behavior of the agents using a community of fixed number of agents \citep{tieleman_shaping_2018} or by meta-learning an agent on this fixed population of agents. In a given population, each agent learns a best-response to the other agent with the underlying hypothesis being the meta-agent learning the overall best-response to all agents in the population. 
+\input{algo}
+The main aim of meta-learning techniques \citep{NIPS2016_90e13578,pmlr-v48-santoro16,DBLP:conf/iclr/RaviL17,finn_model-agnostic_2017} is to learn a meta-agent that is able to achieve good generalization across multiple tasks. In the reinforcement learning setting, these tasks can be different sets of goals in the same or different environments. In a multi-agent interactive setting, we can reformulate these goals as generalizing to different agents in a population where the agent's partner is its environment. Consequently, meta-learning can only aim to learn generic protocols if there is a rich signal emerging from a \textit{diverse} set of populations. A previous approach \citep{lowe_learning_2019} (\ltc) investigating learning diverse agents using different seeds for random initialization of the agent parameters. However, this simplistic way of inducing diversity is limited and only works with more toy (artificial) languages, thus leaving a big performance gap when agents communicate in natural language \citep{lowe*2020on}. We hypothesize that the desired useful diversity (for meta-learning) is absent in these static populations, hence resulting in lower performance of the meta-agent.
+
+We aim to tackle this issue by building a dynamic population in an iterative manner, similar to Policy-Space Response Oracles (PSRO) \citep{NIPS2017_3323fe11}, which uses empirical game-theoretic analysis in a non-cooperative game to learn a meta-strategy for policy selection. An agent learns a best-response to an Oracle which is then added to a buffer that stores this growing population of agents. This buffer is used to obtain an improved Oracle which is used in subsequent iteration. We split the training into two phases as depicted in Fig~\ref{fig:adaptive-schematic}. We will describe the method for training a meta-listener (an equivalent method is used for the meta-speaker):
+
+\paragraph{Learning a meta-listener}
+We train a meta-listener that plays with all speakers present in the current population buffer. At each training iteration, the meta-listener aims to distill the behavior of all past listeners that interacted with the current speaker population.
+
+\paragraph{Building the speaker population}
+After obtaining the newly trained meta-listener, we expand the speaker population by playing the meta-listener with the speaker that was added to the buffer in the previous iteration. This encourages new behavior to emerge as a result of interacting with the distilled meta-listener. Our hypothesis is that by adopting this iterative mechanism of distillation and expansion, we are able to obtain a diverse population where the behavior of each consecutive agent in the buffer changes gradually.
+
+In this work, we use techniques that use gradient descent for optimizing the meta-agent. In particular, we use the popular Model Agnostic Meta Learning (MAML) \citep{finn_model-agnostic_2017} to train the meta-agents. MAML based approaches provide a good initialization over the parameters to be able to quickly adapt to new tasks. An important point to note here is that in our setup, the task distribution is changing over time and is determined as a result of multi-agent learning. We also show some results using other algorithms that are derived from MAML in the Appendix. We denote the parameters of meta-speaker $\mathcal{S}^m$ by $\vartheta$ and meta-listener $\mathcal{L}^m$ by $\varphi$. We assume a buffer of speakers denoted by $\mathcal{B}_\mathcal{S}$ and listeners by $\mathcal{B}_\mathcal{L}$. 
+We split the collection of objects $\mathcal{O}$ into two sets $\mathcal{O}_i$ and $\mathcal{O}_o$ in order to compute the inner and outer loop losses in MAML respectively. Now, we can define the objective functions for the meta-speaker ($\mathcal{J}_{\mathcal{S}^m}^\texttt{meta}$) and the meta-listener ($\mathcal{J}_{\mathcal{L}^m}^\texttt{meta}$) as follows:
+\begin{align}
+\mathcal{J}_{\mathcal{S}^m}^\texttt{meta}(\mathcal{O};\vartheta) &= \sum_{\mathcal{L} \in \mathcal{B}_\mathcal{L}} \mathcal{J}_{\mathcal{S}^m}^\texttt{int} \Big( t^o; \vartheta - \alpha \nabla_\vartheta \mathcal{J}^\texttt{int}_{\mathcal{S}^m} \left( t^i;\vartheta \right) \Big) \label{eq:meta_spk} \\
+\mathcal{J}_{\mathcal{L}^m}^\texttt{meta}(\mathcal{O};\varphi) &= \sum_{\mathcal{S} \in \mathcal{B}_\mathcal{S}} \mathcal{J}_{\mathcal{L}^m}^\texttt{int} \Big( m^o, t^o, D^o; \varphi - \alpha \nabla_\varphi \mathcal{J}^\texttt{int}_{\mathcal{L}^m} \left( m^i, t^i, D^i;\varphi \right) \Big) \label{eq:meta_lis}
+\end{align}
+where $t^i \in \mathcal{O}_i$, $t^o \in \mathcal{O}_o$, $m^o = \mathcal{S}(t^o)$, $m^i = \mathcal{S}(t^i)$, and $D^i$ and $D^o$ are sets of distractor objects sampled from $\mathcal{O}_i$ and $\mathcal{O}_o$ respectively.
+
+Finally, the trained meta-agents are fine-tuned using the dataset $\mathcal{D}$ before the testing phase. The fine-tuning losses are the same as the supervised losses Eq~\eqref{eq:spk_sup}~\eqref{eq:lis_sup} described in the previous section. Since the number of training iterations is unknown and could be potentially much larger than the size of the buffer the memory can hold, we use reservoir sampling to keep a uniform sample of past agents in the buffer. The detailed algorithm can be found in Algorithm~\ref{algo}.
+
+\subsection{Prior approaches}
+Recent work has investigated combining the two objective functions of self-play and imitation learning, with the goal of training agents that use natural language and perform well on a given emergent communication task. This transforms the problem into training a task conditional language model in a multi-agent setup. \stp \citep{lowe*2020on,gupta-etal-2019-seeded} proposes methods that devise a curriculum between the two training phases updating the speaker and the listener in an iterative manner. \sil \citep{DBLP:journals/corr/abs-2003-12694} follows a student-teacher paradigm that is trained sequentially, where the teacher agents, initialized from the student agents, are trained using interactive learning. Then the student agents are trained to imitate the teacher agents by sampling data at every training iteration. Another work by \citep{lazaridou-etal-2020-multi} investigates different types of language (semantic and structural) and pragmatic drifts. They propose a reranking module that first samples multiple messages from the speaker and then ranks them according to the task performance.\footnote{Their approach uses a different setup that involves giving speaker access to the distractor objects.} Crucially, the reranking module presents an orthogonal axis of progress and thus can be combined with other approaches presented here. 
+
+With respect to training agents using population-based methods,
+\citep{tieleman_shaping_2018} propose a learning method that uses a community of fixed number of agents where speakers and listeners are randomly paired with each other at every training iteration. \ltc \citep{lowe_learning_2019} proposes a meta-training method on a fixed population of agents. They first train different populations of agents via self-play with each population initialized with a different random seed. Then a meta-learner interacts with these agents and learns to adapt to each population simultaneously. Another similar method in \citep{cogswell_emergence_2019} aims at learning a community of agents, where groups of speakers and listeners are used to sample a pair uniformly at random who then play the game and jointly optimize for better task performance. During learning, few agents are reinitialized periodically/at random from a group of agents. The idea is to promote cultural transmission to induce compositionality over multiple generations of language transfer. For our experiments, we reinitialize agents to the pretrained agents that are trained using the human dataset. We denote this method as \gentrans\ in the following sections.
+
+\section{Experiments and Results}
+\label{sec:exp-res}
+In this work, we conduct experiments on two referential games in two different modalities, i.e., having agents communicating in English about images, a process akin to image captioning, and having agents communicating in German about English sentences, a process akin to machine translation.
+
+\paragraph{Images}
+We use the image-based referential game \citep{lee_emergent_2017,lazaridou_emergence_2018,lowe*2020on,lazaridou-etal-2020-multi} which is a common environment used to analyze emergent protocols involving multimodal inputs. We use the MSCOCO dataset \citep{Lin2014MicrosoftCC} to obtain real images and the corresponding ground truth English captions annotated by humans. Since this dataset has multiple gold captions for each image, we randomly select one from the available set and keep $|\mathcal{O}|=7000$. Following \citep{lee_countering_2019,lowe*2020on}, both speaker and listener are parameterized with recurrent neural networks (GRU \citep{cho-etal-2014-learning}) of size $512$ with an embedding layer of size $256$. We embed images using a Resnet-50 model~\citep{7780459} (pretrained on ImageNet~\citep{5206848}). We set the vocabulary size to $100$ and the maximum length of the sentences at $15$. We use the same speaker and listener buffer size of $200$ for reservoir sampling. Other implementation details are given in the Appendix.
+
+\paragraph{Text}
+To further test the robustness of our approach to different types of structural priors found on the input data~\citep{DBLP:journals/corr/abs-2002-01335}, we also play a referential game using text as the input modality~\citep{lee_countering_2019}. We use the publicly available IWSLT'14 English-German dataset with English as the source and German as the target language. Instead of randomly selecting the distractors from the set of English sentences, we create harder distractors by picking English sentences that are more similar to the source English sentence. For this, we use a Sentence-BERT model \citep{reimers-gurevych-2019-sentence} (pretrained on SNLI \citep{bowman-etal-2015-large} and MultiNLI \citep{williams-etal-2018-broad}) to embed all English sentences in the dataset and filter them using a threshold criteria of cosine similarity to systematically choose the distractors. The game complexity increases with an increase in cosine similarity, and we fix this to $0.85$. We use a vocabulary size of $100$ and maximum sentence length of $20$. All other details are the same as the game with images.
+
+Throughout this section, we report results using $3$ random seeds and $K=9$, $|\mathcal{D}|=5000$ in the image game and $K=14$, $|\mathcal{D}|=5000$ in the text game. In the Appendix, we show that our findings are robust and include results with $|\mathcal{D}|=2000$ and $K=9$ on the image and text game respectively.
+
+\subsection{Referential Accuracy}
+\label{subsec:referential-acc}
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth, height=5cm]{figs/meta-agents-image-text.pdf}
+    \caption{Referential accuracy of the (meta-) agents on the test set (Left): Image game and (Right) Text game ($p<0.05$, t-test).}
+    \label{fig:meta-agents-ref-acc}
+\end{wrapfigure}
+We report referential accuracy as the final task performance of the meta-agents, i.e., how accurately the (meta-) listener is able to predict the target using the (meta-) speaker's messages. Fig~\ref{fig:meta-agents-ref-acc} plots the referential accuracy on the test set of $1000$ images/sentences for the image/text game. In both plots, the pretrained baseline is obtained by separately pretraining the speaker and the listener on the language data without any interactive or meta-learning signal, i.e., only using Eq~\ref{eq:spk_sup} and Eq~\ref{eq:lis_sup}, and then pairing them together. The emergent communication (\emecom) baseline is computed by training agents purely via interactive learning and without any supervision from the dataset, i.e., only using Eq~\ref{eq:spk_int} and Eq~\ref{eq:lis_int}. In both image (left plot, $10\%$ random baseline) and text (right plot, $6.7\%$ random baseline), our method outperforms alternative approaches. Specifically, \gentrans\ and our method outperform \stp\ and \sil, both of which can be thought of as single-agent population, indicating the importance of diversity among the agent population. 
+Moreover, our method surpassing \gentrans\ and \ltc\ indicates the importance of using the proposed meta-learning approach in conjunction with an adaptive population instead of using a static set of agents. 
+In Sec~\ref{subsec:ablation} we conduct more ablations to better assess the importance of the different components for our approach. 
+
+\subsection{Evaluating Natural Language Skills of (Meta-) speakers}
+\label{subsec:speaker-eval}
+Previous work on multi-agent communication with language has showed that even when agents receive supervision using natural language data, language drift phenomena result in agents noticeably diverging from natural language while still achieving high referential accuracy~\citep{lazaridou-etal-2020-multi, lee_countering_2019}.
+\begin{wraptable}{r}{0.45\textwidth}
+  \centering
+  \small
+  \begin{tabular}{|c|c|c|}
+  \toprule
+  & Caption Score & BLEU \\
+  \midrule
+    \textsc{Pretrained} & $5.2 \pm 0.02$ & $24.2 \pm 0.1$\\
+    \hline
+    \stp & $5.5 \pm 0.04$ & $26.1 \pm 0.3$ \\ 
+    \hline
+    \sil & $5.5 \pm 0.04$ & $25.6 \pm 0.24$ \\ 
+    \hline
+    \ltc & $5.4 \pm 0.07$ & $25.4 \pm 0.45$ \\
+    \hline
+    \gentrans & $6.1 \pm 0.05$ & $28.4 \pm 0.32$ \\
+    \hline
+    \textbf{\textsc{Ours}} & $\textbf{6.6} \pm 0.04$ & $\textbf{29.3} \pm 0.25$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Evaluating the (meta-) speaker in the image game using the metric proposed in \citep{Cui2018CaptionEval} ($p < 0.05$, t-test).}
+  \label{tab:meta-spk-autoeval-image}
+\end{wraptable}
+As such, we proceed with directly evaluating the natural language capabilities of the meta-speakers. 
+We start with the image game, in which we view the utterances generated by the meta-speaker as captions and hence evaluate their alignment of the generated captions with human generated ones. We evaluate all methods using $1000$ generated captions from the test set. We report BLEU score~\citep{10.3115/1073083.1073135} between the generated captions and the ground-truth English caption.  We also report an alternative caption score proposed by \citep{Cui2018CaptionEval}, which uses a pre-trained model on MSCOCO to compute a similarity score between the generated caption and the context (image and ground-truth caption). The results are shown in Table~\ref{tab:meta-spk-autoeval-image}, where we see that our method outperforms alternatives indicating that the use of meta-agents is effective in getting higher referential accuracy but not on the expense of worse language skills.
+
+\begin{wraptable}{r}{0.5\textwidth}
+  \centering
+  \small
+  \begin{tabular}{|c|c|}
+  \toprule
+       &  BLEU \\
+       \midrule
+       \stp & $21.7 \pm 0.22$ \\
+       \hline
+       \sil & $21.6 \pm 0.21$ \\
+       \hline
+       \ltc & $21.1 \pm 0.29$ \\
+       \hline
+       \gentrans & $23.9 \pm 0.21$ \\
+       \hline
+       \hline
+       \multicolumn{1}{c}{\textsc{Pretrained}} & \\
+        + Greedy Decoding & $20.8 \pm 0.06$ \\
+        \hline
+        + Beam Search ($n=2$) & $21.1 \pm 0.06$ \\
+        \hline
+        + Beam Search ($n=4$) & $22.4 \pm 0.05$ \\
+        \hline
+        + Top-k Sampling ($k=40$) & $24.6 \pm 0.05$ \\
+        \midrule
+        \textbf{\textsc{Ours}} (using greedy decoding) & $\textbf{25.2} \pm 0.16$ \\
+        \bottomrule
+  \end{tabular}
+  \caption{BLEU score on German sentences for (meta-) speaker in the text game across various baselines and decoding strategies. $n$ denotes number of beams in beam-search ($p < 0.05$, t-test).}
+  \label{tab:meta-spk-trans-text}
+\end{wraptable}
+
+In Table~\ref{tab:meta-spk-trans-text}, we perform a similar analysis for the (meta-) speaker on the text game. Here, the utterances of the meta-speaker could be thought of as translating the English input sentences to German. Hence, we evaluate the (meta-) speaker as an English-German machine translation system computing BLEU score with the German reference sentences. Apart from comparing our model against different alternatives, we also create stronger baselines by using the English-German pretrained model in the text game with different decoding strategies (all others methods including ours will use greedy decoding). We find that our method, despite using greedy decoding, is able to outperform all variables of the \textsc{Pretrained} model, indicating that our technique has a somewhat different effect than the one introduced by simply changing the decoding strategy. 
+
+All in all, we find that even though our objective task was never to just simply maximize captioning (or machine translation) performance, our dynamic population-based meta-learning resulted in meta-speakers with better language skills than the pretrained models, which use the very same number of (limited) language data. While our results are far from being state-of-the-art on captioning or translation,  we nevertheless see that our technique can be thought of as a form of semi-supervised learning through self-play, and can perhaps be used in combination with specialized models of the respective tasks. We also include some qualitative samples generated by different speaker models alongside the ground truth captions in Fig~\ref{fig:examples}. In the Appendix, we show some additional corpus-level statistics that further corroborates this claim.
+
+\subsection{Agents interacting with Humans}
+\label{subsec:human-eval}
+Although BLEU score is able to capture some form of syntactical and semantic drift, it still fails to counter the phenomenon of pragmatic drift, as introduced in \citep{lazaridou-etal-2020-multi}. For this reason, we evaluate the performances of our agents, and all other alternative methods, by having agents interact with humans and report referential accuracy. As such, we play games where the (meta-) speaker interacts with a human listener and the (meta-) listener with a human speaker. Thus, in the first case we evaluate the natural language generation abilities of the (meta-) speaker, whereas in the second case we evaluate the natural language understanding skills of the (meta-) listener. The (meta-) speaker is evaluated using 1000 games with humans and the (meta-) listener using 400 games.\footnote{We note that the participants were neither aware of the identity of the agent they were playing against nor they played consecutive games with the same agent. This allows for a more fair comparison of the language skills of agents since participants did not have the chance to adapt to ad-hoc conceptions potentially used by agents (e.g., consistently referring to cats as onions).}
+\begin{wrapfigure}{r}{0.69\textwidth}
+    \centering
+    \begin{subfigure}{0.34\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=3.5cm]{figs/meta-speaker-human-eval.pdf}
+    \caption{Agent speaker vs Human listener}
+    \label{fig:meta-speaker-human-image}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.34\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=3.5cm]{figs/meta-listener-human-eval.pdf}
+    \caption{Agent listener vs Human speaker}
+    \label{fig:meta-listener-human-image}
+    \end{subfigure}
+    \caption{Human evaluation on the image game. The black line in both plots represent the performance of the (Human-speaker, Human-listener) pair.}
+\end{wrapfigure}
+Moreover, we compute an upper-bound by computing the referential accuracy when pairing two humans to play the game. In Fig~\ref{fig:meta-speaker-human-image}, we show the results for meta-speaker in the image game where our method outperforms other approaches by a significant margin. In Fig~\ref{fig:meta-listener-human-image} we compare the performance of the meta-listener in the image game with other baselines and found similar observations to the meta-speaker. We find that our method is able to better understand human descriptions by learning diverse caption representations. The results for the game with text follow similar pattern and can be found in Appendix along with other details of the experimental setup. Overall we infer that our method suffers the least amount of pragmatic drift as compared to other baselines, as measured by the performance gap with the human-human gameplay.
+
+\subsection{Ablation studies}
+\label{subsec:ablation}
+We further analyze the importance of each component of our proposed algorithm by introducing the following ablations.
+
+\paragraph{no meta-agents} 
+In this ablation, we test the importance of building populations of agents by learning speakers (or listeners) through interaction \textit{with the meta-agent} listener (or speaker respectively), as opposed to just interacting with a randomly chosen listener (or speaker) from the buffer. Our hypothesis is that this promotes diversity within the population, resulting in learning more general communication protocols. Before commenting on the performance of this ablation, we note that this type of training is in fact more unstable, which we attribute to making the training of the two meta-agents interdependent of each other. We leave further analysis of this for future work.
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=4cm]{figs/ablation-acc-image.pdf}
+    \caption{Referential accuracy for different ablations in the image game.\label{fig:listener-ablation}}
+\end{wrapfigure}
+\paragraph{no adaptive-meta} In this ablation, we test the importance of \textit{training the meta-agent in an iterated manner}, as opposed to training it from scratch by resetting the weights of the meta-agent before interacting with the population.
+We build the population of agents that interact with the meta-agent (whose weights have been reset) in two different ways: (i) by following the approach illustrated in Alg~\ref{algo} and (ii) by following the approach introduced in No meta-agents above. 
+\paragraph{no separate grounding} In this ablation, we test the importance of avoiding catastrophic forgetting of language skills by conducting interactive and supervised learning (i.e., Equations \ref{eq:spk_int} till \ref{eq:lis_sup} in Algorithm~\ref{algo}) in separate phases, in line with previous work~\citep{lowe*2020on}. Recently, other works~\citep{lazaridou-etal-2020-multi,DBLP:journals/corr/abs-2003-12694} have proposed using KL divergence between the agents' policies with a pre-trained policy on language data, and as such penanalize policies that diverge from language. Concretely, the corresponding speaker objective is $\lambda_{int} \mathcal{J}^\texttt{int}_{\mathcal{S}} + KL(\theta_{\text{Pretrained}} || \theta)$.
+
+In Fig~\ref{fig:listener-ablation}, we compare the performance of our full approach against all ablations by reporting the referential accuracy on the test set in the image game. The comparatively lower performance of no meta-agents against our method indicates that the agents that interact with the corresponding meta-agent learn more robust and diverse strategies as compared to the ones that interact with any agent in the buffer. Both variants of the no adaptive-meta agents underperform against our approach as well as against no-meta agents. This suggests that the \textit{adaptive} way of training the meta-agent is crucial in getting higher performance as compared to training it from scratch. We hypothesize that our iterated meta-agent has a slight advantage of being able to learn from agents that get created during the training in turn providing a better initialization to adapt to the new population. The meta-agent captures useful information from past iterations of other agents and provides a richer learning signal to train the next agent to be added. No separate grounding agents perform close to the alternating updates used in our method indicating that one can use multiple ways to integrate the two loss functions in combination with our meta-learning approach.\footnote{Note that our choice of using alternating updates for interactive learning and supervised learning is arbitrary and based on \citep{lowe*2020on}. We believe that any multi-objective learning method could work here.} 
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=4cm]{figs/meta-listener-diversity.pdf}
+    \newsubcap{Average referential accuracy on the test set when a trained meta-listener individually plays with each speaker present in the buffer at the corresponding training iteration. The blue bars show the standard deviation across all speakers in the buffer. The gray bars show the interval between the minimum and maximum performing speaker.}
+    \label{fig:meta-listener-diversity}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.53\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=4cm]{figs/static-dynamic.pdf}
+    \newsubcap{Cross-play evaluation using referential accuracy for our method (Left) that dynamically builds the population and \ltc\ (Right) that uses static population, across $5$ sets of meta-speakers and meta-listeners. Left: Our meta-agents have much less variance across various partners. Right: \ltc\ meta-agents suffer from high variance and overfitting to their own partners (diagonal). The scale of the colorbar is calibrated based on the highest variance interval in both plots to allow fair comparison between the two methods.}
+    \label{fig:static-dynamic-var}
+    \end{subfigure}
+\end{figure}
+\subsection{Induced diversity and out-of-population evaluation}
+\label{subsec:diversity}
+In Fig~\ref{fig:meta-listener-diversity},  we show the average performance of the meta-listener, obtained after training, playing with different speakers at different stages of their training in the image game. We show that as the training of the speakers progresses, the standard deviation (denoted by blue bars) of the referential accuracy across all the speakers present in the buffer up to that training iteration increases, together with the difference between the best and worst performing agents (denoted by gray bars). This indicates that as the population grows the diversity among the agents also improves, thus resulting in richer training signal for the meta-agents. In the Appendix, we include a similar plot for the meta-speaker reporting average BLEU score.
+
+We also perform cross-play evaluation to test the generalization during out-of-population communication. For doing so, we obtain 5 meta-agents (5 meta-speakers and 5 meta-listeners) by using Algo~\ref{algo} with 5 different seeds and report referential accuracy on the test set when pairing all possible combinations of meta-speakers and meta-listeners. On the left plot of Fig~\ref{fig:static-dynamic-var} we observe that, as expected, the in-population communication found on the diagonal is the best, and performance barely degrades when pairing agents that were not initialized with the same seed, indicating that our agents have learn more generalizable conventions. On the other hand, when conducting a similar evaluation with \ltc\ (right plot), we observe that the protocols learnt in this case overfit to their own partners (diagonal) resulting in high variance across other players, and thus indicating the adoption of more ad-hoc protocols. Consequently, we posit that our method be used for few-shot generalization to unseen partners in a multi-agent interactive environments.
+
+\subsection{Robustness against implicit bias in the dataset}
+\label{subsec:robustness}
+As agents trained using a single dataset may overfit to the objects present in that particular dataset, in this section we design an experiment to test the agents' robustness against implicit dataset biases. We conduct a \emph{cross-task} evaluation experiment on the referential game with $K=9$ distractors where we compute the referential accuracy using images from the Flickr8k dataset~\citep{Hodosh2013FramingID} while the agents were trained using the images present in the MSCOCO dataset. Similarly, we also perform a \emph{within-task} evaluation where we train and then evaluate our agents using the same Flickr8k dataset. We use $5000$ images as training set and $1000$ images as validation/test set.
+
+\begin{wraptable}{r}{0.5\textwidth}
+  \centering
+  \small
+  \begin{tabular}{|c|c|c|}
+       \toprule
+       &  \textsc{Pretrained} & \textsc{Ours} \\
+       \midrule
+       Cross-task & $59.7 \pm 0.9$ & $70.2 \pm 1.8$ \\
+       \hline
+       Within-task & $65.3 \pm 0.3$ & $78.9 \pm 1.4$ \\
+       \bottomrule
+  \end{tabular}
+  \caption{Referential accuracy on the test set showing robustness against implicit bias in the dataset.}
+  \label{tab:robustness-bias}
+\end{wraptable}
+
+Results are presented in Table~\ref{tab:robustness-bias}. While we do observe a drop in the performance when compared to the within-task performance ($70.2$ v/s $78.9$), our across-task model still outperforms the within-task \textsc{Pretrained} baseline ($70.2$ v/s $65.3$). This observation correlates with our results using human players and out-of-population evaluation shown in Sec~\ref{subsec:human-eval} and Sec~\ref{subsec:diversity} respectively.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\linewidth, height=6cm]{figs/image-game-samples.pdf}
+    \caption{Qualitative samples generated by the (meta-) speaker in the game with images.}
+    \label{fig:examples}
+\end{figure*}
+
+\section{Conclusion}
+We presented a dynamic population-based method to train agents in a cooperative multi-agent reinforcement learning setup. We showed that our method induces useful diversity into a population of agents which helps in learning a robust meta-agent. Empirically, we show that our agents outperform prior work on the task performance, auxiliary tasks and even human-based evaluation. In the future, we plan to extend this approach in cases where agents are performing temporally extended physical actions in an environment with perceptual observations. One limitation of our approach pertains to maintaining a buffer of past agents that are used to train the meta-agent. Moreover, we would also like to analyze the effect of using task-independent language data (as opposed to task-dependent that we use now) within a multi-agent reinforcement learning task.
+
+\section*{Funding Transparency Statement}
+AG is supported by IBM scholarship. We thank Compute Canada for providing the compute resources to run the experiments.
+
+
+\bibliographystyle{plain}
+\bibliography{neurips_2021}
+
+
+\clearpage
+\appendix
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth, height=10cm]{figs/adaptive-main-pic.pdf}
+    \caption{Detailed algorithm outline. We show the different phases involved in training a meta-listener $\mathcal{L}^m$ and building the corresponding speaker population (buffer) $\mathcal{B}_{\mathcal{S}}$. Similar outline can be drawn for training the meta-speaker $\mathcal{S}^m$.}
+\end{figure}
+
+\section{Hyperparameters and other training details}
+We show here the range of parameter configurations we tried during training (bold indicates the ones used in the experiments):
+\begin{wraptable}{r}{0.6\textwidth}
+    \centering
+    \begin{tabular}{c|c}
+        Name & Values used \\
+        \toprule
+        Batch Size & 512, \textbf{1024} \\
+        Buffer Size & 50, 100, \textbf{200} \\
+        $n_{meta}$ & 20, 40, \textbf{60}, 65, 70 \\
+        $n_{sup}$ & 10, 20, \textbf{25}, 30 \\
+        $n_{int}$ & 40, 60, 70, \textbf{80}, 100 \\
+        $\lambda_{hs}$ & 0.1, \textbf{0.01}, 0.001 \\
+        $\lambda_{hl}$ & 0.1, \textbf{0.03}, 0.007, 0.001 \\
+        $\lambda_{s}$ & 0.1, 0.5, \textbf{0.8}, 1 \\
+        Learning rate (outer loop) & \textbf{1e-4}, 1e-5, 6e-5, 6e-4 \\
+        Learning rate (inner loop) & \textbf{1e-4}, 3e-4 \\
+        $\lambda_{int}$ & 1, \textbf{0.1}, 5 \\
+    \end{tabular}
+    \caption{Hyperparameters. Bold indicates the chosen values used for the final analysis.}
+    \label{tab:hyperparams}
+\end{wraptable}
+We use the Adam optimizer \citep{DBLP:journals/corr/KingmaB14} in PyTorch \citep{pytorch_NIPS2019} for training the agents. For the baselines (\stp, \sil, \ltc, \gentrans), we used the publicly available repositories attached with the respective publications. We adapt their codebase to train agents on the two referential games used in this work while tuning the hyperparameters separately for each method and each game keeping the same architecture across all baselines. We even used a larger batch size for some methods that performed better than the ones reported in the original papers. We chose the hyperparameters by performing a grid search over the values mentioned in Table~\ref{tab:hyperparams} and others in \S\ref{sec:exp-res}. We used the pretrained Resnet-50 embeddings of dimension $2048$ for the image game and Sentence-BERT embeddings of size $768$ for the text game. We used our internal cluster consisting of Nvidia V100 GPUs to train the models. The annotations in the MSCOCO dataset belong to the COCO Consortium and are licensed under a Creative Commons Attribution 4.0 License.
+
+\section{Further Results}
+\label{subsec:app-res}
+In this section, we show results on the text game, ablation using meta-learning methods, and additional metrics to evaluate the natural language skills of the (meta-) speakers.
+
+\begin{wrapfigure}{r}{0.67\linewidth}
+    \centering
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/meta-speaker-human-eval-text.pdf}
+    \caption{Agent speaker vs Human listener}
+    \label{fig:meta-speaker-human-image-text}
+    \end{subfigure}
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/meta-listener-human-eval-text.pdf}
+    \caption{Agent listener vs Human speaker}
+    \label{fig:meta-listener-human-image-text}
+    \end{subfigure}
+    \caption{Human evaluation on the text game. The black bar in both plots represent the performance of the (Human-speaker, Human-listener) pair.}
+    \label{fig:meta-human-text}
+\end{wrapfigure}
+
+\paragraph{Human Evaluation}
+We used $9$ distractor objects and the models trained with $|\mathcal{D}|=5000$ for both games. For the image game, in Fig~\ref{fig:meta-speaker-human-image} each agent speaker outputs 1000 utterances corresponding to all the images in the test set, which are then given to the human listeners to play the game. Similarly, for evaluating the agent listener with a human speaker, each agent evaluates 400 human utterances in Fig~\ref{fig:meta-listener-human-image}. The black line corresponds to 400 human-speaker vs human-listener matches. In Fig~\ref{fig:meta-human-text}, we present the results of the human evaluation on the text game. Similar to the trend found in Sec~\ref{subsec:human-eval}, we show that agents trained using our method beat all prior baselines when paired with both human listeners and human speakers. Both Fig~\ref{fig:meta-speaker-human-image-text} and \ref{fig:meta-listener-human-image-text} are drawn using $100$ agent (and human) utterances that translate an English sentence to German.
+
+\begin{wrapfigure}{r}{0.67\linewidth}
+    \centering
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/meta-agents-image-2k.pdf}
+    \caption{Image game}
+    \label{fig:meta-agents-image-2k}
+    \end{subfigure}%
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/meta-agents-text-9.pdf}
+    \caption{Text game}
+    \label{fig:meta-agents-text-9}
+    \end{subfigure}
+    \caption{}
+\end{wrapfigure}
+\paragraph{Referential Accuracy} We show further results for both games in addition to the results found in \S~\ref{subsec:referential-acc}. Fig~\ref{fig:meta-agents-image-2k} shows results for the configuration $|\mathcal{D}|=2000$ and $K=9$ in the image game. \textsc{EmeCom} results in the highest performance here. We argue that even though its performance on referential accuracy is higher than our method, the corresponding BLEU score (or its compatibility with a human partner) is $\sim 0$.
+
+This means that it does not generalize to out-of-population agents or human partners and rather learns ad-hoc conventions that only generalize to its own partner, in line with previous work in emergent communication~\citep{lazaridou-etal-2020-multi}. Moreover, this behavior being only observed in $|\mathcal{D}|=2000$ case but not in the $|\mathcal{D}|=5000$ case indicates the existence of a threshold (in the \# human samples) above which the \textsc{EmeCom} baseline would underperform against other methods, given the same task/network configuration. Fig~\ref{fig:meta-agents-text-9} shows results on the text game with $|\mathcal{D}|=5000$ and $K=9$. Similar to the trend observed in Fig~\ref{fig:meta-agents-ref-acc}, our method outperforms all other baselines.
+
+\paragraph{Induced Diversity} In Fig~\ref{fig:meta-speaker-diversity}, we plot the average BLEU score of a trained meta-speaker, obtained after training, playing with different listeners at different stages of the training in the image game. The blue bars show the standard deviation across all agents present in the buffer. Similar to the observations in \S\ref{subsec:diversity}, we find that the natural language skills of the meta-speaker improve as the training progress while the population still being diverse enough to provide rich learning signal for meta-training.
+
+\begin{wrapfigure}{r}{0.67\textwidth}
+    \centering
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/meta-listener-diversity-lang.pdf}
+    \caption{}
+    \label{fig:meta-speaker-diversity}
+    \end{subfigure}%
+    \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth, height=4cm]{figs/ablation-meta-algo.pdf}
+    \caption{}
+    \label{fig:ablation-meta-algo}
+    \end{subfigure}
+    \caption{}
+\end{wrapfigure}
+
+\paragraph{Other meta-learning methods} We also performed an ablation study using different meta-learning algorithms \citep{finn_model-agnostic_2017,nichol_first-order_2018}. FOMAML is the first-order approximation of MAML and Reptile is another first-order meta-learning algorithm that performs stochastic gradient descent for a few steps across all tasks and then updates the parameter towards the average of updated task-specific weights. We show the results in the image game using referential accuracy in Fig~\ref{fig:ablation-meta-algo}. The performances of the all algorithms are competitive with each other indicating robustness across the three methods. Furthermore, we think that recent advancements in meta-learning algorithms \citep{rothfuss2018promp,metz2018learning} could be combined with our algorithm to further analyze this effect and investigate biases resulting from a specific meta-algorithm.
+
+\paragraph{Natural language skills of meta-speakers}
+We also show some corpus-level statistics for studying the linguistic diversity of the produced messages over and above the BLEU statistics shown in Sec~\ref{subsec:speaker-eval}.
+
+\begin{itemize}
+\begin{minipage}{0.6\textwidth}
+\item Average ratio of the length of generated utterance per human utterance
+We analyze the average sentence length for all the generated utterances in the test set and compare that with the ground-truth utterances present in the dataset for the image game.
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+  \centering
+  \small
+  \begin{tabular}{|c|c|}
+       \hline
+       \stp & $0.62 \pm 0.05$ \\
+       \hline
+       \sil & $0.63 \pm 0.05$ \\
+       \hline
+       \gentrans & $0.58 \pm 0.04$ \\
+       \hline
+       \textbf{\textsc{Ours}} & $0.68 \pm 0.05$ \\
+       \hline
+  \end{tabular}
+  \label{tab:spk-length}
+\end{minipage}
+
+\begin{minipage}{0.6\textwidth}
+\item Average ratio of unique words in generated utterance per human utterance
+We also study the number of unique words in an utterance in the image game.
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+  \centering
+  \small
+  \begin{tabular}{|c|c|}
+       \hline
+       \stp & $0.67 \pm 0.02$ \\
+       \hline
+       \sil & $0.69 \pm 0.02$ \\
+       \hline
+       \gentrans & $0.7 \pm 0.03$ \\
+       \hline
+       \textbf{\textsc{Ours}} & $0.8 \pm 0.03$ \\
+       \hline
+  \end{tabular}
+  \label{tab:spk-words}
+\end{minipage}
+\end{itemize}
+We would like to point out that the utterances in the dataset were collected for a different task (image captioning and machine translation). Hence the generated captions are less diverse and shorter as compared to the human captions because the underlying interactive learning task only requires \emph{captioning in context}.
+
+\section{Human Experiment Setup}
+Our human experiments were done in a controlled environment with a group of 45 undergraduate and graduate students. The experiments were overseen and approved by our internal lab review board. The participants were not compensated for taking part in the experiments as our lab has been conducting such experiments in the past on a quid pro quo basis. Moreover, the participants were given the following instructions to play the game and were ensured that their individual identities would not be revealed or used in a way that could contaminate our results. Consequently, there were no participant risks involved in our experiments. In addition, to filter noise in the experiments, for each utterance we evaluated the performance of each participant against other participants. Concretely, we played each utterance of the (speaker) participant with $5$ other (listener) participants and compared the performance across all $5$ games. All utterances that do not obtain the same game score for at least $4/5$ games were excluded. Further filtering was done based on a threshold given by the BLEU score (threshold=$30$) between the participant utterance and the ground-truth utterance.
+
+Overall instructions:
+
+\emph{We are interested in conducting human experiments for the popular referential games proposed in Lewis et al, ‘69. It is a cooperative game that involves two players: a speaker and a listener. A speaker observes a target image and emits a message that is sent to the listener. The listener looks at the message and tries to identify the target image among a set of distractor images. Both agents are given a positive reward if the listener’s prediction is accurate and zero otherwise. Our experiments require each participant to play as a speaker and a listener with different partners. Your partner could be a human or one of our trained agents. You will not be given the identities of your partners and your individual identities will not be used for analyzing the final results.}
+
+\begin{minipage}{0.7\textwidth}
+Message to the human speaker:
+
+\emph{You are assigned the role of a speaker.
+Look at the image carefully and write a caption that best describes the image.}
+\end{minipage}
+\qquad
+\begin{minipage}{0.2\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=2cm]{figs/sample-target.jpeg}
+\end{minipage}
+
+\begin{minipage}{0.4\textwidth}
+Message to the human listener:
+
+\emph{You are assigned the role of a listener.
+Read the message carefully and use that to choose the target image for which the message was intended, among the set of other distractor images.}
+\end{minipage}
+\qquad
+\begin{minipage}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.32\linewidth, height=2cm]{figs/sample1.jpeg}
+    \includegraphics[width=0.32\linewidth, height=2cm]{figs/sample-target.jpeg}
+    \includegraphics[width=0.32\linewidth, height=2cm]{figs/sample2.jpeg}
+\end{minipage}
+
+\section{Failure examples}
+We show some qualitative failure examples from the image game where our agents exhibit different kinds of errors. We group all of them into three categories:
+
+\begin{itemize}
+\begin{minipage}{0.7\textwidth}
+\item Incorrect message due to imperfect vision
+
+Dataset utterance: \emph{a big black bear that is walking into the road} \\
+Speaker message: \emph{A black dog crossing the road with cars.} \\
+In this test example, the speaker incorrectly uses dog for a bear.
+\end{minipage}
+\begin{minipage}{0.2\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=2cm]{figs/failure1.jpeg}
+\end{minipage}
+
+\begin{minipage}{0.7\textwidth}
+\item Incorrect language usage by the speaker
+
+Dataset utterance: \emph{a young man with a lacrosse stick and nike bag dressed in a shirt and tie.} \\
+Speaker message: \emph{A group of people standing with bags, tie, and bottle.} \\
+Here, the speaker tried to add all observed objects in the message without being semantically correct.
+\end{minipage}
+\;
+\begin{minipage}{0.18\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=2.5cm]{figs/failure2.jpeg}
+\end{minipage}
+
+\begin{minipage}{0.7\textwidth}
+\item Incorrect language understanding by the listener
+
+Speaker message: \emph{A child with a teddy bear.} \\
+Listener chooses an incorrect target image that only contains teddy bears confusing the teddy bear with a child.
+\end{minipage}
+\begin{minipage}{0.2\textwidth}
+    \centering
+    \includegraphics[width=0.98\linewidth, height=2cm]{figs/failure3.jpeg}
+\end{minipage}
+\end{itemize}
+
+We believe that the speaker gets confused when it encounters an out-of-vocabulary object in the target image. Likewise, the listener chooses a wrong target image when the complexity of the distractors is increased (by using distractors with similar objects as in the target image). Nonetheless, we think these issues are not specific to our agent and would arise in any interactive learning model as we scale up to include more and more objects.
+
+\end{document}

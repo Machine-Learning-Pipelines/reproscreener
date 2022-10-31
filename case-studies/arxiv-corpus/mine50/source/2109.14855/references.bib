@@ -1,0 +1,1344 @@
+%%% ====================================================================
+%%%  BibTeX-file{
+%%%     author          = "Gerry Murray",
+%%%     version         = "1.2",
+%%%     date            = "2 April 2012",
+%%%     filename        = "acmsmall-sample-bibfile.bib",
+%%%     address         = "ACM, NY",
+%%%     email           = "murray at hq.acm.org",
+%%%     codetable       = "ISO/ASCII",
+%%%     keywords        = "ACM Reference Format, bibliography, citation, references",
+%%%     supported       = "yes",
+%%%     docstring       = "This BibTeX database file contains 'bibdata' entries
+%%%                        that 'match' the examples provided in the Specifications Document
+%%%                        AND, also, 'legacy'-type bibs. It should assist authors in
+%%%                        choosing the 'correct' at-bibtype and necessary bib-fields
+%%%                        so as to obtain the appropriate ACM Reference Format output.
+%%%                        It also contains many 'Standard Abbreviations'. "
+%%%  }
+%%% ====================================================================
+
+% Journals
+
+% First the Full Name is given, then the abbreviation used in the AMS Math
+% Reviews, with an indication if it could not be found there.
+% Note the 2nd overwrites the 1st, so swap them if you want the full name.
+
+ %{AMS}
+ @String{AMSTrans = "American Mathematical Society Translations" }
+ @String{AMSTrans = "Amer. Math. Soc. Transl." }
+ @String{BullAMS = "Bulletin of the American Mathematical Society" }
+ @String{BullAMS = "Bull. Amer. Math. Soc." }
+ @String{ProcAMS = "Proceedings of the American Mathematical Society" }
+ @String{ProcAMS = "Proc. Amer. Math. Soc." }
+ @String{TransAMS = "Transactions of the American Mathematical Society" }
+ @String{TransAMS = "Trans. Amer. Math. Soc." }
+
+ %ACM
+ @String{CACM = "Communications of the {ACM}" }
+ @String{CACM = "Commun. {ACM}" }
+ @String{CompServ = "Comput. Surveys" }
+ @String{JACM = "J. ACM" }
+ @String{ACMMathSoft = "{ACM} Transactions on Mathematical Software" }
+ @String{ACMMathSoft = "{ACM} Trans. Math. Software" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newsletter" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newslett." }
+
+ @String{AmerSocio = "American Journal of Sociology" }
+ @String{AmerStatAssoc = "Journal of the American Statistical Association" }
+ @String{AmerStatAssoc = "J. Amer. Statist. Assoc." }
+ @String{ApplMathComp = "Applied Mathematics and Computation" }
+ @String{ApplMathComp = "Appl. Math. Comput." }
+ @String{AmerMathMonthly = "American Mathematical Monthly" }
+ @String{AmerMathMonthly = "Amer. Math. Monthly" }
+ @String{BIT = "{BIT}" }
+ @String{BritStatPsych = "British Journal of Mathematical and Statistical
+          Psychology" }
+ @String{BritStatPsych = "Brit. J. Math. Statist. Psych." }
+ @String{CanMathBull = "Canadian Mathematical Bulletin" }
+ @String{CanMathBull = "Canad. Math. Bull." }
+ @String{CompApplMath = "Journal of Computational and Applied Mathematics" }
+ @String{CompApplMath = "J. Comput. Appl. Math." }
+ @String{CompPhys = "Journal of Computational Physics" }
+ @String{CompPhys = "J. Comput. Phys." }
+ @String{CompStruct = "Computers and Structures" }
+ @String{CompStruct = "Comput. \& Structures" }
+ @String{CompJour = "The Computer Journal" }
+ @String{CompJour = "Comput. J." }
+ @String{CompSysSci = "Journal of Computer and System Sciences" }
+ @String{CompSysSci = "J. Comput. System Sci." }
+ @String{Computing = "Computing" }
+ @String{ContempMath = "Contemporary Mathematics" }
+ @String{ContempMath = "Contemp. Math." }
+ @String{Crelle = "Crelle's Journal" }
+ @String{GiornaleMath = "Giornale di Mathematiche" }
+ @String{GiornaleMath = "Giorn. Mat." } % didn't find in AMS MR., ibid.
+
+ %IEEE
+ @String{Computer = "{IEEE} Computer" }
+ @String{IEEETransComp = "{IEEE} Transactions on Computers" }
+ @String{IEEETransComp = "{IEEE} Trans. Comput." }
+ @String{IEEETransAC = "{IEEE} Transactions on Automatic Control" }
+ @String{IEEETransAC = "{IEEE} Trans. Automat. Control" }
+ @String{IEEESpec = "{IEEE} Spectrum" } % didn't find in AMS MR
+ @String{ProcIEEE = "Proceedings of the {IEEE}" }
+ @String{ProcIEEE = "Proc. {IEEE}" } % didn't find in AMS MR
+ @String{IEEETransAeroElec = "{IEEE} Transactions on Aerospace and Electronic
+     Systems" }
+ @String{IEEETransAeroElec = "{IEEE} Trans. Aerospace Electron. Systems" }
+
+ @String{IMANumerAna = "{IMA} Journal of Numerical Analysis" }
+ @String{IMANumerAna = "{IMA} J. Numer. Anal." }
+ @String{InfProcLet = "Information Processing Letters" }
+ @String{InfProcLet = "Inform. Process. Lett." }
+ @String{InstMathApp = "Journal of the Institute of Mathematics and
+     its Applications" }
+ @String{InstMathApp = "J. Inst. Math. Appl." }
+ @String{IntControl = "International Journal of Control" }
+ @String{IntControl = "Internat. J. Control" }
+ @String{IntNumerEng = "International Journal for Numerical Methods in
+     Engineering" }
+ @String{IntNumerEng = "Internat. J. Numer. Methods Engrg." }
+ @String{IntSuper = "International Journal of Supercomputing Applications" }
+ @String{IntSuper = "Internat. J. Supercomputing Applic." } % didn't find
+%% in AMS MR
+ @String{Kibernetika = "Kibernetika" }
+ @String{JResNatBurStand = "Journal of Research of the National Bureau
+     of Standards" }
+ @String{JResNatBurStand = "J. Res. Nat. Bur. Standards" }
+ @String{LinAlgApp = "Linear Algebra and its Applications" }
+ @String{LinAlgApp = "Linear Algebra Appl." }
+ @String{MathAnaAppl = "Journal of Mathematical Analysis and Applications" }
+ @String{MathAnaAppl = "J. Math. Anal. Appl." }
+ @String{MathAnnalen = "Mathematische Annalen" }
+ @String{MathAnnalen = "Math. Ann." }
+ @String{MathPhys = "Journal of Mathematical Physics" }
+ @String{MathPhys = "J. Math. Phys." }
+ @String{MathComp = "Mathematics of Computation" }
+ @String{MathComp = "Math. Comp." }
+ @String{MathScand = "Mathematica Scandinavica" }
+ @String{MathScand = "Math. Scand." }
+ @String{TablesAidsComp = "Mathematical Tables and Other Aids to Computation" }
+ @String{TablesAidsComp = "Math. Tables Aids Comput." }
+ @String{NumerMath = "Numerische Mathematik" }
+ @String{NumerMath = "Numer. Math." }
+ @String{PacificMath = "Pacific Journal of Mathematics" }
+ @String{PacificMath = "Pacific J. Math." }
+ @String{ParDistComp = "Journal of Parallel and Distributed Computing" }
+ @String{ParDistComp = "J. Parallel and Distrib. Comput." } % didn't find
+%% in AMS MR
+ @String{ParComputing = "Parallel Computing" }
+ @String{ParComputing = "Parallel Comput." }
+ @String{PhilMag = "Philosophical Magazine" }
+ @String{PhilMag = "Philos. Mag." }
+ @String{ProcNAS = "Proceedings of the National Academy of Sciences
+                    of the USA" }
+ @String{ProcNAS = "Proc. Nat. Acad. Sci. U. S. A." }
+ @String{Psychometrika = "Psychometrika" }
+ @String{QuartMath = "Quarterly Journal of Mathematics, Oxford, Series (2)" }
+ @String{QuartMath = "Quart. J. Math. Oxford Ser. (2)" }
+ @String{QuartApplMath = "Quarterly of Applied Mathematics" }
+ @String{QuartApplMath = "Quart. Appl. Math." }
+ @String{RevueInstStat = "Review of the International Statisical Institute" }
+ @String{RevueInstStat = "Rev. Inst. Internat. Statist." }
+
+ %SIAM
+ @String{JSIAM = "Journal of the Society for Industrial and Applied
+     Mathematics" }
+ @String{JSIAM = "J. Soc. Indust. Appl. Math." }
+ @String{JSIAMB = "Journal of the Society for Industrial and Applied
+     Mathematics, Series B, Numerical Analysis" }
+ @String{JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }
+ @String{SIAMAlgMeth = "{SIAM} Journal on Algebraic and Discrete Methods" }
+ @String{SIAMAlgMeth = "{SIAM} J. Algebraic Discrete Methods" }
+ @String{SIAMAppMath = "{SIAM} Journal on Applied Mathematics" }
+ @String{SIAMAppMath = "{SIAM} J. Appl. Math." }
+ @String{SIAMComp = "{SIAM} Journal on Computing" }
+ @String{SIAMComp = "{SIAM} J. Comput." }
+ @String{SIAMMatrix = "{SIAM} Journal on Matrix Analysis and Applications" }
+ @String{SIAMMatrix = "{SIAM} J. Matrix Anal. Appl." }
+ @String{SIAMNumAnal = "{SIAM} Journal on Numerical Analysis" }
+ @String{SIAMNumAnal = "{SIAM} J. Numer. Anal." }
+ @String{SIAMReview = "{SIAM} Review" }
+ @String{SIAMReview = "{SIAM} Rev." }
+ @String{SIAMSciStat = "{SIAM} Journal on Scientific and Statistical
+     Computing" }
+ @String{SIAMSciStat = "{SIAM} J. Sci. Statist. Comput." }
+
+ @String{SoftPracExp = "Software Practice and Experience" }
+ @String{SoftPracExp = "Software Prac. Experience" } % didn't find in AMS MR
+ @String{StatScience = "Statistical Science" }
+ @String{StatScience = "Statist. Sci." }
+ @String{Techno = "Technometrics" }
+ @String{USSRCompMathPhys = "{USSR} Computational Mathematics and Mathematical
+     Physics" }
+ @String{USSRCompMathPhys = "{U. S. S. R.} Comput. Math. and Math. Phys." }
+ @String{VLSICompSys = "Journal of {VLSI} and Computer Systems" }
+ @String{VLSICompSys = "J. {VLSI} Comput. Syst." }
+ @String{ZAngewMathMech = "Zeitschrift fur Angewandte Mathematik und
+     Mechanik" }
+ @String{ZAngewMathMech = "Z. Angew. Math. Mech." }
+ @String{ZAngewMathPhys = "Zeitschrift fur Angewandte Mathematik und Physik" }
+ @String{ZAngewMathPhys = "Z. Angew. Math. Phys." }
+
+% Publishers % ================================================= |
+
+ @String{Academic = "Academic Press" }
+ @String{ACMPress = "{ACM} Press" }
+ @String{AdamHilger = "Adam Hilger" }
+ @String{AddisonWesley = "Addison-Wesley" }
+ @String{AllynBacon = "Allyn and Bacon" }
+ @String{AMS = "American Mathematical Society" }
+ @String{Birkhauser = "Birkha{\"u}ser" }
+ @String{CambridgePress = "Cambridge University Press" }
+ @String{Chelsea = "Chelsea" }
+ @String{ClaredonPress = "Claredon Press" }
+ @String{DoverPub = "Dover Publications" }
+ @String{Eyolles = "Eyolles" }
+ @String{HoltRinehartWinston = "Holt, Rinehart and Winston" }
+ @String{Interscience = "Interscience" }
+ @String{JohnsHopkinsPress = "The Johns Hopkins University Press" }
+ @String{JohnWileySons = "John Wiley and Sons" }
+ @String{Macmillan = "Macmillan" }
+ @String{MathWorks = "The Math Works Inc." }
+ @String{McGrawHill = "McGraw-Hill" }
+ @String{NatBurStd = "National Bureau of Standards" }
+ @String{NorthHolland = "North-Holland" }
+ @String{OxfordPress = "Oxford University Press" }  %address Oxford or London?
+ @String{PergamonPress = "Pergamon Press" }
+ @String{PlenumPress = "Plenum Press" }
+ @String{PrenticeHall = "Prentice-Hall" }
+ @String{SIAMPub = "{SIAM} Publications" }
+ @String{Springer = "Springer-Verlag" }
+ @String{TexasPress = "University of Texas Press" }
+ @String{VanNostrand = "Van Nostrand" }
+ @String{WHFreeman = "W. H. Freeman and Co." }
+
+%Entries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fish papers from Robert (and others)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{zhu2019tuna,
+  title={Tuna robotics: A high-frequency experimental platform exploring the performance space of swimming fishes},
+  author={Zhu, Joseph and White, Carl and Wainwright, Dylan K and Di Santo, Valentina and Lauder, George V and Bart-Smith, Hilary},
+  journal={Science Robotics},
+  volume={4},
+  number={34},
+  year={2019},
+  publisher={Science Robotics}
+}
+
+@inproceedings{katzschmann2016hydraulic,
+  title={Hydraulic autonomous soft robotic fish for 3D swimming},
+  author={Katzschmann, Robert K and Marchese, Andrew D and Rus, Daniela},
+  booktitle={Experimental Robotics},
+  pages={405--420},
+  year={2016},
+  organization={Springer}
+}
+
+@inproceedings{zheng2019controllability,
+  title={Controllability pre-verification of silicone soft robots based on finite-element method},
+  author={Zheng, Gang and Goury, Olivier and Thieffry, Maxime and Kruszewski, Alexandre and Duriez, Christian},
+  booktitle={2019 International Conference on Robotics and Automation (ICRA)},
+  pages={7395--7400},
+  year={2019},
+  organization={IEEE}
+}
+
+@article{li2017fast,
+  title={Fast-moving soft electronic fish},
+  author={Li, Tiefeng and Li, Guorui and Liang, Yiming and Cheng, Tingyu and Dai, Jing and Yang, Xuxu and Liu, Bangyuan and Zeng, Zedong and Huang, Zhilong and Luo, Yingwu and others},
+  journal={Science advances},
+  volume={3},
+  number={4},
+  pages={e1602045},
+  year={2017},
+  publisher={American Association for the Advancement of Science}
+}
+
+@inproceedings{van2020biomimetic,
+  title={Biomimetic Design of a Soft Robotic Fish for High Speed Locomotion},
+  author={van den Berg, Sander C and Scharff, Rob BN and Rus{\'a}k, Zolt{\'a}n and Wu, Jun},
+  booktitle={Conference on Biomimetic and Biohybrid Systems},
+  pages={366--377},
+  year={2020},
+  organization={Springer}
+}
+
+@article{marchese2015recipe,
+  title={A recipe for soft fluidic elastomer robots},
+  author={Marchese, Andrew D and Katzschmann, Robert K and Rus, Daniela},
+  journal={Soft robotics},
+  volume={2},
+  number={1},
+  pages={7--25},
+  year={2015},
+  publisher={Mary Ann Liebert, Inc. 140 Huguenot Street, 3rd Floor New Rochelle, NY 10801 USA}
+}
+
+@article{coevoet2017software,
+  title={Software toolkit for modeling, simulation, and control of soft robots},
+  author={Coevoet, Eulalie and Morales-Bieze, Thor and Largilliere, Frederick and Zhang, Zhongkai and Thieffry, Maxime and Sanz-Lopez, Mario and Carrez, Bruno and Marchal, Damien and Goury, Olivier and Dequidt, Jeremie and others},
+  journal={Advanced Robotics},
+  volume={31},
+  number={22},
+  pages={1208--1224},
+  year={2017},
+  publisher={Taylor \& Francis}
+}
+
+
+@article{mosadegh2014pneumatic,
+  title={Pneumatic networks for soft robotics that actuate rapidly},
+  author={Mosadegh, Bobak and Polygerinos, Panagiotis and Keplinger, Christoph and Wennstedt, Sophia and Shepherd, Robert F and Gupta, Unmukt and Shim, Jongmin and Bertoldi, Katia and Walsh, Conor J and Whitesides, George M},
+  journal={Advanced functional materials},
+  volume={24},
+  number={15},
+  pages={2163--2170},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{wolf2020fish,
+  title={Fish-like aquatic propulsion studied using a pneumatically-actuated soft-robotic model},
+  author={Wolf, Z and Jusufi, A and Vogt, DM and Lauder, GV},
+  journal={Bioinspiration \& biomimetics},
+  volume={15},
+  number={4},
+  pages={046008},
+  year={2020},
+  publisher={IOP Publishing}
+}
+
+@article{fish2006passive,
+  title={Passive and active flow control by swimming fishes and mammals},
+  author={Fish, FE and Lauder, George V},
+  journal={Annu. Rev. Fluid Mech.},
+  volume={38},
+  pages={193--224},
+  year={2006},
+  publisher={Annual Reviews}
+}
+
+@inproceedings{katzschmann2019dynamically,
+  title={Dynamically closed-loop controlled soft robotic arm using a reduced order finite element model with state observer},
+  author={Katzschmann, Robert K and Thieffry, Maxime and Goury, Olivier and Kruszewski, Alexandre and Guerra, Thierry-Marie and Duriez, Christian and Rus, Daniela},
+  booktitle={2019 2nd IEEE International Conference on Soft Robotics (RoboSoft)},
+  pages={717--724},
+  year={2019},
+  organization={IEEE}
+}
+
+@inproceedings{katzschmann2019dynamic,
+  title={Dynamic motion control of multi-segment soft robots using piecewise constant curvature matched with an augmented rigid body model},
+  author={Katzschmann, Robert K and Della Santina, Cosimo and Toshimitsu, Yasunori and Bicchi, Antonio and Rus, Daniela},
+  booktitle={2019 2nd IEEE International Conference on Soft Robotics (RoboSoft)},
+  pages={454--461},
+  year={2019},
+  organization={IEEE}
+}
+
+@inproceedings{katzschmann2016cyclic,
+  title={Cyclic hydraulic actuation for soft robotic devices},
+  author={Katzschmann, Robert K and De Maille, Austin and Dorhout, David L and Rus, Daniela},
+  booktitle={2016 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={3048--3055},
+  year={2016},
+  organization={IEEE}
+}
+
+@article{sfakiotakis1999review,
+  title={Review of fish swimming modes for aquatic locomotion},
+  author={Sfakiotakis, Michael and Lane, David M and Davies, J Bruce C},
+  journal={IEEE Journal of oceanic engineering},
+  volume={24},
+  number={2},
+  pages={237--252},
+  year={1999},
+  publisher={IEEE}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Computational design of soft robots
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{cheney2014,
+    author = {Cheney, Nick and MacCurdy, Robert and Clune, Jeff and Lipson, Hod},
+    title = {Unshackling Evolution: Evolving Soft Robots with Multiple Materials and a Powerful Generative Encoding},
+    year = {2014},
+    issue_date = {August 2014},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {7},
+    number = {1},
+    url = {https://doi.org/10.1145/2661735.2661737},
+    doi = {10.1145/2661735.2661737},
+    abstract = {In 1994, Karl Sims' evolved virtual creatures showed the potential of evolutionary algorithms to produce natural, complex morphologies and behaviors [30]. One might assume that nearly 20 years of improvements in computational speed and evolutionary algorithms would produce far more impressive organisms, yet the creatures evolved in the field of artificial life today are not obviously more complex, natural, or intelligent. Fig. 2 demonstrates an example of similar complexity in robots evolved 17 years apart.},
+    journal = {SIGEVOlution},
+    month = aug,
+    pages = {11–23},
+    numpages = {13}
+}
+
+@inproceedings{corucci2016evolving,
+  title={Evolving swimming soft-bodied creatures},
+  author={Corucci, Francesco and Cheney, Nick and Lipson, Hod and Laschi, Cecilia and Bongard, Josh},
+  booktitle={ALIFE XV, The Fifteenth International Conference on the Synthesis and Simulation of Living Systems, Late Breaking Proceedings},
+  volume={6},
+  year={2016}
+}
+
+@article{van2019spatial,
+  title={A spatial grammar method for the computational design synthesis of virtual soft locomotion robots},
+  author={Van Diepen, Merel and Shea, Kristina},
+  journal={Journal of Mechanical Design},
+  volume={141},
+  number={10},
+  year={2019},
+  publisher={American Society of Mechanical Engineers Digital Collection}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Shape Interpolation Spaces
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{baek2015isometric,
+  title={Isometric shape interpolation},
+  author={Baek, Seung-Yeob and Lim, Jeonghun and Lee, Kunwoo},
+  journal={Computers \& Graphics},
+  volume={46},
+  pages={257--263},
+  year={2015},
+  publisher={Elsevier}
+}
+
+@article{fish2014meta,
+  title={Meta-representation of shape families},
+  author={Fish, Noa and Averkiou, Melinos and Van Kaick, Oliver and Sorkine-Hornung, Olga and Cohen-Or, Daniel and Mitra, Niloy J},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={33},
+  number={4},
+  pages={1--11},
+  year={2014},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{ovsjanikov2012functional,
+  title={Functional maps: a flexible representation of maps between shapes},
+  author={Ovsjanikov, Maks and Ben-Chen, Mirela and Solomon, Justin and Butscher, Adrian and Guibas, Leonidas},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={31},
+  number={4},
+  pages={1--11},
+  year={2012},
+  publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{averkiou2014shapesynth,
+  title={Shapesynth: Parameterizing model collections for coupled shape exploration and synthesis},
+  author={Averkiou, Melinos and Kim, Vladimir G and Zheng, Youyi and Mitra, Niloy J},
+  booktitle={Computer Graphics Forum},
+  volume={33},
+  number={2},
+  pages={125--134},
+  year={2014},
+  organization={Wiley Online Library}
+}
+
+@inproceedings{yang2019pointflow,
+  title={Pointflow: 3d point cloud generation with continuous normalizing flows},
+  author={Yang, Guandao and Huang, Xun and Hao, Zekun and Liu, Ming-Yu and Belongie, Serge and Hariharan, Bharath},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={4541--4550},
+  year={2019}
+}
+
+@article{lewis2014practice,
+  title={Practice and Theory of Blendshape Facial Models.},
+  author={Lewis, John P and Anjyo, Ken and Rhee, Taehyun and Zhang, Mengjie and Pighin, Frederic H and Deng, Zhigang},
+  journal={Eurographics (State of the Art Reports)},
+  volume={1},
+  number={8},
+  pages={2},
+  year={2014}
+}
+
+@article{bronstein2011shape,
+  title={Shape google: Geometric words and expressions for invariant shape retrieval},
+  author={Bronstein, Alexander M and Bronstein, Michael M and Guibas, Leonidas J and Ovsjanikov, Maks},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={30},
+  number={1},
+  pages={1--20},
+  year={2011},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{mo2019structurenet,
+  title={StructureNet: hierarchical graph networks for 3D shape generation},
+  author={Mo, Kaichun and Guerrero, Paul and Yi, Li and Su, Hao and Wonka, Peter and Mitra, Niloy J and Guibas, Leonidas J},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={38},
+  number={6},
+  pages={1--19},
+  year={2019},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{schulz2017retrieval,
+  title={Retrieval on parametric shape collections},
+  author={Schulz, Adriana and Shamir, Ariel and Baran, Ilya and Levin, David IW and Sitthi-Amorn, Pitchaya and Matusik, Wojciech},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={36},
+  number={1},
+  pages={1--14},
+  year={2017},
+  publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{park2019deepsdf,
+  title={Deepsdf: Learning continuous signed distance functions for shape representation},
+  author={Park, Jeong Joon and Florence, Peter and Straub, Julian and Newcombe, Richard and Lovegrove, Steven},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={165--174},
+  year={2019}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Computational design of rigid robots
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{du2016,
+    author = {Du, Tao and Schulz, Adriana and Zhu, Bo and Bickel, Bernd and Matusik, Wojciech},
+    title = {Computational Multicopter Design},
+    year = {2016},
+    issue_date = {November 2016},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {35},
+    number = {6},
+    issn = {0730-0301},
+    url = {https://doi.org/10.1145/2980179.2982427},
+    doi = {10.1145/2980179.2982427},
+    abstract = {We present an interactive system for computational design, optimization, and fabrication of multicopters. Our computational approach allows non-experts to design, explore, and evaluate a wide range of different multicopters. We provide users with an intuitive interface for assembling a multicopter from a collection of components (e.g., propellers, motors, and carbon fiber rods). Our algorithm interactively optimizes shape and controller parameters of the current design to ensure its proper operation. In addition, we allow incorporating a variety of other metrics (such as payload, battery usage, size, and cost) into the design process and exploring tradeoffs between them. We show the efficacy of our method and system by designing, optimizing, fabricating, and operating multicopters with complex geometries and propeller configurations. We also demonstrate the ability of our optimization algorithm to improve the multicopter performance under different metrics.},
+    journal = {ACM Trans. Graph.},
+    month = nov,
+    articleno = {227},
+    numpages = {10},
+    keywords = {fabrication, optimization, parametric modeling}
+}
+
+@article{zhao2020,
+    author = {Zhao, Allan and Xu, Jie and Konakovi\'{c}-Lukovi\'{c}, Mina and Hughes, Josephine and Spielberg, Andrew and Rus, Daniela and Matusik, Wojciech},
+    title = {RoboGrammar: Graph Grammar for Terrain-Optimized Robot Design},
+    year = {2020},
+    issue_date = {December 2020},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {39},
+    number = {6},
+    issn = {0730-0301},
+    url = {https://doi.org/10.1145/3414685.3417831},
+    doi = {10.1145/3414685.3417831},
+    abstract = {We present RoboGrammar, a fully automated approach for generating optimized robot structures to traverse given terrains. In this framework, we represent each robot design as a graph, and use a graph grammar to express possible arrangements of physical robot assemblies. Each robot design can then be expressed as a sequence of grammar rules. Using only a small set of rules our grammar can describe hundreds of thousands of possible robot designs. The construction of the grammar limits the design space to designs that can be fabricated. For a given input terrain, the design space is searched to find the top performing robots and their corresponding controllers. We introduce Graph Heuristic Search - a novel method for efficient search of combinatorial design spaces. In Graph Heuristic Search, we explore the design space while simultaneously learning a function that maps incomplete designs (e.g., nodes in the combinatorial search tree) to the best performance values that can be achieved by expanding these incomplete designs. Graph Heuristic Search prioritizes exploration of the most promising branches of the design space. To test our method we optimize robots for a number of challenging and varied terrains. We demonstrate that RoboGrammar can successfully generate nontrivial robots that are optimized for a single terrain or a combination of terrains.},
+    journal = {ACM Trans. Graph.},
+    month = nov,
+    articleno = {188},
+    numpages = {16},
+    keywords = {graph neural networks, graph grammars}
+}
+
+@inproceedings{pathak19assemblies,
+    Author = {Pathak, Deepak and
+    Lu, Chris and Darrell, Trevor and
+    Isola, Phillip and Efros, Alexei A.},
+    Title = {Learning to Control Self-Assembling Morphologies: A Study of Generalization via Modularity},
+    Journal = {Advances in Neural Information Processing Systems},
+    Year = {2019}
+}
+
+@article{ha2019reinforcement,
+    title={Reinforcement learning for improving agent design},
+    author={Ha, David},
+    journal={Artificial life},
+    volume={25},
+    number={4},
+    pages={352--365},
+    year={2019},
+    publisher={MIT Press}
+}
+
+@inproceedings{spielberg2017functional,
+  title={Functional co-optimization of articulated robots},
+  author={Spielberg, Andrew and Araki, Brandon and Sung, Cynthia and Tedrake, Russ and Rus, Daniela},
+  booktitle={2017 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={5035--5042},
+  year={2017},
+  organization={IEEE}
+}
+
+@inproceedings{ha2017joint,
+  title={Joint Optimization of Robot Design and Motion Parameters using the Implicit Function Theorem.},
+  author={Ha, Sehoon and Coros, Stelian and Alspach, Alexander and Kim, Joohyung and Yamane, Katsu},
+  booktitle={Robotics: Science and systems},
+  volume={8},
+  year={2017}
+}
+
+@article{ha2018computational,
+  title={Computational design of robotic devices from high-level motion specifications},
+  author={Ha, Sehoon and Coros, Stelian and Alspach, Alexander and Bern, James M and Kim, Joohyung and Yamane, Katsu},
+  journal={IEEE Transactions on Robotics},
+  volume={34},
+  number={5},
+  pages={1240--1251},
+  year={2018},
+  publisher={IEEE}
+}
+
+@article{schulz2017interactive,
+  title={Interactive robogami: An end-to-end system for design of robots with ground locomotion},
+  author={Schulz, Adriana and Sung, Cynthia and Spielberg, Andrew and Zhao, Wei and Cheng, Robin and Grinspun, Eitan and Rus, Daniela and Matusik, Wojciech},
+  journal={The International Journal of Robotics Research},
+  volume={36},
+  number={10},
+  pages={1131--1147},
+  year={2017},
+  publisher={SAGE Publications Sage UK: London, England}
+}
+
+@article{megaro2015interactive,
+  title={Interactive design of 3d-printable robotic creatures},
+  author={Megaro, Vittorio and Thomaszewski, Bernhard and Nitti, Maurizio and Hilliges, Otmar and Gross, Markus and Coros, Stelian},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={34},
+  number={6},
+  pages={1--9},
+  year={2015},
+  publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{megaro2017designing,
+  title={Designing cable-driven actuation networks for kinematic chains and trees},
+  author={Megaro, Vittorio and Knoop, Espen and Spielberg, Andrew and Levin, David IW and Matusik, Wojciech and Gross, Markus and Thomaszewski, Bernhard and B{\"a}cher, Moritz},
+  booktitle={Proceedings of the ACM SIGGRAPH/Eurographics Symposium on Computer Animation},
+  pages={1--10},
+  year={2017}
+}
+
+@inproceedings{schaff2019jointly,
+  title={Jointly learning to construct and control agents using deep reinforcement learning},
+  author={Schaff, Charles and Yunis, David and Chakrabarti, Ayan and Walter, Matthew R},
+  booktitle={2019 International Conference on Robotics and Automation (ICRA)},
+  pages={9798--9805},
+  year={2019},
+  organization={IEEE}
+}
+
+@inproceedings{wang2019neural,
+  title={Neural Graph Evolution: Towards Efficient Automatic Robot Design},
+  author={Wang, Tingwu and Zhou, Yuhao and Fidler, Sanja and Ba, Jimmy},
+  booktitle={International Conference on Learning Representations},
+  year={2018}
+}
+
+@inproceedings{li2017task,
+  title={Task-based design of cable-driven articulated mechanisms},
+  author={Li, Jian and Andrews, Sheldon and Birkas, Krisztian G and Kry, Paul G},
+  booktitle={Proceedings of the 1st Annual ACM Symposium on Computational Fabrication},
+  pages={1--12},
+  year={2017}
+}
+
+@article{wampler2009optimal,
+  title={Optimal gait and form for animal locomotion},
+  author={Wampler, Kevin and Popovi{\'c}, Zoran},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={28},
+  number={3},
+  pages={1--8},
+  year={2009},
+  publisher={ACM New York, NY, USA}
+}
+
+@misc{tedrake2019drake,
+ author = "Russ Tedrake and the Drake Development Team",
+ title = "Drake: Model-based design and verification for robotics",
+ year = 2019,
+ url = "https://drake.mit.edu"
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% (Soft) robot control
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{min2019softcon,
+    title={SoftCon: simulation and control of soft-bodied animals with biomimetic actuators},
+    author={Min, Sehee and Won, Jungdam and Lee, Seunghwan and Park, Jungnam and Lee, Jehee},
+    journal={ACM Transactions on Graphics (TOG)},
+    volume={38},
+    number={6},
+    pages={1--12},
+    year={2019},
+    publisher={ACM New York, NY, USA}
+}
+
+@article{marchese2016dynamics,
+  title={Dynamics and trajectory optimization for a soft spatial fluidic elastomer manipulator},
+  author={Marchese, Andrew D and Tedrake, Russ and Rus, Daniela},
+  journal={The International Journal of Robotics Research},
+  volume={35},
+  number={8},
+  pages={1000--1019},
+  year={2016},
+  publisher={SAGE Publications Sage UK: London, England}
+}
+
+@inproceedings{della2018dynamic,
+  title={Dynamic control of soft robots interacting with the environment},
+  author={Della Santina, Cosimo and Katzschmann, Robert K and Biechi, Antonio and Rus, Daniela},
+  booktitle={2018 IEEE International Conference on Soft Robotics (RoboSoft)},
+  pages={46--53},
+  year={2018},
+  organization={IEEE}
+}
+
+@incollection{barbivc2009deformable,
+  title={Deformable object animation using reduced optimal control},
+  author={Barbi{\v{c}}, Jernej and da Silva, Marco and Popovi{\'c}, Jovan},
+  booktitle={ACM SIGGRAPH 2009 papers},
+  pages={1--9},
+  year={2009}
+}
+
+@article{barbivc2008real,
+  title={Real-time control of physically based simulations using gentle forces},
+  author={Barbi{\v{c}}, Jernej and Popovi{\'c}, Jovan},
+  journal={ACM transactions on graphics (TOG)},
+  volume={27},
+  number={5},
+  pages={1--10},
+  year={2008},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{thieffry2018control,
+    title={Control Design for Soft Robots Based on Reduced-Order Model},
+    author={Thieffry, Maxime and Kruszewski, Alexandre and Duriez, Christian and Guerra, Thierry-Marie},
+    journal={IEEE Robotics and Automation Letters},
+    volume={4},
+    number={1},
+    pages={25--32},
+    year={2018},
+    publisher={IEEE}
+}
+
+@article{spielberg2019learning,
+  title={Learning-in-the-loop optimization: End-to-end control and co-design of soft robots through learned deep latent representations},
+  author={Spielberg, Andrew and Zhao, Allan and Hu, Yuanming and Du, Tao and Matusik, Wojciech and Rus, Daniela},
+  journal={Advances in Neural Information Processing Systems},
+  volume={32},
+  pages={8284--8294},
+  year={2019}
+}
+
+@article{tan2012soft,
+  title={Soft body locomotion},
+  author={Tan, Jie and Turk, Greg and Liu, C Karen},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={31},
+  number={4},
+  pages={1--11},
+  year={2012},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{tan2011articulated,
+  title={Articulated swimming creatures},
+  author={Tan, Jie and Gu, Yuting and Turk, Greg and Liu, C Karen},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={30},
+  number={4},
+  pages={1--12},
+  year={2011},
+  publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{vaswani2017attention,
+    title={Attention is All you Need},
+    author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, Lukasz and Polosukhin, Illia},
+    booktitle={NIPS},
+    year={2017}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EMD
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{solomon2015,
+    author = {Solomon, Justin and de Goes, Fernando and Peyr\'{e}, Gabriel and Cuturi, Marco and Butscher, Adrian and Nguyen, Andy and Du, Tao and Guibas, Leonidas},
+    title = {Convolutional Wasserstein Distances: Efficient Optimal Transportation on Geometric Domains},
+    year = {2015},
+    issue_date = {August 2015},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {34},
+    number = {4},
+    issn = {0730-0301},
+    url = {https://doi.org/10.1145/2766963},
+    doi = {10.1145/2766963},
+    abstract = {This paper introduces a new class of algorithms for optimization problems involving optimal transportation over geometric domains. Our main contribution is to show that optimal transportation can be made tractable over large domains used in graphics, such as images and triangle meshes, improving performance by orders of magnitude compared to previous work. To this end, we approximate optimal transportation distances using entropic regularization. The resulting objective contains a geodesic distance-based kernel that can be approximated with the heat kernel. This approach leads to simple iterative numerical schemes with linear convergence, in which each iteration only requires Gaussian convolution or the solution of a sparse, pre-factored linear system. We demonstrate the versatility and efficiency of our method on tasks including reflectance interpolation, color transfer, and geometry processing.},
+    journal = {ACM Trans. Graph.},
+    month = jul,
+    articleno = {66},
+    numpages = {11},
+    keywords = {wasserstein distances, entropy, displacement interpolation, optimal transportation}
+}
+
+@inproceedings{zhang2020deepemd,
+    title={DeepEMD: Few-Shot Image Classification With Differentiable Earth Mover's Distance and Structured Classifiers},
+    author={Zhang, Chi and Cai, Yujun and Lin, Guosheng and Shen, Chunhua},
+    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+    pages={12203--12213},
+    year={2020}
+}
+
+@article{rubner2000earth,
+    title={The earth mover's distance as a metric for image retrieval},
+    author={Rubner, Yossi and Tomasi, Carlo and Guibas, Leonidas J},
+    journal={International journal of computer vision},
+    volume={40},
+    number={2},
+    pages={99--121},
+    year={2000},
+    publisher={Springer}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Differentiable simulation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{bouaziz2014projective,
+  title={Projective dynamics: Fusing constraint projections for fast simulation},
+  author={Bouaziz, Sofien and Martin, Sebastian and Liu, Tiantian and Kavan, Ladislav and Pauly, Mark},
+  journal={ACM transactions on graphics (TOG)},
+  volume={33},
+  number={4},
+  pages={1--11},
+  year={2014},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{du2021diffpd,
+    title={DiffPD: Differentiable Projective Dynamics with Contact},
+    author={Du, Tao and Wu, Kui and Ma, Pingchuan and Wah, Sebastien and Spielberg, Andrew and Rus, Daniela and Matusik, Wojciech},
+    year={2021},
+    journal={arXiv preprint arXiv:2101.05917}
+}
+
+@inproceedings{de2018end,
+    title={End-to-End Differentiable Physics for Learning and Control},
+    author={de Avila Belbute-Peres, Filipe and Smith, Kevin and Allen, Kelsey and Tenenbaum, Josh and Kolter, Zico},
+    booktitle={Advances in Neural Information Processing Systems},
+    pages={7178--7189},
+    year={2018}
+}
+
+@inproceedings{huang2021plasticine,
+    title={PlasticineLab: A Soft-Body Manipulation Benchmark with Differentiable Physics},
+    author={Huang, Zhiao and Hu, Yuanming and Du, Tao and Zhou, Siyuan and Su, Hao and Tenenbaum, Joshua and Gan, Chuang},
+    booktitle={ICLR 2021},
+    year={2021}
+}
+
+@article{du2020stokes,
+    author = {Du, Tao and Wu, Kui and Spielberg, Andrew and Matusik, Wojciech and Zhu, Bo and Sifakis, Eftychios},
+    title = {Functional Optimization of Fluidic Devices with Differentiable Stokes Flow},
+    year = {2020},
+    issue_date = {December 2020},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {39},
+    number = {6},
+    issn = {0730-0301},
+    url = {https://doi.org/10.1145/3414685.3417795},
+    doi = {10.1145/3414685.3417795},
+    journal = {ACM Trans. Graph.},
+    month = nov,
+    articleno = {197},
+    numpages = {15},
+    keywords = {fluid simulation, computational design optimization, physically-based simulation}
+}
+
+@article{degrave2019differentiable,
+    author={Degrave, Jonas and Hermans, Michiel and Dambre, Joni and wyffels, Francis},
+    title={A Differentiable Physics Engine for Deep Learning in Robotics},
+    journal={Frontiers in Neurorobotics},
+    volume={13},
+    pages={6},
+    year={2019},
+    issn={1662-5218},
+}
+
+@article{popovic2003motion,
+    author = {Popovi\'{c}, Jovan and Seitz, Steven and Erdmann, Michael},
+    title = {Motion Sketching for Control of Rigid-Body Simulations},
+    year = {2003},
+    issue_date = {October 2003},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {22},
+    number = {4},
+    issn = {0730-0301},
+    journal = {ACM Trans. Graph.},
+    month = oct,
+    pages = {1034–1054},
+    numpages = {21},
+    keywords = {user interface design, Physically based animation, animation with constraints}
+}
+
+
+@inproceedings{liang2019differentiable,
+    title={Differentiable Cloth Simulation for Inverse Problems},
+    author={Liang, Junbang and Lin, Ming and Koltun, Vladlen},
+    booktitle={Advances in Neural Information Processing Systems},
+    pages={772--781},
+    year={2019}
+}
+
+@inproceedings{qiao2020scalable,
+    title = {Scalable Differentiable Physics for Learning and Control},
+    author = {Qiao, Yi-Ling and Liang, Junbang and Koltun, Vladlen and Lin, Ming},
+    booktitle = {International Conference on Machine Learning},
+    Year = {2020}
+}
+
+@inproceedings{holl2020learning,
+    title={Learning to Control PDEs with Differentiable Physics},
+    author={Philipp Holl and Nils Thuerey and Vladlen Koltun},
+    booktitle={International Conference on Learning Representations},
+    year={2020},
+}
+
+@article{mcnamara2004fluid,
+    author = {McNamara, Antoine and Treuille, Adrien and Popovi\'{c}, Zoran and Stam, Jos},
+    title = {Fluid Control Using the Adjoint Method},
+    year = {2004},
+    issue_date = {August 2004},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {23},
+    number = {3},
+    issn = {0730-0301},
+    journal = {ACM Trans. Graph.},
+    month = aug,
+    pages = {449–456},
+    numpages = {8},
+    keywords = {Adjoint Method, Optimization, Inverse Control}
+}
+
+@article{geilinger2020add,
+  title={ADD: analytically differentiable dynamics for multi-body systems with frictional contact},
+  author={Geilinger, Moritz and Hahn, David and Zehnder, Jonas and B{\"a}cher, Moritz and Thomaszewski, Bernhard and Coros, Stelian},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={39},
+  number={6},
+  pages={1--15},
+  year={2020},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{treuille2003keyframe,
+    author = {Treuille, Adrien and McNamara, Antoine and Popovi\'{c}, Zoran and Stam, Jos},
+    title = {Keyframe Control of Smoke Simulations},
+    year = {2003},
+    issue_date = {July 2003},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {22},
+    number = {3},
+    issn = {0730-0301},
+    journal = {ACM Trans. Graph.},
+    month = jul,
+    pages = {716–723},
+    numpages = {8},
+    keywords = {fluid simulation, optimization, inverse control}
+}
+
+@article{hu2019difftaichi,
+    title={Diff{T}aichi: Differentiable Programming for Physical Simulation},
+    author={Hu, Yuanming and Anderson, Luke and Li, Tzu-Mao and Sun, Qi and Carr, Nathan and Ragan-Kelley, Jonathan and Durand, Fr{\'e}do},
+    journal={International Conference on Learning Representations},
+    year={2020}
+}
+
+@article{hu2019chainqueen,
+    title={Chain{Q}ueen: A Real-Time Differentiable Physical Simulator for Soft Robotics},
+    author={Hu, Yuanming and Liu, Jiancheng and Spielberg, Andrew and Tenenbaum, Joshua B and Freeman, William T and Wu, Jiajun and Rus, Daniela and Matusik, Wojciech},
+    journal={International Conference on Robotics and Automation},
+    year={2019}
+}
+
+@inproceedings{li2019learning,
+    Title={Learning Particle Dynamics for Manipulating Rigid Bodies, Deformable Objects, and Fluids},
+    Author={Li, Yunzhu and Wu, Jiajun and Tedrake, Russ and Tenenbaum, Joshua and Torralba, Antonio},
+    Booktitle = {International Conference on Learning Representations},
+    Year = {2019}
+}
+
+@article{hahn2019real2sim,
+    author = {Hahn, David and Banzet, Pol and Bern, James and Coros, Stelian},
+    title = {Real2Sim: Visco-Elastic Parameter Estimation from Dynamic Motion},
+    year = {2019},
+    issue_date = {November 2019},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {38},
+    number = {6},
+    issn = {0730-0301},
+    journal = {ACM Trans. Graph.},
+    month = nov,
+    articleno = {236},
+    numpages = {13},
+    keywords = {robotics, physically-based simulation, motion capture, optimization, deformable models}
+}
+
+@inproceedings{bern2020soft,
+  title={Soft robot control with a learned differentiable model},
+  author={Bern, James M and Schnider, Yannick and Banzet, Pol and Kumar, Nitish and Coros, Stelian},
+  booktitle={2020 3rd IEEE International Conference on Soft Robotics (RoboSoft)},
+  pages={417--423},
+  year={2020},
+  organization={IEEE}
+}
+
+
+@article{schenck2018spnets,
+    title={{SPN}ets: Differentiable Fluid Dynamics for Deep Neural Networks},
+    author={Schenck, Connor and Fox, Dieter},
+    journal={Conference on Robot Learning (CoRL)},
+    year={2018}
+}
+
+@inproceedings{ummenhofer2019lagrangian,
+  title={Lagrangian fluid simulation with continuous convolutions},
+  author={Ummenhofer, Benjamin and Prantl, Lukas and Thuerey, Nils and Koltun, Vladlen},
+  booktitle={International Conference on Learning Representations},
+  year={2019}
+}
+
+@article{raissi2020hidden,
+  title={Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations},
+  author={Raissi, Maziar and Yazdani, Alireza and Karniadakis, George Em},
+  journal={Science},
+  volume={367},
+  number={6481},
+  pages={1026--1030},
+  year={2020},
+  publisher={American Association for the Advancement of Science}
+}
+
+@inproceedings{ajay2018augmenting,
+  title={Augmenting physical simulators with stochastic neural networks: Case study of planar pushing and bouncing},
+  author={Ajay, Anurag and Wu, Jiajun and Fazeli, Nima and Bauza, Maria and Kaelbling, Leslie P and Tenenbaum, Joshua B and Rodriguez, Alberto},
+  booktitle={2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={3066--3073},
+  year={2018},
+  organization={IEEE}
+}
+
+@InProceedings{ajay2019combining,
+  title={{Combining Physical Simulators and Object-Based Networks for Control}},
+  author={Ajay, Anurag and Bauza, Maria and Wu, Jiajun and Fazeli, Nima and Tenenbaum, Joshua B and Rodriguez, Alberto and Kaelbling, Leslie P},
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
+  year={2019}
+}
+
+@inproceedings{chen2018neural,
+  title={Neural ordinary differential equations},
+  author={Chen, Ricky TQ and Rubanova, Yulia and Bettencourt, Jesse and Duvenaud, David},
+  booktitle={Proceedings of the 32nd International Conference on Neural Information Processing Systems},
+  pages={6572--6583},
+  year={2018}
+}
+
+@article{giftthaler2017automatic,
+  title={Automatic differentiation of rigid body dynamics for optimal control and estimation},
+  author={Giftthaler, Markus and Neunert, Michael and St{\"a}uble, Markus and Frigerio, Marco and Semini, Claudio and Buchli, Jonas},
+  journal={Advanced Robotics},
+  volume={31},
+  number={22},
+  pages={1225--1237},
+  year={2017},
+  publisher={Taylor \& Francis}
+}
+
+@inproceedings{berlinger2018modular,
+  title={A modular dielectric elastomer actuator to drive miniature autonomous underwater vehicles},
+  author={Berlinger, Florian and Duduta, Mihai and Gloria, Hudson and Clarke, David and Nagpal, Radhika and Wood, Robert},
+  booktitle={2018 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={3429--3435},
+  year={2018},
+  organization={IEEE}
+}
+
+@article{katzschmann2018exploration,
+  title={Exploration of underwater life with an acoustically controlled soft robotic fish},
+  author={Katzschmann, Robert K and DelPreto, Joseph and MacCurdy, Robert and Rus, Daniela},
+  journal={Science Robotics},
+  volume={3},
+  number={16},
+  year={2018},
+  publisher={Science Robotics}
+}
+
+@article{triantafyllou1995efficient,
+  title={An efficient swimming machine},
+  author={Triantafyllou, Michael S and Triantafyllou, George S},
+  journal={Scientific american},
+  volume={272},
+  number={3},
+  pages={64--70},
+  year={1995},
+  publisher={JSTOR}
+}
+
+@article{marchese2014autonomous,
+  title={Autonomous soft robotic fish capable of escape maneuvers using fluidic elastomer actuators},
+  author={Marchese, Andrew D and Onal, Cagdas D and Rus, Daniela},
+  journal={Soft robotics},
+  volume={1},
+  number={1},
+  pages={75--87},
+  year={2014},
+  publisher={Mary Ann Liebert, Inc. 140 Huguenot Street, 3rd Floor New Rochelle, NY 10801 USA}
+}
+
+@article{lighthill1971large,
+  title={Large-amplitude elongated-body theory of fish locomotion},
+  author={Lighthill, Michael James},
+  journal={Proceedings of the Royal Society of London. Series B. Biological Sciences},
+  volume={179},
+  number={1055},
+  pages={125--138},
+  year={1971},
+  publisher={The Royal Society London}
+}
+
+@inproceedings{kingma2014adam,
+  title={Adam: A Method for Stochastic Optimization},
+  author={Kingma, Diederik P and Ba, Jimmy},
+  booktitle={International Conference on Learning Representations},
+  year={2015}
+}
+
+@article{pathak2019learning,
+  title={Learning to Control Self-Assembling Morphologies: A Study of Generalization via Modularity},
+  author={Pathak, Deepak and Lu, Christopher and Darrell, Trevor and Isola, Phillip and Efros, Alexei A},
+  journal={Advances in Neural Information Processing Systems},
+  volume={32},
+  pages={2295--2305},
+  year={2019}
+}
+
+@article{hansen2003reducing,
+  title={Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation (CMA-ES)},
+  author={Hansen, Nikolaus and M{\"u}ller, Sibylle D and Koumoutsakos, Petros},
+  journal={Evolutionary computation},
+  volume={11},
+  number={1},
+  pages={1--18},
+  year={2003},
+  publisher={MIT Press}
+}
+
+@incollection{faure2012sofa,
+  title={Sofa: A multi-model framework for interactive physical simulation},
+  author={Faure, Fran{\c{c}}ois and Duriez, Christian and Delingette, Herv{\'e} and Allard, J{\'e}r{\'e}mie and Gilles, Benjamin and Marchesseau, St{\'e}phanie and Talbot, Hugo and Courtecuisse, Hadrien and Bousquet, Guillaume and Peterlik, Igor and others},
+  booktitle={Soft tissue biomechanical modeling for computer assisted surgery},
+  pages={283--321},
+  year={2012},
+  publisher={Springer}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Density mapping.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{barron2020convenient,
+    title={A Convenient Generalization of Schlick's Bias and Gain Functions},
+    author={Barron, Jonathan T},
+    journal={arXiv preprint arXiv:2010.09714},
+    year={2020}
+}
+
+@article{schlick1994fast,
+    title={Fast Alternatives to Perlin's Bias and Gain Functions.},
+    author={Schlick, Christophe},
+    journal={Graphics Gems},
+    volume={4},
+    pages={401--404},
+    year={1994}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Learning Representations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@inproceedings{sanchez2020learning,
+  title={Learning to simulate complex physics with graph networks},
+  author={Sanchez-Gonzalez, Alvaro and Godwin, Jonathan and Pfaff, Tobias and Ying, Rex and Leskovec, Jure and Battaglia, Peter},
+  booktitle={International Conference on Machine Learning},
+  pages={8459--8468},
+  year={2020},
+  organization={PMLR}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Motion Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@inproceedings{lucas1981iterative,
+  title={An iterative image registration technique with an application to stereo vision},
+  author={Lucas, Bruce D and Kanade, Takeo and others},
+  year={1981},
+  organization={Vancouver, British Columbia}
+}
+
+@article{tomasi1991tracking,
+  title={Tracking of point features},
+  author={Tomasi, Carlo and Detection, T Kanade},
+  journal={Int. J. Comput. Vis},
+  pages={137--154},
+  year={1991}
+}
+
+@article{hu2018tetrahedral,
+  title={Tetrahedral meshing in the wild},
+  author={Hu, Yixin and Zhou, Qingnan and Gao, Xifeng and Jacobson, Alec and Zorin, Denis and Panozzo, Daniele},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={37},
+  number={4},
+  pages={1--14},
+  year={2018},
+  publisher={ACM New York, NY, USA}
+}
+
+
+@article{marechal2020toward,
+  title={Toward a Common Framework and Database of Materials for Soft Robotics},
+  author={Marechal, Luc and Balland, Pascale and Lindenroth, Lukas and Petrou, Fotis and Kontovounisios, Christos and Bello, Fernando},
+  journal={Soft Robotics},
+  year={2020},
+  publisher={Mary Ann Liebert, Inc., publishers 140 Huguenot Street, 3rd Floor New~…}
+}
+
+@online{acetalmanufacturer,
+    author = "Dielectric Manufacturing",
+    title = "Material Properties of Acetal",
+    url  = "https://dielectricmfg.com/knowledge-base/acetal/",
+    addendum = "(accessed: 18.06.2021)",
+}
+
+@incollection{sifakis2012fem,
+  title={FEM simulation of 3D deformable solids: a practitioner's guide to theory, discretization and model reduction},
+  author={Sifakis, Eftychios and Barbic, Jernej},
+  booktitle={Acm siggraph 2012 courses},
+  pages={1--50},
+  year={2012}
+}
+
+@article{wu1961swimming,
+  title={Swimming of a waving plate},
+  author={Wu, T Yao-Tsu},
+  journal={Journal of Fluid Mechanics},
+  volume={10},
+  number={3},
+  pages={321--344},
+  year={1961},
+  publisher={Cambridge University Press}
+}
+
+@article{triantafyllou2000hydrodynamics,
+  title={Hydrodynamics of fishlike swimming},
+  author={Triantafyllou, Michael S and Triantafyllou, GS and Yue, DKP},
+  journal={Annual review of fluid mechanics},
+  volume={32},
+  number={1},
+  pages={33--53},
+  year={2000},
+  publisher={Annual Reviews 4139 El Camino Way, PO Box 10139, Palo Alto, CA 94303-0139, USA}
+}
+
+@article{igel2007covariance,
+  title={Covariance matrix adaptation for multi-objective optimization},
+  author={Igel, Christian and Hansen, Nikolaus and Roth, Stefan},
+  journal={Evolutionary computation},
+  volume={15},
+  number={1},
+  pages={1--28},
+  year={2007},
+  publisher={MIT Press}
+}
+
+@book{adeeb2011introduction,
+  title={Introduction to solid mechanics and finite element analysis using Mathematica},
+  author={Adeeb, Samer},
+  year={2011},
+  publisher={Kendall Hunt}
+}
+
+@article{ma2021diffaqua,
+  title={DiffAqua: A Differentiable Computational Design Pipeline for Soft Underwater Swimmers with Shape Interpolation},
+  author={Ma, Pingchuan and Du, Tao and Zhang, John Z and Wu, Kui and Spielberg, Andrew and Katzschmann, Robert K and Matusik, Wojciech},
+  journal={arXiv preprint arXiv:2104.00837},
+  year={2021}
+}
+
+
+
+@article{wandel_learning_2021,
+	title = {Learning {Incompressible} {Fluid} {Dynamics} from {Scratch} -- {Towards} {Fast}, {Differentiable} {Fluid} {Models} that {Generalize}},
+	url = {http://arxiv.org/abs/2006.08762},
+	abstract = {Fast and stable fluid simulations are an essential prerequisite for applications ranging from computer-generated imagery to computer-aided design in research and development. However, solving the partial differential equations of incompressible fluids is a challenging task and traditional numerical approximation schemes come at high computational costs. Recent deep learning based approaches promise vast speed-ups but do not generalize to new fluid domains, require fluid simulation data for training, or rely on complex pipelines that outsource major parts of the fluid simulation to traditional methods. In this work, we propose a novel physics-constrained training approach that generalizes to new fluid domains, requires no fluid simulation data, and allows convolutional neural networks to map a fluid state from time-point t to a subsequent state at time t + dt in a single forward pass. This simplifies the pipeline to train and evaluate neural fluid models. After training, the framework yields models that are capable of fast fluid simulations and can handle various fluid phenomena including the Magnus effect and Karman vortex streets. We present an interactive real-time demo to show the speed and generalization capabilities of our trained models. Moreover, the trained neural networks are efficient differentiable fluid solvers as they offer a differentiable update step to advance the fluid simulation in time. We exploit this fact in a proof-of-concept optimal control experiment. Our models significantly outperform a recent differentiable fluid solver in terms of computational speed and accuracy.},
+	urldate = {2021-07-15},
+	journal = {arXiv:2006.08762 [cs, stat]},
+	author = {Wandel, Nils and Weinmann, Michael and Klein, Reinhard},
+	month = mar,
+	year = {2021},
+	note = {arXiv: 2006.08762},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+}
+
+@article{chen2021numerical,
+  title={Numerical investigation of minimum drag profiles in laminar flow using deep learning surrogates},
+  author={Chen, Li-Wei and Cakal, Berkay A and Hu, Xiangyu and Thuerey, Nils},
+  journal={Journal of Fluid Mechanics},
+  volume={919},
+  year={2021},
+  publisher={Cambridge University Press}
+}
+
+@article{zhang2022creation,
+  title={Creation of a Modular Soft Robotic Fish Testing Platform},
+  author={Zhang, Yu and Katzschmann, Robert K},
+  journal={arXiv preprint arXiv:2201.04098},
+  year={2022}
+}
+
+%% papers to address in related work for RA-L Revision
+@article{du2021underwater,
+  title={Underwater soft robot modeling and control with differentiable simulation},
+  author={Du, Tao and Hughes, Josie and Wah, Sebastien and Matusik, Wojciech and Rus, Daniela},
+  journal={IEEE Robotics and Automation Letters},
+  volume={6},
+  number={3},
+  pages={4994--5001},
+  year={2021},
+  publisher={IEEE}
+}
+
+@article{dubied2022sim,
+  title={Sim-to-Real for Soft Robots Using Differentiable FEM: Recipes for Meshing, Damping, and Actuation},
+  author={Dubied, Mathieu and Michelis, Mike Yan and Spielberg, Andrew and Katzschmann, Robert Kevin},
+  journal={IEEE Robotics and Automation Letters},
+  volume={7},
+  number={2},
+  pages={5015--5022},
+  year={2022},
+  publisher={IEEE}
+}

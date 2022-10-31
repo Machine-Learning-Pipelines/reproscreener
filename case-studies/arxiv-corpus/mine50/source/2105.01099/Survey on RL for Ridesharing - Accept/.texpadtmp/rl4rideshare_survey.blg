@@ -1,0 +1,102 @@
+This is BibTeX, Version 0.99d (TeX Live 2022)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: /Users/tqin/OneDrive/Research/Reinforcement Learning/rideshare_survey/latex/Survey on RL for Ridesharing - Accept/.texpadtmp/rl4rideshare_survey.aux
+The style file: agsm.bst
+Database file #1: ../tony_bib.bib
+Repeated entry---line 647 of file ../tony_bib.bib
+ : @article{bello2016neural
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1858 of file ../tony_bib.bib
+ : @article{kim2005optimal
+ :                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1869 of file ../tony_bib.bib
+ : @inproceedings{tumer2008aligning
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1878 of file ../tony_bib.bib
+ : @inproceedings{yu2012q
+ :                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1887 of file ../tony_bib.bib
+ : @inproceedings{grunitzki2014individual
+ :                                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1896 of file ../tony_bib.bib
+ : @article{mao2018reinforcement
+ :                              ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1906 of file ../tony_bib.bib
+ : @inproceedings{bazzan2016multiagent
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1915 of file ../tony_bib.bib
+ : @article{wen2019hierarchical
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1924 of file ../tony_bib.bib
+ : @article{shou2020multi
+ :                       ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2014 of file ../tony_bib.bib
+ : @article{chen2021spatial
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2024 of file ../tony_bib.bib
+ : @inproceedings{mnih2016asynchronous
+ :                                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2047 of file ../tony_bib.bib
+ : @article{james2019online
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 2164 of file ../tony_bib.bib
+ : @inproceedings{qin2021reinforcement
+ :                                    ,
+I'm skipping whatever remains of this entry
+Warning--entry type for "illinoisdatabankIDB-9610843" isn't style-file defined
+--line 2395 of file ../tony_bib.bib
+Warning--can't use both volume and number fields in shah2020neural
+You've used 156 entries,
+            2909 wiz_defined-function locations,
+            1415 strings with 36593 characters,
+and the built_in function-call counts, 855197 in all, are:
+= -- 138290
+> -- 14729
+< -- 4
++ -- 68156
+- -- 4598
+* -- 76003
+:= -- 168601
+add.period$ -- 164
+call.type$ -- 156
+change.case$ -- 2178
+chr.to.int$ -- 154
+cite$ -- 157
+duplicate$ -- 2880
+empty$ -- 5556
+format.name$ -- 5100
+if$ -- 154127
+int.to.chr$ -- 7
+int.to.str$ -- 0
+missing$ -- 154
+newline$ -- 480
+num.names$ -- 1666
+pop$ -- 682
+preamble$ -- 1
+purify$ -- 2340
+quote$ -- 0
+skip$ -- 2607
+stack$ -- 0
+substring$ -- 197204
+swap$ -- 714
+text.length$ -- 2188
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 618
+warning$ -- 1
+while$ -- 3522
+width$ -- 0
+write$ -- 2160
+(There were 13 error messages)

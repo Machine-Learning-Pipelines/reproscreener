@@ -1,0 +1,20 @@
+\begin{table}[bpt!]
+\begin{center}
+\vspace{-0.2 cm}
+\caption{\label{tab:hires} High-resolution images inverted using our AR AlexNet model (trained on low resolution images) show improved quality over standard inversions.}
+\vspace{0.1 cm}
+\fontsize{8.5}{10.5}\selectfont
+\setlength\tabcolsep{2pt}
+\resizebox{0.75\columnwidth}{!}{
+\begin{tabular}{c|c|c|c} 
+\specialrule{.15em}{.05em}{.05em} 
+\makecell{Encoder} & PSNR (dB)$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$\\
+\hline
+ Standard & \makecell{$14.266\pm$ $1.9015$} & \makecell{$0.3874\pm$ $0.151$} & \makecell{$0.5729\pm$ $0.0465$}\\
+ AR (ours) & \makecell{$\mathbf{18.3606\pm}$ $\mathbf{2.6012}$} & \makecell{$\mathbf{0.4388\pm}$ $\mathbf{0.1508}$} & \makecell{$\mathbf{0.5673\pm}$ $\mathbf{0.0337}$}\\
+\specialrule{.15em}{.05em}{.05em} 
+\end{tabular}
+}
+\end{center}
+\vspace{-0.625 cm}
+\end{table}

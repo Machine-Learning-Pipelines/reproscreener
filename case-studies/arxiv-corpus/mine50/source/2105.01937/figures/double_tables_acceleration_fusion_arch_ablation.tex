@@ -1,0 +1,34 @@
+\begin{table}[t!]
+\setlength{\abovecaptionskip}{-5pt plus 3pt minus 2pt}
+\setlength{\belowcaptionskip}{-5pt plus 3pt minus 2pt}
+
+    \hfill
+    \begin{minipage}{.35\linewidth}
+        \centering
+        % \captionsetup{justification=centering}    
+        \caption{Smoothness, measured by acceleration error ($mm/s^2$), on Human3.6M.\\
+        ($\star$):~2D pose from \cite{iskakov2019learnable}.\hfill\\ ($\bullet$):~ground-truth 2D poses.}
+        \input{./figures/quantitative_acc_error_reduced}
+        \ifeccv
+        \else
+        \caption{Smoothness, measured by acceleration error ($mm/s^2$), on Human3.6M.\\
+        ($\star$):~2D pose from \cite{iskakov2019learnable}.\hfill\\ ($\bullet$):~ground-truth 2D poses.}
+        \fi
+        \label{tab:acc_error}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{.36\linewidth}
+      \centering
+        % \captionsetup{justification=centering}    
+        \caption{Attention impact.\\ TE: Transformer Encoder.\hfill \\MHA: Multi-head Attention.\hfill\\ $l$: no. of stacked layers.\\ $h$: no. of attention heads.}
+        \input{./figures/ablation_mha_heads_reduced}
+        \label{tab:fusion_arch}
+    \end{minipage}
+    \hfill
+    \hphantom{.} % this non printed text makes the \hfill in the previous line work
+    
+\setlength{\abovecaptionskip}{-35pt plus 3pt minus 2pt}
+\setlength{\belowcaptionskip}{-0pt plus 3pt minus 2pt}
+\caption*{}
+
+\end{table}

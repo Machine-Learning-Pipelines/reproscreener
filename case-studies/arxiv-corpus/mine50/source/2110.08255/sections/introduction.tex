@@ -1,0 +1,72 @@
+\section{Introduction}
+
+In the most simple case, time series forecasting deals with a scalar
+time-varying signal and aims to predict or forecast its values in the near future; for example, countless applications in finance, healthcare, production automatization, etc. \cite{cao2018brits,sagheer2019time,sezer2020financial} can benefit from an accurate forecasting solution.
+Often not just a single scalar signal is of interest, but multiple at once,
+and further time-varying signals are available and even \textsl{known for the future}.
+For example, suppose one aims to forecast the energy consumption of a house, it likely depends on the social time that one seeks to forecast for (such as the next hour or day), and also on features of these time points (such as weekday, daylight, etc.), which are known already for the future. This is also the case in model predictive control \cite{camacho2013model}, where one is interested
+to forecast the expected value realized by some planned action, then this action is also known at the time of forecast.
+More generally,
+time series forecasting, nowadays deals with quadruples $(x,y,x',y')$
+of known past predictors $x$, known past targets $y$, known future predictors $x'$
+and sought future targets $y'$. 
+
+\begin{figure}[ht]
+\centering
+
+\includegraphics[width=0.4\columnwidth]{figs/ts_ps.png}
+\caption{General time series setting illustrating the quadruples $(x,y,x',y')$ denoting the \textsl{past predictors}, \textsl{past targets}, \textsl{future predictors} and \textsl{future targets} respectively. Given the history information $(x, y)$ until time $t = T$ and the future predictors $(x')$ for the next $\tau$ time steps, time series forecasting predicts the target $y'$ from $t = T+1, \dots, \tau$ time steps. In the figure, $O$ and $M$ represents the respective channels of the targets and the predictors.}
+\label{fig:ts_ps}
+\end{figure}
+
+Time series problems can often be addressed by methods developed initially
+for images, treating them as 1-dimensional images. Especially for
+time-series classification many typical time series encoder architectures
+have been adapted from models for images \cite{wang2017time,ZOU201939}. 
+Time series forecasting then is closely related to image outpainting \cite{wang2019srn},
+the task to predict how an image likely extends to the left, right, top or bottom,
+as well as to the more well-known task of image segmentation,
+where for each input pixel, an output pixel has to be predicted, whose channels
+encode pixel-wise classes such as vehicle, road, pedestrian say for road scenes.
+Time series forecasting combines aspects from both problem settings:
+information about targets from shifted positions (e.g., the past targets $y$ as
+ in image outpainting) and
+information about other channels from the same positions (e.g., the future predictors $x'$
+ as in image segmentation).
+One of the most successful, principled architectures for the image segmentation
+task are U-Nets introduced in \cite{ronneberger2015u}, an architecture that successively downsamples/coarsens
+its inputs and then upsamples/refines the latent representation with
+deconvolutions also using the latent representations of the same detail level,
+tightly coupling down- and upsampling procedures and thus yielding latent
+features on the same resolution as the inputs. 
+
+
+Following the great success in Natural Language Processing (NLP) applications, attention-based, esp. transformer-based
+architectures \cite{vaswani2017attention} that model pairwise interactions
+between sequence elements have been recently adapted for
+time series forecasting. One of the significant
+challenges, is that the length of the time series, are often one or two magnitudes of order larger than the (sentence-level) NLP problems. 
+
+Plenty of approaches aim to mitigate the quadratic complexity $O(T^2)$ in
+the sequence/time series length $T$ to at most $O(T\log T)$.
+For example, the Informer architecture
+\cite{zhou2020informer}, adapts the transformer with a sparse attention
+mechanism and a successive downsampling/coarsening of the past time series. As in the original transformer, only the coarsest representation is fed
+into the decoder. Possibly to remedy the loss in resolution by this procedure,
+the Informer feeds its input a second time into the decoder network, this time
+without any coarsening. 
+
+While forecasting problems share many commonalities with image segmentation
+problems, transformer-based architectures like the Informer do not
+involve coupled down- and upscaling procedures to yield predictions
+on the same resolution as the inputs. 
+Thus, we propose a novel Y-shaped architecture that
+\begin{enumerate}
+\item Couples downscaling/upscaling to leverage both, coarse and fine-grained
+       features for time series forecasting,
+\item Combines the coupled scaling mechanism with sparse attention modules to capture long-range effects on all scale levels, and
+\item Stabilizes encoder and decoder stacks by reconstructing the recent past.
+\end{enumerate}
+
+
+

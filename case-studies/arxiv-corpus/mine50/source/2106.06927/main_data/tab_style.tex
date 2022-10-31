@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\begin{center}
+\vspace{0.2 cm}
+\caption{\label{tab:style_quantitative}Universal Style Transfer. Our AR AlexNet autoencoder outperforms both its standard counterpart and the original VGG-19 model in terms of Gram loss, the latter using more layers, larger feature maps and feature blending.}
+\vspace{0.1 cm}
+\resizebox{0.75\textwidth}{!}{%
+\begin{tabular}{c|c|c|c|c|c}
+\specialrule{.15em}{.05em}{.05em} 
+\makecell{Encoder} & \makecell{Stylization\\Levels} & \makecell{Smallest\\Feature Map} & \makecell{Feature\\Blending} & \makecell{Gram Loss$\downarrow$\\$(x_{cs}, x_{s})$} & \makecell{SSIM$\uparrow$\\$(x_{cs}, x_{c})$}\\
+\hline
+\makecell{Standard AlexNet} & $3$ & $6\times6\times256$ & \xmark & $1.694$ & $0.226$\\\hline
+\makecell{AR AlexNet (ours)} & $3$ & $6\times6\times256$ & \xmark & $\mathbf{1.186}$ & $\mathbf{0.259}$\\
+\hline\hline
+\makecell{VGG-19 \cite{simonyan_2014_very}} & $5$ & $14\times14\times512$ & \cmark & ${1.223}$ & ${0.459}$\\
+\specialrule{.15em}{.05em}{.05em} 
+\end{tabular}}
+\end{center}
+\vspace{-0.5 cm}
+\end{table}

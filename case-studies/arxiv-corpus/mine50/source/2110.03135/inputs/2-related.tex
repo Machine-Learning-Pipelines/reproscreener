@@ -1,0 +1,82 @@
+\section{Related Work}
+\label{sect:related}
+
+
+% \smallsection{Label noise}
+% % \todo{Then discuss to explain such double descent we need to think about where the label noise comes from. It is not simply label flipping noise by wrongly labeling, but it could be implicit label noise. So merge the discussion of label noise to here.}
+% Label noise is a long-standing problem in machine learning and has attracted systematic studies~\citep{Frnay2014ClassificationIT, Song2020LearningFN}. 
+% In classification problems, label noise is typically defined in a conditional manner. Specifically, the true label of an example is altered by an unknown noise process with some probability before being observed by an algorithm~\citep{Angluin2005LearningFN}, which we refer as the label flipping noise that exists in the dataset as a ratio of incorrect labels. 
+% However, it is also possible to directly consider the probability that the true label and the assigned label disagree, where a distribution mismatch can make the difference.
+% % \jingbo{Shall we discuss this label noise separately? Maybe merge it with the standard training part is a better idea?}
+% % \chengyu{Move the 'conventional label noise' part here.}
+% \chengyu{Conventionally confusion matrix, meaning the noise process is defined. But now we only have the final distribution.}
+
+% % To understand the double descent in adversarial training within the existing picture of double descent, 
+% We find that label noise can be implicitly incurred by the mismatch between the assigned label distribution and true label distribution of the adversarial example. Such label noise can be interpreted as an instance-dependent, class dependent label noise in reference to the systematic studies on the taxonomy of label noise~\citep{Frnay2014ClassificationIT, Song2020LearningFN}. %  thus can be the origin of double descent in adversarial training.
+
+
+\smallsection{Robust overfitting and double descent in adversarial training}
+% Robust overfitting has been widely observed in adversarial training practice. 
+Double descent refers to the phenomenon that overfitting by increasing model complexity will eventually improve test set performance~\citep{Neyshabur2017ExploringGI, Belkin2019ReconcilingMM}.
+% \jingbo{this reads like mode-wise double descent. You may want to focus on the epoch-wise phenomenon. Otherwise, the readers will get confused. }
+This appears to conflict with the robust overfitting phenomenon in adversarial training, where increasing model complexity by training longer will impair test set performance constantly after a certain point during training. It is thus believed in the literature that robust overfitting and epoch-wise double descent are separate phenomena~\citep{Rice2020OverfittingIA}. In this work we show this is not the complete picture by conducting adversarial training for exponentially more epochs than the typical practice.
+
+% Towards a more complete understanding of robust overfitting, in this work, we conduct adversarial training for exponentially more epochs than the typical practice. We find that robust overfitting shall be viewed as the early part of an epoch-wise double descent. And increasing the model architecture size, another way to increase the model complexity, 
+% %\jingbo{I'm not sure if training longer time means more model complexity. I assume the model complexity is almost the same as the architecture size? },
+% can modulate the epoch-wise double descent curve such that either the overfitting curve is shown, or the entire double descent curve is revealed within the same number of training epochs as shown in Figure~\ref{fig:intro}. 
+% % Therefore, Robust overfitting should be unified with double descent and 
+% % Our analyses thus manage to unifying the two seemingly separately phenomena. % robust overfitting and double descent.
+% Therefore, robust overfitting will not go beyond modern generalization theory as an exception and should be adequately explained by the origin of double descent such as label noise.
+
+
+% % Previous works suggest that robust overfitting and double descent are separate phenomena by observing that training longer, while increasing the model complexity, results in worse test performance constantly after a certain point during training~\citep{Rice2020OverfittingIA}. 
+% \chengyu{Mention more about why capacity is on Figure~\ref{fig:intro}}
+% \jingbo{I think the ``by observing ...'' part is more like defining the robust overfitting but not saying that these two are separate phenomena. It's a little confusing and also verbose as we have just mentioned the same thing in the intro. I don't think we need to define is again here. }
+% This appears to conflict the common belief that increasing model complexity benefits the test performance in modern generalization curves~\citep{Belkin2019ReconcilingMM}.
+% \jingbo{We haven't formally defined what's double descent in the intro. Maybe it's a time to define it here? I think we want to make it clear that in standard training, overfitting has been shown as an early part of double descent, especially when the models are complex enough. This can draw the connection between the robust overfitting and double descent in adversarial training. }
+% To tackle this dilemma, our work provides a more complete understanding of robust overfitting by showing that it is an early part of the epoch-wise double descent. 
+% Therefore robust overfitting will not go beyond modern generalization theory as an exception and should be adequately explained by the origin of double descent such as label noise.
+
+
+% \chengyu{A double descent in adversarial training is hard to observe because the training epochs is not sufficient. High model capacity may reduce the required training epochs, but also slow to train.}
+
+% \note{Effect of lr scheduler. Our setting shows that the robust overfitting doesn't hinge on the learning rate decay, which is a commonly accepted understanding / hypothesis. }
+
+ 
+% \note{Seems to remember there is one work on robust overfitting theoretically with optimization, maybe include it here.}
+
+A recent work also considers a different notion of double descent that is defined with respect to the perturbation size~\citep{Yu2021UnderstandingGI}. 
+Such double descent might be more related to the robustness-accuracy trade-off problem~\citep{Papernot2016TowardsTS, Su2018IsRT, Tsipras2019RobustnessMB, Zhang2019TheoreticallyPT}, rather than the classic understanding of double descent based on model complexity.
+
+
+% % \jingbo{``origin'' is vague here. You may want to use ``Explanations'' or ``Root causes''. }
+% \smallsection{Understand double descent in adversarial training}
+% % \smallsection{Double descent in standard and adversarial training}
+% In standard training, double descent is often attributed to increased variance, with label noise being a common source. Definitions of label noise vary in literature. Theoretically-grounded analyses of double descent focus on additive label noise~\citep{Advani2020HighdimensionalDO, Mei2019TheGE, Hastie2019SurprisesIH, Belkin2020TwoMO, dAscoli2020DoubleTI, Jacot2020ImplicitRO}, but only applicable to regression problems. Theoretical results on double descent are scarce on classification problems, with a few works introducing noise by randomly masking the feature vector~\citep{Deng2019AMO, Kini2020AnalyticSO}. Analyses of double descent on classification problems are more common in empirical studies, where a typical way to induce double descent is to inject label flipping noise, namely the labels of a random fraction of training examples are flipped to other labels~\citep{Nakkiran2020DeepDD, Yang2020RethinkingBT}. However, such a definition of label noise cannot properly fit the scenario in adversarial training, where labels are not likely to be flipped due to small adversarial perturbation.
+
+
+
+
+
+
+% \jingbo{Make it clear that the first paragraph here is about standard training.}
+% Double descent describes the generalization properties of deep neural networks and is ubiquitous in modern learning problems. 
+% Towards a theoretical analysis of double descent, much effort has been focused on regression problems where additive label noise is often introduced to promote variance~\citep{Advani2020HighdimensionalDO, Mei2019TheGE, Hastie2019SurprisesIH, Belkin2020TwoMO, dAscoli2020DoubleTI}. 
+% Few works focusing on classification problems instead introduce variance by randomly masking the feature vector~\citep{Deng2019AMO, Kini2020AnalyticSO}.
+% \jingbo{How about label flipping noise? Maybe discuss it and echo again that we extend it to implicit label noise to explain the double descent in adversarial training.}
+
+% \jingbo{Maybe swap the order of these two paragraphs. Adversarial training first and the standard training.}
+% In adversarial training, model-wise double descent have been observed empirically~\citep{Nakkiran2020DeepDD, Rice2020OverfittingIA}, whereas epoch-wise double descent is believed to be not applicable~\citep{Rice2020OverfittingIA}. 
+% A recent work also considers a different notion of double descent that is defined with respect to the perturbation radius~\citep{Yu2021UnderstandingGI}. 
+% Such double descent might be more related to the robustness-accuracy trade-off problem~\citep{Papernot2016TowardsTS, Su2018IsRT, Tsipras2019RobustnessMB, Zhang2019TheoreticallyPT}.
+% \jingbo{Since our conclusion seems conflicting with \citep{Rice2020OverfittingIA}, better to discuss a bit here why we finally observed this. Probably because of the exponential number of epoches? It's indeed harder to observe than those in standard training.}
+
+
+\smallsection{Mitigate robust overfitting}
+Robust overfitting hinders the practical deployment of adversarial training methods as the final performance is often sub-optimal. Various regularization methods including classic approaches such as $\ell_1$ and $\ell_2$ regularization and modern approaches such as cutout~\citep{Devries2017ImprovedRO} and mixup~\citep{Zhang2018mixupBE} have been attempted to tackle robust overfitting, whereas they are shown to perform no better than simply early stopping the training on a validation set~\citep{Rice2020OverfittingIA}. However, early stopping raises additional concern as the best checkpoint of the robust test accuracy and that of the standard accuracy often do not coincide~\citep{chen2021robust}, thus inevitably sacrificing the performance on either criterion. Various regularization methods specifically designed for adversarial training are thus proposed to outperform early stopping, including regularization the flatness of the weight loss landscape~\citep{Wu2020AdversarialWP, Stutz2021RelatingAR}, introducing low-curvature activation functions~\citep{Singla2021LowCA}, data-driven augmentations that adds high-quality additional data into the training~\citep{Rebuffi2021FixingDA} and adopting stochastic weight averaging~\citep{Izmailov2018AveragingWL} and knowledge distillation~\citep{Hinton2015DistillingTK}~\citep{chen2021robust}. These methods are likely to suppress the label noise in adversarial training, with the self-distillation framework (i.e. the teacher shares the same architecture as the student model) introduced by \citep{chen2021robust} as a particular example since introducing teacher's outputs as supervision is almost equivalent to the alternative labeling inspired by our understanding of the origin of label noise in adversarial training.
+% \chengyu{By additional data}
+% be consistent with our data-centric understanding as various regularization techniques may suppress the learning of low-quality examples.
+
+% a recent proposed strategy~\citep{chen2021robust} has advanced the practice by incorporating knowledge distillation~\citep{Hinton2015DistillingTK} and stochastic weight averaging~\citep{Izmailov2018AveragingWL} into adversarial training. 
+
+% \smallsection{Confidence calibration}

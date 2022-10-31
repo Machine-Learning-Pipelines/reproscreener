@@ -1,0 +1,386 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% SUBSECTION %%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{subsection}{0}
+\subsection{Proof of Proposition \ref{prop:finite_num}}
+Weyl's law \cite[Chapter~1]{arendt2009mathematical} states that if $(\ccalM, g)$ is a compact Riemannian manifold of dimension $d$, then 
+\begin{equation}\label{eqn:weylslaw}
+\lambda_k = \frac{C_1}{C_d^{2/d}}\left(\frac{k}{Vol(\ccalM)} \right)^{2/d},
+\end{equation}
+where $C_d$ denotes the volume of the unit ball of $\reals^d$ and $C_1$ is an arbitrary constant. Therefore, if $\lambda_{k+1}-\lambda_k\leq \alpha$, we have
+\begin{align}
+    (k+1)^{2/d}-k^{2/d}\leq \frac{\alpha}{C_1} (Vol(\ccalM) C_d)^{2/d}
+\end{align}
+while the left side can be scaled down to $(k+1)^{2/d}-k^{2/d}\geq \frac{2}{d}k^{2/d-1}$. This implies that 
+\begin{align}
+    k^{\frac{2-d}{d}}\leq \left( \frac{\alpha d (Vol(\ccalM) C_d)^{2/d}}{2C_1} \right)^{\frac{d}{2-d}},
+\end{align}
+with $d>2$, we can claim that for 
+$$k> \lceil (\alpha d/C_1)^{d/(2-d)}(C_d \text{Vol}(\ccalM))^{2/(2-d)} \rceil,$$ it holds that $\lambda_{k+1}-\lambda_k\leq \alpha$. Proof of Proposition \ref{prop:finite_num_rela} is similar and is also based on \eqref{eqn:weylslaw}.
+\subsection{Proof of Theorem \ref{thm:stability_rela_filter}}
+\label{app:stability_rela_filter}
+The decomposition follows the same routine as \eqref{eqn:diff} shows. 
+By decomposing the filter function as \eqref{eqn:h0-gamma} and \eqref{eqn:hl-gamma}, the norm difference can also be bounded separately. 
+\begin{align}
+\label{eqn:h0-gamma}& h^{(0)}(\lambda) = \left\{ 
+\begin{array}{cc} 
+                \hat{h}(\lambda)-\sum\limits_{l\in\ccalK_m}\hat{h}(C_l)  &  \lambda\in[\Lambda_k(\gamma)]_{k\in\ccalK_s} \\
+                0& \text{otherwise}  \\
+                \end{array} \right.  \\
+\label{eqn:hl-gamma}& h^{(l)}(\lambda) = \left\{ 
+\begin{array}{cc} 
+                \hat{h}(C_l) &  \lambda\in[\Lambda_k(\gamma)]_{k\in\ccalK_s} \\
+                \hat{h}(\lambda) & 
+                \lambda\in\Lambda_l(\gamma)\\
+                0 &
+                \text{otherwise}  \\
+                \end{array} \right.             
+\end{align}
+where now $\hat{h}(\lambda)=h^{(0)}(\lambda)+\sum_{l\in\ccalK_m}h^{(l)}(\lambda)$ with $\ccalK_s$ defined as the group index set of singletons and $\ccalK_m$ the set of partitions that contain multiple eigenvalues. For manifold filter $\bbh^{(0)}(\ccalL)$ with filter function $h^{(0)}(\lambda)$, the norm difference can also be written as
+\begin{align}
+ \label{eqn:rela-h0}  & \nonumber \left\| \sum_{i=1}^\infty h^{(0)}(\lambda_{i}) \langle f, \bm\phi_i \rangle \bm\phi_i  -  h^{(0)}(\lambda'_i )  \langle f, \bm\phi'_i \rangle \bm\phi'_i \right\| \\
+  & \nonumber \leq \left\| \sum_{i=1}^\infty h^{(0)}(\lambda_i )\langle f, \bm\phi_i \rangle (\bm\phi_i - \bm\phi'_i ) \right\| \\ \nonumber&\qquad\qquad  + \Bigg\|  \sum_{i =1}^\infty  h^{(0)}(\lambda_i )\langle f, \bm\phi_i - \bm\phi'_i  \rangle \bm\phi'_i \Bigg\|\\& \qquad\qquad \quad+ \left\|\sum_{i=1}^\infty  (h^{(0)}(\lambda_i ) -h^{(0)}(\lambda'_i) ) \langle f, \bm\phi'_i \rangle \bm\phi'_i  \right\| . 
+\end{align}
+The difference of the eigenvalues due to relative perturbations can be similarly addressed by Lemma \ref{lem:eigenvalue_relative}.
+
+
+The first two terms of \eqref{eqn:rela-h0} rely on the differences of eigenfunctions, which can be derived with Davis-Kahan Theorem in Lemma \ref{lem:davis-kahan}, the difference of eigenfunctions can be written as
+\begin{align}
+\| \ccalE\ccalL \bm\phi_i \| =\| \ccalE\lambda_i\bm\phi_i \|=\lambda_i \|\ccalE \bm\phi_i\|\leq\lambda_i\|\ccalE\|\|\bm\phi_i\|\leq \lambda_i \epsilon.
+\end{align}
+The first term in \eqref{eqn:rela-h0} then can be bounded as
+\begin{align}
+&\nonumber\left\| \sum_{i=1}^\infty h^{(0)}(\lambda_i )\langle f, \bm\phi_i \rangle (\bm\phi_i - \bm\phi'_i ) \right\|\\
+& \leq \sum_{i=1}^\infty |h^{(0)}(\lambda_i)| | \langle f, \bm\phi_i \rangle | \left\|\bm\phi_i-\bm\phi'_i \right\| \leq \sum_{i\in\ccalK_s} \frac{\pi\lambda_i \epsilon}{2d_i}  \|f\|.
+\end{align} 
+Because $d_i=\min\{ |\lambda_i-\lambda'_{i-1}|, |\lambda'_i-\lambda_{i-1}|, |\lambda'_{i+1}-\lambda_i| , | \lambda_{i+1}-\lambda'_i|\}$, with Lemma \ref{lem:eigenvalue_relative} implied, we have
+\begin{gather}
+|\lambda_i-\lambda'_{i-1}|\geq | \lambda_i - (1+\epsilon)\lambda_{i-1}|,\\
+ |\lambda'_i-\lambda_{i-1}|\geq |(1-\epsilon)\lambda_i-\lambda_{i-1}|,\\ |\lambda'_{i+1}-\lambda_i|\geq | (1-\epsilon)\lambda_{i+1}-\lambda_i|,\\| \lambda_{i+1}-\lambda'_i|\geq |\lambda_{i+1}-(1+\epsilon)\lambda_i|.
+\end{gather}
+Combine with Lemma \ref{lem:eigenvalue_relative} and Definition \ref{def:frt-spectrum}, $d_i\geq \epsilon\gamma +\gamma-\epsilon$:
+\begin{align}
+ |(1-\epsilon)\lambda_{i+1}-\lambda_i|
+ &\geq |\gamma \lambda_i-\epsilon \lambda_{i+1}|\\
+ &=\epsilon \lambda_i\left|1-\frac{\lambda_{i+1}}{\lambda_i}+\frac{\gamma}{\epsilon}-1\right|\\&\geq \lambda_i(\gamma-\epsilon+\gamma\epsilon)
+\end{align}
+This leads to the bound as
+\begin{align}
+\left\| \sum_{i=1}^\infty h^{(0)}(\lambda_i )\langle f, \bm\phi_i \rangle (\bm\phi_i - \bm\phi'_i ) \right\| \leq   \frac{M_s \pi \epsilon}{2(\gamma-\epsilon+\gamma\epsilon)} \|f\|.
+\end{align}
+
+The second term in \eqref{eqn:rela-h0} can also be bounded as
+\begin{align}
+    &\nonumber \left\|  \sum_{i =1}^\infty  h^{(0)}(\lambda_i )\langle f, \bm\phi_i - \bm\phi'_i  \rangle \bm\phi'_i \right\| \\
+ &\leq   \sum_{i =1}^\infty |h^{(0)}(\lambda_i)| \|\bm\phi_i - \bm\phi'_i \| \|f\|  \leq   \frac{M_s \pi \epsilon}{2(\gamma-\epsilon+\gamma\epsilon)} \|f\|,
+\end{align}
+which similarly results from the fact that $|h^{(0)}(\lambda)|<1$ and $h^{(0)}(\lambda)=0$ for $\lambda\in[\Lambda_k(\gamma)]_{k\in\ccalK_m}$. The number of eigenvalues within $[\Lambda_k(\gamma)]_{k\in\ccalK_s}$ is denoted as $M_s$.
+
+The third term in \eqref{eqn:rela-h0} is:
+\begin{align}
+   &\nonumber \Bigg\|\sum_{i=1}^\infty  (h^{(0)}(\lambda_i ) -h^{(0)}(\lambda'_i) ) \langle f, \bm\phi'_i \rangle \bm\phi'_i  \Bigg\|^2 \\
+    &\leq  \sum_{i=1}^\infty\left( \frac{B_h \epsilon|\lambda_i|}{(\lambda_i+\lambda_i')/2}\right)^2   \langle f,\bm\phi'_i \rangle^2 \leq \left( \frac{2B_h\epsilon}{2-\epsilon}\right)^2\|f\|^2,
+\end{align}
+with the use of Lemma \ref{lem:eigenvalue_relative} and Definition \ref{def:int-lipschitz}.
+
+Then we need to analyze the output difference of $h^{(l)}(\lambda)$.
+\begin{align}
+     \nonumber &\left\| \bbh^{(l)}(\ccalL)f -\bbh^{(l)}(\ccalL')f \right\| 
+    \\& \leq \left\| (\hat{h}(C_l)+\delta)f -(\hat{h}(C_l)-\delta)f\right\| \leq 2\delta\|f\|.
+\end{align}
+
+Combine the filter function, we could get 
+\begin{align}
+\label{eqn:sta-filter-gamma}
+    \nonumber &\|\bbh(\ccalL)f-\bbh(\ccalL')f\|=\\&
+    \left\|\bbh^{(0)}(\ccalL)f +\sum_{l\in\ccalK_m}\bbh^{(l)}(\ccalL)f - \bbh^{(0)}(\ccalL')f - \sum_{l\in\ccalK_m} \bbh^{(l)}(\ccalL')f \right\|\\
+    &\leq \|\bbh^{(0)}(\ccalL)f-\bbh^{(0)}(\ccalL')f\|+\sum_{l\in\ccalK_m}\|\bbh^{(l)}(\ccalL)f-\bbh^{(l)}(\ccalL')f\|\\
+    &\leq \frac{M_s\pi\epsilon}{\gamma-\epsilon+\gamma\epsilon}\|f\| + \frac{2B_h\epsilon}{2-\epsilon}\|f\| +2(M-M_s)\delta\|f\|,
+\end{align}
+which concludes the proof.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% SUBSECTION %%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{subsection}{1}
+\subsection{Proof of Theorem \ref{thm:stability_nn}}
+\label{app:stability_nn}
+To bound the output difference of MNNs, we need to write in the form of features of the final layer
+ \begin{equation}
+ \|\bm\Phi(\bbH,\ccalL,f)-\bm\Phi(\bbH,\ccalL',f)\| =  \left\| \sum_{q=1}^{F_L} f_L^q - \sum_{q=1}^{F_L} f_L^{'q}\right\|.
+ \end{equation}
+The output signal of layer $l$ of MNN $\bbPhi(\bbH,\ccalL, f)$ can be written as
+\begin{equation}
+ f_l^p = \sigma\left( \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL) f_{l-1}^q\right).
+\end{equation}
+Similarly, for the perturbed $\ccalL'$ the corresponding MNN is $\bbPhi(\bbH,\ccalL',f)$ the output signal can be written as
+ \begin{equation}
+ f_l^{'p} = \sigma\left( \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL') f_{l-1}^{'q}\right).
+ \end{equation}
+The difference therefore becomes
+ \begin{align}
+ &\nonumber\| f_l^p - f_l^{'p} \| \\& =\left\|  \sigma\left( \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL) f_{l-1}^q\right) -  \sigma\left( \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL') f_{l-1}^{'q}\right) \right\|.   
+ \end{align}
+With the assumption that $\sigma$ is normalized Lipschitz, we have
+ \begin{align}
+  \| f_l^p - f_l^{'p} \| &\leq \left\| \sum_{q=1}^{F_{l-1}}  \bbh_l^{pq}(\ccalL) f_{l-1}^q - \bbh_l^{pq}(\ccalL') f_{l-1}^{'q}  \right\| \\&\leq \sum_{q=1}^{F_{l-1}} \left\|  \bbh_l^{pq}(\ccalL) f_{l-1}^q - \bbh_l^{pq}(\ccalL') f_{l-1}^{'q} \right\|.
+ \end{align}
+By adding and subtracting $\bbh_l^{pq}(\ccalL') f_{l-1}^{q}$ from each term, combined with the triangle inequality we can get
+ \begin{align}
+ & \nonumber \left\|  \bbh_l^{pq}(\ccalL) f_{l-1}^q - \bbh_l^{pq}(\ccalL') f_{l-1}^{'q} \right\| \\\nonumber &\quad \leq \left\|  \bbh_l^{pq}(\ccalL) f_{l-1}^q - \bbh_l^{pq}(\ccalL') f_{l-1}^{q} \right\| \\&\qquad \qquad \qquad + \left\| \bbh_l^{pq}(\ccalL') f_{l-1}^q - \bbh_l^{pq}(\ccalL') f_{l-1}^{'q} \right\|
+ \end{align}
+The first term can be bounded with \eqref{eqn:sta-filter-alpha} for absolute perturbations. The second term can be decomposed by Cauchy-Schwartz inequality and non-amplifying of the filter functions as
+ \begin{align}
+ \left\| f_{l}^p - f_l^{'p} \right\| \leq \sum_{q=1}^{F_{l-1}} C_{per} \epsilon \| f_{l-1}^q\| + \sum_{q=1}^{F_{l-1}} \| f_{l-1}^q - f_{l-1}^{'q} \|,
+ \end{align}
+where $C_{per}$ representing the constant in the stability bound of manifold filters. To solve this recursion, we need to compute the bound for $\|f_l^p\|$. By normalized Lipschitz continuity of $\sigma$ and the fact that $\sigma(0)=0$, we can get
+ \begin{align}
+ \nonumber &\| f_l^p \|\leq \left\| \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL) f_{l-1}^{q}  \right\| \leq  \sum_{q=1}^{F_{l-1}}  \left\| \bbh_l^{pq}(\ccalL)\right\|  \|f_{l-1}^{q}  \| \\
+ &\qquad \leq   \sum_{q=1}^{F_{l-1}}   \|f_{l-1}^{q}  \| \leq \prod\limits_{l'=1}^{l-1} F_{l'} \sum_{q=1}^{F_0}\| f^q \|.
+ \end{align}
+ Insert this conclusion back to solve the recursion, we can get
+ \begin{align}
+ \left\| f_{l}^p - f_l^{'p} \right\| \leq l C_{per}\epsilon \left( \prod\limits_{l'=1}^{l-1} F_{l'} \right) \sum_{q=1}^{F_0} \|f^q\|.
+ \end{align}
+ Replace $l$ with $L$ we can obtain
+ \begin{align}
+ &\nonumber \|\bm\Phi(\bbH,\ccalL,f) - \bm\Phi(\bbH,\ccalL',f)\| \\
+ &\qquad \qquad \leq \sum_{q=1}^{F_L} \left( L C_{per}\epsilon \left( \prod\limits_{l'=1}^{L-1} F_{l'} \right) \sum_{q=1}^{F_0} \|f^q\| \right).
+ \end{align}
+ With $F_0=F_L=1$ and $F_l=F$ for $1\leq l\leq L-1$, then we have
+  \begin{align}
+ \|\bm\Phi(\bbH,\ccalL,f) - \bm\Phi(\bbH,\ccalL',f)\| \leq LF^{L-1} C_{per}\epsilon \|f\|,
+ \end{align}
+which concludes the proof.
+ 
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% SUBSECTION %%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  \subsection{Proof of Theorem \ref{thm:stability_nn_rela}}
+%  \label{app:stability_nn_rela}
+%  For the stability of MNN with $\gamma$-FRT filters, the result can be derived with the same routine but replace the $C_{per}$ term as $C_{per}= \frac{M_s\pi}{\gamma-\epsilon+\gamma\epsilon}+\frac{2B_h}{2-\epsilon}+\frac{2(M-M_s)\delta}{\epsilon}$.
+\setcounter{subsection}{2}
+\subsection{Lemmas and Propositions}
+
+Now we need to include two important lemmas to analyze the influence on eigenvalues and eigenfunctions caused by the perturbation.
+\begin{lemma}\label{lem:eigenvalue_absolute}[Weyl's Theorem]
+The eigenvalues of LB operators $\ccalL$ and perturbed $\ccalL'=\ccalL+\bbA$ satisfy
+\begin{equation}
+|\lambda_i-\lambda'_i|\leq \|\bbA\|, \text{ for all }i=1,2\hdots
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:eigenvalue_absolute}]
+
+The minimax principle asserts that
+\begin{align}
+    \lambda_i(\ccalL)=\max_{codim T = i-1}\lambda[\ccalL, T]=\max_{codim T \leq i-1} \min_{u\in T, \|u\|=1} \langle \ccalL u, u \rangle.
+\end{align}
+
+Then for any $1\leq i $, we have
+\begin{align}
+    \lambda_i(\ccalL') &=\max_{codim T\leq i-1} \min_{ u\in T, \|u\|=1}  \langle (\ccalL+\bbA) u, u\rangle \\
+    & = \max_{codim T\leq i-1} \min_{ u\in T, \|u\|=1} \left( \langle  (\ccalL  u, u\rangle + \langle \bbA u, u\rangle   \right)\\
+    & \geq \max_{codim T\leq i-1} \min_{  u\in T, \|u\|=1}  \left\langle  \ccalL  u, u\rangle   + \lambda_1(\bbA) \right)\\
+    & = \lambda_1(\bbA)+ \max_{codim T\leq i-1} \min_{  u\in T, \|u\|=1 } \langle  \ccalL  u, u\rangle  \\
+    & = \lambda_i(\ccalL)+\lambda_1(\bbA).
+\end{align}
+Similarly, we can have $\lambda_i(\ccalL') \leq \lambda_i(\ccalL)+ \max_k\lambda_k(\bbA)$. This leads to $\lambda_1(\bbA)\leq \lambda_i(\ccalL' )-\lambda_i(\ccalL) \leq \max_k\lambda_k(\bbA)$. This leads to the conclusion that:
+\begin{equation}
+    |\lambda'_i-\lambda_i|\leq \|\bbA\|.
+\end{equation}
+\end{proof}
+
+To measure the difference of eigenfunctions, we introduce the Davis-Kahan $\sin\theta$ theorem as follows.
+\begin{lemma}[Davis-Kahan $\sin\theta$ Theorem]\label{lem:davis-kahan}
+Suppose the spectra of operators $\ccalL$ and $\ccalL'$ are partitioned as $\sigma\bigcup\Sigma$ and $\omega\bigcup \Omega$ respectively, with $\sigma\bigcap \Sigma=\emptyset$ and $\omega\bigcap\Omega=\emptyset$. Then we have
+\begin{equation}
+\|E_\ccalL(\sigma)-E_{\ccalL'}(\omega)\|\leq \frac{\pi}{2}\frac{\|(\ccalL'-\ccalL)E_\ccalL(\sigma)\|}{d}\leq \frac{\pi}{2}\frac{\|\ccalL'-\ccalL\|}{d},
+\end{equation}
+where $d$ satisfies $\min_{x\in\sigma,y\in\Omega}|x-y|\geq d$ and $\min_{x\in\Sigma,y\in\omega}|x-y|\geq d$.
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:davis-kahan}] 
+See \cite{seelmann2014notes}.
+\end{proof}
+
+
+\begin{lemma}\label{lem:eigenvalue_relative}
+The eigenvalues of LB operators $\ccalL$ and perturbed $\ccalL'=\ccalL+\ccalE\ccalL$ with $\|\ccalE\|= \epsilon$ satisfy
+\begin{align}
+    |\lambda_i-\lambda'_i|\leq \epsilon |\lambda_i|, \text{ for all }i=1,2\hdots
+\end{align}
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:eigenvalue_relative}]
+With the assumption that $\ccalL'=\ccalL+\ccalE\ccalL$, we have
+\begin{align}
+    \lambda_i(\ccalL + \ccalE\ccalL)& = \max_{codim T\leq i-1} \min_{ u\in T, \|u\|=1}  \langle (\ccalL+\ccalE\ccalL) u, u\rangle \\
+    & = \max_{codim T\leq i-1} \min_{u\in T, \|u\|=1} \left(  \langle \ccalL u, u\rangle   +  \langle \ccalE\ccalL u, u\rangle  \right)\\
+    & =\lambda_i(\ccalL) + \max_{codim T\leq i-1} \min_{u\in T, \|u\|=1} \langle \ccalE\ccalL u, u\rangle.
+\end{align}
+For the second term, we have
+\begin{align}
+    |\langle \ccalE\ccalL u, u\rangle| &\leq \langle |\ccalE|  |\ccalL|u, u \rangle   \leq \epsilon \sum_i |\lambda_i(\ccalL)||\xi_i|^2 = \epsilon \langle |\ccalL| u,u \rangle
+\end{align}
+Therefore, we have
+\begin{align}
+ & \nonumber \lambda_i(\ccalL+\ccalE\ccalL) \leq \lambda_i(\ccalL) + \epsilon
+   \max_{codim T\leq i-1} \min_{u\in T, \|u\|=1} \langle |\ccalL| u, u\rangle\\
+   &\qquad \qquad\quad  = \lambda_i(\ccalL) + \epsilon |\lambda_i(\ccalL)|,\\
+   &\lambda_i(\ccalL + \ccalE\ccalL) \geq \lambda_i(\ccalL) -\epsilon |\lambda_i(\ccalL)|,\\
+   &\lambda_i(\ccalL)-\epsilon |\lambda_i(\ccalL)|\leq  \lambda_i(\ccalL + \ccalE\ccalL)\leq \lambda_i(\ccalL) +\epsilon|\lambda_i(\ccalL)|,
+\end{align}
+which concludes the proof.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% SUBSECTION %%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\setcounter{subsection}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% SUBSECTION %%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+ \subsection{Proof of Proposition \ref{prop:convergence}}
+ \label{app:convergence}
+ Considering that the discrete points $\{x_1,x_2,\hdots,x_n\}$ are uniformly sampled from manifold $\ccalM$ with measure $\mu$, the empirical measure associated with $\text{d}\mu$ can be denoted as $p_n=\frac{1}{n}\sum_{i=1}^n \delta_{x_i}$, where $\delta_{x_i}$ is the Dirac measure supported on $x_i$. Similar to the inner product defined in the $L^2(\ccalM)$ space \eqref{eqn:innerproduct}, the inner product on $L^2(\bbG_n)$ is denoted as
+ \begin{equation}
+     \langle u, v\rangle_{L^2(\bbG_n)}=\int u(x)v(x)\text{d}p_n=\frac{1}{n}\sum_{i=1}^n u(x_i)v(x_i).
+ \end{equation}
+ The norm in $L^2(\bbG_n)$ is therefore $\|u\|^2_{L^2(\bbG_n)} = \langle u, u \rangle_{L^2(\bbG_n)}$, with $u,v \in L^2(\ccalM)$. For signals $\bbu,\bbv \in L^2(\bbG_n)$, the inner product is therefore $\langle \bbu,\bbv \rangle_{L^2(\bbG_n)} = \frac{1}{n}\sum_{i=1}^n [\bbu]_i[\bbv]_i$.
+ 
+ We first import the existing results from \cite{belkin2006convergence} which indicates the spectral convergence of the constructed Laplacian operator based on the graph $\bbG_n$ to the LB operator of the underlying manifold.
+ \begin{theorem}[Theorem 2.1 \cite{belkin2006convergence}]
+ \label{thm:convergence}
+ Let $X=\{x_1, x_2,...x_n\}$ be a set of $n$ points sampled i.i.d. from a $d$-dimensional manifold $\ccalM \subset \reals^N$. % sampled by an operator $\bbP_n$ \eqref{eqn:sampling}. 
+ Let $\bbG_n$ be a graph approximation of $\ccalM$ constructed from $X$ with weight values set as \eqref{eqn:weight} with $t_n = n^{-1/(d+2+\alpha)}$ and $\alpha>0$. Let $\bbL_n$ be the graph Laplacian of $\bbG_n$ and $\ccalL$ be the Laplace-Beltrami operator of $\ccalM$. Let $\lambda_{i}^n$ be the $i$-th eigenvalue of $\bbL_n$ and $\bm\phi_{i}^n$ be the corresponding normalized eigenfunction. Let $\lambda_i$ and $\bm\phi_i$ be the corresponding eigenvalue and eigenfunction of $\ccalL$ respectively. Then, it holds that
+\begin{equation}
+\label{eqn:convergence_spectrum}
+    \lim_{n\rightarrow \infty } \lambda_i^n = \lambda_i, \quad \lim_{n\rightarrow \infty} |\bm\phi^{n}_i(x_j) -  \bm\phi_i(x_j)|=0, j=1,2 \hdots,n
+\end{equation}
+where the limits are taken in probability.
+ \end{theorem}
+ 
+
+With the definitions of neural networks on graph $\bbG_n$ and manifold $\ccalM$, the output difference can be written as 
+ \begin{align}
+    \nonumber \|\bm\Phi(\bbH,\bbL_n,\bbP_nf)-\bbP_n \bm\Phi&(\bbH,\ccalL, f))\| = \left\| \sum_{q=1}^{F_L}\bbx_L^q-\sum_{q=1}^{F_L}\bbP_n f_L^q \right\|\\
+     & \leq \sum_{q=1}^{F_L} \left\| \bbx_L^q- \bbP_n f_L^q \right\|.
+ \end{align}
+ By inserting the definitions, we have 
+ \begin{align}
+   \nonumber  &\left\| \bbx_l^p- \bbP_n f_l^p \right\|\\
+     &=\left\| \sigma\left(\sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\bbL_n) \bbx_{l-1}^q \right) -\bbP_n \sigma\left(\sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL) f_{l-1}^q\right) \right\|
+ \end{align}
+ with $\bbx_0=\bbP_n f$ as the input of the first layer. With a normalized Lipschitz nonlinearity, we have
+  \begin{align}
+    \| \bbx_l^p - \bbP_n f_l^p & \| \leq \left\|  \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\bbL_n) \bbx_{l-1}^q    - \bbP_n \sum_{q=1}^{F_{l-1}} \bbh_l^{pq}(\ccalL)  f_{l-1}^q\right\|\\
+    & \leq \sum_{q=1}^{F_{l-1}} \left\|    \bbh_l^{pq}(\bbL_n) \bbx_{l-1}^q    - \bbP_n   \bbh_l^{pq}(\ccalL)  f_{l-1}^q\right\|
+ \end{align}
+ The difference can be further decomposed as
+\begin{align}
+   \nonumber   \|    \bbh_l^{pq}(\bbL_n) & \bbx_{l-1}^q    - \bbP_n   \bbh_l^{pq}(\ccalL)  f_{l-1}^q \| 
+   \\ \nonumber&\leq \|
+\bbh_l^{pq}(\bbL_n) \bbx_{l-1}^q  - \bbh_l^{pq}(\bbL_n) \bbP_n f_{l-1}^q \\ &\qquad +\bbh_l^{pq}(\bbL_n) \bbP_n f_{l-1}^q  - \bbP_n   \bbh_l^{pq}(\ccalL)  f_{l-1}^q
+    \|\\\nonumber
+   & \leq \left\|
+    \bbh_l^{pq}(\bbL_n) \bbx_{l-1}^q  - \bbh_l^{pq}(\bbL_n) \bbP_n f_{l-1}^q
+    \right\|
+  \\ &\qquad +
+    \left\|
+    \bbh_l^{pq}(\bbL_n) \bbP_n f_{l-1}^q  - \bbP_n   \bbh_l^{pq}(\ccalL)  f_{l-1}^q
+    \right\|
+\end{align}
+The first term can be bounded as $\| \bbx_{l-1}^q - \bbP_nf_{l-1}^q\|$ with the initial condition $\|\bbx_0 - \bbP_n f_0\|=0$. The second term can be denoted as $D_{l-1}^n$. With the iteration employed, we can have
+\begin{align}
+ \nonumber \|\bm\Phi(\bbH,\bbL_n,\bbP_n f) - \bbP_n \bm\Phi(\bbH,\ccalL,f)\| 
+ \leq
+ \sum_{l=0}^L \prod\limits_{l'=l}^L F_{l'} D_l^n.
+ \end{align}
+ Therefore, we can focus on the difference term $D_l^n$, we omit the feature and layer index to work on a general form.
+  \begin{align}
+    &\nonumber \|\bbh(\bbL_n)\bbP_n f - \bbP_n\bbh(\ccalL) f\|\\
+    &\leq \left\| \sum_{i=1}^\infty \hat{h}(\lambda_i^n) \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n - \sum_{i=1}^\infty \hat{h}(\lambda_i)\langle f,\bm\phi_i\rangle_{\ccalM} \bbP_n \bm\phi_i  \right\|
+    %  \\ 
+    %  &\nonumber \leq  \left\| \sum_{i=1}^M \hat{h}(\lambda_i^n) \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n - \sum_{i=1}^M \hat{h}(\lambda_i) \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n\right\| \\
+    %  & \qquad \qquad \qquad \qquad\qquad \qquad+\left\| \sum_{i=1}^M \hat{h}(\lambda_i) \langle \bbP_n f,\bm\phi_i^n \rangle_{\bbG_n} \bm\phi_i^n - \sum_{i=1}^M \hat{h}(\lambda_i) \langle f,\bm\phi_i \rangle_{\ccalM} \bbP_n \bm\phi_i \right\|.\label{eqn:conv-1}
+ \end{align}
+ 
+ We decompose the $\alpha$-FDT filter function as $\hat{h}(\lambda)=h^{(0)}(\lambda)+\sum_{l\in\ccalK_m}h^{(l)}(\lambda)$ as equations \eqref{eqn:h0} and \eqref{eqn:hl} show. With the triangle inequality, we start by analyzing the output difference of $h^{(0)}(\lambda)$ as
+ \begin{align}
+    & \nonumber \left\| \sum_{i=1}^\infty {h}^{(0)}(\lambda_i^n) \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n - \sum_{i=1}^\infty {h}^{(0)}(\lambda_i)\langle f,\bm\phi_i\rangle_{\ccalM} \bbP_n \bm\phi_i  \right\|
+     \\ 
+     &\nonumber \leq  \left\| \sum_{i=1}^\infty \left({h}^{(0)}(\lambda_i^n)- {h}^{(0)}(\lambda_i) \right) \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n \right\| \\
+     &  +\left\| \sum_{i=1}^\infty {h}^{(0)}(\lambda_i)\left( \langle \bbP_n f,\bm\phi_i^n \rangle_{\bbG_n} \bm\phi_i^n - \langle f,\bm\phi_i \rangle_{\ccalM} \bbP_n \bm\phi_i \right)  \right\|.\label{eqn:conv-1}
+ \end{align}
+ 
+ The first term in \eqref{eqn:conv-1} can be bounded by leveraging the $A_h$-Lipschitz continuity of the frequency response. From the convergence in probability stated in \eqref{eqn:convergence_spectrum}, we can claim that for each eigenvalue $\lambda_i \leq \lambda_M$, for all $\epsilon_i>0$ and all $\delta_i>0$, there exists some $N_i$ such that for all $n>N_i$, we have
+\begin{gather}
+ \label{eqn:eigenvalue}   \mathbb{P}(|\lambda_i^n-\lambda_i|\leq \epsilon_i)\geq 1-\delta_i,
+ \end{gather}
+Letting $\epsilon_i < \epsilon$ with $\epsilon > 0$, with probability at least $\prod_{i=1}^M(1-\delta_i) := 1-\delta$, the first term is bounded as 
+ 
+\begin{align}
+   &\nonumber \left\| \sum_{i=1}^\infty ({h}^{(0)}(\lambda_i^n) - {h}^{(0)}(\lambda_i)) \langle \bbP_n f,\bm\phi_i^n \rangle_{\bbG_n} \bm\phi_i^n  \right\|\\
+   & \leq \sum_{i=1}^\infty |{h}^{(0)}(\lambda_i^n)-{h}^{(0)}(\lambda_i)| |\langle \bbP_n f,\bm\phi_i^n \rangle_{\bbG_n}| \|\bm\phi_i^n\|\\
+   &\leq \sum_{i=1}^{N_s} A_h |\lambda_i^n-\lambda_i| \|\bbP_n f\| \|\bm\phi_i^n \|^2\leq N_s A_h\epsilon,
+\end{align} 
+for all $n>\max_i N_i := N$.
+
+The second term in \eqref{eqn:conv-1} can be bounded combined with the convergence of eigenfunctions in \eqref{eqn:eigenfunction} as
+\begin{align}
+  & \nonumber \Bigg\| \sum_{i=1}^\infty {h}^{(0)}(\lambda_i)\left( \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n}\bm\phi_i^n - \langle f,\bm\phi_i \rangle_{\ccalM} \bbP_n \bm\phi_i\right)  \Bigg\|\\
+   & \leq \nonumber \Bigg\|  \sum_{i=1}^\infty {h}^{(0)}(\lambda_i)  \left(\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}\bm\phi_i^n  - \langle \bbP_nf,\bm\phi_i^n \rangle_{\bbG_n} \bbP_n\bm\phi_i\right)\Bigg\|\\
+   &\label{eqn:term1}+ \left\| \sum_{i=1}^\infty  {h}^{(0)}(\lambda_i) \left(\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n} \bbP_n\bm\phi_i -\langle f,\bm\phi_i\rangle_\ccalM \bbP_n\bm\phi_i \right) \right\|
+%   &\leq \nonumber \sum_{i=1}^n \langle \bbP_nf,\bm\phi_i^n \rangle \| \bm\phi_i^n-\bbP_n\bm\phi_i \|\\
+%   &\qquad \qquad + \sum_{i=1}^n|\langle \bbP_n f, \bm\phi_i^n\rangle -\langle f,\bm\phi_i\rangle|\left\| \bbP_n\bm\phi_i \right\|
+\end{align}
+From the convergence stated in \eqref{eqn:convergence_spectrum}, we can claim that for some fixed eigenfunction $\bm\phi_i$,  for all $\epsilon_i>0$ and all $\delta_i>0$, there exists some $N_i$ such that for all $n>N_i$, we have
+\begin{gather}
+ \label{eqn:eigenfunction}    \mathbb{P}(|\bm\phi_i^n(x_j) - \bm\phi_i(x_j)|\leq \epsilon_i)\geq 1-\delta_i,\quad \forall \; x_j\in X .
+ \end{gather}
+ Therefore, letting $\epsilon_i < \epsilon$ with $\epsilon > 0$, with probability at least $\prod_{i=1}^M(1-\delta_i) := 1-\delta$, for all $n> \max_i N_i := N$, the first term in \eqref{eqn:term1} can be bounded as
+\begin{align}
+& \nonumber \left\|  \sum_{i=1}^\infty {h}^{(0)}(\lambda_i) \left(\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}\bm\phi_i^n  - \langle \bbP_nf,\bm\phi_i^n \rangle_{\ccalM} \bbP_n\bm\phi_i\right)\right\|\\
+& \qquad \qquad\leq \sum_{i=1}^{N_s} \|\bbP_n f\|\|\bm\phi_i^n - \bbP_n\bm\phi_i\|\leq N_s \epsilon,
+\end{align}
+because the frequency response is non-amplifying as stated in Assumption \ref{ass:filter_function}. The last equation comes from the definition of norm in $L^2(\bbG_n)$.
+The second term in \eqref{eqn:term1} can be written as
+\begin{align}
+     & \nonumber \Bigg\| \sum_{i=1}^\infty  {h}^{(0)}(\lambda_i^n) (\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}  \bbP_n\bm\phi_i -\langle f,\bm\phi_i\rangle_\ccalM \bbP_n\bm\phi_i ) \Bigg\| \\
+   &\leq \sum_{i=1}^\infty |{h}^{(0)}(\lambda_i^n)| \left|\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}  -\langle f,\bm\phi_i\rangle_\ccalM\right|\|\bbP_n\bm\phi_i\|.
+\end{align}
+Because $\{x_1, x_2,\cdots,x_n\}$ is a set of uniform sampled points from $\ccalM$, based on Theorem 19 in \cite{von2008consistency} we can claim that there exists some $N$ such that for all $n>N$
+\begin{equation}
+   \mathbb{P}\left(\left|\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}  -\langle f,\bm\phi_i\rangle_\ccalM\right|\leq\epsilon \right)\geq 1-\delta,
+\end{equation}
+for all $\epsilon>0$ and $\delta>0$. Taking into consider the boundedness of frequency response $|{h}^{(0)}(\lambda)|\leq 1$ and the bounded energy $\|\bbP_n\bm\phi_i\|$. Therefore, we have for all $\epsilon>0$ and $\delta>0$,
+\begin{align}
+&\nonumber  \mathbb{P}\left(\left\| \sum_{i=1}^M  \hat{h}(\lambda_i^n) \left(\langle \bbP_n f,\bm\phi_i^n\rangle_{\bbG_n}  -\langle f,\bm\phi_i\rangle_\ccalM \right)\bbP_n\bm\phi_i  \right\|\leq M \epsilon\right)
+\\& \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\geq 1-\delta,
+\end{align}
+for all $n>N$.
+
+Combining the above results, we can bound the output difference of $h^{(0)}$. Then we need to analyze the output difference of $h^{(l)}(\lambda)$ and bound this as
+\begin{align}
+    \nonumber &\left\| \bbP_n \bbh^{(l)}(\ccalL)f -\bbh^{(l)}(\bbL_n)\bbP_n f \right\| 
+    \\& \leq \left\| (\hat{h}(C_l)+\delta)\bbP_n f - (\hat{h}(C_l)-\delta)\bbP_nf\right\| \leq 2\delta\|\bbP_nf\|,
+\end{align}
+where $\bbh^{(l)}(\ccalL)$ and $\bbh^{(l)}(\bbL_n)$ are filters with filter function $h^{(l)}(\lambda)$ on the LB operator $\ccalL$ and graph Laplacian $\bbL_n$ respectively.
+Combining the filter functions, we can write
+\begin{align}
+   \nonumber &\|\bbP_n\bbh(\ccalL)f-\bbh(\bbL_n)\bbP_n f\|\\\nonumber &=
+    \Bigg\|\bbP_n\bbh^{(0)}(\ccalL)f +\bbP_n\sum_{l\in\ccalK_m}\bbh^{(l)}(\ccalL)f -\\& \qquad \qquad \qquad \bbh^{(0)}(\bbL_n)\bbP_n f - \sum_{l\in\ccalK_m} \bbh^{(l)}(\bbL_n)\bbP f \Bigg\|\\
+    &\nonumber \leq \|\bbP_n \bbh^{(0)}(\ccalL)f-\bbh^{(0)}(\bbL_n)\bbP_n f\|+\\
+    &\qquad \qquad \qquad \sum_{l\in\ccalK_m}\|\bbP_n \bbh^{(l)}(\ccalL)f-\bbh^{(l)}(\bbL_n)\bbP_nf\|.
+\end{align}
+
+
+Above all, we can claim that there exists some $N$, such that for all $n>N$, for all $\epsilon'>0$ and $\delta>0$, we have
+\begin{equation}
+    \mathbb{P}(\|\bbh(\bbL_n)\bbP_n f - \bbP_n\bbh(\ccalL) f\|\leq \epsilon')\geq 1-\delta.
+\end{equation}
+
+
+
+
+With $\lim\limits_{n\rightarrow \infty}D_l^n=0$ in high probability, this concludes the proof. 

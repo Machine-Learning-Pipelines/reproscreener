@@ -1,0 +1,32 @@
+\section{System Identification}
+\subsection{Learning Material Parameters}
+\label{system identification}
+In this section, we explain our method for system identification. The process begins with exporting two STL files from a CAD file of the soft actuator, one for the body and one for the spine. To streamline the tetrahedral mesh generation, we simplify the geometry by patching the small mounting holes used during the casting process to stabilize the fish. Otherwise, the geometry of the body and spine are imported as designed without modifications. In practice, we have found that a correct chamber and spine geometry are essential for adequate system identification of material parameters that are physically plausible. 
+
+We tetrahedralize the surface triangle mesh by modeling it as a whole piece of surface, a few holes representing the air chambers, and a set of internal points defining the separation of spine and body. The tetrahedralization is done according to the method by Hu et al.~\cite{hu2018tetrahedral}. We control the target length of edges to be $\sfrac{1}{50}$ of the whole body length to get an expressive and representative tetrahedral mesh.
+
+After the tetrahedralization, we split the spine and body elements and assign different Young's moduli to them. The internal surfaces, which are identified as air chambers, are modeled as actuators to drive the tail. In physical experiments, we actuate the tail in the air and record its deformation through the tracked markers. This information provides supervision to the material parameter search for both the body and spine. We measure the error of matching by the Euclidean distance between measurement data and simulation results from the sensors.
+
+We conduct our simulation experiments based on a linear elastic corotated material. The model can be improved by introducing a more sophisticated elastic energy model, for example Neo-Hookean material, which was not yet supported in our simulation framework. Furthermore, we chose not to include damping explicitly in the material model since we learn material parameters using static deformation data. For the dynamic experiments, we observed that the deformations were sufficiently small for accurate characterization and that the effect of material damping is small thus having a negligible effect on the forced response.
+
+\subsection{Learning Hydrodynamics}
+\label{learning hydrodynamics}
+To learn a simplified model of the hydrodynamic thrust force predictor $f_\textrm{thrust}$, we use a feedforward neural network trained on data from the experimental setup (see appendix). The inputs of the neural network consist of the positions and velocities of the tracking points at time $t$, together with the measured pressure and its time derivative, while the output is a one-dimensional value for $f_\textrm{thrust}$ at time $t$. The feedforward neural network consists of three hidden layers with RELU activation functions and respectively a dimension of 200, 300, and 200 hidden units. The network is trained with the Adam optimizer using a learning rate of 0.001 and a mean squared error loss. Note that our hydrodynamic modeling method does not estimate fluid properties such as density or viscosity, but rather the thrust force prediction, which is of more immediate use for designers of swimming robots.
+
+% \subsection{Force Predictor Network Training Details}
+% \label{sec:force_predictor_network_training}
+\begin{table}[h]
+\caption{Specification of the training and test sets for the thrust predictor network. In the Nemo experiment, we generalize to unseen trials with seen parameters. In the Bruce experiment we generalize to unseen higher actuation frequency.}
+\centering
+\begin{tabular}{@{}lllll@{}}
+    \toprule
+    \textbf{Name} & \textbf{Mode} & \textbf{N.\ trials} & \textbf{Pressure} & \textbf{Frequency} \\
+    \midrule
+    \multirow{2}*{Nemo} & Training & 32 & 200,300 mbar & 1,2,3,4 Hz \\  & Validation & 8 & 200,300 mbar & 1,2,3,4 Hz \\
+    \multirow{2}*{Bruce} & Training & 30 & 500,750 mbar & 1,2,3 Hz \\  & Validation & 10 & 500,750 mbar & 4 Hz \\
+    \bottomrule
+\end{tabular}
+\label{tab:training_set}
+\end{table}
+
+In \Cref{tab:training_set}, we provide a description of the training and the test set used for the thrust predictor network. Only \emph{Nemo} and \emph{Bruce} are reported in \Cref{fig:thrust_prediction} and \Cref{tab:training_set} for brevity since \emph{Dory} thrust data predictions are similar. The table clarifies how we tested the generalizability of our predictor. We split the experimental data to show the ability of the network to generalize to unseen trials. For the fishtail named \emph{Nemo}, while we keep the parameters the same, we generalize in the validation set to unseen trials under various actuation amplitudes and frequencies. In the experiments for \emph{Bruce}, we generalize to an unseen higher actuation frequency.

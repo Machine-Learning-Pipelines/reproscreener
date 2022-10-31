@@ -1,0 +1,468 @@
+\begin{thebibliography}{64}
+\newcommand{\enquote}[1]{``#1''}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{\tt #1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\ifx\endbibitem\undefined \let\endbibitem\relax\fi
+
+\bibitem[{Ahn et~al.(2012)Ahn, Balan, and Welling}]{ahn2012bayesian}
+Ahn, S., Balan, A.~K., and Welling, M. (2012).
+\newblock \enquote{Bayesian posterior sampling via stochastic gradient fisher
+  scoring.}
+\newblock In {\em Proceedings of the 29th International Conference on Machine
+  Learning\/}, 1591--1598.
+\endbibitem
+
+\bibitem[{Armagan et~al.(2013)Armagan, Dunson, and
+  Lee}]{armagan2013generalized}
+Armagan, A., Dunson, D.~B., and Lee, J. (2013).
+\newblock \enquote{Generalized double Pareto shrinkage.}
+\newblock {\em Statistica Sinica\/}, 23(1): 119.
+\endbibitem
+
+\bibitem[{Bauer and Kohler(2019)}]{bauer2017deep}
+Bauer, B. and Kohler, M. (2019).
+\newblock \enquote{On deep learning as a remedy for the curse of dimensionality
+  in nonparametric regression.}
+\newblock {\em The Annals of Statistics\/}, 47(4): 2261--2285.
+\endbibitem
+
+\bibitem[{Bhadra et~al.(2021)Bhadra, Datta, Polson, Sokolov, and
+  Xu}]{bhadra2021merging}
+Bhadra, A., Datta, J., Polson, N., Sokolov, V., and Xu, J. (2021).
+\newblock \enquote{Merging two cultures: deep and statistical learning.}
+\newblock {\em arXiv preprint arXiv:2110.11561\/}.
+\endbibitem
+
+\bibitem[{Bhattacharya et~al.(2016)Bhattacharya, Chakraborty, and
+  Mallick}]{bhattacharya2016fast}
+Bhattacharya, A., Chakraborty, A., and Mallick, B.~K. (2016).
+\newblock \enquote{Fast sampling with {G}aussian scale mixture priors in
+  high-dimensional regression.}
+\newblock {\em Biometrika\/}, asw042.
+\endbibitem
+
+\bibitem[{Chen et~al.(2014)Chen, Fox, and Guestrin}]{chen2014stochastic}
+Chen, T., Fox, E., and Guestrin, C. (2014).
+\newblock \enquote{Stochastic gradient {H}amiltonian {M}onte {C}arlo.}
+\newblock In {\em International Conference on Machine Learning\/}, 1683--1691.
+\endbibitem
+
+\bibitem[{Deng et~al.(2019)Deng, Zhang, Liang, and Lin}]{deng2019adaptive}
+Deng, W., Zhang, X., Liang, F., and Lin, G. (2019).
+\newblock \enquote{An adaptive empirical {B}ayesian method for sparse deep
+  learning.}
+\newblock In {\em Advances in Neural Information Processing Systems\/},
+  5563--5573.
+\endbibitem
+
+\bibitem[{Duan et~al.(2018)Duan, Johndrow, and Dunson}]{duan2018scaling}
+Duan, L.~L., Johndrow, J.~E., and Dunson, D.~B. (2018).
+\newblock \enquote{Scaling up data augmentation {MCMC} via calibration.}
+\newblock {\em Journal of Machine Learning Research\/}, 19(1): 2575--2608.
+\endbibitem
+
+\bibitem[{Fan et~al.(2021)Fan, Ma, and Zhong}]{fan2021selective}
+Fan, J., Ma, C., and Zhong, Y. (2021).
+\newblock \enquote{A selective overview of deep learning.}
+\newblock {\em Statistical Science\/}, 36(2): 264--290.
+\endbibitem
+
+\bibitem[{Friedman(1991)}]{friedman1991multivariate}
+Friedman, J.~H. (1991).
+\newblock \enquote{Multivariate adaptive regression splines.}
+\newblock {\em The Annals of Statistics\/}, 19(1): 1--67.
+\endbibitem
+
+\bibitem[{Gan et~al.(2015)Gan, Henao, Carlson, and Carin}]{gan2015learning}
+Gan, Z., Henao, R., Carlson, D., and Carin, L. (2015).
+\newblock \enquote{Learning deep sigmoid belief networks with data
+  augmentation.}
+\newblock In {\em Artificial Intelligence and Statistics\/}, 268--276.
+\endbibitem
+
+\bibitem[{Geman and Hwang(1986)}]{geman1986diffusions}
+Geman, S. and Hwang, C.-R. (1986).
+\newblock \enquote{Diffusions for global optimization.}
+\newblock {\em SIAM Journal on Control and Optimization\/}, 24(5): 1031--1043.
+\endbibitem
+
+\bibitem[{Geyer(1996)}]{geyer1996estimation}
+Geyer, C.~J. (1996).
+\newblock \enquote{Estimation and optimization of functions.}
+\newblock In {\em Markov chain Monte Carlo in practice\/}, 241--258. Chapman
+  and Hall.
+\endbibitem
+
+\bibitem[{Gramacy and Lee(2008)}]{gramacy2008bayesian}
+Gramacy, R.~B. and Lee, H. K.~H. (2008).
+\newblock \enquote{Bayesian treed {G}aussian process models with an application
+  to computer modeling.}
+\newblock {\em Journal of the American Statistical Association\/}, 103(483):
+  1119--1130.
+\endbibitem
+
+\bibitem[{Green(1984)}]{green1984iteratively}
+Green, P.~J. (1984).
+\newblock \enquote{Iteratively reweighted least squares for maximum likelihood
+  estimation, and some robust and resistant alternatives.}
+\newblock {\em Journal of the Royal Statistical Society: Series B
+  (Methodological)\/}, 46(2): 149--170.
+\endbibitem
+
+\bibitem[{Gupta et~al.(2020)Gupta, Louidor, Mangylov, Morioka, Narayan, and
+  Zhao}]{gupta2020multidimensional}
+Gupta, M., Louidor, E., Mangylov, O., Morioka, N., Narayan, T., and Zhao, S.
+  (2020).
+\newblock \enquote{Multidimensional shape constraints.}
+\newblock In {\em International Conference on Machine Learning\/}, 3918--3928.
+  PMLR.
+\endbibitem
+
+\bibitem[{He et~al.(2016)He, Zhang, Ren, and Sun}]{he2016deep}
+He, K., Zhang, X., Ren, S., and Sun, J. (2016).
+\newblock \enquote{Deep residual learning for image recognition.}
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition\/}, 770--778.
+\endbibitem
+
+\bibitem[{Hern{\'a}ndez-Lobato and Adams(2015)}]{hernandez2015probabilistic}
+Hern{\'a}ndez-Lobato, J.~M. and Adams, R. (2015).
+\newblock \enquote{Probabilistic backpropagation for scalable learning of
+  {B}ayesian neural networks.}
+\newblock In {\em International Conference on Machine Learning\/}, 1861--1869.
+\endbibitem
+
+\bibitem[{Higdon et~al.(2008)Higdon, Gattiker, Williams, and
+  Rightley}]{higdon2008computer}
+Higdon, D., Gattiker, J., Williams, B., and Rightley, M. (2008).
+\newblock \enquote{Computer model calibration using high-dimensional output.}
+\newblock {\em Journal of the American Statistical Association\/}, 103(482):
+  570--583.
+\endbibitem
+
+\bibitem[{Hinton et~al.(2012)Hinton, Srivastava, Krizhevsky, Sutskever, and
+  Salakhutdinov}]{hinton2012improving}
+Hinton, G.~E., Srivastava, N., Krizhevsky, A., Sutskever, I., and
+  Salakhutdinov, R.~R. (2012).
+\newblock \enquote{Improving neural networks by preventing co-adaptation of
+  feature detectors.}
+\newblock {\em arXiv:1207.0580\/}.
+\endbibitem
+
+\bibitem[{Hunter and Lange(2004)}]{hunter2004tutorial}
+Hunter, D.~R. and Lange, K. (2004).
+\newblock \enquote{A tutorial on {MM} algorithms.}
+\newblock {\em The American Statistician\/}, 58(1): 30--37.
+\endbibitem
+
+\bibitem[{Jacquier et~al.(2007)Jacquier, Johannes, and
+  Polson}]{jacquier2007mcmc}
+Jacquier, E., Johannes, M., and Polson, N. (2007).
+\newblock \enquote{{MCMC} maximum likelihood for latent state models.}
+\newblock {\em Journal of Econometrics\/}, 137(2): 615--640.
+\endbibitem
+
+\bibitem[{Kingma and Ba(2015)}]{kingma2014adam}
+Kingma, D.~P. and Ba, J. (2015).
+\newblock \enquote{Adam: A method for stochastic optimization.}
+\endbibitem
+
+\bibitem[{Kolmogorov(1957)}]{kolmogorov1957representation}
+Kolmogorov, A.~N. (1957).
+\newblock \enquote{On the representation of continuous functions of many
+  variables by superposition of continuous functions of one variable and
+  addition.}
+\newblock In {\em Doklady Akademii Nauk\/}, volume 114, 953--956. Russian
+  Academy of Sciences.
+\endbibitem
+
+\bibitem[{Krizhevsky et~al.(2012)Krizhevsky, Sutskever, and
+  Hinton}]{krizhevsky2012imagenet}
+Krizhevsky, A., Sutskever, I., and Hinton, G.~E. (2012).
+\newblock \enquote{Imagenet classification with deep convolutional neural
+  networks.}
+\newblock {\em Advances in Neural Information Processing Systems\/}, 25:
+  1097--1105.
+\endbibitem
+
+\bibitem[{Lange(2013{\natexlab{a}})}]{lange2013mm}
+Lange, K. (2013{\natexlab{a}}).
+\newblock \enquote{The {MM} algorithm.}
+\newblock In {\em Optimization\/}, 185--219. Springer.
+\endbibitem
+
+\bibitem[{Lange(2013{\natexlab{b}})}]{lange2013optimization}
+--- (2013{\natexlab{b}}).
+\newblock {\em Optimization\/}, volume~95.
+\newblock Springer Science \& Business Media.
+\endbibitem
+
+\bibitem[{Lange et~al.(2000)Lange, Hunter, and Yang}]{lange2000optimization}
+Lange, K., Hunter, D.~R., and Yang, I. (2000).
+\newblock \enquote{Optimization transfer using surrogate objective functions.}
+\newblock {\em Journal of Computational and Graphical Statistics\/}, 9(1):
+  1--20.
+\endbibitem
+
+\bibitem[{Liang and Srikant(2017)}]{liang2016deep}
+Liang, S. and Srikant, R. (2017).
+\newblock \enquote{Why deep neural networks for function approximation?}
+\newblock In {\em International Conference on Learning Representations\/}.
+\endbibitem
+
+\bibitem[{Ma et~al.(2019)Ma, Chen, Jin, Flammarion, and
+  Jordan}]{ma2018sampling}
+Ma, Y.-A., Chen, Y., Jin, C., Flammarion, N., and Jordan, M.~I. (2019).
+\newblock \enquote{Sampling can be faster than optimization.}
+\newblock {\em Proceedings of the National Academy of Sciences\/}, 116(42):
+  20881--20885.
+\endbibitem
+
+\bibitem[{Mallick et~al.(2005)Mallick, Ghosh, and Ghosh}]{mallick2005bayesian}
+Mallick, B.~K., Ghosh, D., and Ghosh, M. (2005).
+\newblock \enquote{Bayesian classification of tumours by using gene expression
+  data.}
+\newblock {\em Journal of the Royal Statistical Society: Series B\/}, 67(2):
+  219--234.
+\endbibitem
+
+\bibitem[{Mandt et~al.(2017)Mandt, Hoffman, and Blei}]{mandt2017stochastic}
+Mandt, S., Hoffman, M.~D., and Blei, D.~M. (2017).
+\newblock \enquote{Stochastic gradient descent as approximate {B}ayesian
+  inference.}
+\newblock {\em Journal of Machine Learning Research\/}, 18(1): 4873--4907.
+\endbibitem
+
+\bibitem[{Metropolis et~al.(1953)Metropolis, Rosenbluth, Rosenbluth, Teller,
+  and Teller}]{metropolis1953equation}
+Metropolis, N., Rosenbluth, A.~W., Rosenbluth, M.~N., Teller, A.~H., and
+  Teller, E. (1953).
+\newblock \enquote{Equation of state calculations by fast computing machines.}
+\newblock {\em Journal of Chemical Physics\/}, 21(6): 1087--1092.
+\endbibitem
+
+\bibitem[{Mhaskar et~al.(2017)Mhaskar, Liao, and Poggio}]{mhaskar2017and}
+Mhaskar, H., Liao, Q., and Poggio, T.~A. (2017).
+\newblock \enquote{When and why are deep networks better than shallow ones?}
+\newblock In {\em Proceedings of the 31th Conference on Artificial
+  Intelligence\/}, 2343--2349.
+\endbibitem
+
+\bibitem[{Montufar et~al.(2014)Montufar, Pascanu, Cho, and
+  Bengio}]{montufar2014number}
+Montufar, G.~F., Pascanu, R., Cho, K., and Bengio, Y. (2014).
+\newblock \enquote{On the number of linear regions of deep neural networks.}
+\newblock In {\em Advances in Neural Information Processing Systems\/},
+  2924--2932.
+\endbibitem
+
+\bibitem[{Murray et~al.(2010)Murray, Adams, and MacKay}]{murray2010elliptical}
+Murray, I., Adams, R., and MacKay, D. (2010).
+\newblock \enquote{Elliptical slice sampling.}
+\newblock In {\em Proceedings of the thirteenth International Conference on
+  Artificial Intelligence and Statistics\/}, 541--548.
+\endbibitem
+
+\bibitem[{Neal(2003)}]{neal2003slice}
+Neal, R.~M. (2003).
+\newblock \enquote{Slice sampling.}
+\newblock {\em The Annals of Statistics\/}, 705--741.
+\endbibitem
+
+\bibitem[{Neal(2011)}]{neal2011mcmc}
+--- (2011).
+\newblock \enquote{{MCMC using Hamiltonian dynamics}.}
+\newblock {\em Handbook of Markov Chain Monte Carlo\/}, 2(11): 2.
+\endbibitem
+
+\bibitem[{Neelakantan et~al.(2017)Neelakantan, Vilnis, Le, Sutskever, Kaiser,
+  Kurach, and Martens}]{neelakantan2015adding}
+Neelakantan, A., Vilnis, L., Le, Q.~V., Sutskever, I., Kaiser, L., Kurach, K.,
+  and Martens, J. (2017).
+\newblock \enquote{Adding gradient noise improves learning for very deep
+  networks.}
+\newblock {\em International Conference on Learning Representations\/}.
+\endbibitem
+
+\bibitem[{Nesterov(1983)}]{nesterov1983method}
+Nesterov, Y. (1983).
+\newblock \enquote{A method for unconstrained convex minimization problem with
+  the rate of convergence O (1/$k^2$).}
+\newblock In {\em Doklady AN USSR\/}, volume 269, 543--547.
+\endbibitem
+
+\bibitem[{Newton et~al.(2021)Newton, Polson, and Xu}]{newton2018weighted}
+Newton, M.~A., Polson, N.~G., and Xu, J. (2021).
+\newblock \enquote{Weighted {B}ayesian bootstrap for scalable posterior
+  distributions.}
+\newblock {\em Canadian Journal of Statistics\/}, 49(2): 421--437.
+\endbibitem
+
+\bibitem[{Phillips and Smith(1996)}]{phillips1996bayesian}
+Phillips, D.~B. and Smith, A.~F. (1996).
+\newblock \enquote{Bayesian model comparison via jump diffusions.}
+\newblock {\em Markov Chain Monte Carlo in Practice\/}, 215: 239.
+\endbibitem
+
+\bibitem[{Pincus(1968)}]{pincus1968letter}
+Pincus, M. (1968).
+\newblock \enquote{A closed form solution of certain programming problems.}
+\newblock {\em Operations Research\/}, 16(3): 690--694.
+\endbibitem
+
+\bibitem[{Pincus(1970)}]{pincus1970letter}
+--- (1970).
+\newblock \enquote{A {M}onte {C}arlo Method for the approximate solution of
+  certain types of constrained optimization problems.}
+\newblock {\em Operations Research\/}, 18(6): 1225--1228.
+\endbibitem
+
+\bibitem[{Poggio et~al.(2017)Poggio, Mhaskar, Rosasco, Miranda, and
+  Liao}]{poggio2017and}
+Poggio, T., Mhaskar, H., Rosasco, L., Miranda, B., and Liao, Q. (2017).
+\newblock \enquote{Why and when can deep-but not shallow-networks avoid the
+  curse of dimensionality: a review.}
+\newblock {\em International Journal of Automation and Computing\/}, 14(5):
+  503--519.
+\endbibitem
+
+\bibitem[{Polson et~al.(2021)Polson, Sokolov, and Xu}]{polson2021deep}
+Polson, N., Sokolov, V., and Xu, J. (2021).
+\newblock \enquote{Deep learning partial least squares.}
+\newblock {\em arXiv preprint arXiv:2106.14085\/}.
+\endbibitem
+
+\bibitem[{Polson and Rockova(2018)}]{polson2018posterior}
+Polson, N.~G. and Rockova, V. (2018).
+\newblock \enquote{Posterior concentration for sparse deep learning.}
+\newblock In {\em Advances in Neural Information Processing Systems\/},
+  938--949.
+\endbibitem
+
+\bibitem[{Polson and Scott(2013)}]{polson2013data}
+Polson, N.~G. and Scott, J.~G. (2013).
+\newblock \enquote{Data augmentation for {Non-G}aussian regression models using
+  variance-mean mixtures.}
+\newblock {\em Biometrika\/}, 100(2): 459--471.
+\endbibitem
+
+\bibitem[{Polson et~al.(2013)Polson, Scott, and Windle}]{polson2013bayesian}
+Polson, N.~G., Scott, J.~G., and Windle, J. (2013).
+\newblock \enquote{Bayesian inference for logistic models using
+  {P{\'o}lya--Gamma} latent variables.}
+\newblock {\em Journal of the American statistical Association\/}, 108(504):
+  1339--1349.
+\endbibitem
+
+\bibitem[{Polson and Scott(2011)}]{polson2011data}
+Polson, N.~G. and Scott, S.~L. (2011).
+\newblock \enquote{Data augmentation for {S}upport {V}ector {M}achines.}
+\newblock {\em Bayesian Analysis\/}, 6(1): 1--23.
+\endbibitem
+
+\bibitem[{Polson and Sokolov(2017)}]{polson2017deep}
+Polson, N.~G. and Sokolov, V. (2017).
+\newblock \enquote{Deep learning: a {B}ayesian perspective.}
+\newblock {\em Bayesian Analysis\/}, 12(4): 1275--1304.
+\endbibitem
+
+\bibitem[{Rezende et~al.(2014)Rezende, Mohamed, and
+  Wierstra}]{rezende2014stochastic}
+Rezende, D.~J., Mohamed, S., and Wierstra, D. (2014).
+\newblock \enquote{Stochastic backpropagation and approximate inference in deep
+  generative models.}
+\newblock In {\em International Conference on Machine Learning\/}, 1278--1286.
+\endbibitem
+
+\bibitem[{Roberts and Rosenthal(1998)}]{roberts1998optimal}
+Roberts, G.~O. and Rosenthal, J.~S. (1998).
+\newblock \enquote{Optimal scaling of discrete approximations to Langevin
+  diffusions.}
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)\/}, 60(1): 255--268.
+\endbibitem
+
+\bibitem[{Schmidt-Hieber(2020)}]{schmidt2017nonparametric}
+Schmidt-Hieber, J. (2020).
+\newblock \enquote{Nonparametric regression using deep neural networks with
+  {ReLU} activation function.}
+\newblock {\em The Annals of Statistics\/}, 48(4): 1875--1897.
+\endbibitem
+
+\bibitem[{Silver et~al.(2016)Silver, Huang, Maddison, Guez, Sifre, Van
+  Den~Driessche, Schrittwieser, Antonoglou, Panneershelvam, and
+  Lanctot}]{silver2016mastering}
+Silver, D., Huang, A., Maddison, C.~J., Guez, A., Sifre, L., Van Den~Driessche,
+  G., Schrittwieser, J., Antonoglou, I., Panneershelvam, V., and Lanctot, M.
+  (2016).
+\newblock \enquote{Mastering the game of {Go} with deep neural networks and
+  tree search.}
+\newblock {\em Nature\/}, 529(7587): 484--489.
+\endbibitem
+
+\bibitem[{Telgarsky(2017)}]{telgarsky2017neural}
+Telgarsky, M. (2017).
+\newblock \enquote{Neural networks and rational functions.}
+\newblock In {\em Proceedings of the 34th International Conference on Machine
+  Learning\/}, volume~70, 3387--3393. JMLR. org.
+\endbibitem
+
+\bibitem[{Tieleman and Hinton(2012)}]{tieleman2012rmsprop}
+Tieleman, T. and Hinton, G. (2012).
+\newblock \enquote{Rmsprop: Divide the gradient by a running average of its
+  recent magnitude. coursera: Neural networks for machine learning.}
+\newblock {\em COURSERA Neural Networks Mach. Learn\/}.
+\endbibitem
+
+\bibitem[{Tran et~al.(2020)Tran, Nott, and Kohn}]{tran2020bayesian}
+Tran, N., M-N sand~Nguyen, Nott, D., and Kohn, R. (2020).
+\newblock \enquote{Bayesian deep net {GLM} and {GLMM}.}
+\newblock {\em Journal of Computational and Graphical Statistics\/}, 29(1):
+  97--113.
+\endbibitem
+
+\bibitem[{Vitushkin(1964)}]{vitushkin1964proof}
+Vitushkin, A. (1964).
+\newblock \enquote{Proof of the existence of analytic functions of several
+  complex variables which are not representable by linear superpositions of
+  continuously differentiable functions of fewer variables.}
+\newblock {\em Soviet Mathematics\/}, 5: 793--796.
+\endbibitem
+
+\bibitem[{Wager et~al.(2013)Wager, Wang, and Liang}]{wager2013dropout}
+Wager, S., Wang, S., and Liang, P.~S. (2013).
+\newblock \enquote{Dropout training as adaptive regularization.}
+\newblock In {\em Advances in Neural Information Processing Systems\/},
+  351--359.
+\endbibitem
+
+\bibitem[{Wang and Rockova(2020)}]{wang2020uncertainty}
+Wang, Y. and Rockova, V. (2020).
+\newblock \enquote{Uncertainty quantification for sparse deep learning.}
+\newblock In {\em Artificial Intelligence and Statistics\/}.
+\endbibitem
+
+\bibitem[{Welling and Teh(2011)}]{welling2011bayesian}
+Welling, M. and Teh, Y.~W. (2011).
+\newblock \enquote{Bayesian learning via stochastic gradient {L}angevin
+  dynamics.}
+\newblock In {\em Proceedings of the 28th International Conference on Machine
+  Learning\/}, 681--688.
+\endbibitem
+
+\bibitem[{Yarotsky(2017)}]{yarotsky2017error}
+Yarotsky, D. (2017).
+\newblock \enquote{Error bounds for approximations with deep {ReLU} networks.}
+\newblock {\em Neural Networks\/}, 94: 103--114.
+\endbibitem
+
+\bibitem[{Zhou et~al.(2012)Zhou, Hannah, Dunson, and Carin}]{zhou2012beta}
+Zhou, M., Hannah, L., Dunson, D., and Carin, L. (2012).
+\newblock \enquote{Beta-negative binomial process and {P}oisson factor
+  analysis.}
+\newblock In {\em Artificial Intelligence and Statistics\/}, 1462--1471.
+\endbibitem
+
+\end{thebibliography}

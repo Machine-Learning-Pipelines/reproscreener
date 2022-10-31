@@ -1,0 +1,70 @@
+\label{sec:prelim}
+%\znote{Modification on Prelim: Done (We adapt the nabla expression of Hessian as suggested by the official template)}
+\textbf{Basic Notations:} In this paper, we generally follow the default notation suggested by \citet{goodfellow2016deep}. Additionally, for a matrix $\mM$, let $\|\mM\|_F$ denote its Frobenius norm and $\|\mM\|$ denote its spectral norm. For two matrices $\mM \in \R^{a_1\times b_1}, \mN\in \R^{a_2\times b_2}$, let $\mM \otimes \mN\in\R^{(a_1a_2)\times (b_1b_2)}$ be their Kronecker product such that $[\mM \otimes \mN]_{(i_1-1)\times a_2 + i_2, (j_1-1)\times b_2 + j_2} = \mM_{i_1,i_2} \mN_{j_1,j_2}$.
+
+\textbf{Neural Networks:}
+% In this paper, we consider classification problems with cross-entropy loss.
+For a $c$-class classification problem with training samples $S = \{(\vx_i, \vy_i)\}_{i=1}^N$ where $(\vx_i,\vy_i)\in\R^d\times \{0,1\}^c$ for all $i\in[N]$, assume $S$ is i.i.d. sampled from the underlying data distribution $\mathcal{D}$. Consider an $L$-layer fully connected ReLU neural network $f_\vtheta: \R^d\to \R^c$. With $\sigma(x) = x\1_{x \geq 0}$ as the Rectified Linear Unit (ReLU) function, the output of this network is a series of logits $\vz \in \R^c$ computed recursively as $ \vz^{(p)} := \mW^{(p)}\vx^{(p)} + \vb^{(p)}$ and $\vx^{(p)} := \sigma(\vz^{(p)})$
+
+% \begin{align}
+%     \vz^{(p)} := \mW^{(p)}\vx^{(p)} + \vb^{(p)}.\qquad \vx^{(p)} := \sigma(\vz^{(p)}).
+% \end{align}
+Here we denote the input and output of the $p$-th layer as $\vx^{(p)}$ and $\vz^{(p)}$, and set $\vx^{(1)}=\vx$, $\vz := f_\vtheta(\vx)=\vz^{(L)}$.
+%\begin{equation}
+%    \vz := f_\vtheta(\vx)= \mW^{(L)}\sigma(\mW^{(L-1)}\sigma(\cdots\mW^{(2)}\sigma(\mW^{(1)}\vx+\vb^{(1)})+\vb^{(2)}\cdots)+\vb^{(L-1)})+\vb^{(L)}
+%\end{equation}
+We denote $\vtheta := (\vw^{(1)}, \vb^{(1)}, \vw^{(2)}, \vb^{(2)},\cdots, \vw^{(L)}, \vb^{(L)})\in\R^P$ the parameters of the network. For the $i$-th layer, $\vw^{(i)}$ is the flattened weight matrix $\mW^{(i)}$ and $\vb^{(i)}$ is its corresponding bias vector. For convolutional networks, a similar framework is introduced in \sectionref{sec:appendix_conv}.
+
+For a single input $\vx\in\R^d$ with one-hot label $\vy$ and logit output $\vz$, let $n^{(p)}$ and $m^{(p)}$ be the lengths of $\vx^{(p)}$ and $\vz^{(p)}$.  For convolutional layers, we consider the number of output channels as $m^{(p)}$ and width of unfolded input as $n^{(p)}$. Note that $\vx^{(1)}=\vx,\vz^{(L)}=\vz = f_\vtheta(\vx)$. We denote $\vp := \softmax(\vz) = e^{\vz}/\sum_{i=1}^ce^{\vz_i}$ as the output confidence.
+With the cross-entropy loss function $\ell(\vp, \vy) = -\sum_{i=1}^c\vy_i\log(\vp_i)\in\R^+$,
+% being the  loss between the softmax of logits $\vz = f_\vtheta(\vx_i)\in\R^c$ and the one-hot label $\vy\in\R^c$,
+the training process optimizes parameter $\vtheta$ to minimize the empirical training loss $\mathcal{L}(\vtheta):=\mathop{\E}_{(\vx, \vy)\in S}\left[\ell\left(\vz, \vy\right)\right].$
+% \begin{align}
+%     \mathcal{L}(\vtheta) = \frac{1}{N}\sum_{i=1}^N\ell(f_\vtheta(\vx_i), \vy_i) = \mathop{\E}_{(\vx, \vy)\in S}\left[\ell\left(\vz, \vy\right)\right].
+% \end{align}
+
+\textbf{Hessians:} Fixing the parameter $\vtheta$, we use $\mH_{\ell}(\vv,\vx) = \nabla^2_\vv \ell(f_\vtheta(\vx), \vy) = \nabla^2_\vv \ell(\vz, \vy)$ to denote the Hessian of some vector $\vv$ with respect to scalar loss function $\ell$ at input $\vx$.  
+% \begin{equation}
+%     \mH_\ell(\vv, \vx) = \nabla^2_\vv \ell(f_\vtheta(\vx), \vy) = \nabla^2_\vv \ell(\vz, \vy).
+% \end{equation}
+Note that $\vv$ can be any vector. For example, the full parameter Hessian is $\mH_\ell(\vtheta, \vx)$ where we take $\vv = \vtheta$, and the layer-wise weight Hessian of the $p$-th layer is $\mH_\ell(\vw^{(p)}, \vx)$ where we take $\vv = \vw^{(p)}$.
+
+For simplicity, define $\E$ as the empirical expectation operator over the training sample $S$ unless explicitly stated otherwise.
+We mainly focus on the layer-wise weight Hessians $\HessL(\vw^{(p)}) = \E[\Hessl(\vw^{(p)}, \vx)]$ with respect to loss, which are diagonal blocks in the full Hessian $\HessL(\vtheta) = \E[\Hessl(\vtheta, \vx)]$ corresponding to the cross terms between the weight coefficients of the same layer.
+We define $\mM_{\vx}^{(p)} := \Hessl(\vz^{(p)}, \vx)$
+as the Hessian of output $\vz^{(p)}$ with respect to empirical loss.
+%\begin{align}
+%    \mM_{\vx}^{(p)} := \Hessl(\zx^{(p)}, \vx) = \left(\frac{\partial \zx}{\partial \zx^{(p)}}\right)^\T\left(\diag(\px)- \px\px^\T\right)\left(\frac{\partial \zx}{\partial \zx^{(p)}}\right).
+%\end{align}
+%\begin{align}
+%    \Gx^{(p)} = \frac{\partial \zx}{\partial \zx^{(p)}},\qquad
+%    \Ax = \frac{\partial^2 \ell(\zx, \vy)}{\partial \px^2} = \diag(\px)- \px\px^\T.
+%\end{align}
+%We further define $\Bx := (\mI - \1^\T\px)\diag(\sqrt{\px})$ (such that $\Bx\Bx^\T = \Ax$) from \citet{papyan2019measurements}.
+%\ynote{Probably move this to the Appendix if we do not use it in Section 4}
+With the notations defined above, we have the $p$-th layer-wise Hessian for a single input as
+%\begin{align}
+%    \Hessl(\vw^{(p)}, \vx) = \nabla^2_{\vw^{(p)}} \ell(\zx, \vy) = (\mI_{m^{(p)}}\otimes\vx^{(p)})\mM_{\vx}^{(p)}(\mI_{m^{(p)}}\otimes\vx^{(p)})^\T.\label{eqn:decomp_raw}
+%\end{align}
+%For fully-connected layers, since $\vx^{(p)}$ is an $n^{(p)}\times 1$ matrix , we can further decompose its weight hessian to two separate matrices.
+\begin{align}
+    \Hessl(\vw^{(p)}, \vx) = \nabla^2_{\vw^{(p)}} \ell(\vz, \vy) = \mM_{\vx}^{(p)}\otimes (\vx^{(p)}\vx^{(p)T}).
+\end{align}
+It follows that
+\begin{equation}
+\HessL(\vw^{(p)}) = \E\left[\mM^{(p)}_{\vx}\otimes \vx^{(p)}\vx^{(p)T}\right] = \E\left[\mM \otimes\vx\vx^\T\right].\label{eqn:decomp}
+\end{equation}
+The subscription $\vx$ and the superscription $(p)$ will be omitted when there is no confusion, as our analysis primarily focuses on the same layer unless otherwise stated.
+% Hessian: \frac{1}{N}\sum_{i=1}^N\frac{\partial^2\ell(f_\vtheta(\vx_i), \vy_i)}{\partial \vtheta^2}
+We also define subspace overlap and layer-wise eigenvector matricization for our analysis.
+\begin{definition}[Subspace Overlap]
+For $k$-dimensional subspaces $\mU,\mV$ in $\R^d$ ($d\geq k$) where the basis vectors $\vu_i$'s and $\vv_i$'s are column vectors, with $\vphi$ as the size $k$ vector of canonical angles between $\mU$ and $\mV$, we define the subspace overlap of $\mU$ and $\mV$ as
+$
+    \Overlap(\mU, \mV) := \|\mU^\T\mV\|^2_F/k =\|\cos\vphi\|_2^2/k.
+    $%\label{eqn:overlap}
+%Note that when $k=1$, the overlap is equivalent to the squared dot product between the two vectors.
+\label{def:overlap}
+\end{definition}
+\begin{definition}[Layer-wise Eigenvector Matricization] Consider a layer with input dimension $n$ and output dimension $m$. For an eigenvector $\vh\in\R^{mn}$ of its layer-wise Hessian, the matricized form of $\vh$ is $\Mat(\vh)\in\R^{m\times n}$ where $\Mat(\vh)_{i,j} = \vh_{(i-1)m+j}$.
+\label{def:matricization}
+\end{definition}

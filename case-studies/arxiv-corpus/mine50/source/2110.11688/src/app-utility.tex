@@ -1,0 +1,551 @@
+
+
+
+\section{Proof of Utility (\Cref{thm:cd-utility})}
+\label{sec-app:proof-utility}
+
+\subsection{Problem Statement}
+\label{sec:problem-statement}
+
+Let $D \in \cX^n$ be a dataset of $n$ elements drawn from a universe $\cX$.
+Recall that we consider the following composite empirical risk minimization
+problem:
+\begin{align}
+  \label{eq:comp_erm_supp}
+  w^* \in
+  \argmin_{w \in \mathbb{R}^p}
+  \Bigg\{
+  F(w; D) =
+  \underbrace{\frac{1}{n} \sum_{i=1}^n \ell(w; d_i)}_{=: f(w; D)} + \psi(w)
+  \Bigg\}\enspace,
+\end{align}
+where $\ell(\cdot, d)$ is convex, $L$-component-Lipschitz, and $M$-component-smooth
+for all $d \in \cX$, and $\psi(w) = \sum_{j=1}^p \psi_j(w_j)$ is convex and
+separable.
+We denote by $F$ the complete objective function, and by $f$ its smooth part.
+For readability, we omit the dependence on their second argument (\ie the
+data) in the rest of this section.
+
+
+\subsection{Proof of \Cref{thm:cd-utility}}
+\label{sec:proof-thm-utility}
+
+In this section, we prove our central theorem that guarantees the utility of
+the DP-CD algorithm.
+To this end, we start by proving a lemma that upper bounds the expected value
+of $F(\theta^{k+1})$ in \Cref{algo:dp-cd}.
+Using this lemma, we prove sub-linear convergence for the inner loop of DP-CD.
+This gives the sub-linear convergence of our algorithm for convex losses.
+Under the additional hypothesis that $F$ is strongly convex, we show that
+iterates of the outer loop of DP-CD converge linearly towards the (unique)
+minimum of
+$F$.
+
+We recall that in \Cref{algo:dp-cd}, iterates of the inner loop are denoted by
+$\theta_1, \dots, \theta_K$, and those of the outer loop by $\bar w_1, \dots,
+  \bar w_T$, with $\bar w_t = \frac{1}{K} \sum_{k=1}^K \theta^k$ for $t > 0$.
+\Cref{algo:dp-cd} is randomized in two ways: when choosing the coordinate to
+update and when drawing noise.
+For convenience, we denote by $\expec{j}{\cdot}$ the expectation \wrt the
+choice of coordinate,
+by $\expec{\eta}{\cdot}$ the one \wrt the noise, and by $\expec{j,\eta}{\cdot}$
+the expectation \wrt both.
+When no subscript is used, the expectation is taken over all random
+variables.
+We will also use the notation $\condexpec{j,\eta}{\cdot}{\theta_k}$ for the
+conditional expectation of a random variable, given a realization of
+$\theta_k$.
+
+
+\subsubsection{Descent Lemma}
+
+
+We begin by proving \Cref{lemma:expec-first-upper-bound}, which decomposes the
+change of a function $F$ when updating its argument $\theta \in \RR^p$,
+in relation to a vector $w \in \RR^p$, into two parts:
+one that remains fixed, corresponding to the unchanged entries of $\theta$,
+and a second part corresponding to the objective decrease due to the
+update.
+At this point, the vector $w$ is arbitrary, but we will later choose $w$ to be
+a minimizer of $F$, that is a solution to \eqref{eq:comp_erm_supp}.
+\begin{lemma}
+  \label{lemma:expec-first-upper-bound}
+  Let $\ell, f, \psi,$ and $F$ be defined as in
+  Section~\ref{sec:problem-statement}.
+  Take a random variable $\theta \in \RR^p$ and two arbitrary vectors
+  $w, g \in \RR^p$.
+  Let a random variable $j$, taking its values uniformly randomly in $[p]$,
+  Choose $\gamma_1, \dots, \gamma_p > 0$ and $\Gamma = \diag(\gamma_1, \dots, \gamma_p)$.
+  It holds that%
+  \begin{align}
+    \label{eq:lemma-1-eq}
+     & \condexpec{j}{F(\theta - \gamma_j g_j e_j) - F(w)}{\theta} - \frac{p - 1}{p} (F(\theta) - F(w)) \nonumber \\
+     & \qquad \le \frac{1}{p} \left(f(\theta) - f(w) + \scalar{\nabla f(\theta)}{- \Gamma g}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2 + \psi(\theta - \Gamma g) - \psi
+    (w)\right)\enspace.
+  \end{align}
+\end{lemma}
+\begin{remark}
+  \label{rmq:expec-first-upper-bound-without-non-smooth}
+  To avoid notational clutter, we will write $\gamma_j g_j$ instead of
+  $\gamma_j g_j e_j$ throughout this section.
+\end{remark}
+\begin{proof}
+  We start the proof by finding an upper bound on $\condexpec{j}{F(\theta - \gamma_j g_j e_j) - F(w)}{\theta}$,
+  using the \textit{$M$-component-smoothness} of $f$:
+  \begin{align}
+     & \condexpec{j}{F(\theta - \gamma_j g_j e_j) - F(w)}{\theta}
+    = \sum_{j=1}^p \frac{1}{p} (F(\theta - \gamma_j g_j) - F(w))                                     \\
+    \overset{F=f+\psi}
+     & {=} \frac{1}{p} \sum_{j=1}^p f(\theta - \gamma_j g_j) - f(w)
+    + \psi(\theta - \gamma_j g_j) - \psi(w)                                                          \\
+    \overset{f \text{ smooth}}%
+     & {\le}
+    \frac{1}{p} \sum_{j=1}^p \left( f(\theta) + \scalar{\nabla f(\theta)}{- \gamma_j g_j}
+    + \frac{1}{2}\norm{\gamma_j g_j}_M^2 - f(w)
+    + \psi(\theta - \gamma_j g_j) - \psi(w) \right)                                                  \\
+     & = f(\theta) - f(w) + \frac{1}{p} \sum_{j=1}^p \left(\scalar{\nabla f(\theta)}{- \gamma_j g_j}
+    + \frac{1}{2}\norm{\gamma_j g_j}_{M}^2
+    + (\psi(\theta - \gamma_j g_j) - \psi(w)) \right)                                                \\
+     & = f(\theta) - f(w) + \frac{1}{p} \scalar{\nabla f(\theta)}{- \Gamma g}
+    + \frac{1}{2p}\norm{\Gamma g}_{M}^2
+    + \frac{1}{p}\sum_{j=1}^p(\psi(\theta - \gamma_j g_j) - \psi(w))\enspace. \label{eq:upper-bound-expectation-smoothness}
+  \end{align}
+
+  The regularization terms can now be reorganized using the separability of $\psi$, as done by \cite{richtarik2014Iteration}.
+  Indeed, we notice that
+  \begin{align}
+    \sum_{j=1}^p \left(\psi(\theta - \gamma_j g_j) - \psi(w)\right)
+     & = \sum_{j=1}^p \Big(\psi_j(\theta_j - \gamma_j g_j) - \psi_j(w_j)
+    + \sum_{j'\neq j} \psi_{j'}(\theta_{j'}) - \psi(w_{j'})\Big)                                                          \\
+     & = \psi(\theta - \Gamma g) - \psi(w) + (p - 1) (\psi(\theta) - \psi(w))\enspace. \label{eq:reorganize-terms-of-regularizer}
+  \end{align}
+
+  Plugging \eqref{eq:reorganize-terms-of-regularizer} in
+  \eqref{eq:upper-bound-expectation-smoothness} results in the following:
+  \begin{align}
+    \condexpec{j}{F(\theta - \gamma_j g_j e_j) - F(w)}{\theta}
+     & \le f(\theta) - f(w) + \frac{1}{p} \scalar{\nabla f(\theta)}{- \Gamma g}
+    + \frac{1}{2p}\norm{\Gamma g}_{M}^2 \nonumber                                   \\
+     & \qquad + \frac{1}{p} (\psi(\theta - \Gamma g) - \psi(w))
+    + \frac{p - 1}{p} (\psi(\theta) - \psi(w))                                      \\
+     & = \frac{1}{p} \left(f(\theta) - f(w) + \scalar{\nabla f(\theta)}{- \Gamma g}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2
+    + \psi(\theta - \Gamma g) - \psi(w)
+    \right) \nonumber                                                               \\
+     & \qquad + \frac{p - 1}{p} (f(\theta) + \psi(\theta) - f(w) - \psi(w))\enspace,         %
+  \end{align}
+  which gives the lemma since $F = f + \psi$.
+\end{proof}
+
+To exploit this result, we need to upper bound the right hand side of
+\eqref{eq:lemma-1-eq} for the realizations of $\theta^k$ in \Cref{algo:dp-cd}.
+This is where our proof differs from classical convergence proofs for coordinate
+descent methods.
+Namely, we rewrite the right hand side of
+\eqref{eq:lemma-1-eq} so as to obtain telescopic terms plus a
+bias term resulting from the addition of noise, as shown in \Cref{lemma:descent-lemma}.
+
+\begin{lemma}
+  \label{lemma:descent-lemma}
+  Let $\ell, f, \psi,$ and $F$ defined as in Section~\ref{sec:problem-statement}.
+  For $k > 0$, let $\theta^k$ and $\theta^{k+1}$ be two consecutive iterates
+  of the
+  inner loop of \Cref{algo:dp-cd}, $\gamma_1 = \frac{1}{M_1}, \dots, \gamma_p = \frac{1}{M_p} > 0$
+  the coordinate-wise step sizes
+  (where $M_j$ are the coordinate-wise smoothness constants of $f$),
+  and $g_j = \frac{1}{\gamma_j} (\theta^{k+1}_j - \theta^k_j)$.
+  Let $w \in \RR^p$ an arbitrary vector and $\sigma_1, \dots, \sigma_p > 0$ the
+  coordinate-wise noise scales given as input to \Cref{algo:dp-cd}.
+  It holds that
+  \begin{align}
+    \label{eq:descent-lemma-eq}
+    & \condexpec{j, \eta}{F(\theta^{k+1}) - F(w)}{\theta^k}
+    - \frac{p - 1}{p} (F(\theta^k) - F(w)) \nonumber \\
+    & \qquad \le \tfrac{1}{2} \norm{\theta^k - w}_{\Gamma^{-1}}^2 - \tfrac{1}{2}\condexpec{j,\eta}{\norm{\theta^{k+1} - w}_{\Gamma^{-1}}^2}{\theta^k}
+    + \tfrac{1}{p}\norm{\sigma}_\Gamma^2\enspace,
+  \end{align}
+  where $\norm{\sigma}_\Gamma^2 = \sum_{j=1}^p \gamma_j \sigma_j^2$ and the
+  expectations are taken over the random choice of $j$ and $\eta$,
+  conditioned upon the realization of $\theta^k$.
+\end{lemma}
+
+\begin{proof}
+  We define $g$ the vector $(g_1, \dots, g_p) \in \RR^p$ with
+  $g_j = \frac{1}{\gamma_j} (\theta^{k+1}_j - \theta^k_j)$ when coordinate $j$
+  is chosen in \Cref{algo:dp-cd}.
+  We also denote by $\Gamma = \diag(\gamma_1, \dots, \gamma_p)$ the diagonal
+  matrix having the step sizes as its coefficients.
+
+  From \Cref{lemma:expec-first-upper-bound} with $\theta = \theta^k$, $w = w$ and
+  $g = g$ as defined above we obtain
+  \begin{align}
+    \label{eq:lemma-1-eq-applied-for-theta-k}
+     & \condexpec{j}{F(\theta^k - \gamma_j g_j e_j) - F(w)}{\theta^k} - \frac{p - 1}{p} (F(\theta^k) - F(w)) \nonumber \\
+     & \qquad \le \frac{1}{p} \left(f(\theta^k) - f(w) + \scalar{\nabla f(\theta^k)}{- \Gamma g}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2 + \psi(\theta^k - \Gamma g) - \psi
+    (w)\right)\enspace.
+  \end{align}
+  We can upper bound the right hand term of~\eqref{eq:lemma-1-eq-applied-for-theta-k}
+  using the convexity of $f$ and $\psi$:
+  \begin{align}
+     & f(\theta^k) - f(w) + \scalar{\nabla f(\theta^k)}{- \Gamma g}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2
+    + \psi(\theta^k - \Gamma g) - \psi(w)                                                                \\
+     & \qquad \le \scalar{\nabla f(\theta^k)}{\theta^k - w} + \scalar{\nabla f(\theta^k)}{- \Gamma g}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2
+    + \scalar{\partial \psi(\theta^k - \Gamma g)}{\theta^k - \Gamma g - w}                               \\
+     & \qquad = \scalar{\nabla f(\theta^k) + \partial \psi(\theta^k - \Gamma g)}{\theta^k- \Gamma g - w}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2\enspace,
+  \end{align}
+  where we use the slight abuse of notation $\partial \psi(\theta^k - \Gamma g)$ to
+  denote any vector in the subdifferential of $\psi$ at the point $\theta^k -
+    \Gamma g$. %
+  We now rewrite the dot product:
+  \begin{align}
+     & \scalar{\nabla f(\theta^k) + \partial \psi(\theta^k - \Gamma g)}{\theta^k- \Gamma g - w}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2                                                             \\
+     & \qquad = \scalar{g}{\theta^k- \Gamma g - w}
+    + \frac{1}{2}\norm{\Gamma g}_{M}^2
+    + \scalar{\nabla f(\theta^k) + \partial \psi(\theta^k - \Gamma g) - g}{\theta^k- \Gamma g - w} \\
+     & \qquad = \underbrace{\scalar{g}{\theta^k- w}
+    - \norm{g}^2_{\Gamma}
+    + \frac{1}{2}\norm{g}_{\Gamma^2M}^2}_{\text{``descent'' term}}
+    + \underbrace{\scalar{\nabla f(\theta^k)
+        + \partial \psi(\theta^k - \Gamma g) - g}{\theta^k- \Gamma g - w}}_{\text{``noise'' term}}\enspace,
+    \label{lemma:descent:decomp-two-terms}
+  \end{align}
+  where the second equality follows from $\scalar{g}{-\Gamma g} = -\norm{g}_{\Gamma}^2$
+  and $\norm{\Gamma g}_M^2 = \norm{g}_{\Gamma^2M}^2$.
+  We split \eqref{lemma:descent:decomp-two-terms} into two terms: a ``descent'' term and a ``noise'' term.
+
+  \textbf{Rewriting the ``descent'' term.}
+  We first focus on the ``descent'' term.
+  As $\gamma_j = \frac{1}{M_j}$ for all $j \in [p]$, it holds that
+  $\gamma_j^2 M_j = \gamma_j$ which gives $- \norm{g}^2_{\Gamma} + \frac{1}{2}\norm{g}_{\Gamma^2M}^2
+    = - \norm{g}^2_{\Gamma} + \frac{1}{2}\norm{g}_{\Gamma}^2
+    = - \frac{1}{2} \norm{g}^2_{\Gamma}$.
+  We can now rewrite the ``descent'' term as a difference of
+  two norms, materializing the distance to $w$, weighted by the inverse of the
+  step sizes $\Gamma^{-1}$:
+  \begin{align}
+    \text{``descent'' term}
+     & = \scalar{g}{\theta^k- w}
+    - \frac{1}{2} \norm{g}^2_{\Gamma}                   \\
+     & =
+    \scalar{\Gamma g}{\theta^k- w}_{\Gamma^{-1}}
+    - \frac{1}{2} \norm{\Gamma g}^2_{\Gamma^{-1}}       \\
+     & =
+    \frac{1}{2}\norm{\theta^k - w}_{\Gamma^{-1}}^2
+    - \frac{1}{2}\norm{\theta^k - w}_{\Gamma^{-1}}^2
+    + \scalar{\Gamma g}{\theta^k- w}_{\Gamma^{-1}}
+    - \frac{1}{2} \norm{\Gamma g}^2_{\Gamma^{-1}}       \\
+     & = \frac{1}{2}\norm{\theta^k - w}_{\Gamma^{-1}}^2
+    - \frac{1}{2}\norm{\theta^k - \Gamma g - w}_{\Gamma^{-1}}^2\enspace,
+    \label{lemma:descent:descent-term}
+  \end{align}
+  where we factorized the norm to obtain the last inequality.
+  We can rewrite \eqref{lemma:descent:descent-term} as an expectation over the
+  random choice of the coordinate $j$ (drawn uniformly in $[p]$), given the
+  realizations of $\theta^k$ and of the noise $\eta$ (which determines $g$):
+  \begin{align}
+    \frac{1}{2} \norm{\theta^k - w}_{\Gamma^{-1}}^2 - \frac{1}{2} \norm{\theta^k - \Gamma g - w}_{\Gamma^{-1}}^2
+     & = \frac{p}{2} \times \left( \frac{1}{p} \sum_{j=1}^p \gamma_j^{-1} \abs{\theta^k_j - w_j}^2 - \gamma_j^{-1} \abs{\theta_j^k - \gamma_j g_j - w_j}^2 \right) \\
+     & = \frac{p}{2} \times \condexpec{j}{\gamma_j^{-1} \abs{\theta^k_j - w_j}^2 - \gamma_j^{-1} \abs{\theta_j^k - \gamma_j g_j - w_j}^2}{\theta^k, \eta}\enspace.
+  \end{align}
+  Finally, we remark that
+  $\gamma_j^{-1} \abs{\theta^k_j - w_j}^2 - \gamma_j^{-1} \abs{\theta_j^k - \gamma_j g_j - w_j}^2
+    = \norm{\theta^k - w}_{\Gamma^{-1}}^2 - \norm{\theta^{k} - \gamma_j g_j - w}_{\Gamma^{-1}}^2$,
+  as only one coordinate changes between the two vectors, and the squared norm
+  $\norm{\cdot}_{\Gamma^{-1}}^2$ is separable.
+  We thus obtain
+  \begin{align}
+    \text{``descent'' term}
+     & = \condexpec{j}{ \frac{p}{2} \norm{\theta^k - w}_{\Gamma^{-1}}^2 - \frac{p}{2} \norm{\theta^{k} - \gamma_j g_j - w}_{\Gamma^{-1}}^2}{\theta^k, \eta} \\
+     & = \frac{p}{2} \norm{\theta^k - w}_{\Gamma^{-1}}^2 - \frac{p}{2} \condexpec{j}{\norm{\theta^{k+1} - w}_{\Gamma^{-1}}^2}{\theta^k, \eta}\enspace.
+  \end{align}
+  \textbf{Upper bounding the ``noise'' term.}
+  We now upper bound the ``noise'' term in~\eqref{lemma:descent:decomp-two-terms}.
+  We first recall the definition of the noisy proximal update $g_j$ (line~\ref{algo-line:coordinate-minimization-update} of \Cref{algo:dp-cd}),
+  and define its non-noisy counterpart $\tilde g_j$:
+  \begin{align}
+    g_j        & = \gamma_j^{-1} \Big(\prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j (\nabla_j f(\theta^k) + \eta_j)) - \theta^k_j\Big) \\
+    \tilde g_j & = \gamma_j^{-1} \Big( \prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j (\nabla_j f(\theta^k)) - \theta^k_j\Big)\enspace.
+  \end{align}
+  For an update of the coordinate $j \in [p]$, the optimality condition of the
+  proximal operator gives, for $\eta_j$ the realization of the noise drawn
+  at the current iteration when coordinate $j$ is chosen:
+  \begin{align}
+    0
+     & \in \theta^{k+1}_j - \theta^k_j + \gamma_j (\nabla_j f(\theta^k) + \eta_j)) + \frac{1}{M_j} \partial \psi_j(\theta_j^k - \gamma_j g_j) \\
+     & = \gamma_j \times \left(
+    \frac{1}{\gamma_j} (\theta^{k+1}_j - \theta^k_j) + \nabla_j f(\theta^k) + \eta_j + \partial \psi_j(\theta_j^k - \gamma_j g_j) \right)\enspace.
+  \end{align}
+  As such, there exists a real number
+  $v_j \in \partial \psi_j(\theta^k_j - \gamma_j g_j)$ such that
+  $g_j = - \frac{1}{\gamma_j} (\theta_j^{k+1} - \theta_j^k) = \nabla_j f(\theta^k) + \eta_j + v_j$.
+  We denote by $v \in \RR^p$ the vector having this $v_j$ as $j$-th coordinate.
+  Recall that $\psi$ is separable, therefore $v \in \partial \psi(\theta^k - \Gamma g)$.
+  The ``noise'' term of \eqref{lemma:descent:decomp-two-terms} can be thus
+  be rewritten using $v$:
+  \begin{align}
+    \text{``noise'' term}
+    = \scalar{\nabla f(\theta^k) + v - g}{\theta^k- \Gamma g - w}
+    = \scalar{\eta}{\theta^k- \Gamma g - w}\enspace,
+  \end{align}
+  and we now separate this term in two using $\widetilde g$:
+  \begin{align}
+    \text{``noise'' term}
+    = \sum_{j=1}^p \eta_j (\theta^k_j - \gamma_j g_j - w_j)
+    = \sum_{j=1}^p \eta_j (\theta^k_j - \gamma_j \widetilde g_j - w_j)
+    + \sum_{j=1}^p \eta_j (\gamma_j \widetilde g_j - \gamma_j g_j)\enspace. \label{lemma:descent:noise-term-two-terms}
+  \end{align}
+  It is now time to consider the expectation with respect to the noise of
+  these terms.
+  First, as $\widetilde g_j$ is not dependent on the noise anymore, it simply
+  holds that
+  \begin{align}
+    \bbE_{\eta}\Big[\sum_{j=1}^p \eta_j (\theta^k_j - \gamma_j \widetilde g_j - w_j) \mid \theta^k \Big]
+    = \sum_{j=1}^p \expec{\eta}{\eta_j} (\theta^k_j - \gamma_j \widetilde g_j - w_j)
+    = 0\enspace. \label{lemma:descent:noise-term-zero-upper-bound}
+  \end{align}
+
+  The last step of our proof now takes care of the following term:
+  \begin{align}
+    \bbE_\eta \Big[ \sum_{j=1}^p \eta_j (\gamma_j \widetilde g_j - \gamma_j g_j) \mid \theta^k \Big]
+    \le \bbE_{\eta}\Big[ \gamma_j \Big|\sum_{j=1}^p \eta_j (\widetilde g_j - g_j)\Big| \mid \theta^k \Big]
+    \le \sum_{j=1}^p \gamma_j \condexpec{\eta}{~\abs{\eta_j} \abs{\widetilde g_j - g_j}~}{~\theta^k}\enspace,
+  \end{align}
+  where each inequality comes from the triangle inequality.
+  The non-expansiveness property of the proximal operator (see
+  \citet{parikh2014Proximal},
+  Section 2.3) is now key to our result, as it yields
+  \begin{align}
+    \abs{\widetilde g_j - g_j}
+    = \gamma_j^{-1} \abs{\prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j (\nabla_j f(\theta^k)))
+    - \prox_{\gamma_j \psi_j}(\theta^k_j - \gamma_j (\nabla_j f(\theta^k) + \eta_j)) }
+    \le \abs{\eta_j}\enspace,
+  \end{align}
+  which directly gives, as $\expec{\eta}{\eta_j^2} = \sigma_j^2$
+  (and $\norm{\sigma}_\Gamma^2 = \sum_{j=1}^p \gamma_j \sigma_j^2$),
+  \begin{align}
+    \sum_{j=1}^p \gamma_j \condexpec{\eta}{\abs{\eta_j} \abs{\widetilde g_j - g_j}}{\theta^k}
+    \le \sum_{j=1}^p \gamma_j \expec{\eta}{\abs{\eta_j} \abs{\eta_j}}
+    = \sum_{j=1}^p \gamma_j \expec{\eta}{\eta_j^2}
+    = \norm{\sigma}_\Gamma^2\enspace. \label{lemma:descent:noise-term-upper-bound}
+  \end{align}
+  We now have everything to prove the lemma by plugging
+  \eqref{lemma:descent:noise-term-upper-bound} and \eqref{lemma:descent:noise-term-zero-upper-bound}
+  into expected value of \eqref{lemma:descent:noise-term-two-terms}, and then
+  \eqref{lemma:descent:noise-term-two-terms} and \eqref{lemma:descent:descent-term}
+  back into \eqref{lemma:descent:decomp-two-terms} to obtain, after using
+  the Tower property of conditional expectations:
+  \begin{align}
+     & \frac{1}{p}\condexpec{j,\eta}{f(\theta^k) - f(w) + \scalar{\nabla f(\theta^k)}{- \Gamma g}
+      + \frac{1}{2}\norm{\Gamma g}_{M}^2
+      + \psi(\theta^k - \Gamma g) - \psi(w)}{\theta^k}                                                                                              \\
+     & \qquad \le \frac{1}{p} \left( \text{``descent'' term} + \text{``noise'' term} \right)                                                        \\
+     & \qquad \le \frac{1}{2}\norm{\theta^k - w}_{\Gamma^{-1}}^2 - \frac{1}{2}\condexpec{j,\eta}{\norm{\theta^{k+1} - w}_{\Gamma^{-1}}^2}{\theta^k}
+    + \frac{1}{p}\norm{\sigma}_\Gamma^2\enspace,
+  \end{align}
+  which is the result of the lemma.
+\end{proof}
+
+\subsubsection{Convergence Lemma}
+
+\Cref{lemma:descent-lemma} allows us to prove a result on the mean of $K$
+consecutive noisy coordinate-wise gradient updates, by simply summing it and
+rewriting the terms.
+This gives \Cref{lemma:dp-cd-convergence-lemma}, which is the key lemma of our
+proof.
+\begin{lemma}
+  \label{lemma:dp-cd-convergence-lemma}
+  Assume $\ell(\cdot, d)$ is convex, $L$-component-Lipschitz and
+  $M$-component-smooth for all $d \in \cX$, $\psi$ is convex and separable, such
+  that $F = f + \psi$ and $w^*$ is a minimizer of $F$.
+  For $t \in [T]$, consider the $K$ successive iterates $\theta^1, \dots, \theta^K$
+  computed from the inner loop of \Cref{algo:dp-cd} starting from the point $\bar w^t$,
+  with step sizes $\gamma_j = \frac{1}{M_j}$ and noise scales
+  $\sigma_j$.
+  Letting $\bar w^{t+1}= \frac{1}{K} \sum_{k=1}^K \theta^k$,
+  it holds that
+  \begin{align}
+    \expec{}{F(\bar w^{t+1}) - F(w^*)}
+     & \le \frac{p(\norm{\bar w^t - w^*}_M^2 + 2(F(\bar w^t) - F(w^*)))}{2K}
+    + \norm{\sigma}_{M^{-1}}^2\enspace.
+  \end{align}
+\end{lemma}
+
+\begin{remark}
+  The term $F(\bar w^t) - F(w^*)$ essentially remains in the inequality due to
+  the composite nature of $F$.
+  When %
+  $\psi = 0$,
+  $M$-component-smoothness of $f(\cdot; d)$ (for $d \in \cX$) gives
+  \begin{align}
+    f(\bar w^t)
+    \le f(w^*) + \scalar{\nabla f(w^*)}{\bar w^t - w^*} + \frac{1}{2}\norm{\bar w^t - w^*}_M^2
+    = f(w^*) + \frac{1}{2}\norm{\bar w^t - w^*}_M^2\enspace,
+  \end{align}
+  and the result of \Cref{lemma:dp-cd-convergence-lemma} further
+  simplifies as:
+  \begin{align}
+    \expec{}{F(\bar w^{t+1}) - F(w^*)}
+     & \le \frac{p\norm{\bar w^t - w^*}_M^2}{K}
+    + \norm{\sigma}_{M^{-1}}^2\enspace.
+  \end{align}
+\end{remark}
+
+\begin{proof}
+  Summing \Cref{lemma:descent-lemma} for $k = 0$ to $k = K$ and $w = w^*$,
+  taking expectation with respect to all choices of coordinate and random noise
+  and using the tower property gives:
+  \begin{align}
+     & \sum_{k=0}^{K-1} \expec{}{F(\theta^{k+1}) - F(w^*)}
+    - \frac{p - 1}{p} \sum_{k=0}^{K-1} \expec{}{(F(\theta^k) - F(w^*))} \nonumber              \\
+     & \qquad \le \sum_{k=0}^{K-1} \frac{1}{2} \expec{}{\norm{\theta^k - w^*}_{\Gamma^{-1}}^2}
+    - \frac{1}{2} \expec{}{\norm{\theta^{k+1} - w^*}_{\Gamma^{-1}}^2}
+    + \frac{1}{p}\norm{\sigma}_\Gamma^2                                                        \\
+     & \qquad = \frac{1}{2} \expec{}{\norm{\bar w^0 - w^*}_{\Gamma^{-1}}^2}
+    - \frac{1}{2} \expec{}{\norm{\theta^{K} - w^*}_{\Gamma^{-1}}^2}
+    + \frac{K}{p}\norm{\sigma}_\Gamma^2\enspace. \label{lemma-eq:dp-cd-cv-convex:telescopic}
+  \end{align}
+
+  Remark that $\sum_{k=0}^{K-1} \expec{}{F(\theta^k) - F(w^*)}
+    = \sum_{k=1}^{K} \expec{}{F(\theta^k) - F(w^*)}
+    + (F(\bar w^0) - F(w^*))
+    - \expec{}{F(\theta^K) - F(w^*)}$,
+  then as $\expec{}{F(\theta^K) - F(w^*)} \ge 0$, we obtain a lower bound on the
+  left hand side of~\eqref{lemma-eq:dp-cd-cv-convex:telescopic}:
+  \begin{align}
+    \sum_{k=0}^{K-1} \expec{}{F(\theta^{k+1}) - F(w^*)}
+    - \tfrac{p - 1}{p} \sum_{k=0}^{K-1} \expec{}{(F(\theta^k) - F(w^*))}
+     & \ge \tfrac{1}{p}\sum_{k=1}^{K} \expec{}{F(\theta^{k}) - F(w^*)}
+    - (F(\bar w^0) - F(w^*))\enspace.
+    \label{lemma-eq:dp-cd-cv-convex:telescopic-lhs}
+  \end{align}
+
+  As $\bar w^{t+1} = \frac{1}{K} \sum_{k=1}^K \theta^k$, the convexity of $F$
+  gives $F(\bar w^{t+1}) \le \frac{1}{K} \sum_{k=1}^K  F(\theta^{k}) - F(w^*)$.
+  Plugging this inequality into
+  \eqref{lemma-eq:dp-cd-cv-convex:telescopic-lhs} and combining the result with
+  \eqref{lemma-eq:dp-cd-cv-convex:telescopic} gives
+  \begin{align}
+    F(\bar w^{t+1}) - F(w^*)
+     & \le \frac{p(\frac{1}{2}\norm{\bar w^0 - w^*}_{\Gamma^{-1}}^2 + F(\bar w^0) - F(w^*))}{K}
+    + \norm{\sigma}_\Gamma^2\enspace.
+  \end{align}
+  We conclude the proof by using the fact that $\Gamma_j = M_j^{-1}$ for all
+  $j \in [p]$,
+  thus $\norm{\cdot}_\Gamma = \norm{\cdot}_{M^{-1}}$ and
+  $\norm{\cdot}_{\Gamma^{-1}} = \norm{\cdot}_{M}$.
+\end{proof}
+
+\subsubsection{Convex Case}
+
+
+\begin{restate-theorem}{\ref{thm:cd-utility}}[Convex case]
+Let $w^*$ be a minimizer of $F$ and $R_M^2 = \max(\norm{\bar w^0 -
+    w^*}^2_M, F(\bar w^0) - F(w^*))$.
+The output $w^{priv}$ of DP-CD (Algorithm~\ref{algo:dp-cd}), starting from
+$\bar w^0 \in \RR^p$ with $T = 1$, $K > 0$ and the $\sigma_j$'s as in
+\Cref{thm:dp-cd-privacy}, satisfies:
+\begin{align}
+  F(w^{priv}) - F(w^*)
+   & \le \frac{3p R_M^2}{2K}
+  + \frac{12 \norm{L}_{M^{-1}}^2 K\log(1/\delta)}{n^2\epsilon^2}\enspace.
+\end{align}
+
+Setting $K = \frac{R_M \sqrt{p} n \epsilon}{\norm{L}_{M^{-1}}\sqrt{8\log(1/\delta)}}$
+yields:
+\begin{align}
+  F(w^{priv}) - F(w^*)
+   & \le \frac{9\sqrt{p} \norm{L}_{M^{-1}}R_M \sqrt{\log(1/\delta)}}{n\epsilon}
+  = \widetilde O \left( \frac{\sqrt{p} R_M \norm{L}_{M^{-1}}}{n\epsilon} \right)\enspace.
+\end{align}
+\end{restate-theorem}
+
+\begin{proof}
+  In the convex case, we iterate only once in the inner loop (since $T=1$).
+  As such, $w^{priv} = \bar w^{1}$, and applying \Cref {lemma:dp-cd-convergence-lemma}
+  with $\bar w^{t+1} = \bar w^{1}$, $w^t = \bar w^0$ and $\sigma_j$ chosen as in
+  \Cref{thm:dp-cd-privacy} gives the result.
+  Taking $K = \frac{R_M \sqrt{p} n \epsilon}{\norm{L}_{M^{-1}}\sqrt{8\log(1/\delta)}}$
+  then gives
+  \begin{align}
+    F(\bar w^{t+1}_1) - F(w^*)
+     & \le \frac{2\sqrt{8p\log(1/\delta)} \norm{L}_{M^{-1}} R_M}{n\epsilon}
+    + \frac{12\sqrt{p\log(1/\delta)}\norm{L}_{M^{-1}} R_M}{\sqrt{8}n\epsilon}\enspace,
+  \end{align}
+  and the result follows from $2\sqrt{8} + \frac{12}{\sqrt{8}} \approx 8.48 < 9$.
+\end{proof}
+
+\subsubsection{Strongly Convex Case}
+
+\begin{restate-theorem}{\ref{thm:cd-utility}}[Strongly-convex case]
+Let $F$ be $\mu_M$-strongly convex w.r.t. $\norm{\cdot}_M$ and $w^*$ be the
+minimizer of $F$. The output
+$w^{priv}$ of DP-CD (Algorithm~\ref{algo:dp-cd}), starting from
+$\bar w^0 \in \RR^p$ with $T > 0$, $K = 2p ( 1 + 1 / \mu_M )$
+and the $\sigma_j$'s as in \Cref{thm:dp-cd-privacy}, satisfies:
+\begin{align}
+  F(w^{priv}) - F(w^*)
+   & \le \frac{F(\bar w^0) - F(w^*)}{2^T}
+  + \frac{24 p (1 + 1/\mu_M) T \norm{L}_{M^{-1}}^2 \log(1/\delta)}{n^2\epsilon^2}\enspace.
+\end{align}
+
+Setting $T = \log_2 \left(\frac{32 n^2\epsilon^2 (F(\bar w^0) - F(w^*))}{p(1+1/\mu_M)\norm{L}_{M^{-1}}^2\log(1/\delta)}\right)$ yields:
+\begin{align}
+  \expec{}{F(w^{priv}) - F(w^*)}
+   & \le \left(1 + \log_2\left(\frac{(F(\bar w^0) - F(w^*)) n^2 \epsilon^2}{24 p (1+1/\mu_M)\norm{L}_{M^{-1}}^2 \log(1/\delta)}\right)\right)
+  \frac{24 p (1+1/\mu_M)\norm{L}_{M^{-1}}^2 \log(1/\delta)}{n^2 \epsilon^2}                                                                   \\
+   & = O\left(
+  \frac{p\norm{L}_{M^{-1}}^2 \log(1/\delta)}{\mu_M n^2 \epsilon^2}
+  \log_2\left(\frac{(F(\bar w^0) - F(w^*)) n \epsilon \mu_M}{p\norm{L}_{M^{-1}}\log(1/\delta)}\right)
+  \right)\enspace.
+\end{align}
+\end{restate-theorem}
+
+\begin{proof}
+  As $F$ is $\mu_M$-strongly-convex with respect to norm $\norm{\cdot}_M$,
+  we obtain for any $w \in \RR^p$, that $F(w) \ge F(w^*) + \frac{\mu_M}{2} \norm{w - w^*}_M^2$.
+  Therefore, $F(\bar w^0) - F(w^*) \le \frac{2}{\mu_M} \norm{\bar w^0 - w^*}_M^2$
+  and \Cref {lemma:dp-cd-convergence-lemma} gives, for $1 \le t \le T-1$,
+  \begin{align}
+    F(\bar w^{t+1}) - F(w^*)
+     & \le \frac{(1+1/\mu_M) p(F(\bar w^t) - F(w^*))}{K}
+    + \norm{\sigma}_M^2\enspace.
+  \end{align}
+
+  It remains to set $K = 2 p (1 + 1/\mu_M)$ to obtain
+  \begin{align}
+    F(\bar w^{t+1}) - F(w^*)
+     & \le \frac{F(\bar w^t) - F(w^*)}{2}
+    + \norm{\sigma}_M^2\enspace.
+  \end{align}
+
+  Recursive application of this inequality gives
+  \begin{align}
+    \label{lemma:dp-cd-strong-convexity-convergence:eq:conv}
+    \expec{}{F(\bar w^T) - F(w^*)}
+     & \le \frac{F(\bar w^0) - F(w^*)}{2^T} + \sum_{t=0}^{T-1} \frac{1}{2^t} \norm{\sigma}_M^2
+    \le \frac{F(\bar w^0) - F(w^*)}{2^T} + 2 \norm{\sigma}_M^2\enspace,
+  \end{align}
+  where we upper bound the sum by the value of the complete series.
+  It remains to replace $\norm{\sigma}_M^2$ by its value to obtain the result.
+  Taking
+  $T = \log_2\left(\frac{(F(\bar w^0) - F(w^*)) n^2 \epsilon^2}{24 p (1+1/\mu_M)\norm{L}_{M^{-1}}^2 \log(1/\delta)}\right)$
+  then gives
+  \begin{align}
+    \expec{}{F(\bar w^T) - F(w^*)}
+     & \le \left(1 + \log_2\left(\frac{(F(\bar w^0) - F(w^*)) n^2 \epsilon^2}{24 p (1+1/\mu_M)\norm{L}_{M^{-1}}^2 \log(1/\delta)}\right)\right)
+    \frac{24 p (1+1/\mu_M)\norm{L}_{M^{-1}}^2 \log(1/\delta)}{n^2 \epsilon^2}                                                                   \\
+     & = O\left(
+    \frac{p\norm{L}_{M^{-1}}^2 \log(1/\delta)}{\mu_M n^2 \epsilon^2}
+    \log_2\left(\frac{(F(\bar w^0) - F(w^*)) n \epsilon \mu_M}{p\norm{L}_{M^{-1}}\log(1/\delta)}\right)
+    \right)\enspace,
+  \end{align}
+  which is the result of our theorem.
+\end{proof}
+
+

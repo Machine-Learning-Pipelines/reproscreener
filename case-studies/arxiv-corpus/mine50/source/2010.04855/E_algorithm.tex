@@ -1,0 +1,147 @@
+\section{Algorithm derivation}\label{sec:derivation}
+
+In this supplement, we derive estimators for (i) causal functions, (ii) counterfactual distributions, and (iii) graphical models. Before we do so, we compare kernel methods to series estimation. For intuition, consider $\hat{\theta}^{ATE}(d)$ with linear kernels $k(d,d')=d d'$ and $k(x,x')=x^{\top}x'$. Then by singular value decomposition,
+$$
+\hat{\theta}^{ATE}(d)=\left(d n^{-1}\sum_{i=1}^nX_i\right)^{\top}\left(n^{-1}\sum_{i=1}^n D_i^2X_iX_i^{\top}+\lambda  I \right)^{-1}\left(n^{-1}\sum_{i=1}^n D_iX_i Y_i\right).
+$$
+This formulation is interpretable as a regularized series estimator with basis function $\phi(d,x)=dx$. However, it requires scalar treatment, finite dimensional covariate, linear ridge regression, and computation $O\{dim(X)^3\}$. By contrast, the formulation in Algorithm~\ref{algorithm:treatment} allows for generic treatment, generic covariate, nonlinear ridge regression, and computation $O(n^3)$.
+
+
+\subsection{Causal functions}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:representation_treatment}]
+In Assumption~\ref{assumption:RKHS}, we impose that the scalar kernels are bounded. This assumption has several implications. First, the feature maps are Bochner integrable \cite[Definition A.5.20]{steinwart2008support}. Bochner integrability permits us to interchange expectation and inner product. Second, the mean embeddings exist. Third, the product kernel is also bounded and hence the tensor product RKHS inherits these favorable properties. By Lemma~\ref{theorem:id_treatment} and linearity of expectation,
+ \begin{align*}
+    \theta_0^{ATE}(d)&= \int \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x)\\
+    &=\int \langle \gamma_0, \phi(d)\otimes \phi(x)\rangle_{\mathcal{H}}  \mathrm{d}\text{\normalfont pr}(x) \\
+    &= \langle \gamma_0, \phi(d)\otimes \int\phi(x) \mathrm{d}\text{\normalfont pr}(x) \rangle_{\mathcal{H}} \\
+    &= \langle \gamma_0, \phi(d)\otimes \mu_x \rangle_{\mathcal{H}}.
+\end{align*}
+Likewise for $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})$. Next,
+\begin{align*}
+    \theta_0^{ATT}(d,d')&= \int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(x \mid d)\\
+    &=\int \langle \gamma_0, \phi(d')\otimes \phi(x)\rangle_{\mathcal{H}}  \mathrm{d}\text{\normalfont pr}(x \mid d) \\
+    &= \langle \gamma_0, \phi(d')\otimes \int\phi(x) \mathrm{d}\text{\normalfont pr}(x \mid d) \rangle_{\mathcal{H}}\\
+    &= \langle \gamma_0, \phi(d')\otimes \mu_x(d) \rangle_{\mathcal{H}}.
+\end{align*}
+Finally, 
+ \begin{align*}
+    \theta_0^{CATE}(d,v)&= \int \gamma_0(d,v,x)\mathrm{d}\text{\normalfont pr}(x \mid v)\\
+    &=\int \langle \gamma_0, \phi(d)\otimes \phi(v) \otimes \phi(x)\rangle_{\mathcal{H}}  \mathrm{d}\text{\normalfont pr}(x \mid v) \\
+    &= \langle \gamma_0, \phi(d)\otimes \phi(v) \otimes \int\phi(x) \mathrm{d}\text{\normalfont pr}(x \mid v) \rangle_{\mathcal{H}} \\
+    &= \langle \gamma_0, \phi(d)\otimes \phi(v) \otimes \mu_{x}(v) \rangle_{\mathcal{H}}.
+\end{align*}
+\cite[Lemma 4.34]{steinwart2008support} guarantees that the derivative feature map $\nabla_d\phi(d)$ exists, is continuous, and is Bochner integrable since $$\kappa_d'=\left\{\sup_{d,d'\in\mathcal{D}}\nabla_d\nabla_{d'}k(d,d')\right\}^{1/2}<\infty.$$ Therefore the derivations remain valid for incremental functions.
+\end{proof}
+
+\begin{proof}[Proof of Algorithm~\ref{algorithm:treatment}]
+By standard arguments \cite{kimeldorf1971some}
+\begin{align*}
+\hat{\gamma}(d,x)&=
+\langle \hat{\gamma}, \phi(d)\otimes \phi(x) \rangle_{\mathcal{H}}=Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx}).    
+\end{align*}
+    The results for $\hat{\theta}^{ATE}(d)$ holds by substitution:
+   $$
+   \hat{\mu}_x=n^{-1}\sum_{i=1}^n \phi(x_i),\quad \hat{\theta}^{ATE}(d)=\langle \hat{\gamma}, \phi(d)\otimes \hat{\mu}_x\rangle_{\mathcal{H}}.
+   $$
+    Likewise for $\hat{\theta}^{DS}(d,\tilde{\text{\normalfont pr}})$. 
+    
+    The results for $\hat{\theta}^{ATT}(d,d')$ and $\hat{\theta}^{CATE}(d,v)$ use the closed form of the conditional mean embedding from \cite[Algorithm 1]{singh2019kernel}. Specifically,
+    $$
+    \hat{\mu}_x(d)=K_{\cdot X}(K_{DD}+n\lambda_1 I )^{-1}K_{Dd},\quad  \hat{\theta}^{ATT}(d,d')=\langle \hat{\gamma}, \phi(d')\otimes \hat{\mu}_x(d)\rangle_{\mathcal{H}} 
+    $$
+and
+    $$
+    \hat{\mu}_{x}(v)=K_{\cdot X}(K_{VV}+n\lambda_2 I )^{-1}K_{Vv},\quad \hat{\theta}^{CATE}(d,v)=\langle \hat{\gamma}, \phi(d)\otimes \phi(v)\otimes \hat{\mu}_{x}(v)\rangle_{\mathcal{H}}.
+    $$
+For incremental functions, replace $\hat{\gamma}(d,x)$ with
+\begin{align*}
+\nabla_d\hat{\gamma}(d,x)&=
+\langle \hat{\gamma}, \nabla_d \phi(d)\otimes \phi(x) \rangle_{\mathcal{H}}=Y^{\top}(K_{DD}\odot K_{XX}+n\lambda I )^{-1}(\nabla_d K_{Dd}\odot K_{Xx}).
+\end{align*}
+\end{proof}
+
+\subsection{Counterfactual distributions}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:representation_dist}]
+Assumption~\ref{assumption:RKHS} implies Bochner integrability, which permits us to interchange expectation and evaluation. Therefore by Lemma~\ref{theorem:id_treatment} and linearity of expectation,
+    \begin{align*}
+   \check{\theta}_0^{D:ATE}(d)&= \int \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x)\\
+   &=\int E_3^*\{\phi(d)\otimes \phi(x)\} \mathrm{d}\text{\normalfont pr}(x) \\
+    &= E_3^*\{\phi(d)\otimes \int \phi(x)\mathrm{d}\text{\normalfont pr}(x)\} \\
+    &= E_3^*\{\phi(d)\otimes \mu_x\}.
+\end{align*}
+Likewise for $\check{\theta}_0^{D:DS}(d,\tilde{\text{\normalfont pr}})$. Next,
+    \begin{align*}
+   \check{\theta}_0^{D:ATT}(d)&= \int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(x \mid d)\\
+   &=\int E_3^*\{\phi(d')\otimes \phi(x)\} \mathrm{d}\text{\normalfont pr}(x \mid d) \\
+    &= E_3^*\{\phi(d')\otimes \int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid d)\}  \\
+    &= E_3^*\{\phi(d')\otimes \mu_x(d)\}. 
+\end{align*}
+Finally,
+    \begin{align*}
+   \check{\theta}_0^{D:CATE}(d)&= \int \gamma_0(d,v,x)\mathrm{d}\text{\normalfont pr}(x \mid v) \\
+   &=\int E_3^*\{\phi(d)\otimes \phi(v)\otimes \phi(x)\} \mathrm{d}\text{\normalfont pr}(x \mid v) \\
+    &= E_3^*\{\phi(d)\otimes \phi(v)\otimes \int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid v)\}  \\
+    &= E_3^*\{\phi(d)\otimes \phi(v) \otimes \mu_x(v)\}.
+\end{align*}
+\end{proof}
+
+\begin{proof}[Proof of Algorithm~\ref{algorithm:dist}]
+By \cite[Algorithm 1]{singh2019kernel},
+$$
+\hat{\gamma}(d,x)=\hat{E}_3^*\{\phi(d)\otimes \phi(x)\}=K_{\cdot Y}(K_{DD}\odot K_{XX}+n\lambda_3 I )^{-1}(K_{Dd}\odot K_{Xx}).
+$$
+The result for $\hat{\theta}^{D:ATE}$ follows by substitution: 
+$$
+\hat{\mu}_x=n^{-1}\sum_{i=1}^n \phi(x_i),\quad \hat{\theta}^{D:ATE}(d)=\hat{E}_3^*\{\phi(d)\otimes \hat{\mu}_x\}.
+$$
+Likewise for $\hat{\theta}^{D:DS}$. Both $ \hat{\theta}^{D:ATT}$ and $\hat{\theta}^{D:CATE}$ appeal to the closed form for conditional mean embeddings from \cite[Algorithm 1]{singh2019kernel}. Specifically,
+\begin{align*}
+     \hat{\mu}_x(d)&=K_{\cdot X}(K_{DD}+n\lambda_1 I )^{-1}K_{Dd},\quad \hat{\theta}^{D:ATT}(d,d')=\hat{E}_3^*\{\phi(d')\otimes \hat{\mu}_x(d)\}; \\
+         \hat{\mu}_{x}(v)&=K_{\cdot X}(K_{VV}+n\lambda_2 I )^{-1}K_{Vv},\quad \hat{\theta}^{D:CATE}(d,v)=\hat{E}_3^*\{\phi(d)\otimes \phi(v)\otimes \hat{\mu}_{x}(v)\}.
+\end{align*}
+\end{proof}
+
+\subsection{Graphical models}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:representation_treatment_dag}]
+Assumption~\ref{assumption:RKHS} implies Bochner integrability, which permits us to interchange expectation and inner product. Therefore
+\begin{align*}
+    \theta_0^{do}(d)&=\int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(d')\mathrm{d}\text{\normalfont pr}(x \mid d)  \\
+    &=\int \langle \gamma_0,\phi(d')\otimes \phi(x) \rangle_{\mathcal{H}} \mathrm{d}\text{\normalfont pr}(d')\mathrm{d}\text{\normalfont pr}(x \mid d) \\
+    &=\langle \gamma_0,\int \phi(d')\mathrm{d}\text{\normalfont pr}(d') \otimes \int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid d) \rangle_{\mathcal{H}}  \\
+    &= \langle \gamma_0,\mu_d \otimes \mu_x(d) \rangle_{\mathcal{H}}.
+\end{align*}
+Similarly,  
+\begin{align*}
+    \check{\theta}_0^{D:do}(d)&=\int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(d')\mathrm{d}\text{\normalfont pr}(x \mid d)  \\
+    &=\int E_3^*\{\phi(d')\otimes \phi(x)\} \mathrm{d}\text{\normalfont pr}(d')\mathrm{d}\text{\normalfont pr}(x \mid d) \\
+    &=E_3^*\left\{\int \phi(d')\mathrm{d}\text{\normalfont pr}(d') \otimes \int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid d) \right\}  \\
+    &= E_3^*\{\mu_d \otimes \mu_x(d)\}.
+\end{align*}
+\end{proof}
+
+\begin{proof}[Proof of Algorithm~\ref{algorithm:dag}]
+Consider $\hat{\theta}^{do}$. By standard arguments \cite{kimeldorf1971some}
+\begin{align*}
+\hat{\gamma}(d,x)&=
+\langle \hat{\gamma}, \phi(d)\otimes \phi(x) \rangle_{\mathcal{H}}=Y^{\top}(K_{DD}\odot K_{XX}+n\lambda I )^{-1}(K_{Dd}\odot K_{Xx}).  
+\end{align*}
+By \cite[Algorithm 1]{singh2019kernel}, write the mean embedding and conditional mean embedding as
+  $$
+  \hat{\mu}_x=n^{-1}\sum_{i=1}^n \phi(x_i),\quad \hat{\mu}_x(d)=K_{\cdot X}(K_{DD}+n\lambda_1 I )^{-1}K_{Dd}.
+  $$
+    Substitute these quantities to obtain
+    $
+    \hat{\theta}^{do}(d)=\langle \hat{\gamma}, \hat{\mu}_d\otimes \hat{\mu}_x(d)\rangle_{\mathcal{H}}
+    $. 
+    Next consider $\hat{\theta}^{D:do}$. By \cite[Algorithm 1]{singh2019kernel}
+$$
+\hat{\gamma}(d,x)=\hat{E}_3^*\{\phi(d)\otimes \phi(x)\}=K_{\cdot Y}(K_{DD}\odot K_{XX}+n\lambda_3 I )^{-1}(K_{Dd}\odot K_{Xx}).
+$$
+Substitution of the mean embeddings gives
+    $
+    \hat{\theta}^{D:do}(d)=\hat{E}_3^* \{\hat{\mu}_d\otimes \hat{\mu}_x(d)\}
+    $. 
+\end{proof}

@@ -1,0 +1,371 @@
+%
+% this file defines packages to be used and new commands
+%
+\usepackage{comment}
+\usepackage{caption}
+\usepackage{stackengine} % required for 'ifdef. this package is already used by tog but not by iccv
+
+% all \ifxxx commands should be false. the true values should be defined in the main files.
+
+\ifundef{\ifanonymous}
+{\newif\ifanonymous \anonymousfalse}
+{}
+
+\ifundef{\ifdraft}
+{\newif\ifdraft \draftfalse}
+{}
+
+\ifundef{\ifeccv}
+{\newif\ifeccv \eccvfalse}
+{}
+
+\ifundef{\ifcvpr}
+{\newif\ifcvpr \cvprfalse}
+{}
+
+\ifundef{\ifcvprreview}
+{\newif\ifcvprreview \cvprreviewfalse}
+{}
+
+% \ifcvprreview
+% {\global\anonymoustrue} % must be global. maybe because of the makeletter env?
+% \else
+% {\global\anonymousfalse}
+% \fi
+
+% \ifappendix tells us whether the textual sup mat is in the appendix or in a separate doc 
+\ifundef{\ifappendix}
+{\newif\ifappendix \appendixfalse}
+{}
+
+\ifundef{\ifarxiv}
+{\newif\ifarxiv \arxivfalse}
+{}
+
+\ifundef{\ificcv}
+{\newif\ificcv \iccvfalse}
+{}
+
+\ifundef{\iftog}
+{\newif\iftog \togfalse}
+{}
+
+\ifundef{\ificcvfinal}
+{\newif\ificcvfinal \iccvfinalfalse}
+{}
+
+\ifarxiv
+\appendixtrue
+\fi
+
+\iftog
+\appendixtrue
+\fi
+
+\ifanonymous
+{\global\iccvfinalfalse}
+\else
+{\global\iccvfinaltrue}
+\fi
+
+\ifcvpr{
+\newcommand{\citet}{\cite}
+\newcommand{\keywords}{\null}
+}\fi
+
+\ifeccv
+\else
+\usepackage{times}
+\fi
+% \usepackage[numbers,sort]{natbib}
+\usepackage{ifthen}
+\usepackage{cancel}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\iftog {} \else \usepackage{amssymb} \fi % fails for TOG style
+
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{xspace} % needed for \etal etc.
+% \usepackage{hyperref}
+\usepackage{orcidlink}
+
+\newcommand{\bK}{{\bf K}}
+\newcommand{\bQ}{{\bf Q}}
+\newcommand{\bW}{{\bf W}}
+\newcommand{\bV}{{\bf V}}
+\newcommand{\bJ}{{\bf J}}
+\newcommand{\bP}{{\bf P}}
+\newcommand{\bL}{{\bf L}}
+\newcommand{\bT}{{\bf T}}
+\newcommand{\bD}{{\bf D}}
+\newcommand{\bF}{{\bf F}}
+\newcommand{\bG}{{\bf G}}
+\newcommand{\bI}{{\bf I}}
+\newcommand{\bc}{{\bf c}}
+\newcommand{\bff}{{\bf f}}
+\newcommand{\bp}{{\bf p}}
+\newcommand{\bq}{{\bf q}}
+\newcommand{\br}{{\bf r}}
+\newcommand{\bss}{{\bf s}}
+\newcommand{\bv}{{\bf v}}
+\newcommand{\bk}{{\bf k}}
+\newcommand{\Loss}{\mathcal{L}}
+\newcommand{\mm}{\mathcal{M}}
+\newcommand{\mms}{\mathcal{S}}
+\newcommand{\Dp}{\bbd_{\text{p}}}
+\newcommand{\Ds}{\bbd_{\text{s}}}
+\newcommand{\cc}{\mathcal{C}}
+\newcommand{\nn}{\mathcal{N}}
+\newcommand{\pp}{\mathcal{P}}
+\newcommand{\qq}{\mathcal{Q}}
+\newcommand{\bbe}{\mathbb{E}}
+\newcommand{\bbr}{\mathbb{R}}
+
+\iftog 
+\else
+\newcommand{\shortcite}{\cite}
+\fi
+
+%%%%%%% or's imports
+\usepackage{url}
+\usepackage{graphics}
+% \usepackage{layouts} % causes two warnings, not sure this package is needed
+\usepackage[normalem]{ulem} % ulem defines \sout (strikethrough). normalem disables the change of emph from italic to underline.
+\usepackage{multirow}
+\usepackage{tabu,stackengine}
+\usepackage{wrapfig}
+% \usepackage{floatrow}
+\usepackage{booktabs}
+\usepackage{soul}
+% Table float box with bottom caption, box width adjusted to content
+% \newfloatcommand{capbtabbox}{table}[][\FBwidth]
+% \usepackage{caption}
+% \usepackage{subcaption}
+\usepackage{makecell}
+\ifcvpr
+\else
+\usepackage{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+\fi
+
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\tbd}{{\color{red}xxx}}
+\newcommand{\bluebold}[1]{{\textbf{\color{blue} #1}}}
+\newcommand{\graybluebold}[1]{{\textbf{\color{blue!50} #1}}} % 50% blue and 50% white, to be used when cam params are perturbed
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
+\definecolor{calpolypomonagreen}{rgb}{0.12, 0.3, 0.17}
+
+\ifdraft
+\newcommand{\setcolor}[1]{\color{#1}}
+\newcommand{\sr}[1]{{\color{violet} #1}}
+\newcommand{\sroo}[1]{{\color{calpolypomonagreen} #1}}
+\newcommand{\srrep}[2]{\sout{#1} \sr{#2}}
+\newcommand{\bg}[1]{{\color{orange} #1}}
+\else
+\newcommand{\setcolor}[1]{}
+\newcommand{\sr}[1]{{#1}}
+\newcommand{\sroo}[1]{#1}
+\newcommand{\srrep}[2]{#2}
+\newcommand{\bg}[1]{#1}
+\fi
+\newcommand{\srr}[1]{{\color{red}\textbf{SR:} #1}}
+\newcommand{\srm}[1]{{\color{violet}\textbf{SR:} #1}}
+\newcommand{\sro}[1]{{\color{calpolypomonagreen}\textbf{SR:} #1}}
+
+\newcommand{\dcc}[1]{{\color{red}\textbf{DC:} #1}}
+\newcommand{\dc}[1]{{\color{red} #1}}
+
+\newcommand{\rgc}[1]{{\color{cyan}\textbf{RG} #1}}
+\newcommand{\rg}[1]{{\color{cyan} #1}}
+
+\newcommand{\brr}[1]{{\color{red}\textbf{BG:} #1}}
+\newcommand{\brrep}[2]{\sout{#1} \bro{#2}}
+%\newcommand{\brchange}[2]{\sout{~\mbox{#1}} \bro{#2}}
+\newcommand{\bro}[1]{{\color{orange}\textbf{BG:} #1}}
+\newcommand{\brchange}[2]{\sout{#1} \bro{#2}}
+
+\newcommand{\gum}[1]{{\color{violet}\textbf{GA:} #1}}
+\newcommand{\gur}[1]{{\color{red}\textbf{GA:} #1}}
+\newcommand{\gurep}[2]{\sout{#1} \bro{#2}}
+
+\newcommand{\algoname}{FLEX}
+\newcommand{\projectpage}{\url{https://briang13.github.io/FLEX}}
+
+\setlength{\abovedisplayshortskip}{-30pt}
+\setlength{\belowdisplayshortskip}{-30pt}
+\setlength{\abovedisplayskip}{-30pt}
+\setlength{\belowdisplayskip}{-30pt}
+
+
+\makeatletter
+\iftog
+\newcommand{\sectiontinyvert}{\section}
+\newcommand{\paragraphtinyvert}{\paragraph}
+\newcommand{\paragraphnovert}{\paragraph}
+\newcommand{\subparagraphnovert}{\subparagraph}
+\else
+
+% \renewcommand\section{\@startsection{section}{1}{\z@}%
+%                       {-18\p@ \@plus -4\p@ \@minus -4\p@}%
+%                       {12\p@ \@plus 4\p@ \@minus 4\p@}%
+%                       {\normalfont\large\bfseries\boldmath
+%                         \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+% \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+%                       {-18\p@ \@plus -4\p@ \@minus -4\p@}%
+%                       {8\p@ \@plus 4\p@ \@minus 4\p@}%
+%                       {\normalfont\normalsize\bfseries\boldmath
+%                         \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+
+% \renewenvironment{abstract}{%
+%       \list{}{\advance\topsep by0.35cm\relax\small
+%       \leftmargin=1cm
+%       \labelwidth=\z@
+%       \listparindent=\z@
+%       \itemindent\listparindent
+%       \rightmargin\leftmargin}\item[\hskip\labelsep
+%                                     \bfseries\abstractname]}
+%     {\endlist}
+
+% \renewenvironment{equation*}{%
+%   \mathdisplay@push
+%   \st@rredtrue \global\@eqnswfalse
+%   \color{black}
+%   \mathdisplay{equation*}%
+% }{%
+%   \endmathdisplay{equation*}%
+%   \mathdisplay@pop
+%   \ignorespacesafterend
+% }
+
+
+\newenvironment{myequation}{%
+% \list{}{
+%\topsep by-70pt 
+% \smallskip
+% \vspace{-40\p@}
+  \incr@eqnum
+  \mathdisplay@push
+  \st@rredfalse \global\@eqnswtrue
+  \mathdisplay{equation}%
+% }
+}{%
+  \endmathdisplay{equation}%
+  \mathdisplay@pop
+  \ignorespacesafterend
+%   \endlist
+}
+
+% \newenvironment{equation}{%
+%   \mathdisplay@push
+%   \st@rredfalse \global\@eqnswtrue
+%   \mathdisplay{equation}%
+%   \incr@eqnum\mathopen{}%
+% }{%
+%   \endmathdisplay{equation}%
+%   \mathdisplay@pop
+%   \ignorespacesafterend
+% }
+
+
+\newenvironment{myequation*}{%
+\list{}{\topsep by-7pt
+\mathdisplay@push
+  \st@rredtrue \global\@eqnswfalse
+  \mathdisplay{equation}%
+}}{%
+  \endmathdisplay{equation}%
+  \mathdisplay@pop
+  \ignorespacesafterend
+  \endlist
+}
+
+\newenvironment{myabstract}{%
+      \list{}{\advance\topsep by-7pt\relax\small
+      \leftmargin=0.95cm
+      \labelwidth=\z@
+      \listparindent=\z@
+      \itemindent\listparindent
+      \rightmargin\leftmargin}\item[\hskip\labelsep
+                                    \bfseries\abstractname]}
+    {\endlist}
+
+\newcommand{\sectiontinyvert}{
+  \@startsection{section}               % name 
+  {1}                                   % level
+  {\z@}                                 % indent
+  {10pt \@plus 3pt \@minus 0pt}         % before skip
+  {5pt \@plus 2pt \@minus 0pt}          % after skip
+  {\normalfont\large\bfseries\boldmath\rightskip=\z@ \@plus 8em\pretolerance=10000}          % style
+}
+
+\newcommand{\subsectiontinyvert}{
+  \@startsection{subsection}            % name 
+  {2}                                   % level
+  {\z@}                                 % indent
+  {10pt \@plus 3pt \@minus 0pt}         % before skip
+  {5pt \@plus 2pt \@minus 0pt}          % after skip
+  {\normalfont\normalsize\bfseries\boldmath\rightskip=\z@ \@plus 8em\pretolerance=10000}     % style
+}
+\newcommand\subsubsectiontinyvert{
+    \@startsection{subsubsection}
+    {3}
+    {\z@}
+    {10pt \@plus 3pt \@minus 0pt}%
+    {-0.5em \@plus -0.22em \@minus -0.1em}%
+    {\normalfont\normalsize\bfseries\boldmath}}
+    
+% \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+%                       {-12\p@ \@plus -4\p@ \@minus -4\p@}%
+%                       {-0.5em \@plus -0.22em \@minus -0.1em}%
+%                       {\normalfont\normalsize\itshape}}
+\newcommand{\paragraphtinyvert}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{1ex \@plus 0.0ex \@minus 0.2ex}{-1em}% was "plus 0.2 ex"
+  {\normalfont\normalsize\bfseries\boldmath} % like subsubsection in llncs
+}
+\newcommand{\paragraphnovert}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{0ex \@plus 0ex \@minus 0ex}{-0.5 em}%
+  {\normalfont\normalsize\bfseries}%
+}
+\newcommand{\subparagraphnovert}{%
+  \@startsection{subparagraph}{5}%
+  {3ex}{0ex \@plus 0ex \@minus 0ex}{-1em}%
+  {\normalfont\normalsize\bfseries}%
+}
+
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+% \newcommand{\orcid}[1]{\href{https://orcid.org/#1} {\protect\includegraphics[width=8pt]{./images/ORCID-iD_icon-128x128.png}}}
+% \newcommand{\orcid}[1]{\orcidID{#1}}
+\newcommand{\orcid}[1]{\orcidlink{#1}}
+
+\fi
+
+\ificcv
+\else
+% the following are copied from iccv.sty
+% Add a period to the end of an abbreviation unless there's one
+% already, then \xspace.
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{c.f}\onedot} \def\Cf{\emph{C.f}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot}
+\fi
+
+\makeatother
+

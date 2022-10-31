@@ -1,0 +1,35 @@
+\begin{table}[tb]
+% \begin{wraptable}{r}{4.5cm}
+% \vspace{-25pt}
+\ifeccv
+\caption{The impact of various fusion methods with 2D GT input. Note that processing all views together with an early fusion as done in FLEX outperforms the other variations by a large margin.}
+\fi
+\input{./figures/ablation_table}
+\ifeccv
+\else
+\vspace{-15pt}
+\caption{The impact of various fusion methods with 2D GT input. Note that processing all views together with an early fusion as done in FLEX outperforms the other variations by a large margin.}
+\fi
+\label{tab:ablation}
+% \end{wraptable}
+\vspace{-10pt}
+\end{table}
+
+%%% FLIPPED VERSION - WIDER VERSION
+% \begin{table}[tb]
+% % \begin{wraptable}{r}{4.5cm}
+% % \vspace{-25pt}
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|}
+% \hline
+% %\makecell{\textbf{2D from} $\rightarrow$ \\ \textbf{\#Views}\downarrow$}& \textbf{GT } & \textbf{\cite{iskakov2019learnable}}\\
+% \textbf{Method} & Avg. $K$ views & Late fusion & FLEX\\ \hline
+% \textbf{MPJPE } & 36.4 & 31.0 & \textbf{22.9}\\ \hline
+% \end{tabular}
+% \end{center}
+% \vspace{-14pt}
+% \caption{The impact of various fusion methods with 2D GT input. Note that processing all views together with an early fusion as done in FLEX outperforms the other variations by a large margin.}
+% \label{tab:ablation}
+% % \end{wraptable}
+% \vspace{-10pt}
+% \end{table}

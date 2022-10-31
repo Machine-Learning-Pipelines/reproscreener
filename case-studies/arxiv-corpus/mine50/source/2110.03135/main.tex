@@ -1,0 +1,172 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+% \usepackage{neurips_2022}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+    \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+
+% -- 
+\usepackage{enumitem}
+% --- for professional tables
+\usepackage{booktabs}  
+% --- for figures
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+% --- for formula
+\usepackage{amssymb}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+% --- for table and figure side by side
+% \usepackage{floatrow}
+\usepackage{makecell}
+% Table float box with bottom caption, box width adjusted to content
+% \newfloatcommand{capbtabbox}{table}[][\FBwidth]
+% ----
+
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage[normalem]{ulem}
+
+% --- theorems
+\usepackage{bbm}
+\usepackage{amsthm}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{theorem}{Theorem}[section]
+% \newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+% \newtheorem{remark}{Remark}[theorem]
+% \newtheorem*{remark}{Remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{assumption}{Assumption}[section]
+
+% --- commands
+\newcommand{\chengyu}[1]{{\color{blue}{\emph{CD: #1}}}}
+% \newcommand{\chengyu}[1]{}
+\newcommand{\todo}[1]{{\color{blue}{\textbf{TODO: #1}}}}
+\newcommand{\jingbo}[1]{{\color{blue}{\textbf{Jingbo:} #1}}}
+\newcommand{\lucas}[1]{{\color{red}{\textbf{lucas:} #1}}}
+\newcommand{\lucasedit}[1]{{\color{gray}{#1}}}
+\newcommand{\smallsection}[1]{\textbf{#1.~~~~}}
+\newcommand{\note}[1]{{\color{red}{#1}}}
+
+\newcommand{\noise}[1]{implicit label noise\xspace}
+\newcommand{\Noise}[1]{Implicit label noise\xspace}
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+  
+  
+% \title{Double Descent in Adversarial Training: An Implicit Label Noise Perspective}
+
+% \title{Understanding Implicit Label Noise in Adversarial Training for Robust Deep Learning}
+% \title{Label Noise Exists Implicitly in Adversarial Training}
+% \title{Robust Overfitting May be Explained By the Label Noise in Adversarial Training}
+% \title{Label Noise in Adversarial Training: A Novel Perspective to Explain and Alleviate Robust Overfitting}
+\title{Label Noise in Adversarial Training: A Novel Perspective to Study Robust Overfitting}
+% \title{Chart and harness the label noise in adversarial training}
+% title based on 
+% `Feature Purification: How Adversarial Training Performs Robust Deep Learning` Allen zhu.
+% `UNDERSTANDING INTRINSIC ROBUSTNESS USING LABEL UNCERTAINTY`
+
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+Chengyu Dong \\
+University of California, San Diego\\
+\texttt{cdong@eng.ucsd.edu}\\
+\And
+Liyuan Liu\\
+Microsoft Research\\
+\texttt{lucliu@microsoft.com}\\
+\And
+Jingbo Shang\\
+University of California, San Diego\\
+\texttt{jshang@eng.ucsd.edu}\\
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+\input{inputs/0-abstract}
+\end{abstract}
+
+
+\input{inputs/1-introduction}
+\input{inputs/2-related}
+\input{inputs/3-preliminary}
+\input{inputs/4-theory}
+\input{inputs/5-method/5.1-method-theory}
+\input{inputs/5-method/5.3-calibration}
+\input{inputs/5-method/5.5-method-analysis}
+\input{inputs/6-experiments}
+\input{inputs/7-discussion}
+
+% \newpage
+\bibliography{icml2022}
+\bibliographystyle{icml2022}
+
+% \newpage
+\input{inputs/checklist}
+
+\newpage
+\appendix\onecolumn
+\input{appendix/1-proof}
+\input{appendix/1.5-limitations}
+\input{appendix/2-experiments/2-experiment}
+\input{appendix/3-results}
+\input{appendix/4-synthetic-experiments/4-syntheticExperiments}
+\input{appendix/5-method}
+\input{appendix/6-setup}
+
+
+\end{document}

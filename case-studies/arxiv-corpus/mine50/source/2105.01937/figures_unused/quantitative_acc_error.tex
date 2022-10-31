@@ -1,0 +1,45 @@
+\begin{table}[tb]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Method} & \textbf{Acc. Error} \\ \hline
+VIBE\cite{kocabas2020vibe} & 18.3 \\ \hline
+MEVA\cite{luo20203d} & 15.3 \\ \hline
+HMMR\cite{kanazawa2019learning} & 9.1 \\ \hline
+TCMR\cite{choi2021static} & 5.3 \\ \hline
+Iskakov \etal~\cite{iskakov2019learnable} & 3.9\\ \hline
+FLEX ($\star$) & \textbf{1.6} \\ \hline
+FLEX ($\bullet$) & \textbf{0.9} \\ \hline
+
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption{Smoothness, measured by acceleration error in $mm/s^2$,  on Human3.6M (lower is better). Legend: ($\star$) Using \cite{iskakov2019learnable} for 2D pose backbone. ($\bullet$) Using ground-truth 2D poses.}
+\label{tab:acc_error}
+\vspace{-10pt}
+\end{table}
+
+% \begin{table}[tb]
+% \color{orange}
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|c|c|c|}
+% \hline
+% \textbf{Method}  & \cite{luo20203d} & \cite{kanazawa2019learning} & \cite{choi2021static} & \cite{iskakov2019learnable} &($\star$) & ($\bullet$) \\ \hline
+
+% \textbf{Acc. Error} 
+% %  & 18.3 
+%  & 15.3  
+%  & 9.1  
+%  & 5.3  
+%  & 3.9 
+%  & \textbf{1.6}
+%  & \textbf{0.9} \\ \hline
+
+% \end{tabular}
+% \end{center}
+% \vspace{-15pt}
+% \caption{\color{orange} Smoothness, measured by acceleration error in $mm/s^2$,  on Human3.6M (lower is better). Legend: ($\star$) FLEX using \cite{iskakov2019learnable} for 2D pose backbone. ($\bullet$) FLEX using ground-truth 2D poses.}
+% \label{tab:acc_error}
+% \vspace{-10pt}
+% \end{table}
+

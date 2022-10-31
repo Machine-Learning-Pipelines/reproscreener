@@ -1,0 +1,96 @@
+\section{The \adapst Algorithm}
+% \begin{algorithm}[H]
+%     \caption{The \adapst Algorithm}
+%     \label{alg:atg}
+%     \begin{algorithmic}[1]
+%       \Procedure{AST}{$f, k, \epsi$}
+%       \State \textbf{Input:} evaluation oracle $f:2^{\mathcal N} \to \reals$, constraint $k$,
+%       accuracy parameter $\epsi > 0$
+%       \State Initialize $M \gets \max_{x \in \mathcal N} f(x)$; 
+%       $\ell \gets \lceil\log_{1 - \epsi}(1/(ck)))\rceil$; 
+%       $c \gets 4 + \alpha$, where $\alpha^{-1}$ is ratio of \unc
+%       \For{ $i \gets 0$ to $\ell$ in parallel}\label{line:forconcurrent}
+%       \State $\tau_i \gets M \left( 1 - \epsi \right)^i$
+%       \State $A_i,A_i' \gets \threseq \left( f, k, \tau_i, \epsi, 1 / 2 \right) $
+%       \State $B_i,B_i' \gets \threseq \left( f\restriction_{\mathcal N\setminus A_i}, k, \tau_i, \epsi, 1 / 2 \right)$
+%       \State $A_i'' \gets \unc (A_i)$
+%       \State $C_i \gets \argmax \{ f(A_i'), f(B_i'), f(A_i'') \}$
+%       \EndFor
+%       \State \textbf{return} $C \gets \argmax_i \{ f(C_i) \}$
+%       \EndProcedure
+% \end{algorithmic}
+% \end{algorithm}
+
+\begin{theorem} 
+    \label{thm:ast}
+Suppose there exists an $(1/\alpha )$-approximation for
+\unc with adaptivity $\Theta$ and query complexity
+$\Xi$, and let $\epsi> 0$.
+Then there exists an algorithm for \sm with
+approximation ratio $\astRatio$ with probability
+at least $1 - 1/n$, expected query complexity
+$\oh{ \log_{1 - \epsi}(1/(ck))) \cdot \left( n / \epsi + \Xi \right) }$,
+and adaptivity $\oh{\log( n) / \epsi + \Theta }$.  
+\end{theorem}
+\begin{proof}
+    \textbf{Approximation Ratio.}
+    \begin{lemma} \label{lemma:ast-guess}
+        There exists $\tau_{i_0}$ that $\frac{(1-\epsi)\opt}{ck}\le \tau_{i_0}\le \frac{\opt}{ck}$.
+    \end{lemma}
+    \begin{proof}
+        From submodularity, observe that 
+        $$\tau_0=M\ge \sum_{o\in O}f(o)/k\ge f(O)/k > \frac{(1-\epsi)\opt}{ck}.$$
+        Also,
+        $$\tau_\ell=M(1-\epsi)^\ell\le M/ck \le \opt/ck.$$ 
+        Since $\tau$ decreases with ratio $1-\epsi$ at each step, there exists a $\tau_{i_0}$ that
+        $$\frac{(1-\epsi)\opt}{ck}\le \tau_{i_0}\le \frac{\opt}{ck}.$$
+    \end{proof}
+    
+    Now let's consider the iteration with $\tau=\tau_{i_0}$.
+
+    First,if the sets returned by \threseq follow that $|A_{i_0}|=k$ or $|B_{i_0}|=k$,
+    w.l.o.g, let $|A_{i_0}|=k$.
+    From Theorem~\ref{thm:threshold} and Lemma~\ref{lemma:ast-guess}, it holds that
+    $$f(A_{i_0}')\ge(1-\epsi)\tau_{i_0}|A_{i_0}'|\ge \frac{(1-\epsi)^3\opt}{c}\ge (1/c-\epsi)\opt.$$
+    Then,
+    $$f(C)\ge f(A_{i_0}') \ge (1/c-\epsi)\opt.$$
+
+    Second, if $|A_{i_0}|<k$ and $|B_{i_0}|<k$, from submodularity, 
+    Theorem~\ref{thm:threshold} and Lemma~\ref{lemma:ast-guess},
+    it holds that
+    \begin{equation} \label{ineq:sub1}
+        f(O\cup A_{i_0})-f(A_{i_0}) \le \sum_{o\in O\backslash A_{i_0}}\marge{o}{A_{i_0}} \le 
+    \sum_{o\in O\backslash A_{i_0}} \tau_{i_0}\le \frac{\opt}{c},
+    \end{equation}
+    \begin{equation}\label{ineq:sub2}
+        f((O\backslash A_{i_0})\cup B_{i_0})-f(B_{i_0})\le 
+    \sum_{o\in (O\backslash A_{i_0})\backslash B_{i_0}}\marge{o}{B_{i_0}}\le 
+    \sum_{o\in (O\backslash A_{i_0})\backslash B_{i_0}} \tau_{i_0}\le \frac{\opt}{c}.
+    \end{equation}
+    Then, we can bound the approximation ratio as follows,
+    \begin{align*}
+        \opt&=f(O)\le f(O \backslash A_{i_0})+ f(O\cap A_{i_0}) \numberthis \label{ineq:sub3}\\
+        &\le f(O\cup A_{i_0}) + f((O\backslash A_{i_0})\cup B_{i_0})+ \alpha f(A_{i_0}'') \numberthis \label{ineq:sub4}\\
+        &\le f(A_{i_0})+f(B_{i_0})+\frac{2\opt}{c}+\alpha f(A_{i_0}'') \numberthis \label{ineq:sub5}\\
+        &\le f(A_{i_0}')+f(B_{i_0}')+\alpha f(A_{i_0}'')+\frac{2\opt}{c} \numberthis \label{ineq:sub6}\\
+        &\le (2+\alpha)f(C_{i_0})+\frac{2\opt}{c},
+    \end{align*}
+    where Inequality~\ref{ineq:sub3} and~\ref{ineq:sub4} follow from submodularity, 
+    Inequality~\ref{ineq:sub5} follows from Inequality~\ref{ineq:sub1} and~\ref{ineq:sub2},
+    and Inequality~\ref{ineq:sub6} follows from Theorem~\ref{thm:threshold}.
+
+    Therefore, $f(C)\ge f(C_{i_0})\ge \opt/c$.
+
+    \textbf{Success Probability.}
+    From Lemma~\ref{thm:threshold}, each call of \threseq succeeds with probability $1-\delta/2$.
+    If the iteration with $\tau=\tau_{i_0}$ succeeds, Algorithm \adapst always succeeds.
+    Then, the success probability of \adapst can be calculated as follows,
+    $$\prob{\text{Algorithm~\ref{alg:ast} succeeds}} \ge 1-2\prob{\threseq \text{ fails}}\ge 1-\delta.$$
+
+    % \textbf{Adaptivity and Query Complexity.}
+    % The oracle queries occur within \threseq and \unc. 
+    % And there are 2 \threseq and 1 \unc within an iteration.
+    % Since the for loop is in parallel, the adaptivity is the linear combination
+    % of $\oh{\log(n)/\epsi}$ and $\Theta$, which is $\oh{\log( n) / \epsi + \Theta }$.
+    % And, the total queries are $\oh{ \log_{1 - \epsi}(1/(6k)) \cdot \left( n / \epsi + \Xi \right) }$.
+\end{proof}

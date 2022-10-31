@@ -1,0 +1,695 @@
+\section{Proof of main result}
+
+\subsection{Gateaux differentiation}
+
+Recall the notation
+$$
+ \psi_0(w)=\psi(w,\theta_0,\gamma_0,\alpha^{\min}_0), \quad \psi(w,\theta,\gamma,\alpha)=m(w,\gamma)+\alpha(w)\{y-\gamma(w)\}-\theta,
+$$
+where $\gamma\mapsto m(w,\gamma)$ is linear. For readability, we introduce the following notation for Gateaux differentiation. 
+\begin{definition}[Gateaux derivative]
+Let $u(w),v(w)$ be functions and let $\tau,\zeta \text{ in }  \mathbb{R}$ be scalars. The Gateaux derivative of $\psi(w,\theta,\gamma,\alpha)$ with respect to its argument $\gamma$ in the direction $u$ is
+$$
+\{\partial_{\gamma} \psi(w,\theta,\gamma,\alpha)\}(u)=\frac{\partial}{\partial \tau} \psi(w,\theta,\gamma+\tau u,\alpha) \bigg|_{\tau=0}.
+$$
+The cross derivative of $\psi(w,\theta,\gamma,\alpha)$ with respect to its arguments $(\gamma,\alpha)$ in the directions $(u,v)$ is
+$$
+\{\partial^2_{\gamma,\alpha} \psi(w,\theta,\gamma,\alpha)\}(u,v)=\frac{\partial^2}{\partial \tau \partial \zeta} \psi(w,\theta,\gamma+\tau u,\alpha+\zeta v) \bigg|_{\tau=0,\zeta=0}.
+$$
+\end{definition}
+
+\begin{proposition}[Calculation of derivatives]\label{prop:deriv}
+\begin{align*}
+    \{\partial_{\gamma} \psi(w,\theta,\gamma,\alpha)\}(u)&=m(w,u)-\alpha(w)u(w); \\
+    \{\partial_{\alpha} \psi(w,\theta,\gamma,\alpha)\}(v)&=v(w)\{y-\gamma(w)\}; \\
+    \{\partial^2_{\gamma,\alpha} \psi(w,\theta,\gamma,\alpha)\}(u,v)&=-v(w)u(w).
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+For the first result, write
+$$
+\psi(w,\theta,\gamma+\tau u,\alpha)=m(w,\gamma)+\tau m(w,u)+\alpha(w)\{y-\gamma(w)-\tau u(w)\}-\theta.
+$$
+For the second result, write
+$$
+\psi(w,\theta,\gamma,\alpha+\zeta v)=m(w,\gamma)+\alpha(w)\{y-\gamma(w)\}+\zeta v(w)\{y-\gamma(w)\}-\theta.
+$$
+For the final result, write
+\begin{align*}
+    &\psi(w,\theta,\gamma+\tau u,\alpha+\zeta v)\\
+    &=m(w,\gamma)+\tau m(w,u)+\alpha(w)\{y-\gamma(w)-\tau u(w)\}+\zeta v(w)\{y-\gamma(w)-\tau u(w)\}-\theta.
+\end{align*}
+Finally, take scalar derivatives with respect to $(\tau,\zeta)$.
+\end{proof}
+
+By using the doubly robust moment function, we have the following helpful property.
+\begin{proposition}[Mean zero derivatives]\label{prop:mean_zero}
+For any $(u,v)$,
+$$
+E\{\partial_{\gamma} \psi_0(W)\}(u)=0,\quad E\{\partial_{\alpha} \psi_0(W)\}(v)=0.
+$$
+\end{proposition}
+
+\begin{proof}
+We appeal to Proposition~\ref{prop:deriv}. For the first result, write
+$$
+E\{\partial_{\gamma} \psi_0(W)\}(u)=E\{m(W,u)-\alpha_0^{\min}(W)u(W)\}.
+$$
+In the case of nonparametric regression or projection, appeal to the definition of minimal Riesz representer $\alpha_0^{\min}$. In the case of nonparametric instrumental variable regression,
+\begin{align*}
+    E\{m(W_1,u)-\alpha_0^{\min}(W_2)u(W_1)\}
+    &=E[\{\eta_0^{\min}(W_1)-\alpha_0^{\min}(W_2)\}u(W_1)] \\
+    &=E([\eta_0^{\min}(W_1)-E\{\alpha_0^{\min}(W_2) \mid W_1\}]u(W_1)) \\
+    &=0.
+\end{align*}
+For the second result, write
+$$
+E\{\partial_{\alpha} \psi_0(W)\}(v)=E[v(W)\{Y-\gamma_0(W)\}].
+$$
+In the case of nonparametric regression, $\gamma_0(w)=E(Y\mid W=w)$ and we appeal to law of iterated expectations. In the case of nonparametric projection, the desired result holds by orthogonality of the projection residual. In the case of nonparametric instrumental variable regression,
+$$
+E[v(W_2)\{Y-\gamma_0(W_1)\}]=E(v(W_2)[E(Y \mid W_2)-E\{\gamma_0(W_1) \mid W_2\}])=0.
+$$
+\end{proof}
+
+\subsection{Taylor expansion}
+
+Train $(\hat{\gamma}_{\ell},\hat{\alpha}_{\ell})$ on observations in $I_{\ell}^c$. Let $n_{\ell}=|I_{\ell}|=n/L$ be the number of observations in $I_{\ell}$. Denote by $E_{\ell}(\cdot)=n_{\ell}^{-1}\sum_{i\in I_{\ell}}(\cdot)$ the average over observations in $I_{\ell}$. Denote by $E_n(\cdot)=n^{-1}\sum_{i=1}^n(\cdot)$ the average over all observations in the sample.
+
+\begin{definition}[Foldwise target and oracle]
+\begin{align*}
+ \hat{\theta}_{\ell}&=E_{\ell} [m(W,\hat{\gamma}_{\ell})+\hat{\alpha}_{\ell}(W)\{Y-\hat{\gamma}_{\ell}(W)\}];\\
+    \bar{\theta}_{\ell}&=E_{\ell} [m(W,\gamma_0)+\alpha_0^{\min}(W)\{Y-\gamma_0(W)\}].
+\end{align*}
+%Likewise for the ill posed inverse problem, replacing $(\alpha_0^{\min},\hat{\alpha}_{\ell})$ with $(\eta_0^{\min},\hat{\eta}_{\ell})$.
+\end{definition}
+
+\begin{proposition}[Taylor expansion]\label{prop:Taylor}
+Let $u=\hat{\gamma}_{\ell}-\gamma_0$ and $v=\hat{\alpha}_{\ell}-\alpha_0^{\min}$. Then $n_{\ell}^{1/2}(\hat{\theta}_{\ell}-\bar{\theta}_{\ell})=\sum_{j=1}^3 \Delta_{j{\ell}}$ where
+\begin{align*}
+    \Delta_{1{\ell}}&=n_{\ell}^{1/2}E_{\ell}\{m(W,u)-\alpha_0^{\min}(W)u(W)\}; \\
+    \Delta_{2{\ell}}&=n_{\ell}^{1/2}E_{\ell}[v(W)\{Y-\gamma_0(W)\}]; \\
+    \Delta_{3{\ell}}&=\frac{n_{\ell}^{1/2}}{2}E_{\ell} \{-u(W)v(W)\}.
+\end{align*}
+%Likewise for the ill posed inverse problem, replacing $(\alpha_0^{\min},\hat{\alpha}_{\ell})$ with $(\eta_0^{\min},\hat{\eta}_{\ell})$.
+\end{proposition}
+
+\begin{proof}
+An exact Taylor expansion gives
+$$
+\psi(w,\theta_0,\hat{\gamma}_{\ell},\hat{\alpha}_{\ell})-\psi_0(w)
+=\{\partial_{\gamma} \psi_0(w)\}(u)+\{\partial_{\alpha} \psi_0(w)\}(v)+\frac{1}{2}\{\partial^2_{\gamma,\alpha} \psi_0(w)\}(u,v).
+$$
+Averaging over observations in $I_{\ell}$
+\begin{align*}
+    \hat{\theta}_{\ell}-\bar{\theta}_{\ell}
+    &=E_{\ell}\{\psi(W,\theta_0,\hat{\gamma}_{\ell},\hat{\alpha}_{\ell})\}-E_{\ell}\{\psi_0(W)\} \\
+    &=E_{\ell}\{\partial_{\gamma} \psi_0(W)\}(u)+E_{\ell}\{\partial_{\alpha} \psi_0(W)\}(v)+\frac{1}{2}E_{\ell}\{\partial^2_{\gamma,\alpha} \psi_0(W)\}(u,v).
+\end{align*}
+Finally appeal to Proposition~\ref{prop:deriv}.
+\end{proof}
+
+\subsection{Residuals}
+
+\begin{proposition}[Residuals]\label{prop:resid}
+Suppose Assumption~\ref{assumption:cont} holds and
+$$
+E[\{Y-\gamma_0(W)\}^2 \mid W ]\leq \bar{\sigma}^2,\quad \|\alpha_0^{\min}\|_{\infty}\leq\bar{\alpha}.
+$$
+Then with probability $1-\epsilon/L$,
+\begin{align*}
+    |\Delta_{1\ell}|&\leq t_1=\left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}+\bar{\alpha}^2)^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}; \\
+    |\Delta_{2\ell}|&\leq t_2= \left(\frac{3L}{\epsilon}\right)^{1/2}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2};\\
+    |\Delta_{3\ell}|&\leq t_3= \frac{3L^{1/2}}{2\epsilon}\{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+We proceed in steps.
+\begin{enumerate}
+    \item Markov inequality implies
+    \begin{align*}
+        \text{pr}(|\Delta_{1\ell}|>t_1)&\leq \frac{E(\Delta^2_{1\ell})}{t_1^2};\\
+        \text{pr}(|\Delta_{2\ell}|>t_2)&\leq \frac{E(\Delta^2_{2\ell})}{t_2^2}; \\
+        \text{pr}(|\Delta_{3\ell}|>t_3)&\leq \frac{E(|\Delta_{3\ell}|)}{t_3}.
+    \end{align*}
+    \item Law of iterated expectations implies
+    \begin{align*}
+        E(\Delta^2_{1\ell})&=E\{E(\Delta^2_{1\ell}\mid I^c_{\ell})\};\\
+        E(\Delta^2_{2\ell})&=E\{E(\Delta^2_{2\ell}\mid I^c_{\ell})\}; \\
+        E(|\Delta_{3\ell}|)&=E\{E(|\Delta_{3\ell}|\mid I^c_{\ell})\}.
+    \end{align*}
+    \item Bounding conditional moments.
+    
+    Conditional on $I_{\ell}^c$, $(u,v)$ are nonrandom. Moreover, observations within fold $I_{\ell}$ are independent and identically distributed. Hence by Proposition~\ref{prop:mean_zero} and assumption of finite $(\bar{Q},\bar{\alpha})$
+    \begin{align*}
+        E(\Delta^2_{1\ell}\mid I^c_{\ell})
+        &=E \left([n_{\ell}^{1/2}E_{\ell}\{m(W,u)-\alpha_0^{\min}(W)u(W)\}]^2 \mid I^c_{\ell}\right) \\
+        &=E \left[ \frac{n_{\ell}}{n^2_{\ell}} \sum_{i,j\in I_{\ell}} \{m(W_i,u)-\alpha_0^{\min}(W_i)u(W_i)\}\{m(W_j,u)-\alpha_0^{\min}(W_j)u(W_j)\} \mid I^c_{\ell}\right] \\
+        &= \frac{n_{\ell}}{n^2_{\ell}} \sum_{i,j\in I_{\ell}}E \left[ \{m(W_i,u)-\alpha_0^{\min}(W_i)u(W_i)\}\{m(W_j,u)-\alpha_0^{\min}(W_j)u(W_j)\} \mid I^c_{\ell}\right] \\
+        &= \frac{n_{\ell}}{n^2_{\ell}} \sum_{i\in I_{\ell}}E \left[ \{m(W_i,u)-\alpha_0^{\min}(W_i)u(W_i)\}^2 \mid I^c_{\ell}\right] \\
+        &=E[\{m(W,u)-\alpha_0^{\min}(W)u(W)\}^2\mid I^c_{\ell}] \\
+        &\leq 2 E\{m(W,u)^2\mid I^c_{\ell}\}+2E[\{\alpha_0^{\min}(W)u(W)\}^2\mid I^c_{\ell}] \\
+        &\leq 2(\bar{Q}+\bar{\alpha}^2)\mathcal{R}(\hat{\gamma}_{\ell})^q.
+    \end{align*}
+    Similarly by Proposition~\ref{prop:mean_zero} and assumption of finite $\bar{\sigma}$
+    \begin{align*}
+        E(\Delta^2_{2\ell}\mid I^c_{\ell})
+       &=E \left\{(n_{\ell}^{1/2}E_{\ell}[v(W)\{Y-\gamma_0(W)\}])^2 \mid I^c_{\ell}\right\} \\
+        &=E \left[ \frac{n_{\ell}}{n^2_{\ell}} \sum_{i,j\in I_{\ell}} v(W_i)\{Y_i-\gamma_0(W_i)\} v(W_j)\{Y_j-\gamma_0(W_j)\} \mid I^c_{\ell}\right] \\
+        &= \frac{n_{\ell}}{n^2_{\ell}} \sum_{i,j\in I_{\ell}}E \left[ v(W_i)\{Y_i-\gamma_0(W_i)\} v(W_j)\{Y_j-\gamma_0(W_j)\} \mid I^c_{\ell}\right] \\
+        &= \frac{n_{\ell}}{n^2_{\ell}} \sum_{i\in I_{\ell}}E \left[ v(W_i)^2\{Y_i-\gamma_0(W_i)\}^2 \mid I^c_{\ell}\right] \\
+        &=E[v(W)^2\{Y-\gamma_0(W)\}^2\mid I^c_{\ell}] \\
+        &=E\left(v(W)^2 E[\{Y-\gamma_0(W)\}^2\mid W,I^c_{\ell}]\mid I^c_{\ell}\right) \\
+        &\leq \bar{\sigma}^2 \mathcal{R}(\hat{\alpha}_{\ell}).
+    \end{align*}
+    Finally by Cauchy Schwarz inequality
+    \begin{align*}
+        E(|\Delta_{3\ell}|\mid I^c_{\ell})
+        &=\frac{n_{\ell}^{1/2}}{2}  E\{|-u(W)v(W)|\mid I^c_{\ell}\} \\
+        &\leq \frac{n_{\ell}^{1/2}}{2} [E\{u(W)^2\mid I^c_{\ell}\}]^{1/2} [E\{v(W)^2\mid I^c_{\ell}\}]^{1/2} \\
+        &=\frac{n_{\ell}^{1/2}}{2}  \{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+    \end{align*}
+    \item Collecting results gives
+     \begin{align*}
+        \text{pr}(|\Delta_{1\ell}|>t_1)&\leq \frac{2 (\bar{Q}+\bar{\alpha}^2) \mathcal{R}(\hat{\gamma}_{\ell})^q}{t_1^2}=\frac{\epsilon}{3L};\\
+        \text{pr}(|\Delta_{2\ell}|>t_2)&\leq \frac{\bar{\sigma}^2 \mathcal{R}(\hat{\alpha}_{\ell})}{t_2^2}=\frac{\epsilon}{3L}; \\
+        \text{pr}(|\Delta_{3\ell}|>t_3)&\leq \frac{n_{\ell}^{1/2} \{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}}{2t_3}=\frac{\epsilon}{3L}.
+    \end{align*}
+    Therefore with probability $1-\epsilon/L$, the following inequalities hold:
+\begin{align*}
+    |\Delta_{1\ell}|&\leq t_1=\left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}+\bar{\alpha}^2)^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2};\\
+    |\Delta_{2\ell}|&\leq t_2=\left(\frac{3L}{\epsilon}\right)^{1/2}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} ;\\
+    |\Delta_{3\ell}|&\leq t_3=\frac{3L}{2\epsilon}n_{\ell}^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+\end{align*}
+Finally recall $n_{\ell}=n/L$.
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Residuals: Alternative path]\label{prop:resid_alt}
+Suppose Assumption~\ref{assumption:cont} holds and
+$$
+E[\{Y-\gamma_0(W)\}^2 \mid W ]\leq \bar{\sigma}^2,\quad \|\alpha_0^{\min}\|_{\infty}\leq\bar{\alpha},\quad \|\hat{\alpha}_{\ell}\|_{\infty}\leq\bar{\alpha}'.
+$$
+Then with probability $1-\epsilon/L$,
+\begin{align*}
+    |\Delta_{1\ell}|&\leq t_1=\left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}+\bar{\alpha}^2)^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}; \\
+    |\Delta_{2\ell}|&\leq t_2= \left(\frac{3L}{\epsilon}\right)^{1/2}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2};\\
+    |\Delta_{3\ell}|&\leq t_3= \left(\frac{3L}{4\epsilon}\right)^{1/2}(\bar{\alpha}+\bar{\alpha}')\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\\
+    &\quad \quad \quad +(4L)^{-1/2} [\{n\mathcal{P}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} \wedge \{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}].
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+See Proposition~\ref{prop:resid} for $(t_1,t_2)$. We focus on the alternative bound $t_3$.
+\begin{enumerate}
+\item Decomposition.
+
+    Write
+    $$
+    2\Delta_{3\ell}=n_{\ell}^{1/2}E_{\ell} \{-u(W)v(W)\}=\Delta_{3'\ell}+\Delta_{3''\ell},
+    $$
+    where
+    \begin{align*}
+        \Delta_{3'\ell}&=n_{\ell}^{1/2}E_{\ell} [-u(W)v(W)+E\{u(W)v(W)\mid I^c_{\ell}\}]; \\
+        \Delta_{3''\ell}&= n_{\ell}^{1/2} E\{-u(W)v(W)\mid I^c_{\ell}\}.
+    \end{align*}
+
+\item Former term.
+
+By Markov inequality
+$$
+\text{pr}(|\Delta_{3'\ell}|>t)\leq \frac{E(\Delta^2_{3'\ell})}{t^2}.
+$$
+Law of iterated expectations implies
+$$
+E(\Delta^2_{3'\ell})=E\{E(\Delta^2_{3'\ell}\mid I^c_{\ell})\}.
+$$
+We bound the conditional moment. Conditional on $I_{\ell}^c$, $(u,v)$ are nonrandom. Moreover, observations within fold $I_{\ell}$ are independent and identically distributed. Since each summand in $\Delta_{3'\ell}$ has conditional mean zero by construction, and since $(\bar{\alpha},\bar{\alpha}')$ are finite by hypothesis,
+\begin{align*}
+        &E(\Delta^2_{3'\ell}\mid I^c_{\ell}) \\
+        &=  E\left\{\left(n_{\ell}^{1/2}E_{\ell} [-u(W)v(W)+E\{u(W)v(W)\mid I^c_{\ell}\}]\right)^2 \mid I^c_{\ell}\right\} \\
+        &= E\left( \frac{n_{\ell}}{n^2_{\ell}}\sum_{i,j \in I_{\ell}} [-u(W_i)v(W_i)+E\{u(W_i)v(W_i)\mid I^c_{\ell}\}][-u(W_j)v(W_j)+E\{u(W_j)v(W_j)\mid I^c_{\ell}\}] \mid I^c_{\ell}\right) \\
+        &= \frac{n_{\ell}}{n^2_{\ell}}\sum_{i,j \in I_{\ell}} E\left(  [-u(W_i)v(W_i)+E\{u(W_i)v(W_i)\mid I^c_{\ell}\}][-u(W_j)v(W_j)+E\{u(W_j)v(W_j)\mid I^c_{\ell}\}] \mid I^c_{\ell}\right) \\
+        &= \frac{n_{\ell}}{n^2_{\ell}}\sum_{i \in I_{\ell}} E\left(  [-u(W_i)v(W_i)+E\{u(W_i)v(W_i)\mid I^c_{\ell}\}]^2 \mid I^c_{\ell}\right) \\
+        &=E([u(W)v(W)-E\{u(W)v(W)\mid I^c_{\ell}\} ]^2\mid I^c_{\ell}) \\
+        &\leq E \{ u(W)^2v(W)^2\mid I^c_{\ell}\} \\
+        &\leq (\bar{\alpha}+\bar{\alpha}')^2\mathcal{R}(\hat{\gamma}_{\ell}).
+    \end{align*}
+    Collecting results gives
+    $$
+     \text{pr}(|\Delta_{3'\ell}|>t)\leq \frac{(\bar{\alpha}+\bar{\alpha}')^2\mathcal{R}(\hat{\gamma}_{\ell})}{t^2}=\frac{\epsilon}{3L}.
+    $$
+    Therefore with probability $1-\epsilon/(3L)$,
+    $$
+    |\Delta_{3'\ell}|\leq t=\left(\frac{3L}{\epsilon}\right)^{1/2}(\bar{\alpha}+\bar{\alpha}')\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}.
+    $$
+
+\item Latter term.
+
+Specializing to nonparametric instrumental variable regression,
+\begin{align*}
+    E\{-u(W)v(W)\mid I^c_{\ell}\}
+    &=E[  E\{-u(W_1)\mid W_2, I^c_{\ell}\}v(W_2) \mid I^c_{\ell}] \\
+    &\leq  \{E( [E\{u(W_1)\mid W_2, I^c_{\ell}\}]^2 \mid I^c_{\ell})\}^{1/2}[E\{v(W_2)^2\mid I^c_{\ell}\}]^{1/2} \\
+    &=\{\mathcal{P}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+\end{align*}
+Hence
+$$
+\Delta_{3''\ell} \leq n_{\ell}^{1/2}\{\mathcal{P}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}=L^{-1/2}\{n\mathcal{P}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+$$
+Likewise
+\begin{align*}
+    E\{-u(W)v(W)\mid I^c_{\ell}\} 
+   &=E[  -u(W_1)E\{v(W_2)\mid W_1, I^c_{\ell}\} \mid I^c_{\ell}] \\
+    &\leq  [E\{u(W_1)^2\mid I^c_{\ell}\}]^{1/2}\{E( [E\{v(W_2)\mid W_1, I^c_{\ell}\}]^2 \mid I^c_{\ell})\}^{1/2} \\
+    &=\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}.
+\end{align*}
+Hence
+$$
+\Delta_{3''\ell} \leq n_{\ell}^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\{\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}=L^{-1/2}\{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}.
+$$
+
+    \item Combining terms.
+    
+ With probability $1-\epsilon/(3L)$,
+\begin{align*}
+    |\Delta_3| &\leq t_3= \left(\frac{3L}{4\epsilon}\right)^{1/2}(\bar{\alpha}+\bar{\alpha}')\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\\
+    &\quad \quad \quad +(4L)^{-1/2} [\{n\mathcal{P}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} \wedge \{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}].
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\subsection{Main argument}
+
+\begin{definition}[Overall target and oracle]
+$$
+    \hat{\theta}=\frac{1}{L}\sum_{\ell=1}^L \hat{\theta}_{\ell},\quad 
+    \bar{\theta}=\frac{1}{L}\sum_{\ell=1}^L \bar{\theta}_{\ell} .
+$$
+\end{definition}
+
+\begin{proposition}[Oracle approximation]\label{prop:Delta}
+Suppose the conditions of Proposition~\ref{prop:resid} hold. Then with probability $1-\epsilon$
+$$
+\frac{n^{1/2}}{\sigma}|\hat{\theta}-\bar{\theta}|\leq \Delta= \frac{3L}{\epsilon  \sigma}\left[(\bar{Q}^{1/2}+\bar{\alpha})\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}+\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}+ \{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}\right].
+$$
+\end{proposition}
+
+\begin{proof}
+We proceed in steps.
+\begin{enumerate}
+    \item Decomposition.
+    
+    By Proposition~\ref{prop:Taylor}, write
+    \begin{align*}
+    n^{1/2}(\hat{\theta}-\bar{\theta})
+    &=\frac{n^{1/2}}{n_{\ell}^{1/2}}\frac{1}{L} \sum_{\ell=1}^L n_{\ell}^{1/2} (\hat{\theta}_{\ell}-\bar{\theta}_{\ell}) \\
+    &= L^{1/2}\frac{1}{L} \sum_{\ell=1}^L \sum_{j=1}^3 \Delta_{j\ell}.
+\end{align*} 
+
+    \item Union bound.
+    
+    Define the events
+$$
+\mathcal{E}_{\ell}=\{\text{for all } j \; (j=1,2,3),\; |\Delta_{j\ell}|\leq t_j\},\quad \mathcal{E}=\cap_{\ell=1}^L \mathcal{E}_{\ell},\quad \mathcal{E}^c=\cup_{\ell=1}^L \mathcal{E}^c_{\ell}.
+$$
+Hence by the union bound and Proposition~\ref{prop:resid},
+$$
+\text{pr}(\mathcal{E}^c)\leq \sum_{\ell=1}^L \text{pr}(\mathcal{E}^c_{\ell}) \leq L\frac{\epsilon}{L}=\epsilon.
+$$
+    \item Collecting results.
+
+    Therefore with probability $1-\epsilon$,
+\begin{align*}
+ n^{1/2}|\hat{\theta}-\bar{\theta}|&\leq L^{1/2}\frac{1}{L} \sum_{\ell=1}^L \sum_{j=1}^3 |\Delta_{jk}| \\
+ &\leq L^{1/2}\frac{1}{L} \sum_{\ell=1}^L \sum_{j=1}^3 t_j \\
+ &=L^{1/2}\sum_{j=1}^3 t_j.
+\end{align*}
+Finally, we simplify $(t_j)$. For $a,b>0$, $(a+b)^{1/2}\leq a^{1/2}+b^{1/2}$. Moreover, $3>6^{1/2}>3^{1/2}>3/2$. Finally, for $\epsilon\leq 1$, $\epsilon^{-1/2}\leq \epsilon^{-1}$. In summary
+\begin{align*}
+    t_1&=\left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}+\bar{\alpha}^2)^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}
+   \leq \frac{3L^{1/2}}{\epsilon}(\bar{Q}^{1/2}+\bar{\alpha})\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}; \\
+    t_2&=\left(\frac{3L}{\epsilon}\right)^{1/2}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} 
+   \leq \frac{3L^{1/2}}{\epsilon}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}; \\
+    t_3&=\frac{3L^{1/2}}{2\epsilon}\{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}
+    \leq \frac{3L^{1/2}}{\epsilon}\{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}.
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Oracle approximation: Alternative path]\label{prop:Delta_alt}
+Suppose the conditions of Proposition~\ref{prop:resid_alt} hold. Then with probability $1-\epsilon$
+\begin{align*}
+    \frac{n^{1/2}}{\sigma}|\hat{\theta}-\bar{\theta}|\leq 
+\Delta&= \frac{4 L}{\epsilon^{1/2}  \sigma}\left[(\bar{Q}^{1/2}+\bar{\alpha}+\bar{\alpha}')\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}+\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2}\right]\\
+&\quad +\frac{1}{2L^{1/2}\sigma}[\{n\mathcal{P}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} \wedge \{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}].
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+As in Proposition~\ref{prop:Delta}, Propositions~\ref{prop:Taylor} and~\ref{prop:resid_alt} imply that with probability $1-\epsilon$
+\begin{align*}
+ n^{1/2}|\hat{\theta}-\bar{\theta}|&\leq L^{1/2}\sum_{j=1}^3 t_j.
+\end{align*}
+Finally, we simplify $(t_j)$. For $a,b>0$, $(a+b)^{1/2}\leq a^{1/2}+b^{1/2}$. In summary,
+\begin{align*}
+    t_1&=\left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}+\bar{\alpha}^2)^{1/2}\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}
+    \leq \left(\frac{6L}{\epsilon}\right)^{1/2}(\bar{Q}^{1/2}+\bar{\alpha})\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{q/2}; \\
+    t_2&= \left(\frac{3L}{\epsilon}\right)^{1/2}\bar{\sigma}\{\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2};\\
+    t_3&= \left(\frac{3L}{4\epsilon}\right)^{1/2}(\bar{\alpha}+\bar{\alpha}')\{\mathcal{R}(\hat{\gamma}_{\ell})\}^{1/2}\\
+    &\quad  +(4L)^{-1/2} [\{n\mathcal{P}(\hat{\gamma}_{\ell})\mathcal{R}(\hat{\alpha}_{\ell})\}^{1/2} \wedge \{n\mathcal{R}(\hat{\gamma}_{\ell})\mathcal{P}(\hat{\alpha}_{\ell})\}^{1/2}].
+\end{align*}
+Finally note $6^{1/2}+(3/4)^{1/2}\leq 4$ when combining terms from $t_1$ and $t_3$.
+\end{proof}
+
+\begin{lemma}[Berry Esseen Theorem \cite{shevtsova2011absolute}]\label{lem:berry}
+Suppose $(Z_i)$ $(i=1,...,n)$ are independent and identically distributed random variables with $E(Z_i)=0$, $E(Z_i^2)=\sigma^2$, and $E(|Z_i|^3)=\xi^3$. Then
+$$
+\sup_{z \in\mathbb{R}}\left|\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}E_n(Z_i)\leq z\right\}-\Phi(z)\right|\leq c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}},
+$$
+where $c^{BE}=0.4748$ and $\Phi(z)$ is the standard Gaussian cumulative distribution function.
+\end{lemma}
+
+
+\begin{proof}[of Theorem~\ref{thm:dml}]
+Fix $z$ in $\mathbb{R}$. First, we show that
+$$
+\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z\right\}-\Phi(z)\leq c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}} +\frac{\Delta}{(2\pi)^{1/2}}+\epsilon,
+$$
+where $\Delta$ is defined in Propositions~\ref{prop:Delta} and~\ref{prop:Delta_alt}. We proceed in steps.
+\begin{enumerate}
+    \item High probability bound. 
+    
+    By Propositions~\ref{prop:Delta} and~\ref{prop:Delta_alt}, with probability $1-\epsilon$, 
+$$
+\frac{n^{1/2}}{\sigma}(\bar{\theta}-\hat{\theta}) \leq \frac{n^{1/2}}{\sigma}|\hat{\theta}-\bar{\theta}|\leq \Delta.
+$$
+Observe that
+\begin{align*}
+    \text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z\right\}
+    &=\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z+\frac{n^{1/2}}{\sigma}(\bar{\theta}-\hat{\theta})\right\}\\
+    &\leq \text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z+\Delta\right\}+\epsilon.
+\end{align*}
+    \item Mean value theorem.
+    
+    Let $\phi(z)$ be the standard Gaussian probability density function. There exists some $z'$ such that
+    $$
+\Phi(z+\Delta)-\Phi(z) =\phi(z') \Delta \leq \frac{\Delta}{\sqrt{2 \pi}}.
+$$
+    \item Berry Esseen theorem.
+    
+    Observe that
+$$
+   \bar{\theta}-\theta_0
+   =E_n[m(W,\gamma_0)+\alpha_0^{\min}(W)\{Y-\gamma_0(W)\}]-\theta_0 
+   =E_n[\psi_0(W)].
+$$
+    Therefore taking $Z_i=\psi_0(W_i)$ in Lemma~\ref{lem:berry},
+$$
+\sup_{z''}\left|\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z''\right\}-\Phi(z'')\right|\leq c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}}.
+$$
+Hence by the high probability bound and mean value theorem steps above, taking $z''=z+\Delta$
+\begin{align*}
+    &\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z\right\}-\Phi(z)\\
+    &\leq \text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z+\Delta\right\}-\Phi(z)+\epsilon \\
+    &=\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z+\Delta\right\}-\Phi(z+\Delta)+\Phi(z+\Delta)-\Phi(z)+\epsilon \\
+    &\leq c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}}+\frac{\Delta}{\sqrt{2 \pi}}+\epsilon.
+\end{align*}
+\end{enumerate}
+Next, we show that
+$$
+\Phi(z)-\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z\right\}\leq c^{BE}\left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}} +\frac{\Delta}{(2\pi)^{1/2}}+\epsilon.
+$$
+where $\Delta$ is defined in Propositions~\ref{prop:Delta} and~\ref{prop:Delta_alt}. We proceed in steps.
+\begin{enumerate}
+    \item High probability bound. 
+    
+    By Propositions~\ref{prop:Delta} and~\ref{prop:Delta_alt}, with probability $1-\epsilon$, 
+$$
+\frac{n^{1/2}}{\sigma}(\hat{\theta}-\bar{\theta}) \leq \frac{n^{1/2}}{\sigma}|\hat{\theta}-\bar{\theta}|\leq \Delta,
+$$
+hence
+$$
+z-\Delta \leq z-\frac{n^{1/2}}{\sigma}(\hat{\theta}-\bar{\theta}).
+$$
+Observe that
+\begin{align*}
+    \text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z-\Delta \right\}
+    &\leq \text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z-\frac{n^{1/2}}{\sigma}(\hat{\theta}-\bar{\theta}) \right\}+\epsilon \\
+    &=\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z \right\}+\epsilon.
+\end{align*}
+    \item Mean value theorem. 
+    
+    There exists some $z'$ such that
+    $$
+\Phi(z)-\Phi(z-\Delta)=\phi(z') \Delta \leq  \frac{\Delta}{\sqrt{2 \pi}}.
+$$
+    \item Berry Esseen theorem.
+    
+    As argued above,
+$$
+\sup_{z''}\left|\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z''\right\}-\Phi(z'')\right|\leq c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}}.
+$$
+Hence by the mean value theorem and high probability bound steps above, taking $z''=z-\Delta$
+\begin{align*}
+    &\Phi(z)-\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\hat{\theta}-\theta_0)\leq z\right\}\\
+    &\leq \Phi(z)-\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z-\Delta\right\}+\epsilon \\
+    &=\Phi(z)-\Phi(z-\Delta)+\Phi(z-\Delta)-\text{\normalfont pr}\left\{\frac{n^{1/2}}{\sigma}(\bar{\theta}-\theta_0)\leq z-\Delta\right\}+\epsilon \\
+    &\leq \frac{\Delta}{\sqrt{2 \pi}}+c^{BE} \left(\frac{\xi}{\sigma}\right)^3n^{-\frac{1}{2}}+\epsilon.
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+\subsection{Variance estimation}
+
+Recall that $E_{\ell}(\cdot)=n_{\ell}^{-1}\sum_{i\in I_{\ell}}(\cdot)$ means the average over observations in $I_{\ell}$ and $E_n(\cdot)=n^{-1}\sum_{i=1}^n(\cdot)$ means the average over all observations in the sample.
+
+\begin{definition}[Shorter notation]
+For $i \text{ in }  I_{\ell}$, define
+\begin{align*}
+    \psi_0(W_i)&=\psi(W_i,\theta_0,\gamma_0,\alpha_0^{\min}); \\
+    \hat{\psi}(W_i)&=\psi(W_i,\hat{\theta},\hat{\gamma}_{\ell},\hat{\alpha}_{\ell}).
+\end{align*}
+\end{definition}
+
+\begin{proposition}[Foldwise second moment]\label{prop:foldwise2}
+$$
+E_{\ell}[\{\hat{\psi}(W)-\psi_0(W)\}^2]\leq 4\left\{(\hat{\theta}-\theta_0)^2+\sum_{j=4}^6 \Delta_{j\ell}\right\},
+$$
+where
+\begin{align*}
+    \Delta_{4\ell} &=E_{\ell}\{m(W,u)^2\} ;\\
+    \Delta_{5\ell}&=E_{\ell}[\{\hat{\alpha}_{\ell}(W)u(W)\}^2]; \\
+    \Delta_{6\ell}&=E_{\ell}[v(W)^2\{Y-\gamma_0(W)\}^2].
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+Write
+\begin{align*}
+    \hat{\psi}(W_i)-\psi_0(W_i)
+    &=m(W_i,\hat{\gamma}_{\ell})+\hat{\alpha}_{\ell}(W_i)\{Y_i-\hat{\gamma}_{\ell}(W_i)\}-\hat{\theta}\\
+    &\quad -\left[m(W_i,\gamma_0)+\alpha_0^{\min}(W_i)\{Y_i-\gamma_0(W_i)\}-\theta_0\right] \\
+    &\quad\pm \hat{\alpha}_{\ell}\{Y-\gamma_0(W_i)\}\\
+    &=(\theta_0-\hat{\theta})+m(W_i,u)-\hat{\alpha}_{\ell}(W_i)u(W_i)+v(W_i)\{Y-\gamma_0(W_i)\}.
+\end{align*}
+Hence
+$$
+\{\hat{\psi}(W_i)-\psi_0(W_i)\}^2\leq 4\left[ (\theta_0-\hat{\theta})^2+m(W_i,u)^2+\{\hat{\alpha}_{\ell}(W_i)u(W_i)\}^2+v(W_i)^2\{Y-\gamma_0(W_i)\}^2\right].
+$$
+Finally take $E_{\ell}(\cdot)$ of both sides.
+\end{proof}
+
+\begin{proposition}[Residuals]\label{prop:resid2}
+Suppose Assumption~\ref{assumption:cont} holds and
+$$
+E[\{Y-\gamma_0(W)\} \mid W ]^2\leq \bar{\sigma}^2,\quad \|\hat{\alpha}_{\ell}\|_{\infty}\leq\bar{\alpha}'.
+$$
+Then with probability $1-\epsilon'/(2L)$,
+\begin{align*}
+    \Delta_{4\ell}&\leq t_4=\frac{6L}{\epsilon'}\bar{Q}\mathcal{R}(\hat{\gamma}_{\ell})^q; \\
+     \Delta_{5\ell}&\leq t_5=\frac{6L}{\epsilon'}(\bar{\alpha}')^2\mathcal{R}(\hat{\gamma}_{\ell}); \\
+     \Delta_{6\ell}&\leq t_6=\frac{6L}{\epsilon'}\bar{\sigma}^2\mathcal{R}(\hat{\alpha}_{\ell}). 
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+We proceed in steps analogous to Proposition~\ref{prop:resid}.
+\begin{enumerate}
+    \item Markov inequality implies
+     \begin{align*}
+        \text{pr}(|\Delta_{4\ell}|>t_4)&\leq \frac{E(|\Delta_{4\ell}|)}{t_4};\\
+        \text{pr}(|\Delta_{5\ell}|>t_5)&\leq \frac{E(|\Delta_{5\ell}|)}{t_5}; \\
+        \text{pr}(|\Delta_{6\ell}|>t_6)&\leq \frac{E(|\Delta_{6\ell}|)}{t_6}.
+    \end{align*}
+    \item Law of iterated expectations implies
+    \begin{align*}
+        E(|\Delta_{4\ell}|)&=E\{E(|\Delta_{4\ell}|\mid I^c_{\ell})\};\\
+        E(|\Delta_{5\ell}|)&=E\{E(|\Delta_{5\ell}|\mid I^c_{\ell})\}; \\
+        E(|\Delta_{6\ell}|)&=E\{E(|\Delta_{6\ell}|\mid I^c_{\ell})\}.
+    \end{align*}
+    \item Bounding conditional moments.
+    
+     Conditional on $I_{\ell}^c$, $(u,v)$ are nonrandom. Moreover, observations within fold $I_{\ell}$ are independent and identically distributed. Hence by assumption of finite $(\bar{Q},\bar{\sigma},\bar{\alpha}')$
+    $$
+        E(|\Delta_{4\ell}|\mid I^c_{\ell})= E(\Delta_{4\ell}\mid I^c_{\ell})
+        =E[\{m(W,u)\}^2\mid I^c_{\ell}]
+        \leq  \bar{Q} \mathcal{R}(\hat{\gamma}_{\ell})^q.
+   $$
+   Similarly
+    $$
+       E(|\Delta_{5\ell}|\mid I^c_{\ell})= E(\Delta_{5\ell}\mid I^c_{\ell})
+        =E[\{\hat{\alpha}_{\ell}(W)u(W)\}^2\mid I^c_{\ell}]
+        \leq  (\bar{\alpha}')^2 \mathcal{R}(\hat{\gamma}_{\ell}).
+   $$
+    Finally 
+    \begin{align*}
+       E(|\Delta_{6\ell}|\mid I^c_{\ell})&=
+       E(\Delta_{6\ell}\mid I^c_{\ell}) \\
+        &=E[v(W)^2\{Y-\gamma_0(W)\}^2\mid I^c_{\ell}] \\
+        &=E\{v(W)^2 E[\{Y-\gamma_0(W)\}^2\mid W,I^c_{\ell}]\mid I^c_{\ell}\} \\
+        &\leq \bar{\sigma}^2 \mathcal{R}(\hat{\alpha}_{\ell}).
+    \end{align*}
+    \item Collecting results gives
+     \begin{align*}
+        \text{pr}(|\Delta_{4\ell}|>t_4)&\leq \frac{\bar{Q} \mathcal{R}(\hat{\gamma}_{\ell})^q}{t_4}=\frac{\epsilon'}{6L}\\
+        \text{pr}(|\Delta_{5\ell}|>t_5)&\leq \frac{(\bar{\alpha}')^2 \mathcal{R}(\hat{\gamma}_{\ell})}{t_5}=\frac{\epsilon'}{6L} \\
+        \text{pr}(|\Delta_{6\ell}|>t_6)&\leq \frac{\bar{\sigma}^2 \mathcal{R}(\hat{\alpha}_{\ell})}{t_6}=\frac{\epsilon'}{6L}
+    \end{align*}
+    Therefore with probability $1-\epsilon'/(2L)$, the following inequalities hold:
+\begin{align*}
+    |\Delta_{4\ell}|&\leq t_4=\frac{6L}{\epsilon'}\bar{Q} \mathcal{R}(\hat{\gamma}_{\ell})^q;\\
+    |\Delta_{5\ell}|&\leq t_5=\frac{6L}{\epsilon'}(\bar{\alpha}')^2 \mathcal{R}(\hat{\gamma}_{\ell});\\
+    |\Delta_{6\ell}|&\leq t_6=\frac{6L}{\epsilon'}\bar{\sigma}^2 \mathcal{R}(\hat{\alpha}_{\ell}).
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Oracle approximation]\label{prop:Delta2}
+Suppose the conditions of Proposition~\ref{prop:resid2} hold. Then with probability $1-\epsilon'/2$
+$$
+E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]\leq \Delta'=4(\hat{\theta}-\theta_0)^2+\frac{24 L}{\epsilon'}\left[\{\bar{Q}+(\bar{\alpha}')^2\}\mathcal{R}(\hat{\gamma}_{\ell})^q+\bar{\sigma}^2\mathcal{R}(\hat{\alpha}_{\ell})\right].
+$$
+\end{proposition}
+
+\begin{proof}
+We proceed in steps analogous to Proposition~\ref{prop:Delta}.
+\begin{enumerate}
+    \item Decomposition.
+    
+    By Proposition~\ref{prop:foldwise2}
+    \begin{align*}
+    E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]
+    &=\frac{1}{L} \sum_{\ell=1}^L E_{\ell}[\{\hat{\psi}(W)-\psi_0(W)\}^2] \\
+    &\leq 4(\hat{\theta}-\theta_0)^2+\frac{4}{L} \sum_{\ell=1}^L \sum_{j=4}^6 \Delta_{j\ell}.
+\end{align*} 
+
+    \item Union bound.
+    
+    Define the events
+$$
+\mathcal{E}'_{\ell}=\{\text{for all } j \; (j=4,5,6),\; |\Delta_{j\ell}|\leq t_j\},\quad \mathcal{E}'=\cap_{\ell=1}^L \mathcal{E}'_{\ell},\quad (\mathcal{E}')^c=\cup_{\ell=1}^L (\mathcal{E}_{\ell}')^c.
+$$
+Hence by the union bound and Proposition~\ref{prop:resid2},
+$$
+\text{pr}\{(\mathcal{E}')^c\}\leq \sum_{\ell=1}^L \text{pr}\{(\mathcal{E}_{\ell}')^c\} \leq L\frac{\epsilon'}{2L}=\frac{\epsilon'}{2}.
+$$
+    \item Collecting results.
+
+    Therefore with probability $1-\epsilon'/2$,
+\begin{align*}
+ E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]&\leq 4(\hat{\theta}-\theta_0)^2+\frac{4}{L} \sum_{\ell=1}^L \sum_{j=4}^6 |\Delta_{j\ell}| \\
+ &\leq 4(\hat{\theta}-\theta_0)^2+\frac{4}{L} \sum_{\ell=1}^L \sum_{j=4}^6 t_j \\
+ &=4(\hat{\theta}-\theta_0)^2+4 \sum_{j=4}^6 t_j.
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+\begin{proposition}[Markov inequality]\label{prop:other_half}
+Recall $\sigma^2=E\{\psi_0(W)^2\}$ and $\zeta^4=E\{\psi_0(W)^4\}$. Suppose $\zeta<\infty$. Then with probability $1-\epsilon'/2$
+$$
+|E_n\{\psi_0(W)^2\}-\sigma^2|\leq \Delta''=\left(\frac{2}{\epsilon'}\right)^{1/2}\frac{\zeta^2}{n^{1/2}}.
+$$
+\end{proposition}
+
+\begin{proof}
+Let
+$$
+A=\psi_0(W)^2,\quad \bar{A}=E_n(A).
+$$
+Observe that
+$$
+E(\bar{A})=E(A)=E\{\psi_0(W)^2\}=\sigma^2,\quad 
+\text{var}(\bar{A})=\frac{\text{var}(A)}{n}
+\leq \frac{E(A^2)}{n}
+=\frac{E\{\psi_0(W)^4\}}{n}=\frac{\zeta^4}{n}.
+$$
+By Markov inequality
+$$
+\text{pr}[|E_n\{\psi_0(W)^2\}-\sigma^2|>t]=\text{pr}\{|\bar{A}-E(\bar{A})|>t\}\leq \frac{\text{var}(\bar{A})}{t^2}\leq \frac{\zeta^4}{nt^2}.
+$$
+Solving,
+$$
+\frac{\zeta^4}{nt^2}=\frac{\epsilon'}{2} \iff t=\left(\frac{2}{\epsilon'}\right)^{1/2}\frac{\zeta^2}{n^{1/2}}
+.$$
+\end{proof}
+
+\begin{proof}[of Theorem~\ref{thm:var}]
+We proceed in steps.
+\begin{enumerate}
+    \item Decomposition of variance estimator.
+    
+    Write
+    \begin{align*}
+        \hat{\sigma}^2
+        &=E_n\{\hat{\psi}(W)^2\}\\
+        &=E_n[\{\hat{\psi}(W)-\psi_0(W)+\psi_0(W)\}^2]\\
+        &=E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]+2E_n[\{\hat{\psi}(W)-\psi_0(W)\}\psi_0(W)]+E_n\{\psi_0(W)^2\}.
+    \end{align*}
+Hence
+$$
+\hat{\sigma}^2-E_n\{\psi_0(W)^2\}=E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]+2E_n[\{\hat{\psi}(W)-\psi_0(W)\}\psi_0(W)].
+$$
+    
+    \item Decomposition of difference.
+    
+    Next write
+    $$
+\hat{\sigma}^2-\sigma^2=[\hat{\sigma}^2-E_n\{\psi_0(W)^2\}]+[E_n\{\psi_0(W)^2\}-\sigma^2].
+$$
+Focusing on the former term
+$$
+\hat{\sigma}^2-E_n\{\psi_0(W)^2\}=E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]+2E_n[\{\hat{\psi}(W)-\psi_0(W)\}\psi_0(W)].
+$$
+Moreover
+\begin{align*}
+    E_n[\{\hat{\psi}(W)-\psi_0(W)\}\psi_0(W)] &\leq \left(E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]\right)^{1/2}\left[E_n\{\psi_0(W)^2\}\right]^{1/2} \\
+    &\leq \left(E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]\right)^{1/2}\left[|E_n\{\psi_0(W)^2\}-\sigma^2|+\sigma^2\right]^{1/2} \\
+    &\leq \left(E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]\right)^{1/2} \left(\left[|E_n\{\psi_0(W)^2\}-\sigma^2|\right]^{1/2}+\sigma\right).
+\end{align*}
+
+\item High probability events.
+
+From the previous step, we see that to control $|\hat{\sigma}^2-\sigma^2|$, it is sufficient to control two expressions:  $E_n[\{\hat{\psi}(W)-\psi_0(W)\}^2]$ and $|E_n\{\psi_0(W)\}^2-\sigma^2|$. These are controlled in Propositions~\ref{prop:Delta2} and~\ref{prop:other_half}, respectively. Therefore with probability $1-\epsilon'$,
+$$
+|\hat{\sigma}^2-\sigma^2|\leq \Delta'+2(\Delta')^{1/2}\{(\Delta'')^{1/2}+\sigma\}+\Delta''.
+$$
+    
+\end{enumerate}
+\end{proof}
+
+\subsection{Corollary}
+
+\begin{proof}[of Corollary~\ref{cor:CI}]
+Immediately from $\Delta=o_p(1)$ in Theorem~\ref{thm:dml},
+$$
+\hat{\theta}=\theta_0+o_p(1),\quad
+\sigma^{-1}n^{1/2}(\hat{\theta}-\theta_0)\leadsto \mathcal{N}(0,1),\quad 
+ \text{pr}\left\{\theta_0 \text{ in }  \left(\hat{\theta}\pm \frac{\sigma}{n^{1/2}}\right)\right\}\rightarrow 1-a.$$
+For the final result, it is sufficient that $\hat{\sigma}^2=\sigma^2+o_p(1)$, which follows from $\Delta'=o_p(1)$ and $\Delta''=o_p(1)$ in Theorem~\ref{thm:var}.
+\end{proof}

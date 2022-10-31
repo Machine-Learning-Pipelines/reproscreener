@@ -1,0 +1,9 @@
+% \subsection{Static adversarial perturbation}
+% \label{sect:exp-static}
+
+\smallsection{Adversarial augmentation}
+We first obtain a robust model by conduct PGD training with pre-activation ResNet-18 on CIFAR-10. We use early stopping to obtain the most robust model on a validation set. The specific settings are aligned with Section~\ref{sect: exp-practical}.
+
+Using this model, we then generate adversarial examples with PGD attack on the $5000$ examples randomly sampled from CIFAR-10 training set. The number of attack iterations is fixed as $10$ and the step size is fixed as $2/255$. The adversarial examples along with their original labels are then grouped into a training set for adversarial augmentation experiments.
+
+

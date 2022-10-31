@@ -1,0 +1,44 @@
+\sectiontinyvert{Extrinsic Parameter-free multi-view model}
+% \sr{
+% In this work we introduce the insight, that the lack of extrinsic parameters does not have to be mitigated via a complicated solution, but rather by using building blocks that already exist, alas have not been exploited for this purpose.}
+The premise of our work is that 3D joint rotations and bone lengths are view-independent values. 
+For example, the 3D angle between, say, the thigh and the shin, as well as the length of these bones, are fixed, no matter which camera transformation is used. On the other hand, joint locations  differ  for each camera transformation, as seen in \Cref{fig:skeleton_angles}. 
+Our key idea is to directly predict joint 3D angles and bone lengths without using the extrinsic camera parameters, during both training and test time. 
+\textit{Extrinsic} parameters correspond to the rotation and translation (aka transformation) from 3D real world axes into 3D camera axes.
+A formal definition of the camera parameters can be found in 
+\ifappendix{Appendix \ref{sec:cam_param_technical}.}
+\else{the sup. mat.}
+\fi
+
+Our method takes multi-view sequences of 2D poses and estimates the motion of the observed human.
+The 2D poses are either given or extracted using a prediction technique. Having multi-view data compensates for the inherent inaccuracy of 2D pose estimation algorithms.
+Many methods estimate view-dependent 2D joint positions and then lift them to 3D by transforming them into a shared space. Such transformations require acquaintance of the relative position (rotation and translation) between the cameras, which is derived from the extrinsic camera parameters. 
+Our model directly predicts 3D rotations and bone lengths, which are agnostic to camera transformation. The predicted values are shared by all views, so there is no need for extrinsic parameters information.
+%\sr{In the following, we refer to the relative transformation between cameras and to extrinsic camera parameters intechangebly.}
+
+Pose estimation methods may mitigate the lack of extrinsic  parameters by estimating them~\cite{chu_and_pan_semisupervised,kocabas2019selfsupervised}.
+Yet, this has two drawbacks: 
+(i) most approaches perform the estimation in a prepossessing step that breaks the end-to-end computation, and 
+(ii) the estimated parameters are never exact and typically lead to a performance drop, as we show in \Cref{sec:experiments}.
+
+Our architecture leverages Shi \etal~\cite{shi2020motionet} and is illustrated in high-level terms in \Cref{fig:architecture_concept}. FLEX is an end-to-end network that maps 2D joint positions, extracted from multiple synchronized input videos, into two separate components: (i) a sequence of 3D joint rotations, global root positions and foot contact labels (upper branch in the figure); this sequence is skeleton-independent and varies per frame; and (ii) a single, symmetric, 3D skeleton, represented by its bone lengths (lower branch in the figure). We can combine these two components into a complete description of a motion and use it for 3D animation tasks without further processing or inverse kinematics (IK).
+
+In addition to being free of extrinsic parameters, our model does not use intrinsic parameters at all, at the cost of an up-to-scale global skeleton position. While FLEX removes the need for extrinsics, it uses the common weak perspective assumption~\cite{kissos2020weak} for intrinsics; in particular for mitigating the lack of focal length. Indeed, some works seek to mitigate the lack of intrinsic parameters~\cite{shimada2021neural,habermann2020deepcap,kissos2020weak} whereas this is not the focus of our work.
+ In \Cref{sec:experiments} we show that using a customary weak perspective we attain an accurate global position.
+
+%The terms \emph{motion estimation\,/\,reconstruction} and \emph{pose estimation} are used in various contexts in the literature. To avoid confusion, we define \emph{3D motion reconstruction} as predicting the bone lengths associated with temporally coherent 3D joint rotations, and use the term  \emph{reconstruction} instead of \emph{estimation}, which is commonly used to describe a transformation from one 2D image to another.
+
+The terms \emph{motion}, \emph{pose}, \emph{reconstruction} and \emph{estimation} are used in various contexts in the literature. To avoid confusion, we define \emph{motion} as one set of bone lengths associated with temporally coherent 3D joint rotations, and \emph{pose} as a temporal sequence of 3D joint locations.
+We use the term \emph{reconstruction} rather than \emph{estimation}, as the latter often describes 2D spatial motion. \sr{A weakly related term, \emph{pose tracking}, associates poses to identities in a multi-person setting.}
+% which is commonly used to describe a transformation from one 2D image to another.
+
+Motion data, and in particular rotations rather than positions, are required in animation platforms and game engines.
+FLEX directly outputs a kinematic skeleton, which is a complete, commonly used, motion representation. 
+On the other hand, methods that predict joint positions, rely on IK to associate a skeleton with joint rotations. 
+IK is slow, non-unique, and prone to temporal inconsistencies and unnatural postures.
+Moreover, methods that only predict pose cannot guarantee the consistency of bone lengths across frames.
+
+%The metric that best quantitatively measures motion prediction is MPJAE (Mean Per Joint \emph{Angle} Error) \sr{[ref 2002 paper and 3dpw]}. Unfortunately, from the few works that predict motion, only some report angle error  \sr{[ref]}, and none report it for the Human3.6M \sr{[ref]} dataset. In this work we start a new, hopefully on-going, tradition, of reporting angle error for the Human3.6M dataset. 
+
+
+

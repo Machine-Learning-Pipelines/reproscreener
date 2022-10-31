@@ -1,0 +1,188 @@
+\begin{thebibliography}{30}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Claybrook and Kildare(2018)]{claybrook2018autonomous}
+Joan Claybrook and Shaun Kildare.
+\newblock Autonomous vehicles: No driver… no regulation?
+\newblock \emph{Science}, 361:\penalty0 36--37, 2018.
+
+\bibitem[Vamathevan et~al.(2019)Vamathevan, Clark, Czodrowski, and
+  et~al.]{vamathevan2019applications}
+Jessica Vamathevan, Dominic Clark, Paul Czodrowski, and et~al.
+\newblock Applications of machine learning in drug discovery and development.
+\newblock \emph{Nature Reviews Drug Discovery}, 18:\penalty0 463--477, 2019.
+
+\bibitem[Jumper et~al.(2021)Jumper, Evans, Pritzel, and
+  et~al.]{jumper2021highly}
+John Jumper, Richard Evans, Alexander Pritzel, and et~al.
+\newblock Highly accurate protein structure prediction with alphafold.
+\newblock \emph{Nature}, pages 1--11, 2021.
+
+\bibitem[Church et~al.(2012)Church, Gao, and Kosuri]{church2012next}
+George~M Church, Yuan Gao, and Sriram Kosuri.
+\newblock Next-generation digital information storage in dna.
+\newblock \emph{Science}, 337:\penalty0 1628, 2012.
+
+\bibitem[Hofreiter et~al.(2001)Hofreiter, Serre, Poinar, Kuch, and
+  Pääbo]{Hofreiter2001}
+Michael Hofreiter, David Serre, Hendrik~N Poinar, Melanie Kuch, and Svante
+  Pääbo.
+\newblock ancient dna.
+\newblock \emph{Nature Reviews Genetics}, 2:\penalty0 353--359, 2001.
+
+\bibitem[Kauffman(1993)]{kauffman1993origins}
+Stuart~A Kauffman.
+\newblock \emph{The origins of order: Self-organization and selection in
+  evolution}.
+\newblock Oxford University Press, USA, 1993.
+
+\bibitem[Levinthal(1997)]{levinthal1997adaptation}
+Daniel~A Levinthal.
+\newblock Adaptation on rugged landscapes.
+\newblock \emph{Management science}, 43:\penalty0 934--950, 1997.
+
+\bibitem[Ganco(2017)]{ganco2017nk}
+Martin Ganco.
+\newblock Nk model as a representation of innovative search.
+\newblock \emph{Research Policy}, 46:\penalty0 1783--1800, 2017.
+
+\bibitem[Li et~al.(2021)Li, Su, Zhang, and Bai]{Li2021}
+Xiong Li, Jianning Su, Zhipeng Zhang, and Ruisheng Bai.
+\newblock Product innovation concept generation based on deep learning and
+  kansei engineering.
+\newblock \emph{Journal of Engineering Design}, 32:\penalty0 559--589, 2021.
+
+\bibitem[Fiorineschi and Rotini(2021)]{Fiorineschi2021}
+Lorenzo Fiorineschi and Federico Rotini.
+\newblock Novelty metrics in engineering design.
+\newblock \emph{Journal of Engineering Design}, 32:\penalty0 590--620, 2021.
+
+\bibitem[Luo et~al.(2021)Luo, Sarica, and Wood]{Luo2021}
+Jianxi Luo, Serhad Sarica, and Kristin~L. Wood.
+\newblock Guiding data-driven design ideation by knowledge distance.
+\newblock \emph{Knowledge-Based Systems}, 218:\penalty0 106873, 2021.
+
+\bibitem[Han et~al.(2018)Han, Shi, Chen, and Childs]{han2018computational}
+Ji~Han, Feng Shi, Liuqing Chen, and Peter R~N Childs.
+\newblock A computational tool for creative idea generation based on analogical
+  reasoning and ontology.
+\newblock \emph{Artificial Intelligence for Engineering Design, Analysis and
+  Manufacturing}, 32:\penalty0 462--477, 2018.
+\newblock the retriever.
+
+\bibitem[Chen et~al.(2019)Chen, Liu, Fan, Zhao, and Ye]{Chen2019}
+Ruirui Chen, Yusheng Liu, Hongri Fan, Jianjun Zhao, and Xiaoping Ye.
+\newblock An integrated approach for automated physical architecture generation
+  and multi-criteria evaluation for complex product design.
+\newblock \emph{Journal of Engineering Design}, 30:\penalty0 63--101, 2019.
+
+\bibitem[Luo(2022)]{Luo2022}
+Jianxi Luo.
+\newblock Data-driven innovation : What is it ?
+\newblock \emph{IEEE Transactions on Engineering Management}, pages 1--19,
+  2022.
+
+\bibitem[Jiang et~al.(2022{\natexlab{a}})Jiang, Hu, Wood, and
+  Luo]{Jiang2021datadriven}
+Shuo Jiang, Jie Hu, Kristin~L Wood, and Jianxi Luo.
+\newblock Data-driven design-by-analogy: State-of-the-art and future
+  directions.
+\newblock \emph{ASME Journal of Mechanical Design}, 144:\penalty0 020801,
+  2022{\natexlab{a}}.
+
+\bibitem[Jiang et~al.(2022{\natexlab{b}})Jiang, Sarica, Song, Hu, and
+  Luo]{Jiang2022}
+Shuo Jiang, Serhad Sarica, Binyang Song, Jie Hu, and Jianxi Luo.
+\newblock Patent data for engineering design: A critical review and future
+  directions.
+\newblock \emph{Journal of Computing and Information Science in Engineering},
+  22:\penalty0 060902, 2022{\natexlab{b}}.
+
+\bibitem[Luo(2019)]{Luo2019}
+Jianxi Luo.
+\newblock Total technology space map as a digital platform.
+\newblock \emph{Proceedings of the 52nd Hawaii International Conference on
+  System Sciences}, pages 6331--6338, 2019.
+
+\bibitem[Acemoglu et~al.(2016)Acemoglu, Akcigit, and Kerr]{Acemoglu2016}
+Daron Acemoglu, Ufuk Akcigit, and William~R. Kerr.
+\newblock Innovation network.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, 113:\penalty0 11483--11488, 2016.
+\newblock ISSN 10916490.
+
+\bibitem[Fleming and Sorenson(2004)]{fleming2004science}
+Lee Fleming and Olav Sorenson.
+\newblock Science as a map in technological search.
+\newblock \emph{Strategic management journal}, 25:\penalty0 909--928, 2004.
+
+\bibitem[Levy et~al.(2015)Levy, Goldberg, and Dagan]{levy2015improving}
+Omer Levy, Yoav Goldberg, and Ido Dagan.
+\newblock Improving distributional similarity with lessons learned from word
+  embeddings.
+\newblock \emph{Transactions of the association for computational linguistics},
+  3:\penalty0 211--225, 2015.
+
+\bibitem[Hamilton et~al.(2017)Hamilton, Ying, and
+  Leskovec]{hamilton2017inductive}
+William~L Hamilton, Rex Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock pages 1025--1035, 2017.
+
+\bibitem[Le and Mikolov(2014)]{le2014distributed}
+Quoc Le and Tomas Mikolov.
+\newblock Distributed representations of sentences and documents.
+\newblock pages 1188--1196, 2014.
+
+\bibitem[Singh et~al.(2021)Singh, Triulzi, and Magee]{singh2021technological}
+Anuraag Singh, Giorgio Triulzi, and Christopher~L Magee.
+\newblock Technological improvement rate predictions for all technologies: Use
+  of patent data and an extended domain description.
+\newblock \emph{Research Policy}, 50:\penalty0 104294, 2021.
+
+\bibitem[Benson and Magee(2015)]{benson2015technology}
+Christopher~L Benson and Christopher~L Magee.
+\newblock Technology structural implications from the extension of a patent
+  search method.
+\newblock \emph{Scientometrics}, 102:\penalty0 1965--1985, 2015.
+
+\bibitem[Triulzi et~al.(2020)Triulzi, Alstott, and
+  Magee]{triulzi2020estimating}
+Giorgio Triulzi, Jeff Alstott, and Christopher~L Magee.
+\newblock Estimating technology performance improvement rates by mining patent
+  data.
+\newblock \emph{Technological Forecasting and Social Change}, 2020.
+
+\bibitem[Hall et~al.(2001)Hall, Jaffe, and Trajtenberg]{hall2001nber}
+Bronwyn~H Hall, Adam~B Jaffe, and Manuel Trajtenberg.
+\newblock The nber patent citation data file: Lessons, insights and
+  methodological tools.
+\newblock \emph{NBER Working Paper 8498}, 2001.
+
+\bibitem[He and Luo(2017)]{he2017novelty}
+Yuejun He and Jianxi Luo.
+\newblock The novelty ‘sweet spot’of invention.
+\newblock \emph{Design Science}, 3, 2017.
+
+\bibitem[He et~al.(2019)He, Camburn, Liu, Luo, Yang, and Wood]{he2019mining}
+Yuejun He, Bradley Camburn, Haowen Liu, Jianxi Luo, Maria Yang, and Kristin
+  Wood.
+\newblock Mining and representing the concept space of existing ideas for
+  directed ideation.
+\newblock \emph{Journal of Mechanical Design}, 141, 2019.
+
+\bibitem[Erlich and Zielinski(2017)]{erlich2017dna}
+Yaniv Erlich and Dina Zielinski.
+\newblock Dna fountain enables a robust and efficient storage architecture.
+\newblock \emph{Science}, 355:\penalty0 950--954, 2017.
+
+\bibitem[Lee and Seung(1999)]{lee1999learning}
+Daniel~D Lee and H~Sebastian Seung.
+\newblock Learning the parts of objects by non-negative matrix factorization.
+\newblock \emph{Nature}, 401:\penalty0 788--791, 1999.
+
+\end{thebibliography}

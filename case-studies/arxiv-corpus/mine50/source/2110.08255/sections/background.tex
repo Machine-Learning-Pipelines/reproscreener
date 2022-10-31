@@ -1,0 +1,70 @@
+
+\section{Problem Formulation}
+By a \textbf{time series $x$ with $M$ channels}, we mean a finite sequence of
+  vectors in $\mathbb{R}^M$,
+denote their space by
+  $\mathbb{R}^{*\times M}:= \bigcup_{T\in \mathbb{N}} \mathbb{R}^{T\times M}$,
+and their length by $|x|:= T$ (for $x\in \mathbb{R}^{T\times M}, M\in\mathbb{N}$).
+We write $(x,y)\in \mathbb{R}^{*\times (M+O)}$ to denote two time series
+of same length with $M$ and $O$ channels for the predictors and targets, respectively. 
+We model a \textbf{time series forecasting instance} as a quadruple $(x,y,x',y')\in\mathbb{R}^{*\times (M+O)}\times \mathbb{R}^{*\times (M+O)}$, where $x,y$ denote the past predictors and targets until a reference time point $T$ and $x',y'$ denote the future predictors and targets from the reference point $T$ to the next $\tau$ (forecast horizon) time steps.
+
+For a \textbf{Time Series Forecasting Problem}, given (i) a sample $\mathcal{D}:=\{$ $(x_1,y_1,x'_1,y'_1),$ $\ldots,(x_N,y_N,x'_N,y'_N)\}$ from an unknown distribution $p$ of time series forecasting instances and (ii) a function $\ell: \mathbb{R}^{*\times (O+O)} \rightarrow\mathbb{R}$ called loss, we attempt to find a function $\hat y:\mathbb{R}^{*\times (M+O)}\times \mathbb{R}^{*\times M}\rightarrow \mathbb{R}^{*\times O}$ (with $|\hat y(x,y,x')|=|x'|$) with minimal expected loss
+
+\begin{equation}
+    \begin{aligned}
+       \mathbb{E}_{(x,y,x',y')\sim p}\ \ell(y', \hat y(x,y,x'))
+    \end{aligned}
+\end{equation}
+
+The loss $\ell$ usually is the mean absolute error (MAE) or mean squared error (MSE) averaged over future time points:
+
+\begin{equation}
+   \ell^{\text{mae}}(y', \hat y) :=
+    \frac{1}{|y'|}\sum_{t=1}^{|y'|} \frac{1}{O} ||y'_t-\hat y_t||_1, \quad
+    \ell^{\text{mse}}(y', \hat y) :=
+    \frac{1}{|y'|}\sum_{t=1}^{|y'|} \frac{1}{O} ||y'_t-\hat y_t||_2^2
+\label{eqn:msemae}
+\end{equation}
+
+Furthermore, if there is only one target channel and no predictor channels ($O=1, M=0$),
+the time series forecasting problem is called \textbf{univariate}, otherwise \textbf{multivariate}.
+
+\section{Background}
+
+Our work incorporates restricted attention based Transformer in a U-Net inspired architecture. For this reason, we base our work on the current state of the art sparse attention model Informer, introduced in \cite{zhou2020informer}. We provide a brief overview of the \textsl{ProbSparse} attention and the \textsl{Contracting ProbSparse Self-Attention Blocks} used in the Informer model for completeness.
+
+\textbf{\textsl{ProbSparse} Attention}: The \textsl{ProbSparse} attention mechanism restricts the canonical attention \cite{vaswani2017attention} by selecting a subset $u$ of dominant queries from available sequence length $L_Q$ having the largest variance  across all the keys. Consequently, the dense query matrix ${\boldsymbol{Q}} \in \mathbb{R}^{L_Q \times d}$ in the canonical attention is replaced by a sparse query matrix $\overline{\boldsymbol{Q}} \in \mathbb{R}^{L_Q \times d}$ consisting of the $u$ dominant queries. \textsl{ProbSparse} attention can hence be defined as: 
+
+\begin{equation}
+\begin{aligned}
+  \mathcal{A^{\text{PropSparse}}}(\boldsymbol{\overline{Q}}, \boldsymbol{K}, \boldsymbol{V}) &= \text{Softmax}(\frac{\boldsymbol{\overline{Q}}\boldsymbol{K}^T}{\sqrt{d}})\boldsymbol{V}
+\end{aligned}
+\label{eqn:probsparseattn}
+\end{equation}
+
+where $d$ denotes the input dimension to the attention module. For more details on the \textsl{ProbSparse} attention mechanism, we refer the reader to \cite{zhou2020informer}.
+
+\textbf{Contracting ProbSparse Self-Attention Blocks}: The Informer model uses \textsl{Contracting ProbSparse Self-Attention Blocks} to distill out redundant information from the long history input sequence $(x,y)$ in a pyramid structure motivated from the image domain \cite{lin2017feature}. The sequence of operations within a block begins with a \textsl{ProbSparse} self-attention that takes as input the hidden representation $h_i$ from the $i^{th}$ block and projects the hidden representation into query, key and value for self-attention. This is followed by convolution operations $(\operatorname{Conv1d})$ \cite{alexnet}, and finally the Max-Pooling ($\operatorname{MaxPool}$) \cite{alexnet} operation reduces the latent dimension by effectively distilling out redundant information at each block as summarized in Algorithm 1. Here, $\operatorname{ELU}$ represents the ELU activation function \cite{elu} and $\operatorname{LayerNorm}$ is the Layer Normalization operation \cite{layernorm}.
+The encoder block in the Informer model \cite{zhou2020informer} stacks multiple \textsl{Contracting ProbSparse Self-Attention Block} blocks and produce multi-resolution encoder embeddings following a pyramid structure. 
+
+
+\begin{algorithm}[H]
+\label{alg:contracting}
+    \textit{Input}  : $h_i$  \\
+    \textit{Output} : $h_{i+1}$\\
+    $h_{i+1} \gets \operatorname{ProbSparseAttn} (h_i, h_i)$ \\
+    $h_{i+1} \gets \operatorname{Conv1d} (h_{i+1})$\\
+    $h_{i+1} \gets \operatorname{LayerNorm} (h_{i+1})$ \\
+    $h_{i+1} \gets \operatorname{MaxPool}(\operatorname{ELU}(\operatorname{Conv1d} (h_{i+1})))$
+ \caption{Contracting ProbSparse Self-Attention Block} 
+\end{algorithm}
+
+
+
+
+
+
+
+
+

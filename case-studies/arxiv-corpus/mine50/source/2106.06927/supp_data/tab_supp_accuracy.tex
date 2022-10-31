@@ -1,0 +1,25 @@
+\begin{table*}[b]
+\small
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tabular}{c|c|c|c|c|c|c|c|c} 
+\specialrule{.15em}{.05em}{.05em}
+&\multicolumn{8}{c}{$\ell_{2}$ PGD Attack ($\varepsilon$)}\\
+\cline{2-9}
+& $0$ & $0.5$ & $1$ & $1.5$ & $2$ & $2.5$ & $3$ & $3.5$ \\
+\hline
+\makecell{Standard Accuracy} & $94.93$ & $88.28$ & $81.07$ & $72.47$ & $64.48$ & $64.17$ & $56.77$ & $53.8$\\
+\makecell{$\ell_{2}$ PGD Attack} & \makecell{$28.29$\\$(\varepsilon=0.25)$} & \makecell{$68.75$\\$(\varepsilon=0.5)$} & \makecell{$52.24$\\$(\varepsilon=1.0)$} & \makecell{$41.29$\\$(\varepsilon=1.5)$} & \makecell{$34.45$\\$(\varepsilon=2.0)$} & \makecell{$29.63$\\$(\varepsilon=2.5)$} & \makecell{$25.58$\\$(\varepsilon=3.0)$} & \makecell{$23.48$\\$(\varepsilon=3.5)$}\\
+\hline
+\makecell{PSNR  (dB) $\uparrow$} & $14.7259$ & $18.5161$ & $19.2427$ & $\mathbf{19.6278}$ & ${19.5234}$ & $18.7568$ & $19.3713$  & $19.4376$\\
+SSIM $\uparrow$ & $0.2958$ & $0.5179$ & $\mathbf{0.5399}$ & ${0.5332}$ & $0.5265$ & $0.4878$ & $0.501$  & $0.4951$\\
+LPIPS $\downarrow$ & $0.6305$ & $0.5024$ & $\mathbf{0.4832}$ & ${0.4905}$ & $0.5019$ & $0.5312$ & $0.5172$ & $0.5321$\\
+\specialrule{.15em}{.05em}{.05em}
+\end{tabular}}
+\end{center}
+
+\vspace{-0.3 cm}
+\caption{\label{tab:accuracy02_1} Reconstruction vs. Robustness. ResNet-18 experiments on CIFAR-10 show that learning to invert contracted features with different AR levels significantly affects the reconstruction accuracy.
+}
+\vspace{-0.6cm}
+\end{table*}

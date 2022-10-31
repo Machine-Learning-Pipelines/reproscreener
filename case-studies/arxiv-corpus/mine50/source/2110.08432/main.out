@@ -1,0 +1,12 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Preliminaries}{}% 2
+\BOOKMARK [1][-]{section.3}{Adjoint MAML}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{ODE View of Inner Optimization}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Efficient Back-Propagation via Solving Adjoint ODEs}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Related Work}{}% 6
+\BOOKMARK [1][-]{section.5}{Experiments}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{2D regression}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Memory Consumption and Running Time}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.3}{Few-Shot Learning in Collaborative Filtering}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.4}{Few-Shot Learning in Images Classification}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 12

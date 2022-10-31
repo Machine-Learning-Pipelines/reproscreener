@@ -1,0 +1,652 @@
+
+%_ better math font
+\usepackage{amsthm,amsmath,bbm,amsfonts,amssymb}
+\usepackage{dsfont} % require for using \mathds{1}
+\usepackage{mathtools}
+\usepackage{commath}
+\mathtoolsset{showonlyrefs=false}
+
+\usepackage{xspace}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{xcolor} % for color names
+
+
+\usepackage{hyperref,url}
+\usepackage{cleveref} % must be loaded after amsthm
+
+\usepackage[usenames,dvipsnames]{xcolor} % for color names
+
+\usepackage{wrapfig}
+\usepackage[export]{adjustbox}
+\def\imagetop#1{\vtop{\null\hbox{#1}}} % adjusting location of box in table
+%- synctex
+\synctex=1
+% \pdfoutput=1  % for arxiv submission
+
+% For algorithms
+
+\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+\usepackage{graphicx,tabularx}
+\usepackage{multirow,hhline}% http://ctan.org/pkg/multirow
+\usepackage{booktabs}% to use \midrule for drawing a horizontal line in align environment
+
+\usepackage{capt-of}
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+% \usepackage{enumitem}
+
+\allowdisplaybreaks % This allows breaking multi-line equations
+
+\usepackage{pbox} % new line in a table cell -- http://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+
+% for vertical alignment of includegraphics
+%- http://tex.stackexchange.com/questions/101858/make-two-figures-aligned-at-top
+\usepackage[export]{adjustbox}
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\cm}{\ding{51}}%
+\newcommand{\gyes}{{\color[rgb]{0,.8,0}\cmark}}
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\xm}{\ding{55}}%
+\newcommand{\rno}{{\color[rgb]{.8,0,0}\xmark}}
+
+%% define your comment color here
+%\newcommand{\jerry}[1]{{ \color[cmyk]{0,0.61,0.87,0}jerry: #1 }}
+%\newcommand{\rob}[1]{{ \color[rgb]{0,0.718,0.179}rob: #1 }}
+%\newcommand{\kwang}[1]{{ \color[rgb]{1,0.279,0.998} #1 }}
+%\newcommand{\kw}[1]{{ \color[rgb]{1,0.279,0.998} #1 }}
+%\newcommand{\kj}[1]{{\color{RedOrange}#1}}
+%
+%\newcommand{\gray}[1]{{ \color[rgb]{.6,.6,.6} #1 }}
+%\newcommand{\blue}[1]{{\color[rgb]{.3,.5,1}#1}}
+%\newcommand{\grn}[1]{{\color{ForestGreen}#1}}
+%\newcommand{\org}[1]{{\color{Orange}#1}}
+%\newcommand{\vio}[1]{{\color{Violet}#1}}
+%\newcommand{\red}[1]{{\color[rgb]{1,.1,.1}#1}}
+%\newcommand{\gr}[1]{{\color[rgb]{.8,.8,.8}#1}}
+
+%---------- setup theorem environment
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\definecolor{kjgray}{rgb}{.7,.7,.7}
+
+\newtheoremstyle{kjstyle}
+{1ex} % Space above
+{\topsep} % Space below
+{\itshape} % Body font
+{} % Indent amount
+{\bfseries} % Theorem head font
+{.} % Punctuation after theorem head
+{.5em} % Space after theorem head
+{} % Theorem head spec (can be left empty, meaning `normal')
+
+\newtheoremstyle{kjstylenoitalic}
+{1ex} % Space above
+{\topsep} % Space below
+{} % Body font
+{} % Indent amount
+{\bfseries} % Theorem head font
+{.} % Punctuation after theorem head
+{.5em} % Space after theorem head
+{} % Theorem head spec (can be left empty, meaning `normal')
+
+\tcbset{kjboxstyle/.style={title={},breakable,colback=white,enhanced jigsaw,boxrule=1.3pt,sharp corners,colframe=kjgray,boxsep=0pt,coltitle={black},attach title to upper={},left=.8ex,bottom=.4em}}    
+%    ,title after break={Lemma \thelemma\ (continued)}}
+%}
+%
+% \theoremstyle{kjstyle}\newtheorem{thm}{Theorem}
+% \AtBeginEnvironment{thm}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{thm}{\end{tcolorbox}}%
+% \theoremstyle{kjstyle}\newtheorem{lem}[thm]{Lemma}
+% \AtBeginEnvironment{lem}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{lem}{\end{tcolorbox}}%
+% \theoremstyle{kjstyle}\newtheorem{prop}[thm]{Proposition}
+% \AtBeginEnvironment{prop}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{prop}{\end{tcolorbox}}%
+% \theoremstyle{kjstyle}\newtheorem{cor}[thm]{Corollary}
+% \AtBeginEnvironment{cor}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{cor}{\end{tcolorbox}}%
+
+% \theoremstyle{kjstyle}\newtheorem{defn}{Definition}
+% \AtBeginEnvironment{defn}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{defn}{\end{tcolorbox}}%
+
+% \theoremstyle{kjstyle}\newtheorem{ass}{Assumption}
+% \AtBeginEnvironment{ass}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{ass}{\end{tcolorbox}}%
+% \renewcommand\theass{A\arabic{ass}}
+
+
+% \theoremstyle{kjstyle}\newtheorem{question}{Question}
+% \AtBeginEnvironment{question}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{question}{\end{tcolorbox}}%
+% % \renewcommand\theass{A\arabic{ass}}
+
+% \theoremstyle{kjstylenoitalic}\newtheorem{remark}{Remark}
+% \AtBeginEnvironment{remark}{\begin{tcolorbox}[kjboxstyle]}%
+%   \AtEndEnvironment{remark}{\end{tcolorbox}}%
+
+
+%--------------- other ways to create box
+\newcommand{\kjunboxold}[1]{\vspace{.5em}\\\fbox{%
+    \begin{minipage}{\linewidth}
+      \centering #1
+    \end{minipage}%
+  }\vspace{.5em}}
+\def\lamp{\ensuremath{\lambda_\perp}}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\definecolor{kjgray}{rgb}{.7,.7,.7}
+\makeatletter
+\newcommand{\kjunbox}[1]{\vspace{.4ex}
+  \begin{mdframed}[linecolor=kjgray,innertopmargin=1.3ex,innerleftmargin=.4em,innerrightmargin=.4em,linewidth=1.3pt]
+    #1
+  \end{mdframed}%
+}
+\makeatletter
+\newcommand{\kjunboxcenter}[1]{\vspace{.4ex}
+  \begin{mdframed}[linecolor=kjgray,innertopmargin=1.3ex,innerleftmargin=.4em,innerrightmargin=.4em,linewidth=1.3pt,userdefinedwidth=.8\linewidth,align=center]
+    %[linecolor=black,innerleftmargin=.4em,innerrightmargin=.4em,userdefinedwidth=.8\linewidth,align=center]
+    #1
+  \end{mdframed}%
+}
+\makeatother
+
+
+%--- to remove the space before paragraph : change 3.25ex to ...
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{0.8em \@plus 1ex \@minus .2ex}{-1em}%
+  {\normalfont\normalsize\bfseries}%
+}
+\makeatother
+
+%%- https://tex.stackexchange.com/questions/72692/highlight-an-equation-within-an-align-environment-with-color-option
+%%------- this makes a border that covers other part of the equation....
+%\usepackage[customcolors,shade]{hf-tikz} % after {}, (right, below) and then (left, above) offset... I don't know how it works; done by trial-and-error.
+%\newcommand{\hll}[2]{\tikzmarkin[set fill color=yellow!30]{#1}(0.02,-.08)(-0.02,0.3)#2\tikzmarkend{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% macros for keeping track of symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEG-------- for list of symbols
+\newcounter{textcnt}
+%\newcommand\textlist{}
+\newcommand\settext[2]{%
+  \csgdef{text#1}{#2}}
+\newcommand\addtext[1]{%
+  \stepcounter{textcnt}%
+  \csgdef{text\thetextcnt}{#1}}
+\newcommand\gettext[1]{%
+  \csuse{text#1}}
+\newcommand\getcount{\thetextcnt}
+
+\newcounter{colnum}
+\newcommand\maketabularrow[1]{%
+  \setcounter{colnum}{0}%
+  \whileboolexpr
+  { test {\ifnumcomp{\value{colnum}}{<}{#1}} }%
+  {&\stepcounter{colnum}\thecolnum}
+}
+
+\newcounter{Jidx}
+\newcommand\dsymhelper[2]{
+  \addtext{\hyperlink{#1}{#2}}%
+  \blue{\hypertarget{#1}{#2}}%
+}
+\newcommand\dsym[1]{
+  \stepcounter{Jidx}
+  \xdef\tmpname{Jsym.\theJidx}
+  \expandafter\dsymhelper\expandafter{\tmpname}{#1}
+} 
+%END--------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% symbol definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\ddefloop#1{\ifx\ddefloop#1\else\ddef{#1}\expandafter\ddefloop\fi}
+\def\ddef#1{\expandafter\def\csname c#1\endcsname{\ensuremath{\mathcal{#1}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZ\ddefloop
+% \def\ddef#1{\expandafter\def\csname #1#1\endcsname{\ensuremath{\mathbb{#1}}}}
+% \ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZ\ddefloop
+\def\ddef#1{\expandafter\def\csname b#1\endcsname{\ensuremath{{\boldsymbol{#1}}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSUVWXYZabcdeghijklmnopqrtsuvwxyz\ddefloop  % including f here causes icml21 style file to behave weird.
+%\def\ddef#1{\expandafter\def\csname b#1\endcsname{\ensuremath{\mathbf{#1}}}}
+%\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZ\ddefloop
+\def\ddef#1{\expandafter\def\csname h#1\endcsname{\ensuremath{\widehat{#1}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrsuvwxyz\ddefloop % except for 't' because it is used by others
+\def\ddef#1{\expandafter\def\csname hc#1\endcsname{\ensuremath{\widehat{\mathcal{#1}}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZ\ddefloop
+\def\ddef#1{\expandafter\def\csname t#1\endcsname{\ensuremath{\widetilde{#1}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrtsuvwxyz\ddefloop
+\def\ddef#1{\expandafter\def\csname r#1\endcsname{\ensuremath{\mathring{#1}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrtsuvwxyz\ddefloop
+\def\ddef#1{\expandafter\def\csname tc#1\endcsname{\ensuremath{\widetilde{\mathcal{#1}}}}}
+\ddefloop ABCDEFGHIJKLMNOPQRSTUVWXYZ\ddefloop
+
+
+\def\hmu{{\ensuremath{\hat{\mu}}} }
+\def\bhmu{{\ensuremath{\boldsymbol{\hat{\mu}}} }}
+
+\def\SS{{\mathbb{S}}}
+
+\DeclareMathOperator*{\argmax}{arg~max}
+\DeclareMathOperator*{\argmin}{arg~min}
+\DeclareMathOperator{\EE}{\mathbb{E}}
+\DeclareMathOperator{\VV}{\mathbb{V}}
+\DeclareMathOperator{\PP}{\mathbb{P}}
+\DeclareMathOperator{\hEE}{\hat{\mathbb{E}}}
+\DeclareMathOperator{\one}{\mathds{1}\hspace{-0.2em}}
+\DeclareMathOperator{\Reg}{{\text{Reg}}}
+%\DeclareMathOperator*{\lap}{{\lessapprox}}
+%\DeclareMathOperator*{\lapp}{{\lessapprox}}
+\newcommand{\lap}{\mathop{}\!\lessapprox}
+\newcommand{\lapp}{\mathop{}\!\lessapprox}
+\newcommand{\gapp}{\mathop{}\!\gtrapprox}
+\newcommand{\lsim}{\mathop{}\!\lesssim}
+\newcommand{\gsim}{\mathop{}\!\gtrsim}
+
+
+\def\RR{{\mathbb{R}}}
+\def\NN{{\mathbb{N}}}
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+%\newcommand*\dif{\mathop{}\!\mathrm{d}}
+\newcommand{\ubrace}[2]{\underbrace{#1}_{\textstyle #2}}
+\newcommand{\sr}[2]{ {\mathop{}\stackrel{#1}{#2}}\mathop{}\, }
+\newcommand*{\medcup}{\mathbin{\scalebox{1.5}{\ensuremath{\cup}}}}%
+\newcommand*{\medcap}{\mathbin{\scalebox{1.5}{\ensuremath{\cap}}}}%
+\def\bigmid{\,\middle|\,\xspace}
+\newcommand{\fr}[2]{ { \frac{#1}{#2} }}
+\newcommand{\tfr}[2]{ { \tfrac{#1}{#2} }}
+\def\lt{\left}
+\def\rt{\right}
+\def\suchthat{\ensuremath{\mbox{ s.t. }}} 
+\def\dsum{\ensuremath{\displaystyle\sum}} 
+\def\der{\ensuremath{\partial}\xspace}
+
+\def\bbeta{{{\boldsymbol \beta}}}
+\def\btheta{{{\boldsymbol \theta}}}
+\def\bphi{{{\boldsymbol \phi}}}
+\def\barbu{{\overline{\mathbf u}}}
+\def\sign{\ensuremath{\text{sign}}}
+\def\eps{\ensuremath{\epsilon}\xspace}
+\def\hS{\ensuremath{\hat{S}}\xspace}
+
+\def\larrow{\ensuremath{\leftarrow}\xspace} 
+\def\rarrow{\ensuremath{\rightarrow}\xspace} 
+\def\T{\ensuremath{\top}}  % transpose
+\def\sig{\ensuremath{\sigma}\xspace}
+\def\bsig{{\ensuremath{\boldsymbol{\sigma}}}}
+\def\Pr{\ensuremath{\text{Pr}}} 
+\def\eps{\ensuremath{\epsilon}\xspace}
+\def\diag{\ensuremath{\mbox{diag}}\xspace}
+\def\supp{\ensuremath{\mbox{supp}}\xspace}
+\def\decomp{\ensuremath{\mbox{decomp}}\xspace}
+
+\def\balpha{{{\boldsymbol \alpha}}}
+\def\bbeta{{{\boldsymbol \beta}}} % this causes error in section title
+\def\btheta{{{\boldsymbol \theta}}} 
+\def\bgamma{{{\boldsymbol \gamma}}} 
+\def\hbtheta{{\widehat{\boldsymbol \theta}}} 
+\def\bTheta{{{\boldsymbol \Theta}}} 
+\def\bmu{{{\boldsymbol \mu}}}
+\def\bpi{{\ensuremath{\bm{\pi}}\xspace}}  
+\def\Dki{{\ensuremath{\Delta_{ki}}\xspace} }
+\def\om{{\ensuremath{\omega}\xspace} }
+\def\dt{{\ensuremath{\delta}\xspace} }
+\def\sm{{\ensuremath{\setminus}\xspace} }
+
+\def\grad{\ensuremath{\mathbf{\nabla}}\xspace}  
+
+\def\bSigma{\ensuremath{\mathbf{\Sigma}}\xspace} 
+\def\bLambda{\ensuremath{\boldsymbol{\Lambda}}\xspace} 
+\def\hatbfP{\ensuremath{\widehat{\mathbf{P}}}\xspace} 
+\def\hatbfpi{\ensuremath{\widehat{\boldsymbol{\pi}}}\xspace} 
+\def\hatP{\ensuremath{\widehat{P}}\xspace} 
+\def\hattheta{\ensuremath{\widehat{\theta}}\xspace} 
+\def\hatQ{\ensuremath{\widehat{Q}}\xspace} 
+\def\hatpi{\ensuremath{\widehat{\pi}}\xspace} 
+\def\bftilpi{\ensuremath{\boldsymbol{\widetilde{\pi}}}\xspace} 
+\def\bftilP{\ensuremath{\mathbf{\widetilde{P}}}\xspace} 
+\def\bftilBeta{{\ensuremath{\boldsymbol{\widetilde{\beta}}}}\xspace} 
+\def\tilpi{\ensuremath{\widetilde{\pi}}\xspace} 
+\def\tilP{\ensuremath{\widetilde{P}}\xspace} 
+\def\tilBeta{\ensuremath{\widetilde{\beta}}\xspace} 
+
+\def\hatK{{\ensuremath{\widehat{K}}\xspace}} 
+\def\hatT{{\ensuremath{\widehat{T}}\xspace}}
+\def\hatW{{\ensuremath{\widehat{W}}\xspace}}
+\def\hattau{{\ensuremath{\widehat{\tau}}\xspace}}
+\def\sym{{\ensuremath{\text{Sym}}\xspace}} 
+
+\def\logbar{{\ensuremath{\overline{\log}}}} 
+\newcommand{\what}[1]{ {\ensuremath{\widehat{#1}}} }
+
+\def\barT{\ensuremath{\overline{T}}\xspace} 
+\def\bart{\ensuremath{\overline{t}}\xspace} 
+\def\barV{\ensuremath{\overline{V}}\xspace} 
+\def\barU{\ensuremath{\overline{U}}\xspace} 
+\def\barG{\ensuremath{\overline{G}}} 
+\def\barL{\ensuremath{\overline{L}}\xspace} 
+
+\def\hatk{{\ensuremath{\what{k}}}\xspace}  
+\def\ntil{\ensuremath{\tilde{n}}\xspace} 
+\def\rtil{\ensuremath{\tilde{r}}\xspace} 
+\def\hDelta{\ensuremath{\what{\Delta}}\xspace} 
+
+
+
+%- ceiling and floor
+\def\llfl{\left\lfloor} 
+\def\rrfl{\right\rfloor}  
+\def\llcl{\left\lceil}  
+\def\rrcl{\right\rceil}  
+\def\lfl{\lfloor} 
+\def\rfl{\rfloor}  
+\def\lcl{\lceil}  
+\def\rcl{\rceil}  
+
+%- pretty < and > symbol
+\newcommand{\langl}{\begin{picture}(4.5,7)
+\put(1.1,2.5){\rotatebox{60}{\line(1,0){5.5}}}
+\put(1.1,2.5){\rotatebox{300}{\line(1,0){5.5}}}
+\end{picture}}
+\newcommand{\rangl}{\begin{picture}(4.5,7)
+\put(.9,2.5){\rotatebox{120}{\line(1,0){5.5}}}
+\put(.9,2.5){\rotatebox{240}{\line(1,0){5.5}}}
+\end{picture}}
+
+%- new on 20150826
+\def\cmt{{\;//\;}}
+\def\gam{{\ensuremath{\gamma}\xspace} }
+
+%- new on 20151024
+\makeatletter
+\newcommand{\vast}{\bBigg@{3}}
+\newcommand{\Vast}{\bBigg@{4}}
+\makeatother
+
+%- new on 20151123
+\def\bl{{{\boldsymbol \ell}}}
+\def\dsR{{{\mathds{R}}}}
+
+%- new on 20160503
+\def\cX{\ensuremath{\mathcal{X}}\xspace} 
+\def\cZ{\ensuremath{\mathcal{Z}}\xspace} 
+\def\la{{\langle}}
+\def\ra{{\rangle}}
+\def\det{\ensuremath{\mbox{det}}}
+\def\lam{\ensuremath{\lambda}}
+\def\barV{\ensuremath{\overline{\mathbf{V}}}\xspace} 
+\def\ibarV{\ensuremath{\overline{\mathbf{V}}^{-1}}\xspace} 
+\def\iV{\ensuremath{{\mathbf{V}}^{-1}}\xspace} 
+\def\hatth{\ensuremath{\widehat{\boldsymbol\theta}}\xspace} 
+\def\tilth{\ensuremath{\tilde{\boldsymbol\theta}}\xspace} 
+\def\barVinv{\ensuremath{\overline{\mathbf{V}}^{-1}}} 
+\def\barVi{\ensuremath{\overline{\mathbf{V}}^{-1}}} 
+\def\tilmu{{\ensuremath{\tilde{\mu}}\xspace} }
+
+%- 20160705
+\def\tiln{\ensuremath{\tilde{n}}\xspace} 
+
+%- 20160728
+\def\bell{{{\boldsymbol\ell}}}
+\def\cC{\ensuremath{\mathcal{C}}\xspace} 
+\def\cD{\ensuremath{\mathcal{D}}\xspace} 
+\def\cW{\ensuremath{\mathcal{W}}\xspace} 
+\def\cU{\ensuremath{\mathcal{U}}\xspace} 
+\def\KL{\ensuremath{\normalfont{\mathsf{KL}}}}  
+
+\def\l{{{\boldsymbol \ell}}}
+
+%--- 20160829
+\def\hatp{\ensuremath{\widehat p}}
+\def\hatbfp{\ensuremath{\widehat{\mathbf{p}}}}
+\def\tilg{\ensuremath{\widetilde{g}}}
+\def\tilG{\ensuremath{\widetilde{G}}}
+\def\tilbfg{\ensuremath{\widetilde{\mathbf{g}}}}
+\def\bcI{\ensuremath{\boldsymbol{\mathcal{I}}}} 
+\def\Active{\ensuremath{\text{Active}}}
+\def\CBS{\ensuremath{\text{CBS}}}
+\def\CBSE{\ensuremath{\text{CBSE}}}
+\def\Regret{\ensuremath{\normalfont{\text{Regret}}}}
+\def\Wealth{\ensuremath{\text{Wealth}}}
+\def\CB{\ensuremath{\text{CB}}}
+
+%--- 2016/09/16
+\def\btau{\ensuremath{\boldsymbol{\tau}}\xspace} 
+\newcommand{\wtil}[1]{ {\ensuremath{\widetilde{#1}}} }
+\def\ccH{\ensuremath{c_\text{H}}}
+\def\tH{\ensuremath{\text{H}}}
+\def\bfeta{\ensuremath{\boldsymbol{\eta}}} 
+\def\til{\widetilde} 
+\def\vec{\text{vec}} 
+\def\dsN{{{\mathds{N}}}}
+\newcommand{\wbar}[1]{ {\ensuremath{\overline{#1}}} }
+\def\barbeta{\wbar{\beta}}
+\def\tilbeta{\tilde{\beta}}
+\def\barC{\ensuremath{\wbar{C}}}
+\def\tilC{\ensuremath{\wtil{C}}}
+%\def\barth{\ensuremath{\wbar{\boldsymbol\theta}}\xspace} 
+\def\barth{\ensuremath{\bar{\theta}}\xspace} 
+
+\def\dsR{\ensuremath{{\mathds R}}\xspace}
+\def\hcalX{\ensuremath{\what{\mathcal X}}\xspace}
+\def\hcalZ{\ensuremath{\what{\mathcal Z}}\xspace}
+%\def\hth{\ensuremath{\what{\theta}}\xspace}
+\def\bth{{{\boldsymbol \theta}}} 
+\def\bfeta{{{\boldsymbol \eta}}} 
+\def\hbth{{\what{\boldsymbol \theta}}} 
+\def\hth{{\hat{ \theta}}} 
+\def\bfUp{\ensuremath{\mathbf{U}_\perp}\xspace}
+\def\Up{\ensuremath{\mathbf{U}_\perp}\xspace}
+\def\lam{{\ensuremath{\lambda}\xspace} }
+\def\bTheta{{{\boldsymbol \Theta}}}
+\def\bTh{{{\boldsymbol \Theta}}}
+\def\barbV{\ensuremath{\overline{\mathbf{V}}}\xspace} 
+
+%- 20170228
+\def\tL{\ensuremath{\mathbf{\text{L}}}}
+\def\vec{\ensuremath{\text{vec}}}
+\def\Th{{{\Theta}}} 
+\def\Lam{{{{{\Lambda}}}}}
+\def\bLam{{{{\boldsymbol{\Lambda}}}}}
+\def\blam{{{\boldsymbol{{\lambda}}}}}
+\def\bgam{{{\boldsymbol{{\gamma}}}}} 
+\def\bom{{{\boldsymbol{{\omega}}}}} 
+\def\lnorm{\left|\left|}
+\def\rnorm{\right|\right|}
+
+\def\hU{\ensuremath{\what{\U}}\xspace} 
+\def\hV{\ensuremath{\what{\V}}\xspace} 
+\def\hS{\ensuremath{\what{\S}}\xspace} 
+\def\hTh{\ensuremath{\what{\Th}}\xspace} 
+\def\hcX{\ensuremath{\what{\cX}}\xspace} 
+\def\hcZ{\ensuremath{\what{\cZ}}\xspace} 
+
+\def\hUp{\ensuremath{\what{\U}_\perp}} 
+
+\def\bbP{\ensuremath{\mathbb{P}}} 
+\def\Pp{\ensuremath{\mathbf{P}_\perp}} 
+\def\hP{\ensuremath{\what{\mathbf{P}}}} 
+\def\hPp{\ensuremath{\what{\mathbf{P}}_\perp}} 
+\def\hK{\ensuremath{\what{\K}}} 
+\def\Vp{\ensuremath{\mathbf{V}_\perp}\xspace}
+\def\tilTh{\ensuremath{\widetilde{\boldsymbol\Theta}}\xspace} 
+\def\alp{\ensuremath{{\boldsymbol\alpha}}\xspace}
+\def\alpp{\ensuremath{\boldsymbol\alpha_\perp}}
+\def\tilalp{\ensuremath{\widetilde{\boldsymbol\alpha}}}
+\def\tilalpp{\ensuremath{\widetilde{\boldsymbol\alpha}_\perp}}
+\def\halp{\ensuremath{\what{\boldsymbol\alpha}}}
+\def\halpp{\ensuremath{\what{\boldsymbol\alpha}_\perp}}
+
+\def\hy{\ensuremath{\hat{\y}}} 
+%\def\bu{\ensuremath{\mathbf{u}}} 
+\def\dH{\ensuremath{\normalfont{\text{d}_\text{H}}}} 
+\def\Rad{\ensuremath{\text{\normalfont{Rad}}}} 
+\def\tilq{\ensuremath{\widetilde{q}}} 
+\def\cS{{\ensuremath{\mathcal{S}}}} 
+\def\AUL{{\ensuremath{\normalfont{\text{AUL}}}}} 
+\def\Rel{{\ensuremath{\normalfont{\text{Rel}}}}} 
+\def\cF{{\ensuremath{\mathcal{F}}}} 
+\def\Mis{{\ensuremath{\normalfont{\text{Mis}}}}} 
+
+\def\tilell{\ensuremath{\tilde{\ell}}} 
+\def\btilell{\ensuremath{\widetilde{\boldsymbol{\ell}}}} 
+\def\tilL{\ensuremath{\widetilde{L}}} 
+\def\barJ{\ensuremath{\overline{J}}} 
+
+% 20171016
+\def\Corral{\ensuremath{\normalfont{\textsc{Corral}}}\xspace}
+\def\cO{{\ensuremath{\mathcal{O}}}} 
+\def\tilO{{\ensuremath{\widetilde{\mathcal{O}}}}} 
+\def\Eps{\ensuremath{\mathcal{E}}}
+\def\bth{\ensuremath{{\boldsymbol{\theta}}}} 
+\def\cR{\ensuremath{\mathcal{R}}} 
+
+\def\SUCB{\ensuremath{\normalfont{\text{SUCB}}}}
+\def\tr{{\ensuremath{\normalfont{\text{tr}}}}} 
+
+\def\hcL{\ensuremath{\hat\cL}} 
+\def\hS{\ensuremath{\hat S}} 
+\def\hL{\ensuremath{\hat\L}} 
+\def\hLam{\ensuremath{\what{\Lam}}\xspace} 
+
+\def\dsP{\ensuremath{{\mathds P}}}
+
+%- 20180418
+\def\cK{\ensuremath{\mathcal{K}}}
+\def\nab{\ensuremath{\nabla}}
+\def\th{{\ensuremath{\theta}}}
+
+\def\bPhi{{{\boldsymbol \Phi}}} 
+\def\bGamma{{{\boldsymbol \Gamma}}} 
+
+
+
+
+%- 20180426
+\def\hVp{\ensuremath{\what{\V}_\perp}} 
+\def\baru{\ensuremath{\overline{\u}}} 
+\def\barv{\ensuremath{\overline{\v}}} 
+\def\bbU{\ensuremath{\overline{\U}}} 
+\def\bbV{\ensuremath{\overline{\V}}} 
+\def\hbS{\ensuremath{\what{\S}}}
+
+\def\sign{\ensuremath{\normalfont{\text{sign}}}} 
+\def\Var{\ensuremath{\normalfont{\text{Var}}}}
+\def\Om{{\ensuremath{\Omega}}} 
+
+\def\poly{\operatorname{poly}}
+\def\Misid{\operatorname{Misid}}
+\def\cH{{\ensuremath{\mathcal{H}}}}
+\def\hG{\ensuremath{\hat{G}}} 
+\def\hg{\ensuremath{\hat{g}}} 
+\def\nab{\ensuremath{\nabla}} 
+
+\def\Reward{\ensuremath{\text{Reward}}}
+\def\tiltheta{\ensuremath{\tilde{\theta}}} 
+\def\tilp{\ensuremath{\tilde{p}}} 
+
+\def\bxi{{{\boldsymbol \xi}}}
+\def\bone{{{\mathbf 1}}}
+
+\def\hell{{{\hat\ell}}}
+\let\SS\undefined
+
+\def\rhoX{{\rho_{\mathcal{X}}}}
+\def\Mis{{\text{Mis}}}
+
+%2019
+\def\hR{\ensuremath{\widehat{R}}} 
+\def\hcF{\ensuremath{\widehat{\cF}}} 
+\def\suchthat{\text{ s.t. }}
+\def\cd{\cdot}
+\def\cc{{\circ}}
+\def\hf{\ensuremath{\widehat{f}}} 
+\def\bargam{\ensuremath{\overline{\gamma}}} 
+\def\tila{\ensuremath{\widetilde{a}}} 
+\def\tilmu{\ensuremath{\widetilde{\mu}}}
+\def\tilf{\ensuremath{\widetilde{f}}} 
+\def\tilcF{\ensuremath{\widetilde{\cF}}} 
+\def\barcF{\ensuremath{\overline{\cF}}} 
+\def\barf{\ensuremath{\overline{f}}} 
+\def\bara{\ensuremath{\overline{a}}} 
+\def\barmu{\ensuremath{\overline{\mu}}} 
+
+\newcommand{\FSB}{{\ensuremath{\text{FSB}}}}
+\newcommand{\Cr}{{\ensuremath{\text{Cr}}}}
+\newcommand{\SE}{{\ensuremath{\text{SE}}}}
+\def\IC{{\ensuremath{\normalfont{\text{IC}}}}}
+\newcommand{\barB}{{\ensuremath{\wbar B}}}
+\newcommand{\barS}{{\ensuremath{\wbar S}}}
+\newcommand{\barF}{{\ensuremath{\wbar F}}}
+\newcommand{\Fs}{{\ensuremath{\text{Fs}}}}
+\newcommand{\barFs}{{\ensuremath{\wbar{\text{Fs}}}}}
+\def\rcF{\ensuremath{\mathring{\cF}}} 
+\def\rbeta{\ensuremath{\mathring{\beta}}} 
+\def\Cf{{\ensuremath{{\normalfont{\text{Cf}}}}}}
+\def\barCf{{\ensuremath{\wbar{\text{Cf}}}}}
+\def\ralpha{\ensuremath{{\mathring{\alpha}}}} 
+\newcommand{\Fb}{{\ensuremath{\text{Fb}}}}
+\def\rz{\ensuremath{\mathring{z}}} 
+
+\DeclareMathOperator{\SReg}{{\mathsf{SReg}}}
+\DeclareMathOperator{\MisPrb}{{{\mathsf{MisPrb}}}}
+\def\SR{{\ensuremath{\text{SR}}}\xspace}
+\def\lin{{\ensuremath{\mathsf{lin}}}}
+\def\Bernoulli{{\ensuremath{\mathsf{Bernoulli}}}}
+\def\lammin{{\lam_{\min}}}
+
+\renewcommand{\vec}{{\mathsf{vec}}}
+\newcommand{\F}{{\mathsf{F}}}
+
+\def\smin{{s_{\min}}}
+\newcommand\kmax[1]{\mathop{#1\hyphen\max}}
+\def\hyphen{{\text{-\hspace{-.06em}}}}
+\def\lammin{{\lambda_{\min}}}
+
+\newcommand\msf[1]{{\mathsf{#1}}}
+
+\DeclareMathOperator{\barln}{\overline\ln}%
+
+\def\barH{\ensuremath{\bar{H}}} 
+
+
+\newcommand{\mytag}[1]{\tag*{$\del{#1}$}}
+\def\tmax{{t_{\max}}}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\eqdef}{=\vcentcolon}
+
+\def\dmu{\dot\mu}
+
+\def\teff{{\ensuremath{t_\mathsf{eff}}}}
+\def\sp{{\ensuremath{\mathsf{p}}}}
+\def\sq{{\ensuremath{\mathsf{q}}}}
+
+\DeclareMathOperator{\erf}{{\mathsf{erf}}}
+\DeclareMathOperator{\erfc}{{\mathsf{erfc}}}
+
+\def\horizontalline{\noindent\rule{\textwidth}{1pt} }
+\DeclareMathOperator{\Supp}{{\mathsf{Supp}}}
+\def\Approx{{\mathsf{Approx}} }
+\def\ddmu{{\ddot\mu}}
+\def\hlam{{\hat\lambda}}
+
+\def\eff{{\mathsf{eff}}}
+\def\Seff{{S_{\mathsf{eff}}}}
+\def\opt{{\mathsf{opt}}}
+\def\pes{{\mathsf{pes}}}
+\def\faury{{\mathsf{faury}}}
+\def\nice{{\textsf{nice} } } 
+
+\def\kt{{\mathsf{kt}}}
+\def\mle{{\mathsf{mle}}}

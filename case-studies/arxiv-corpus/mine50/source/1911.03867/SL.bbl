@@ -1,0 +1,390 @@
+\begin{thebibliography}{}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Abadi {et~al.}(2016)Abadi, Barham, Chen, Chen, Davis, Dean, Devin,
+  Ghemawat, Irving, Isard, {et~al.}}]{abadi2016tensorflow}
+Abadi, M., Barham, P., Chen, J., {et~al.} 2016, in 12th $\{$USENIX$\}$
+  Symposium on Operating Systems Design and Implementation ($\{$OSDI$\}$ 16),
+  265--283
+
+\bibitem[{Achille \& Soatto(2018)}]{achille2018emergence}
+Achille, A., \& Soatto, S. 2018, The Journal of Machine Learning Research, 19,
+  1947
+
+\bibitem[{Alemi {et~al.}(2018)Alemi, Fischer, \& Dillon}]{alemi2018uncertainty}
+Alemi, A.~A., Fischer, I., \& Dillon, J.~V. 2018, arXiv preprint
+  arXiv:1807.00906
+
+\bibitem[{Alemi {et~al.}(2016)Alemi, Fischer, Dillon, \& Murphy}]{alemi2017VIB}
+Alemi, A.~A., Fischer, I., Dillon, J.~V., \& Murphy, K. 2016, arXiv preprint
+  arXiv:1612.00410
+
+\bibitem[{Anwar {et~al.}(2019)Anwar, Khan, \& Barnes}]{anwar2019deep}
+Anwar, S., Khan, S., \& Barnes, N. 2019, arXiv preprint arXiv:1904.07523
+
+\bibitem[{{Avestruz} {et~al.}(2019){Avestruz}, {Li}, {Zhu}, {Lightman},
+  {Collett}, \& {Luo}}]{Avestruz2019}
+{Avestruz}, C., {Li}, N., {Zhu}, H., {et~al.} 2019, \apj, 877, 58
+
+\bibitem[{{Bayer} {et~al.}(2018){Bayer}, {Chatterjee}, {Koopmans}, {Vegetti},
+  {McKean}, {Treu}, \& {Fassnacht}}]{Bayer2018}
+{Bayer}, D., {Chatterjee}, S., {Koopmans}, L.~V.~E., {et~al.} 2018, ArXiv
+  e-prints, arXiv:1803.05952
+
+\bibitem[{{Bayliss} {et~al.}(2017){Bayliss}, {Sharon}, {Acharyya}, {Gladders},
+  {Rigby}, {Bian}, {Bordoloi}, {Runnoe}, {Dahle}, {Kewley}, {Florian},
+  {Johnson}, \& {Paterno-Mahler}}]{Bayliss2017}
+{Bayliss}, M.~B., {Sharon}, K., {Acharyya}, A., {et~al.} 2017, \apjl, 845, L14
+
+\bibitem[{{Bom} {et~al.}(2017){Bom}, {Makler}, {Albuquerque}, \&
+  {Brandt}}]{Bom2017}
+{Bom}, C.~R., {Makler}, M., {Albuquerque}, M.~P., \& {Brandt}, C.~H. 2017,
+  \aap, 597, A135
+
+\bibitem[{Ca{\~n}ameras {et~al.}(2020)Ca{\~n}ameras, Schuldt, Suyu,
+  Taubenberger, Meinhardt, Leal-Taix{\'e}, Lemon, Rojas, \&
+  Savary}]{canameras2020holismokes}
+Ca{\~n}ameras, R., Schuldt, S., Suyu, S., {et~al.} 2020, Astronomy \&
+  Astrophysics, 644, A163
+
+\bibitem[{Chen {et~al.}(2018)Chen, Li, Grosse, \& Duvenaud}]{chen2018isolating}
+Chen, T.~Q., Li, X., Grosse, R.~B., \& Duvenaud, D.~K. 2018, in Advances in
+  Neural Information Processing Systems, 2610--2620
+
+\bibitem[{{Collett}(2015)}]{Collett2015}
+{Collett}, T.~E. 2015, \apj, 811, 20
+
+\bibitem[{{Collett} \& {Auger}(2014)}]{Collett2014}
+{Collett}, T.~E., \& {Auger}, M.~W. 2014, \mnras, 443, 969
+
+\bibitem[{Connolly {et~al.}(2010)Connolly, Peterson, Jernigan, Abel, Bankert,
+  Chang, Claver, Gibson, Gilmore, Grace, Jones, Ivezic, Jee, Juric, Kahn,
+  Krabbendam, Krughoff, Lorenz, Pizagno, Rasmussen, Todd, Tyson, \&
+  Young}]{Connolly2010}
+Connolly, A.~J., Peterson, J., Jernigan, J.~G., {et~al.} 2010, SPIE, 7738,
+  doi:10.1117/12.857819
+
+\bibitem[{{Dye} {et~al.}(2008){Dye}, {Evans}, {Belokurov}, {Warren}, \&
+  {Hewett}}]{Dye2008}
+{Dye}, S., {Evans}, N.~W., {Belokurov}, V., {Warren}, S.~J., \& {Hewett}, P.
+  2008, \mnras, 388, 384
+
+\bibitem[{{Dye} {et~al.}(2018){Dye}, {Furlanetto}, {Dunne}, {Eales},
+  {Negrello}, {Nayyeri}, {van der Werf}, {Serjeant}, {Farrah},
+  {Micha{\l}owski}, {Baes}, {Marchetti}, {Cooray}, {Riechers}, \&
+  {Amvrosiadis}}]{Dye2018}
+{Dye}, S., {Furlanetto}, C., {Dunne}, L., {et~al.} 2018, \mnras, 476, 4383
+
+\bibitem[{{Gavazzi} {et~al.}(2014){Gavazzi}, {Marshall}, {Treu}, \&
+  {Sonnenfeld}}]{Gavazzi2014}
+{Gavazzi}, R., {Marshall}, P.~J., {Treu}, T., \& {Sonnenfeld}, A. 2014, \apj,
+  785, 144
+
+\bibitem[{{Gavazzi} {et~al.}(2007){Gavazzi}, {Treu}, {Rhodes}, {Koopmans},
+  {Bolton}, {Burles}, {Massey}, \& {Moustakas}}]{Gavazzi2007}
+{Gavazzi}, R., {Treu}, T., {Rhodes}, J.~D., {et~al.} 2007, \apj, 667, 176
+
+\bibitem[{{Gilman} {et~al.}(2017){Gilman}, {Birrer}, {Treu}, \&
+  {Keeton}}]{Gilman2017}
+{Gilman}, D., {Birrer}, S., {Treu}, T., \& {Keeton}, C.~R. 2017, ArXiv
+  e-prints, arXiv:1712.04945
+
+\bibitem[{{Hartley} {et~al.}(2017){Hartley}, {Flamary}, {Jackson}, {Tagore}, \&
+  {Metcalf}}]{Hartley2017}
+{Hartley}, P., {Flamary}, R., {Jackson}, N., {Tagore}, A.~S., \& {Metcalf},
+  R.~B. 2017, \mnras, 471, 3378
+
+\bibitem[{He {et~al.}(2016)He, Zhang, Ren, \& Sun}]{he2016deep}
+He, K., Zhang, X., Ren, S., \& Sun, J. 2016, in Proceedings of the IEEE
+  conference on computer vision and pattern recognition, 770--778
+
+\bibitem[{He {et~al.}(2020)He, Er, Long, Liu, Liu, Li, Liu, Deng, \&
+  Fan}]{he2020deep}
+He, Z., Er, X., Long, Q., {et~al.} 2020, Monthly Notices of the Royal
+  Astronomical Society, 497, 556
+
+\bibitem[{{Hewitt} {et~al.}(1988){Hewitt}, {Turner}, {Schneider}, {Burke}, \&
+  {Langston}}]{Hewitt1988}
+{Hewitt}, J.~N., {Turner}, E.~L., {Schneider}, D.~P., {Burke}, B.~F., \&
+  {Langston}, G.~I. 1988, \nat, 333, 537
+
+\bibitem[{{Hezaveh} {et~al.}(2017){Hezaveh}, {Perreault Levasseur}, \&
+  {Marshall}}]{Hezaveh2017}
+{Hezaveh}, Y.~D., {Perreault Levasseur}, L., \& {Marshall}, P.~J. 2017, \nat,
+  548, 555
+
+\bibitem[{{Hezaveh} {et~al.}(2016){Hezaveh}, {Dalal}, {Marrone}, {Mao},
+  {Morningstar}, {Wen}, {Blandford}, {Carlstrom}, {Fassnacht}, {Holder},
+  {Kemball}, {Marshall}, {Murray}, {Perreault Levasseur}, {Vieira}, \&
+  {Wechsler}}]{Hezaveh2016}
+{Hezaveh}, Y.~D., {Dalal}, N., {Marrone}, D.~P., {et~al.} 2016, \apj, 823, 37
+
+\bibitem[{{Jacobs} {et~al.}(2017){Jacobs}, {Glazebrook}, {Collett}, {More}, \&
+  {McCarthy}}]{Jacobs2017}
+{Jacobs}, C., {Glazebrook}, K., {Collett}, T., {More}, A., \& {McCarthy}, C.
+  2017, \mnras, 471, 167
+
+\bibitem[{{Jacobs} {et~al.}(2019){Jacobs}, {Collett}, {Glazebrook}, {McCarthy},
+  {Qin}, {Abbott}, {Abdalla}, {Annis}, {Avila}, {Bechtol}, {Bertin}, {Brooks},
+  {Buckley-Geer}, {Burke}, {Carnero Rosell}, {Carrasco Kind}, {Carretero}, {da
+  Costa}, {Davis}, {De Vicente}, {Desai}, {Diehl}, {Doel}, {Eifler},
+  {Flaugher}, {Frieman}, {Garc{\'\i}a-Bellido}, {Gaztanaga}, {Gerdes},
+  {Goldstein}, {Gruen}, {Gruendl}, {Gschwend}, {Gutierrez}, {Hartley},
+  {Hollowood}, {Honscheid}, {Hoyle}, {James}, {Kuehn}, {Kuropatkin}, {Lahav},
+  {Li}, {Lima}, {Lin}, {Maia}, {Martini}, {Miller}, {Miquel}, {Nord}, {Plazas},
+  {Sanchez}, {Scarpine}, {Schubnell}, {Serrano}, {Sevilla-Noarbe}, {Smith},
+  {Soares-Santos}, {Sobreira}, {Suchyta}, {Swanson}, {Tarle}, {Vikram},
+  {Walker}, {Zhang}, {Zuntz}, \& {DES Collaboration}}]{des_lens}
+{Jacobs}, C., {Collett}, T., {Glazebrook}, K., {et~al.} 2019, \mnras, 484, 5330
+
+\bibitem[{{Jaelani} {et~al.}(2020){Jaelani}, {More}, {Oguri}, {Sonnenfeld},
+  {Suyu}, {Rusu}, {Wong}, {Chan}, {Kayo}, {Lee}, {Chao}, {Coupon}, {Inoue}, \&
+  {Futamase}}]{hsc3_jaelani}
+{Jaelani}, A.~T., {More}, A., {Oguri}, M., {et~al.} 2020, \mnras, 495, 1291
+
+\bibitem[{{Jenness} {et~al.}(2019){Jenness}, {Bosch}, {Schellart}, {Lim},
+  {Salnikov}, \& {Gower}}]{Butler2019}
+{Jenness}, T., {Bosch}, J., {Schellart}, P., {et~al.} 2019, in Astronomical
+  Society of the Pacific Conference Series, Vol. 523, Astronomical Data
+  Analysis Software and Systems XXVII, ed. P.~J. {Teuben}, M.~W. {Pound}, B.~A.
+  {Thomas}, \& E.~M. {Warner}, 653
+
+\bibitem[{{Jenness} {et~al.}(2022){Jenness}, {Bosch}, {Lust}, {Pease}, {Gower},
+  {Kowalik}, {Dubois-Felsmann}, {Mueller}, \& {Schellart}}]{Butler2022}
+{Jenness}, T., {Bosch}, J.~F., {Lust}, N.~B., {et~al.} 2022, arXiv e-prints,
+  arXiv:2206.14941
+
+\bibitem[{{Joseph} {et~al.}(2014){Joseph}, {Courbin}, {Metcalf}, {Giocoli},
+  {Hartley}, {Jackson}, {Bellagamba}, {Kneib}, {Koopmans}, {Lemson},
+  {Meneghetti}, {Meylan}, {Petkova}, \& {Pires}}]{Joseph2014}
+{Joseph}, R., {Courbin}, F., {Metcalf}, R.~B., {et~al.} 2014, \aap, 566, A63
+
+\bibitem[{Kingma \& Welling(2013)}]{kingma2013auto}
+Kingma, D.~P., \& Welling, M. 2013, arXiv preprint arXiv:1312.6114
+
+\bibitem[{Kobyzev {et~al.}(2020)Kobyzev, Prince, \&
+  Brubaker}]{kobyzev2020normalizing}
+Kobyzev, I., Prince, S.~J., \& Brubaker, M.~A. 2020, IEEE transactions on
+  pattern analysis and machine intelligence, 43, 3964
+
+\bibitem[{{Koopmans} {et~al.}(2006){Koopmans}, {Treu}, {Bolton}, {Burles}, \&
+  {Moustakas}}]{Koopmans2006}
+{Koopmans}, L. V.~E., {Treu}, T., {Bolton}, A.~S., {Burles}, S., \&
+  {Moustakas}, L.~A. 2006, \apj, 649, 599
+
+\bibitem[{{Kormann} {et~al.}(1994){Kormann}, {Schneider}, \&
+  {Bartelmann}}]{Kormann1994}
+{Kormann}, R., {Schneider}, P., \& {Bartelmann}, M. 1994, \aap, 284, 285
+
+\bibitem[{{Korytov} {et~al.}(2019){Korytov}, {Hearin}, {Kovacs}, {Larsen},
+  {Rangel}, {Hollowed}, {Benson}, {Heitmann}, {Mao}, {Bahmanyar}, {Chang},
+  {Campbell}, {Derose}, {Finkel}, {Frontiere}, {Gawiser}, {Habib}, {Joachimi},
+  {Lanusse}, {Li}, {Mandelbaum}, {Morrison}, {Newman}, {Pope}, {Rykoff},
+  {Simet}, {To}, {Vikraman}, {Wechsler}, \& {White}}]{CosmoDC2}
+{Korytov}, D., {Hearin}, A., {Kovacs}, E., {et~al.} 2019, arXiv e-prints,
+  arXiv:1907.06530
+
+\bibitem[{{Kummer} {et~al.}(2018){Kummer}, {Kahlhoefer}, \&
+  {Schmidt-Hoberg}}]{Kummer2018}
+{Kummer}, J., {Kahlhoefer}, F., \& {Schmidt-Hoberg}, K. 2018, \mnras, 474, 388
+
+\bibitem[{{K{\"u}ng} {et~al.}(2018){K{\"u}ng}, {Saha}, {Ferreras}, {Baeten},
+  {Coles}, {Cornen}, {Macmillan}, {Marshall}, {More}, {Oswald}, {Verma}, \&
+  {Wilcox}}]{Kung2018}
+{K{\"u}ng}, R., {Saha}, P., {Ferreras}, I., {et~al.} 2018, \mnras, 474, 3700
+
+\bibitem[{Lanusse {et~al.}(2018)Lanusse, Ma, Li, Collett, Li, Ravanbakhsh,
+  Mandelbaum, \& P{\'o}czos}]{lanusse2018cmu}
+Lanusse, F., Ma, Q., Li, N., {et~al.} 2018, Monthly Notices of the Royal
+  Astronomical Society, 473, 3895
+
+\bibitem[{{Lanusse} {et~al.}(2018){Lanusse}, {Ma}, {Li}, {Collett}, {Li},
+  {Ravanbakhsh}, {Mandelbaum}, \& {P{\'o}czos}}]{Lanusse2018}
+{Lanusse}, F., {Ma}, Q., {Li}, N., {et~al.} 2018, \mnras, 473, 3895
+
+\bibitem[{{Li} {et~al.}(2016){Li}, {Gladders}, {Rangel}, {Florian}, {Bleem},
+  {Heitmann}, {Habib}, \& {Fasel}}]{PICS}
+{Li}, N., {Gladders}, M.~D., {Rangel}, E.~M., {et~al.} 2016, \apj, 828, 54
+
+\bibitem[{Li {et~al.}(2020)Li, Napolitano, Tortora, Spiniello, Koopmans, Huang,
+  Roy, Vernardos, Chatterjee, Giblin, {et~al.}}]{li2020new}
+Li, R., Napolitano, N., Tortora, C., {et~al.} 2020, The Astrophysical Journal,
+  899, 30
+
+\bibitem[{Lim {et~al.}(2017)Lim, Son, Kim, Nah, \& Mu~Lee}]{lim2017enhanced}
+Lim, B., Son, S., Kim, H., Nah, S., \& Mu~Lee, K. 2017, in Proceedings of the
+  IEEE Conference on Computer Vision and Pattern Recognition Workshops,
+  136--144
+
+\bibitem[{Lowe(2004)}]{lowe2004distinctive}
+Lowe, D.~G. 2004, International journal of computer vision, 60, 91
+
+\bibitem[{{LSST Dark Energy Science Collaboration (LSST DESC)}
+  {et~al.}(2021){LSST Dark Energy Science Collaboration (LSST DESC)},
+  {Abolfathi}, {Alonso}, {Armstrong}, {Aubourg}, {Awan}, {Babuji}, {Bauer},
+  {Bean}, {Beckett}, {Biswas}, {Bogart}, {Boutigny}, {Chard}, {Chiang},
+  {Claver}, {Cohen-Tanugi}, {Combet}, {Connolly}, {Daniel}, {Digel},
+  {Drlica-Wagner}, {Dubois}, {Gangler}, {Gawiser}, {Glanzman}, {Gris}, {Habib},
+  {Hearin}, {Heitmann}, {Hernandez}, {Hlo{\v{z}}ek}, {Hollowed}, {Ishak},
+  {Ivezi{\'c}}, {Jarvis}, {Jha}, {Kahn}, {Kalmbach}, {Kelly}, {Kovacs},
+  {Korytov}, {Krughoff}, {Lage}, {Lanusse}, {Larsen}, {Le Guillou}, {Li},
+  {Longley}, {Lupton}, {Mandelbaum}, {Mao}, {Marshall}, {Meyers}, {Moniez},
+  {Morrison}, {Nomerotski}, {O'Connor}, {Park}, {Park}, {Peloton}, {Perrefort},
+  {Perry}, {Plaszczynski}, {Pope}, {Rasmussen}, {Reil}, {Roodman}, {Rykoff},
+  {S{\'a}nchez}, {Schmidt}, {Scolnic}, {Stubbs}, {Tyson}, {Uram}, {Villarreal},
+  {Walter}, {Wiesner}, {Wood-Vasey}, \& {Zuntz}}]{dc2}
+{LSST Dark Energy Science Collaboration (LSST DESC)}, {Abolfathi}, B.,
+  {Alonso}, D., {et~al.} 2021, \apjs, 253, 31
+
+\bibitem[{{Mao} {et~al.}(2018){Mao}, {Kovacs}, {Heitmann}, {Uram}, {Benson},
+  {Campbell}, {Cora}, {DeRose}, {Di Matteo}, {Habib}, {Hearin}, {Bryce
+  Kalmbach}, {Krughoff}, {Lanusse}, {Luki{\'c}}, {Mandelbaum}, {Newman},
+  {Padilla}, {Paillas}, {Pope}, {Ricker}, {Ruiz}, {Tenneti},
+  {Vega-Mart{\'\i}nez}, {Wechsler}, {Zhou}, {Zu}, \& {LSST Dark Energy Science
+  Collaboration}}]{descqa}
+{Mao}, Y.-Y., {Kovacs}, E., {Heitmann}, K., {et~al.} 2018, \apjs, 234, 36
+
+\bibitem[{{Metcalf} {et~al.}(2019)}]{Metcalf2019}
+{Metcalf}, R.~B., {et~al.} 2019, \aap, 625, A119
+
+\bibitem[{{More} {et~al.}(2016){More}, {Verma}, {Marshall}, {More}, {Baeten},
+  {Wilcox}, {Macmillan}, {Cornen}, {Kapadia}, {Parrish}, {Snyder}, {Davis},
+  {Gavazzi}, {Lintott}, {Simpson}, {Miller}, {Smith}, {Paget}, {Saha},
+  {K{\"u}ng}, \& {Collett}}]{warps2016}
+{More}, A., {Verma}, A., {Marshall}, P.~J., {et~al.} 2016, \mnras, 455, 1191
+
+\bibitem[{{Morningstar} {et~al.}(2018){Morningstar}, {Hezaveh}, {Perreault
+  Levasseur}, {Blandford}, {Marshall}, {Putzky}, \&
+  {Wechsler}}]{Morningstar2018}
+{Morningstar}, W.~R., {Hezaveh}, Y.~D., {Perreault Levasseur}, L., {et~al.}
+  2018, arXiv e-prints, arXiv:1808.00011
+
+\bibitem[{{Morningstar} {et~al.}(2019){Morningstar}, {Perreault Levasseur},
+  {Hezaveh}, {Blandford}, {Marshall}, {Putzky}, {Rueter}, {Wechsler}, \&
+  {Welling}}]{Morningstar2019}
+{Morningstar}, W.~R., {Perreault Levasseur}, L., {Hezaveh}, Y.~D., {et~al.}
+  2019, \apj, 883, 14
+
+\bibitem[{Ostrovski {et~al.}(2017)}]{Ostrovski2017}
+Ostrovski, F., {et~al.} 2017, \mnras, 465, 4325
+
+\bibitem[{{Paraficz} {et~al.}(2016){Paraficz}, {Courbin}, {Tramacere},
+  {Joseph}, {Metcalf}, {Kneib}, {Dubath}, {Droz}, {Filleul}, {Ringeisen}, \&
+  {Sch{\"a}fer}}]{Paraficz2016}
+{Paraficz}, D., {Courbin}, F., {Tramacere}, A., {et~al.} 2016, \aap, 592, A75
+
+\bibitem[{Park {et~al.}(2021)Park, Wagner-Carena, Birrer, Marshall, Lin,
+  Roodman, Collaboration, {et~al.}}]{park2021large}
+Park, J.~W., Wagner-Carena, S., Birrer, S., {et~al.} 2021, The Astrophysical
+  Journal, 910, 39
+
+\bibitem[{Paszke {et~al.}(2017)Paszke, Gross, Chintala, Chanan, Yang, DeVito,
+  Lin, Desmaison, Antiga, \& Lerer}]{paszke2017automatic}
+Paszke, A., Gross, S., Chintala, S., {et~al.} 2017, NIPS 2017 Autodiff Workshop
+
+\bibitem[{{Pearson} {et~al.}(2019){Pearson}, {Li}, \& {Dye}}]{Pearson2019}
+{Pearson}, J., {Li}, N., \& {Dye}, S. 2019, \mnras, 488, 991
+
+\bibitem[{Pearson {et~al.}(2021)Pearson, Maresca, Li, \&
+  Dye}]{pearson2021strong}
+Pearson, J., Maresca, J., Li, N., \& Dye, S. 2021, Monthly Notices of the Royal
+  Astronomical Society, 505, 4362
+
+\bibitem[{{Perreault Levasseur} {et~al.}(2017){Perreault Levasseur}, {Hezaveh},
+  \& {Wechsler}}]{Perreault-Levasseur2017}
+{Perreault Levasseur}, L., {Hezaveh}, Y.~D., \& {Wechsler}, R.~H. 2017, \apjl,
+  850, L7
+
+\bibitem[{{Petrillo} {et~al.}(2017){Petrillo}, {Tortora}, {Chatterjee},
+  {Vernardos}, {Koopmans}, {Verdoes Kleijn}, {Napolitano}, {Covone},
+  {Schneider}, {Grado}, \& {McFarland}}]{Petrillo2017}
+{Petrillo}, C.~E., {Tortora}, C., {Chatterjee}, S., {et~al.} 2017, \mnras, 472,
+  1129
+
+\bibitem[{{Rana} {et~al.}(2017){Rana}, {Jain}, {Mahajan}, {Mukherjee}, \&
+  {Holanda}}]{Rana2017}
+{Rana}, A., {Jain}, D., {Mahajan}, S., {Mukherjee}, A., \& {Holanda}, R.~F.~L.
+  2017, \jcap, 7, 010
+
+\bibitem[{{Sersic}(1968)}]{Sersic1968}
+{Sersic}, J.~L. 1968, {Atlas de Galaxias Australes} (Universidad Nacional de
+  Cordoba)
+
+\bibitem[{{Sharda} {et~al.}(2018){Sharda}, {Federrath}, {da{\^A} Cunha},
+  {Swinbank}, \& {Dye}}]{Sharda2018}
+{Sharda}, P., {Federrath}, C., {da{\^A} Cunha}, E., {Swinbank}, A.~M., \&
+  {Dye}, S. 2018, \mnras, 477, 4380
+
+\bibitem[{{Shu} {et~al.}(2016{\natexlab{a}}){Shu}, {Bolton}, {Moustakas},
+  {Stern}, {Dey}, {Brownstein}, {Burles}, \& {Spinrad}}]{Shu2016}
+{Shu}, Y., {Bolton}, A.~S., {Moustakas}, L.~A., {et~al.} 2016{\natexlab{a}},
+  \apj, 820, 43
+
+\bibitem[{{Shu} {et~al.}(2016{\natexlab{b}}){Shu}, {Bolton}, {Mao}, {Kochanek},
+  {P{\'e}rez-Fournon}, {Oguri}, {Montero-Dorta}, {Cornachione},
+  {Marques-Chaves}, {Zheng}, {Brownstein}, \& {M{\'e}nard}}]{Shu2016b}
+{Shu}, Y., {Bolton}, A.~S., {Mao}, S., {et~al.} 2016{\natexlab{b}}, \apj, 833,
+  264
+
+\bibitem[{Sonka {et~al.}(2014)Sonka, Hlavac, \& Boyle}]{sonka2014image}
+Sonka, M., Hlavac, V., \& Boyle, R. 2014, Image processing, analysis, and
+  machine vision (Cengage Learning)
+
+\bibitem[{{Sonnenfeld} {et~al.}(2015){Sonnenfeld}, {Treu}, {Marshall}, {Suyu},
+  {Gavazzi}, {Auger}, \& {Nipoti}}]{Sonnenfeld2015}
+{Sonnenfeld}, A., {Treu}, T., {Marshall}, P.~J., {et~al.} 2015, \apj, 800, 94
+
+\bibitem[{{Sonnenfeld} {et~al.}(2018){Sonnenfeld}, {Chan}, {Shu}, {More},
+  {Oguri}, {Suyu}, {Wong}, {Lee}, {Coupon}, {Yonehara}, {Bolton}, {Jaelani},
+  {Tanaka}, {Miyazaki}, \& {Komiyama}}]{hsc1_sonnenfeld}
+{Sonnenfeld}, A., {Chan}, J. H.~H., {Shu}, Y., {et~al.} 2018, \pasj, 70, S29
+
+\bibitem[{{Suyu} {et~al.}(2017){Suyu}, {Bonvin}, {Courbin}, {Fassnacht},
+  {Rusu}, {Sluse}, {Treu}, {Wong}, {Auger}, {Ding}, {Hilbert}, {Marshall},
+  {Rumbaugh}, {Sonnenfeld}, {Tewes}, {Tihhonova}, {Agnello}, {Blandford},
+  {Chen}, {Collett}, {Koopmans}, {Liao}, {Meylan}, \& {Spiniello}}]{Suyu2017}
+{Suyu}, S.~H., {Bonvin}, V., {Courbin}, F., {et~al.} 2017, \mnras, 468, 2590
+
+\bibitem[{Tishby {et~al.}(2000)Tishby, Pereira, \&
+  Bialek}]{tishby2000information}
+Tishby, N., Pereira, F.~C., \& Bialek, W. 2000, arXiv preprint physics/0004057
+
+\bibitem[{{Treu}(2010)}]{Treu2010SLReview}
+{Treu}, T. 2010, \araa, 48, 87
+
+\bibitem[{van~der Walt {et~al.}(2014)van~der Walt, {S}ch\"onberger,
+  {Nunez-Iglesias}, {B}oulogne, {W}arner, {Y}ager, {G}ouillart, {Y}u, \& the
+  scikit-image contributors}]{scikit-image}
+van~der Walt, S., {S}ch\"onberger, J.~L., {Nunez-Iglesias}, J., {et~al.} 2014,
+  PeerJ, 2, e453
+
+\bibitem[{{Vegetti} {et~al.}(2014){Vegetti}, {Koopmans}, {Auger}, {Treu}, \&
+  {Bolton}}]{Vegetti2014}
+{Vegetti}, S., {Koopmans}, L.~V.~E., {Auger}, M.~W., {Treu}, T., \& {Bolton},
+  A.~S. 2014, \mnras, 442, 2017
+
+\bibitem[{{Wagner-Carena} {et~al.}(2021){Wagner-Carena}, {Park}, {Birrer},
+  {Marshall}, {Roodman}, {Wechsler}, \& {LSST Dark Energy Science
+  Collaboration}}]{Wagner-Carena2021}
+{Wagner-Carena}, S., {Park}, J.~W., {Birrer}, S., {et~al.} 2021, \apj, 909, 187
+
+\bibitem[{{Wen} {et~al.}(2018){Wen}, {Vicol}, {Ba}, {Tran}, \&
+  {Grosse}}]{wen2018flip}
+{Wen}, Y., {Vicol}, P., {Ba}, J., {Tran}, D., \& {Grosse}, R. 2018, arXiv
+  e-prints, arXiv:1803.04386
+
+\bibitem[{Wen {et~al.}(2018)Wen, Vicol, Ba, Tran, \& Grosse}]{wen2018flipout}
+Wen, Y., Vicol, P., Ba, J., Tran, D., \& Grosse, R. 2018, arXiv preprint
+  arXiv:1803.04386
+
+\bibitem[{{Wong} {et~al.}(2018){Wong}, {Sonnenfeld}, {Chan}, {Rusu}, {Tanaka},
+  {Jaelani}, {Lee}, {More}, {Oguri}, {Suyu}, \& {Komiyama}}]{hsc2_wong}
+{Wong}, K.~C., {Sonnenfeld}, A., {Chan}, J. H.~H., {et~al.} 2018, \apj, 867,
+  107
+
+\bibitem[{Zhang {et~al.}(2018)Zhang, Tian, Kong, Zhong, \&
+  Fu}]{zhang2018residual}
+Zhang, Y., Tian, Y., Kong, Y., Zhong, B., \& Fu, Y. 2018, in Proceedings of the
+  IEEE Conference on Computer Vision and Pattern Recognition, 2472--2481
+
+\end{thebibliography}

@@ -1,0 +1,139 @@
+\section{Proofs for Section~\ref{sec:latg}} \label{apx:latg}
+In this section, we provide the
+proofs omitted from Section~\ref{sec:latg}.
+
+\LemmaA*
+\begin{proof}[proof of Lemma~\ref{lemm:A}]
+  Since each element in $A'$ has nonnegative marginal gain, 
+  it always holds that 
+  $f(\mathcal{A}_j')\ge f(\mathcal{A}_{j-1}')$.
+
+  From Lemma~\ref{lemma:ThresholdGood}, there are at least $(1-\epsi)$-fraction
+  of $A$ are good elements.
+  Therefore, there are at least $(1-\epsi)k$ of $a_j'$
+  which is good element or dummy element.
+  Next, let's consider the following 3 cases of $a_j'$.
+
+  \textbf{Case} $i(j)=1$ and $a_j'$ is good.
+  By Theorem~\ref{thm:threshold} and Lemma~\ref{lemma:ThresholdGood}, it holds that 
+  $$f(\mathcal{A}_j')-f(\mathcal{A}_{j-1}')\ge \tau_1=M \ge \frac{1}{k} \sum_{o \in O}f(o)\ge \frac{1}{k}f(O).$$
+
+  \textbf{Case} $i(j)>1$ and $a_j'$ is good.
+  Since $a_j'$ is returned at iteration $i(j)$ and $a_j'$ is good, it holds that:
+  (1) $f(\mathcal{A}_j')-f(\mathcal{A}_{j-1}')\ge \tau_{i(j)}$; 
+  (2) at previous iteration $i(j)-1$, \threseq returns $S_{i(j)-1}$ that $|S_{i(j)-1}| < k-|A_{i(j)-2}|$.
+  By property (2) and Theorem~\ref{thm:threshold}, for any $o \in O\backslash A_{i(j)-1}$,
+  $\marge{o}{A_{i(j)-1}} < \tau_{i(j)-1}$.
+  Then,
+  \begin{align*}
+    f(\mathcal{A}_j')-f(\mathcal{A}_{j-1}')&\ge \tau_{i(j)}= (1-\epsi')\tau_{i(j)-1}\\
+    &> \frac{1-\epsi'}{k}\sum_{o\in O\backslash A_{i(j)-1}}\marge{o}{A_{i(j)-1}}\\
+    &\ge \frac{1-\epsi'}{k}\left(f(O\cup A_{i(j)-1})-f(A_{i(j)-1})\right)\\
+    &\ge \frac{1-\epsi'}{k}\left(f(O\cup A_{i(j)-1})-f(A'_{i(j)-1})\right) \numberthis \label{ineq:sub8}\\
+    &\ge \frac{1-\epsi'}{k}\left(f(O\cup A_{i(j)-1})-f(\mathcal{A}_{j-1}')\right), \numberthis \label{ineq:sub7}
+  \end{align*}
+  where Inequality~\ref{ineq:sub8} follows from the proof of Lemma~\ref{lemma:ThresholdGood},
+  and Inequality~\ref{ineq:sub7} follows from $A'_{i(j)-1} \subseteq \mathcal{A}_{j-1}'$.
+
+  \textbf{Case} $i(j)=\ell+1$ (or $a_j'$ is dummy element). In this case, 
+  $|A|<k$ when the first \textbf{for} loop ends.
+  So, \threseq in the last iteration returns $S_\ell$ that $|S_\ell| < k-|A_{\ell-1}|$.
+  From Theorem~\ref{thm:threshold}, it holds that $\marge{o}{A_{\ell}} < \tau_\ell < \frac{M}{ck}$, 
+  for any $o \in O\backslash A_{\ell}$.
+  Thus,
+  $$\frac{M}{ck}> \frac{1}{k}\sum_{o\in O\backslash A_{\ell}} \marge{o}{A_{\ell}}\ge 
+  \frac{1}{k}\left(f(O\cup A_\ell) - f(A_\ell)\right) \overset{(a)}{\ge} 
+  \frac{1}{k}\left(f(O\cup A_\ell) - f(\mathcal{A}_j')\right),$$
+  where Inequality (a) follows from $A_\ell = A$ and $f(\mathcal{A}_j') = f(A')$.
+
+  The first inequality of Lemma~\ref{lemm:A} holds in those three cases
+  with at least $(1-\epsi')k$ of $j$.
+\end{proof}
+
+\LemmaC*
+\begin{proof}[Proof of Lemma~\ref{lemma:three}]
+  From Lemma~\ref{lemm:A}, $f(\mathcal{A'}_{j(u)-1})\ge f(\mathcal{A'}_{j(u-1)})$, and
+  \begin{align*}
+    f(\mathcal{A}_{j(u)}')& \ge \left(1-\frac{1-\epsi'}{k}\right)f(\mathcal{A}_{j(u)-1}')+
+    \frac{1-\epsi'}{k}f(O\cup A_{i(j(u))-1})-\frac{M}{ck}\\
+    &\ge \left(1-\frac{1-\epsi'}{k}\right)f(\mathcal{A}_{j(u-1)}')+
+    \frac{1-\epsi'}{k}f(O\cup A_{i(j(u))-1})-\frac{M}{ck}.
+  \end{align*}
+  Similarly,
+  $$f(\mathcal{B}_{j(u)}')\ge \left(1-\frac{1-\epsi'}{k}\right)f(\mathcal{B}_{j(u-1)}')+
+  \frac{1-\epsi'}{k}f((O\backslash A)\cup B_{i(j(u))-1})-\frac{M}{ck}.$$
+  By adding the above two inequalities and the submodularity, we have,
+  \begin{align*}
+    \Gamma_u&\ge \left(1-\frac{1-\epsi'}{k}\right) \Gamma_{u-1}+
+    \frac{1-\epsi'}{k}\left(f(O\cup A_{i(j(u))-1})+f((O\backslash A)\cup B_{i(j(u))-1})\right)-\frac{2M}{ck}\\
+    &\ge \left(1-\frac{1-\epsi'}{k}\right) \Gamma_{u-1}+\frac{1-\epsi'}{k} f(O\backslash A)-\frac{2M}{ck}.
+  \end{align*}
+\end{proof}
+
+\begin{lemma} \label{lemm:seven}
+  Let $\epsi \in (0,1)$, and suppose
+  $c = 8 / \epsi$, $\epsi' = (1 - 1/e) \epsi / 8$,
+  and $\beta = 1 - e^{(1 - \epsi')^2}$.
+  Then
+  \begin{equation}\left( \frac{1 - \frac{2}{c(1-\epsi')^2}}{\alpha + 
+    \frac{2}{\beta}} \right) \ge \left( \frac{e - 1}{\alpha(e - 1) + 2e} - \epsi  
+    \right). \label{ineq:ana}
+  \end{equation}
+\end{lemma}
+\begin{proof}[Proof of Lemma~\ref{lemm:seven}]
+  We start with the following two inequalities, which are verified below.
+  \begin{align}
+    1 - \frac{2}{c(1-\epsi')^2} \ge 1 - \epsi& ,\label{ineq:5} \\
+    %\frac{2}{1 - \epsi'} \le 2 + \epsi / 2&, \text{ and} \label{ineq:6}\\
+    \frac{2}{1 - e^{-(1 - \epsi')^2}} \le \frac{2}{1 - 1/e} + \epsi / 2& .\label{ineq:7}
+  \end{align}
+  Let $A = 1$, $B = 1 / \alpha + 2/(1 - 1/e)$. 
+  From the inequalities above,
+  the left-hand side of (\ref{ineq:ana})
+  is at least $\frac{A - \epsi}{B + \epsi}$ and
+  \begin{align*}
+    \frac{A - \epsi}{B + \epsi} \ge \frac{A}{B} - \epsi &\iff \epsi \ge \frac{A}{B} - \frac{A - \epsi}{B + \epsi} \\
+                                                     &\iff 1 \ge \frac{A}{\epsi B} - \frac{A}{\epsi (B + \epsi )} + \frac{1}{B + \epsi}.
+  \end{align*}
+  Next,
+  \begin{align*}
+    \frac{A}{\epsi B} - \frac{A}{\epsi (B + \epsi )} + \frac{1}{B + \epsi} = \frac{A}{B (B + \epsi )} + \frac{1}{B + \epsi} \le 1/4 + 1/2 < 1,
+  \end{align*}
+  since $B \ge 2$ and $A = 1$. Finally, $A/B = \frac{\alpha (e - 1)}{e - 1 + 2\alpha e}$.
+
+  \textbf{Proof of (\ref{ineq:5}).}
+  \begin{align*}
+    c \ge 8 / \epsi = \frac{2}{\epsi (1/2)^2} \ge \frac{2}{\epsi(1 - \epsi')^2},
+  \end{align*}
+  since $\epsi' = (1 - 1/e) \epsi / 8 \le 1/2$.
+
+  % \paragraph{Proof of (\ref{ineq:6})}
+  % \begin{align*}
+  %   \frac{2}{1 - \epsi'} \le 2 + \epsi / 2 &\iff 2 \le (2 + \epsi / 2)( 1 - \epsi' ) \\
+  %   &\iff \epsi' ( 2 + \epsi / 2 ) \le \epsi / 2 \\
+  %   &\iff \epsi' \le \frac{\epsi / 2}{2 + \epsi / 2} 
+  % \end{align*}
+  % which is satisfied by the choice of $\epsi'$.
+
+  \textbf{Proof of (\ref{ineq:7}).}
+  Let $\lambda = 1 - 1/e$, $\kappa = e^{-(1-\epsi' )^2}$.
+  Inequality (\ref{ineq:7})
+  is satisfied iff.
+  \begin{align*}
+    2 \lambda \le 2(1 - \kappa ) + \frac{\lambda \epsi (1 - \kappa )}{2} &\iff 2\lambda \le 2 - 2 \kappa + \lambda \epsi / 2 - \lambda \epsi \kappa / 2 \\
+                                                                        &\iff 2 \kappa + \lambda \epsi \kappa /2 \le \lambda \epsi /2 + 2 - 2 \lambda \\
+                                                                        &\iff \kappa = e^{-(1 - \epsi')^2} \le \frac{\lambda \epsi / 2 + 2 - 2 \lambda }{2 + \lambda \epsi / 2} \\
+    &\iff (1 - \epsi' )^2 \ge \log \left( \frac{2 + \lambda \epsi / 2}{\lambda \epsi / 2 + 2 - 2 \lambda} \right),
+  \end{align*}
+  which in turn is satisfied if
+  $$2 \epsi' \le 1 - \log \left( \frac{2 + \lambda \epsi / 2}{\lambda \epsi / 2 + 2 - 2 \lambda} \right).$$
+  Then
+  \begin{align*}
+    2 \epsi' = \lambda \epsi / 4 \le \frac{2 + \lambda \epsi /2 - 4 \lambda}{2 - \lambda} &\le \frac{2 + \lambda \epsi / 2 - 4 \lambda}{2 + \lambda \epsi / 2 - 2 \lambda} \\
+                                                                                     &= \frac{2 ( \lambda \epsi /2 + 2 - 2 \lambda ) - 2 - \lambda \epsi / 2}{\lambda \epsi /2 + 2 - 2 \lambda} \\
+                                                                                     &= 2 - \frac{2 + \lambda \epsi / 2}{\lambda \epsi /2 + 2 - 2\lambda} \\
+                                                                                     &= 1 - \left( \frac{2 + \lambda \epsi / 2}{\lambda \epsi /2 + 2 - 2\lambda} - 1 \right) \\
+                                                                                     &\le 1 - \log \left( \frac{2 + \lambda \epsi / 2}{\lambda \epsi /2 + 2 - 2\lambda} \right),
+  \end{align*}
+  where we have used $\log x \le x - 1$, for $x > 0$.
+\end{proof}

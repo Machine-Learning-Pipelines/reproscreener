@@ -1,0 +1,362 @@
+\begin{thebibliography}{10}
+
+\bibitem{bouchacourt_miss_2019}
+Diane Bouchacourt and Marco Baroni.
+\newblock Miss {Tools} and {Mr} {Fruit}: {Emergent} communication in agents
+  learning about object affordances.
+\newblock {\em arXiv:1905.11871 [cs]}, May 2019.
+\newblock arXiv: 1905.11871.
+
+\bibitem{bowman-etal-2015-large}
+Samuel~R. Bowman, Gabor Angeli, Christopher Potts, and Christopher~D. Manning.
+\newblock A large annotated corpus for learning natural language inference.
+\newblock In {\em Proceedings of the 2015 Conference on Empirical Methods in
+  Natural Language Processing}, pages 632--642, Lisbon, Portugal, September
+  2015. Association for Computational Linguistics.
+
+\bibitem{DBLP:conf/acl/ChaabouniKBDB20}
+Rahma Chaabouni, Eugene Kharitonov, Diane Bouchacourt, Emmanuel Dupoux, and
+  Marco Baroni.
+\newblock Compositionality and generalization in emergent languages.
+\newblock In Dan Jurafsky, Joyce Chai, Natalie Schluter, and Joel~R. Tetreault,
+  editors, {\em Proceedings of the 58th Annual Meeting of the Association for
+  Computational Linguistics, {ACL} 2020, Online, July 5-10, 2020}, pages
+  4427--4442. Association for Computational Linguistics, 2020.
+
+\bibitem{cho-etal-2014-learning}
+Kyunghyun Cho, Bart van Merri{\"e}nboer, Caglar Gulcehre, Dzmitry Bahdanau,
+  Fethi Bougares, Holger Schwenk, and Yoshua Bengio.
+\newblock Learning phrase representations using {RNN} encoder{--}decoder for
+  statistical machine translation.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing ({EMNLP})}, pages 1724--1734, Doha, Qatar,
+  October 2014. Association for Computational Linguistics.
+
+\bibitem{cogswell_emergence_2019}
+Michael Cogswell, Jiasen Lu, Stefan Lee, Devi Parikh, and Dhruv Batra.
+\newblock Emergence of {Compositional} {Language} with {Deep} {Generational}
+  {Transmission}.
+\newblock {\em arXiv:1904.09067 [cs, stat]}, April 2019.
+\newblock arXiv: 1904.09067.
+
+\bibitem{Cui2018CaptionEval}
+Yin Cui, Guandao Yang, Andreas Veit, Xun Huang, and Serge Belongie.
+\newblock Learning to evaluate image captioning.
+\newblock In {\em CVPR}, 2018.
+
+\bibitem{5206848}
+J.~{Deng}, W.~{Dong}, R.~{Socher}, L.~{Li}, {Kai Li}, and {Li Fei-Fei}.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In {\em 2009 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 248--255, 2009.
+
+\bibitem{barrett-royalsoc}
+Tamás Dávid-Barrett and Robin Dunbar.
+\newblock Language as a coordination tool evolves slowly.
+\newblock {\em Royal Society Open Science}, 3:160259, 12 2016.
+
+\bibitem{evtimova2018emergent}
+Katrina Evtimova, Andrew Drozdov, Douwe Kiela, and Kyunghyun Cho.
+\newblock Emergent communication in a multi-modal, multi-step referential game.
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{finn_model-agnostic_2017}
+Chelsea Finn, Pieter Abbeel, and Sergey Levine.
+\newblock Model-{Agnostic} {Meta}-{Learning} for {Fast} {Adaptation} of {Deep}
+  {Networks}.
+\newblock {\em arXiv:1703.03400 [cs]}, March 2017.
+\newblock arXiv: 1703.03400.
+
+\bibitem{fitzgerald2019populate}
+Nicole Fitzgerald.
+\newblock To populate is to regulate, 2019.
+
+\bibitem{foerster_learning_2016}
+Jakob Foerster, Ioannis~Alexandros Assael, Nando de~Freitas, and Shimon
+  Whiteson.
+\newblock Learning to {Communicate} with {Deep} {Multi}-{Agent} {Reinforcement}
+  {Learning}.
+\newblock In D.~D. Lee, M.~Sugiyama, U.~V. Luxburg, I.~Guyon, and R.~Garnett,
+  editors, {\em Advances in {Neural} {Information} {Processing} {Systems} 29},
+  pages 2137--2145. Curran Associates, Inc., 2016.
+
+\bibitem{gupta-etal-2019-seeded}
+Abhinav Gupta, Ryan Lowe, Jakob Foerster, Douwe Kiela, and Joelle Pineau.
+\newblock Seeded self-play for language learning.
+\newblock In {\em Proceedings of the Beyond Vision and LANguage: inTEgrating
+  Real-world kNowledge (LANTERN)}, pages 62--66, Hong Kong, China, November
+  2019. Association for Computational Linguistics.
+
+\bibitem{graesser_emergent_2019}
+Laura Harding~Graesser, Kyunghyun Cho, and Douwe Kiela.
+\newblock Emergent linguistic phenomena in multi-agent communication games.
+\newblock In {\em Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3691--3701, Hong Kong,
+  China, November 2019. Association for Computational Linguistics.
+
+\bibitem{havrylov_emergence_2017}
+Serhii Havrylov and Ivan Titov.
+\newblock Emergence of {Language} with {Multi}-agent {Games}: {Learning} to
+  {Communicate} with {Sequences} of {Symbols}.
+\newblock In I.~Guyon, U.~V. Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan, and R.~Garnett, editors, {\em Advances in {Neural}
+  {Information} {Processing} {Systems} 30}, pages 2149--2159. Curran
+  Associates, Inc., 2017.
+
+\bibitem{7780459}
+K.~{He}, X.~{Zhang}, S.~{Ren}, and J.~{Sun}.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em 2016 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 770--778, 2016.
+
+\bibitem{Hodosh2013FramingID}
+Micah Hodosh, Peter Young, and Julia Hockenmaier.
+\newblock Framing image description as a ranking task: Data, models and
+  evaluation metrics (extended abstract).
+\newblock {\em Journal of Artificial Intelligence Research}, 47:853--899, 2013.
+
+\bibitem{DBLP:journals/corr/abs-2003-02979}
+Hengyuan Hu, Adam Lerer, Alex Peysakhovich, and Jakob~N. Foerster.
+\newblock "other-play" for zero-shot coordination.
+\newblock {\em CoRR}, abs/2003.02979, 2020.
+
+\bibitem{kharitonov_information_2019}
+Eugene Kharitonov, Rahma Chaabouni, Diane Bouchacourt, and Marco Baroni.
+\newblock Information {Minimization} {In} {Emergent} {Languages}.
+\newblock {\em arXiv:1905.13687 [cs]}, May 2019.
+\newblock arXiv: 1905.13687.
+
+\bibitem{DBLP:journals/corr/KingmaB14}
+Diederik~P. Kingma and Jimmy Ba.
+\newblock Adam: {A} method for stochastic optimization.
+\newblock In Yoshua Bengio and Yann LeCun, editors, {\em 3rd International
+  Conference on Learning Representations, {ICLR} 2015, San Diego, CA, USA, May
+  7-9, 2015, Conference Track Proceedings}, 2015.
+
+\bibitem{kottur2017natural}
+Satwik Kottur, Jos{\'e} Moura, Stefan Lee, and Dhruv Batra.
+\newblock Natural language does not emerge {`}naturally{'} in multi-agent
+  dialog.
+\newblock In {\em Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2962--2967, Copenhagen, Denmark,
+  September 2017. Association for Computational Linguistics.
+
+\bibitem{NIPS2017_3323fe11}
+Marc Lanctot, Vinicius Zambaldi, Audrunas Gruslys, Angeliki Lazaridou, Karl
+  Tuyls, Julien Perolat, David Silver, and Thore Graepel.
+\newblock A unified game-theoretic approach to multiagent reinforcement
+  learning.
+\newblock In I.~Guyon, U.~V. Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan, and R.~Garnett, editors, {\em Advances in Neural Information
+  Processing Systems}, volume~30, pages 4190--4203. Curran Associates, Inc.,
+  2017.
+
+\bibitem{lazaridou_emergence_2018}
+Angeliki Lazaridou, Karl~Moritz Hermann, Karl Tuyls, and Stephen Clark.
+\newblock Emergence of linguistic communication from referential games with
+  symbolic and pixel input.
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{lazaridou_multi-agent_2016}
+Angeliki Lazaridou, Alexander Peysakhovich, and Marco Baroni.
+\newblock Multi-{Agent} {Cooperation} and the {Emergence} of ({Natural})
+  {Language}.
+\newblock In {\em International Conference on Learning Representations}, 2017.
+
+\bibitem{lazaridou-etal-2020-multi}
+Angeliki Lazaridou, Anna Potapenko, and Olivier Tieleman.
+\newblock Multi-agent communication meets natural language: Synergies between
+  functional and structural language learning.
+\newblock In {\em Proceedings of the 58th Annual Meeting of the Association for
+  Computational Linguistics}, pages 7663--7674, Online, July 2020. Association
+  for Computational Linguistics.
+
+\bibitem{lee_countering_2019}
+Jason Lee, Kyunghyun Cho, and Douwe Kiela.
+\newblock Countering language drift via visual grounding.
+\newblock In {\em Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 4376--4386, Hong Kong,
+  China, November 2019. Association for Computational Linguistics.
+
+\bibitem{lee_emergent_2017}
+Jason Lee, Kyunghyun Cho, Jason Weston, and Douwe Kiela.
+\newblock Emergent translation in multi-agent communication.
+\newblock In {\em International Conference on Learning Representations}, 2018.
+
+\bibitem{lewis1969convention}
+David Lewis.
+\newblock {\em Convention: A philosophical study}.
+\newblock Harvard University Press, 1969.
+
+\bibitem{li_ease--teaching_2019}
+Fushan Li and Michael Bowling.
+\newblock Ease-of-teaching and language structure from emergent communication.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer, F.~d~Alch\'{e}-Buc,
+  E.~Fox, and R.~Garnett, editors, {\em Advances in Neural Information
+  Processing Systems}, pages 15825--15835. Curran Associates, Inc., 2019.
+
+\bibitem{Lin2014MicrosoftCC}
+Tsung-Yi Lin, M.~Maire, Serge~J. Belongie, James Hays, P.~Perona, D.~Ramanan,
+  Piotr Doll{\'a}r, and C.~L. Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In {\em ECCV}, 2014.
+
+\bibitem{lowe_pitfalls_2019}
+Ryan Lowe, Jakob Foerster, Y-Lan Boureau, Joelle Pineau, and Yann Dauphin.
+\newblock On the pitfalls of measuring emergent communication.
+\newblock In {\em Proceedings of the 18th International Conference on
+  Autonomous Agents and MultiAgent Systems}, AAMAS '19, pages 693--701.
+  International Foundation for Autonomous Agents and Multiagent Systems, 2019.
+
+\bibitem{lowe_learning_2019}
+Ryan Lowe, Abhinav Gupta, Jakob Foerster, Douwe Kiela, and Joelle Pineau.
+\newblock Learning to learn to communicate.
+\newblock {\em Adaptive and Multitask Learning Workshop at ICML}, 2019.
+
+\bibitem{lowe*2020on}
+Ryan Lowe, Abhinav Gupta, Jakob Foerster, Douwe Kiela, and Joelle Pineau.
+\newblock On the interaction between supervision and self-play in emergent
+  communication.
+\newblock In {\em International Conference on Learning Representations}, 2020.
+
+\bibitem{DBLP:journals/corr/abs-2003-12694}
+Yuchen Lu, Soumye Singhal, Florian Strub, Olivier Pietquin, and Aaron~C.
+  Courville.
+\newblock Countering language drift with seeded iterated learning.
+\newblock {\em CoRR}, abs/2003.12694, 2020.
+
+\bibitem{Lupyan:Dale:2010}
+Gary Lupyan and Rick Dale.
+\newblock Language structure is partly determined by social structure.
+\newblock {\em PloS one}, 5(1):e8559, 2010.
+
+\bibitem{metz2018learning}
+Luke Metz, Niru Maheswaranathan, Brian Cheung, and Jascha Sohl-Dickstein.
+\newblock Learning unsupervised learning rules.
+\newblock In {\em International Conference on Learning Representations}, 2019.
+
+\bibitem{mordatch_emergence_2017}
+Igor Mordatch and Pieter Abbeel.
+\newblock Emergence of grounded compositional language in multi-agent
+  populations.
+\newblock In {\em AAAI Conference on Artificial Intelligence}, 2018.
+
+\bibitem{nichol_first-order_2018}
+Alex Nichol, Joshua Achiam, and John Schulman.
+\newblock On {First}-{Order} {Meta}-{Learning} {Algorithms}.
+\newblock {\em arXiv:1803.02999 [cs]}, March 2018.
+\newblock arXiv: 1803.02999.
+
+\bibitem{10.3115/1073083.1073135}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu.
+\newblock Bleu: A method for automatic evaluation of machine translation.
+\newblock In {\em Proceedings of the 40th Annual Meeting on Association for
+  Computational Linguistics}, ACL '02, page 311–318, USA, 2002. Association
+  for Computational Linguistics.
+
+\bibitem{pytorch_NIPS2019}
+Adam Paszke, Sam Gross, Francisco Massa, et~al.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer, F.~d'Alch\'{e} Buc,
+  E.~Fox, and R.~Garnett, editors, {\em Advances in Neural Information
+  Processing Systems}, pages 8024--8035. Curran Associates, Inc., 2019.
+
+\bibitem{DBLP:conf/iclr/RaviL17}
+Sachin Ravi and Hugo Larochelle.
+\newblock Optimization as a model for few-shot learning.
+\newblock In {\em 5th International Conference on Learning Representations,
+  {ICLR} 2017, Toulon, France, April 24-26, 2017, Conference Track
+  Proceedings}. OpenReview.net, 2017.
+
+\bibitem{Reali:etal:2018}
+Florencia Reali, Nick Chater, and Morten~H Christiansen.
+\newblock Simpler grammar, larger vocabulary: how population size affects
+  language.
+\newblock {\em Proc. R. Soc. B}, 285(1871):20172586, 2018.
+
+\bibitem{reimers-gurevych-2019-sentence}
+Nils Reimers and Iryna Gurevych.
+\newblock Sentence-{BERT}: Sentence embeddings using {S}iamese {BERT}-networks.
+\newblock In {\em Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3982--3992, Hong Kong,
+  China, November 2019. Association for Computational Linguistics.
+
+\bibitem{rothfuss2018promp}
+Jonas Rothfuss, Dennis Lee, Ignasi Clavera, Tamim Asfour, and Pieter Abbeel.
+\newblock Pro{MP}: Proximal meta-policy search.
+\newblock In {\em International Conference on Learning Representations}, 2019.
+
+\bibitem{pmlr-v48-santoro16}
+Adam Santoro, Sergey Bartunov, Matthew Botvinick, Daan Wierstra, and Timothy
+  Lillicrap.
+\newblock Meta-learning with memory-augmented neural networks.
+\newblock In Maria~Florina Balcan and Kilian~Q. Weinberger, editors, {\em
+  Proceedings of The 33rd International Conference on Machine Learning},
+  volume~48 of {\em Proceedings of Machine Learning Research}, pages
+  1842--1850, New York, New York, USA, 20--22 Jun 2016. PMLR.
+
+\bibitem{DBLP:journals/corr/abs-2002-01335}
+Agnieszka Slowik, Abhinav Gupta, William~L. Hamilton, Mateja Jamnik, Sean~B.
+  Holden, and Christopher~J. Pal.
+\newblock Exploring structural inductive biases in emergent communication.
+\newblock {\em CoRR}, abs/2002.01335, 2020.
+
+\bibitem{sukhbaatar2016learning}
+Sainbayar Sukhbaatar, Arthur Szlam, and Rob Fergus.
+\newblock Learning multiagent communication with backpropagation.
+\newblock In D.~D. Lee, M.~Sugiyama, U.~V. Luxburg, I.~Guyon, and R.~Garnett,
+  editors, {\em Advances in Neural Information Processing Systems}, pages
+  2244--2252. Curran Associates, Inc., 2016.
+
+\bibitem{tieleman_shaping_2018}
+Olivier Tieleman, Angeliki Lazaridou, Shibl Mourad, Charles Blundell, and Doina
+  Precup.
+\newblock Shaping representations through communication: community size effect
+  in artificial learning systems.
+\newblock {\em NeurIPS Workshop on Visually Grounded Interaction and Language},
+  2019.
+
+\bibitem{Tomasello:2010}
+Michael Tomasello.
+\newblock {\em Origins of human communication}.
+\newblock MIT press, 2010.
+
+\bibitem{Trudgill:2011}
+Peter Trudgill.
+\newblock {\em Sociolinguistic typology: Social determinants of linguistic
+  complexity}.
+\newblock Oxford University Press, 2011.
+
+\bibitem{NIPS2016_90e13578}
+Oriol Vinyals, Charles Blundell, Timothy Lillicrap, koray kavukcuoglu, and Daan
+  Wierstra.
+\newblock Matching networks for one shot learning.
+\newblock In D.~Lee, M.~Sugiyama, U.~Luxburg, I.~Guyon, and R.~Garnett,
+  editors, {\em Advances in Neural Information Processing Systems}, volume~29,
+  pages 3630--3638. Curran Associates, Inc., 2016.
+
+\bibitem{williams-etal-2018-broad}
+Adina Williams, Nikita Nangia, and Samuel Bowman.
+\newblock A broad-coverage challenge corpus for sentence understanding through
+  inference.
+\newblock In {\em Proceedings of the 2018 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1112--1122, New Orleans,
+  Louisiana, June 2018. Association for Computational Linguistics.
+
+\bibitem{williams1992simple}
+Ronald~J Williams.
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock {\em Machine learning}, 8(3-4):229--256, 1992.
+
+\bibitem{Wray:Grace:2007}
+Alison Wray and George~W Grace.
+\newblock The consequences of talking to strangers: Evolutionary corollaries of
+  socio-cultural influences on linguistic form.
+\newblock {\em Lingua}, 117(3):543--578, 2007.
+
+\end{thebibliography}

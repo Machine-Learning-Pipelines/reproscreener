@@ -1,0 +1,72 @@
+
+\section{Lower Bounds}
+\label{sec:utility-lower-bounds}
+
+We now prove a new lower bound on the error achievable for composite DP-ERM
+with $L$-component-Lipschitz loss
+functions. While our proof borrows some ideas from the lower bounds known for
+constrained ERM with $\Lambda$-Lipschitz losses \citep{bassily2014Private},
+deriving our lower
+bounds requires to address a number of specific challenges.
+First, we cannot use an $\ell_2$ norm constraint as in
+\citet{bassily2014Private} in the design of the worst-case problem instances:
+we can only
+rely on \emph{separable} regularizers. Second, imbalanced coordinate-wise
+Lipschitz constants prevent lower-bounding the distance between an arbitrary
+point and the solution. This leads us to revisit
+the construction of a ``reidentifiable dataset'' from
+\citet{bun2014Fingerprinting} so that we
+have $L$-component-Lipschitzness while the sum of each
+column is large enough, which is crucial in our proof. The full proof is given
+in \Cref
+{sec:utility-lower-bounds-1}.
+\begin{theorem}
+  \label{thm:utility-lower-bounds}
+  Let $n, p > 0$, $\epsilon > 0$, $\delta = o(\frac{1}{n})$,
+  $L_1, \dots, L_p > 0$, such that for all $\cJ \subseteq [p]$ of size at least
+  $\lceil \frac{p}{75} \rceil$, $\sum_{j\in\cJ} L_j^2 = \Omega(\norm{L}_2^2)$.
+  Let $\cX = \prod_{j=1}^p \{\pm L_j\}$ and consider any
+  $(\epsilon, \delta)$-differentially private algorithm that outputs $w^{priv}$.
+  In each of the two following cases there exists a dataset $D \in \cX^n$,
+  a $L$-component-Lipschitz loss $\ell(\cdot, d)$ for all $d \in D$ and a
+  regularizer $\psi$ so that, with $F$ the objective of~\eqref{eq:dp-erm}
+  minimal at $w^* \in \RR^p$:
+  \begin{enumerate}
+    \item If $F$ is convex:
+          \begin{align*}
+            \expec{}{F(w^{priv};D) - F(w^*)} = \Omega\Big( \frac{\sqrt{p} \norm{L}_2
+              \norm{w^*}_2}{n\epsilon} \Big)\enspace.
+          \end{align*}
+    \item If $F$ is $\mu_I$-strongly-convex \wrt $\norm{\cdot}_2$:
+          \begin{align*}
+            \expec{}{F(w^{priv};D) - F(w^*)} = \Omega\Big( \frac{p \norm{L}_2^2}{\mu_I
+              n^2\epsilon^2} \Big)\enspace.
+          \end{align*}
+  \end{enumerate}
+\end{theorem}
+We recover the lower bounds of \citet{bassily2014Private} for
+$\Lambda$-Lipschitz
+losses as a special case of ours by setting $L_1 = \cdots = L_p = {\Lambda}/{
+  \sqrt{p}}$. In this case, the
+loss function used in our proof is indeed $(\sum_{j=1}^p L_j^2)^{1/2}
+  =\Lambda$-Lipschitz.
+To relate these lower bounds to the performance of DP-CD, consider a
+suboptimal version of
+our algorithm where the step sizes are set to
+$\gamma_1 = \cdots = \gamma_p = ({\max_j M_j})^{-1}$.
+In this setting, results from \Cref{thm:cd-utility} still hold, and match the
+lower bounds from \Cref{thm:utility-lower-bounds} up to logarithmic factors.
+We leave open the question of the optimality of DP-CD under the additional
+hypothesis of smoothness.
+
+We note that the assumption on the sum of the $L_j$'s over a set of indices
+$\cJ$ in \Cref{thm:utility-lower-bounds} can be eliminated at the cost of an
+additional
+factor of ${L_{\min}}/{L_{\max}}$ for convex losses and
+$({L_{\min}}/{L_{\max}})^2$ for strongly-convex losses, making the bound looser.
+Although the aforementioned assumption may seem solely technical, we
+conjecture that better utility is possible when a few
+coordinate-wise Lipschitz constants dominate the others.
+We discuss this further in \Cref{sec:conclusion-and-discussion}.
+
+

@@ -1,0 +1,22 @@
+\section{Algorithm}\label{sec:algorithm}
+
+Our goal is general purpose learning and inference for the target parameter $\theta_0\text{ in }\mathbb{R}$ that is a mean square continuous functional of $\gamma_0\text{ in } \Gamma$. Lemma~\ref{prop:RR} demonstrates that any such $\theta_0$ has a unique minimal representer $\alpha_0^{\min}\text{ in } \Gamma$. In this section, we describe a meta algorithm to turn estimators $\hat{\gamma}$ of $\gamma_0$ and $\hat{\alpha}$ of $\alpha_0^{\min}$ into an estimator $\hat{\theta}$ of $\theta_0$ such that $\hat{\theta}$ has a valid and practical confidence interval. Recall that $\hat{\gamma}$ may be any machine learning algorithm. To preserve this generality, we do not instantiate a choice of $\hat{\gamma}$; we treat it as a black box. In subsequent analysis, we will only require that $\hat{\gamma}$ converges to $\gamma_0$ in mean square error. This mean square rate is guaranteed by existing statistical learning theory. %As such, the inferential theory builds directly on the learning theory.
+
+The target estimator $\hat{\theta}$ as well as its confidence interval will depend on nuisance estimators $\hat{\gamma}$ and $\hat{\alpha}$. We refrain from instantiating the estimator $\hat{\alpha}$ for $\alpha_0^{\min}$. As we will see in subsequent analysis, the general theory only requires that $\hat{\alpha}$ converges to $\alpha^{\min}_0$ in mean square error. A recent literature provides $\hat{\alpha}$ estimators with fast rates inspired by the Dantzig selector \cite{chernozhukov2018global}, lasso \cite{chernozhukov2018learning,smucler2019unifying,avagyan2021high}, adversarial neural networks \cite{chernozhukov2020adversarial,kallus2021causal}, and kernel ridge regression \cite{singh2021debiased}.
+
+\begin{algorithm}[Debiased machine learning]\label{alg:target}
+Given a sample $(Y_i,W_i)$ $(i=1,...,n)$, partition the sample into folds $(I_{\ell})$ $(\ell=1,...,L)$. Denote by $I_{\ell}^c$ the complement of $I_{\ell}$.
+\begin{enumerate}
+    \item For each fold $\ell$, estimate $\hat{\gamma}_{\ell}$ and $\hat{\alpha}_{\ell}$ from observations in $I_{\ell}^c$.
+    \item Estimate $\theta_0$ as
+    $
+  \hat{\theta}=n^{-1}\sum_{\ell=1}^L\sum_{i\in I_{\ell}} [m(W_i,\hat{\gamma}_{\ell})+\hat{\alpha}_{\ell}(W_i)\{Y_i-\hat{\gamma}_{\ell}(W_i)\}]
+    $.
+    \item Estimate its $(1-a) 100$\% confidence interval as
+    $
+    \hat{\theta}\pm c_{a}\hat{\sigma} n^{-1/2}$, where $c_{a}$ is the $1-a/2$ quantile of the standard Gaussian and $\hat{\sigma}^2=n^{-1}\sum_{\ell=1}^L\sum_{i\in I_{\ell}} [m(W_i,\hat{\gamma}_{\ell})+\hat{\alpha}_{\ell}(W_i)\{Y_i-\hat{\gamma}_{\ell}(W_i)\}-\hat{\theta}]^2
+    $. 
+\end{enumerate}
+\end{algorithm}
+
+This meta algorithm can be seen as an extension of classic one step corrections \cite{pfanzagl1982lecture} amenable to the use of modern machine learning, and it has been termed debiased machine learning \cite{chernozhukov2018original}. It departs from targeted machine learning inference with a finite sample \cite{van2017finite,cai2020nonparametric} in a few ways. On the one hand, it avoids iteration and bootstrapping, thereby simplifying computation. On the other hand, it does not involve substitution, which would ensure that the estimator obeys additional meaningful constraints. See \cite{chernozhukov2018learning} for an algorithm that combines the two approaches.

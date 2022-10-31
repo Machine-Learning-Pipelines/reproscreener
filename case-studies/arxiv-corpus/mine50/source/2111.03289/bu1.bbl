@@ -1,0 +1,211 @@
+\begin{thebibliography}{30}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abbasi-Yadkori et~al.(2011)Abbasi-Yadkori, Pal, and
+  Szepesvari]{ay11improved}
+Yasin Abbasi-Yadkori, David Pal, and Csaba Szepesvari.
+\newblock {Improved Algorithms for Linear Stochastic Bandits}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 1--19, 2011.
+
+\bibitem[Audibert et~al.(2006)Audibert, Munos, and Szepesvari]{audibert2006use}
+Jean-Yves Audibert, R{\'{e}}mi Munos, and Csaba Szepesvari.
+\newblock {Use of variance estimation in the multi-armed bandit problem}.
+\newblock \emph{NeurIPS Workshop on On-line Trading of Exploration and
+  Exploitation Workshop}, 2006.
+
+\bibitem[Auer(2002)]{auer02using}
+Peter Auer.
+\newblock {Using Confidence Bounds for Exploitation-Exploration Trade-offs}.
+\newblock \emph{Journal of Machine Learning Research}, 3:\penalty0 397--422,
+  2002.
+
+\bibitem[Auer et~al.(2003)Auer, Cesa-Bianchi, Freund, and
+  Schapire]{auer03nonstochastic}
+Peter Auer, Nicol{\`{o}} Cesa-Bianchi, Yoav Freund, and Robert~E Schapire.
+\newblock {The Nonstochastic Multiarmed Bandit Problem}.
+\newblock \emph{SIAM J. Comput.}, 32\penalty0 (1):\penalty0 48--77, 2003.
+
+\bibitem[Cesa-Bianchi and Lugosi(2006)]{cesa2006prediction}
+Nicolo Cesa-Bianchi and G{\'a}bor Lugosi.
+\newblock \emph{Prediction, learning, and games}.
+\newblock Cambridge university press, 2006.
+
+\bibitem[Dani et~al.(2008)Dani, Hayes, and Kakade]{dani08stochastic}
+Varsha Dani, Thomas~P Hayes, and Sham~M Kakade.
+\newblock {Stochastic Linear Optimization under Bandit Feedback.}
+\newblock In \emph{Proceedings of the Conference on Learning Theory (COLT)},
+  pages 355--366, 2008.
+
+\bibitem[Dann et~al.(2018)Dann, Jiang, Krishnamurthy, Agarwal, Langford, and
+  Schapire]{dann2018oracle}
+Christoph Dann, Nan Jiang, Akshay Krishnamurthy, Alekh Agarwal, John Langford,
+  and Robert~E Schapire.
+\newblock {On Oracle-Efficient PAC RL with Rich Observations}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2018.
+
+\bibitem[Du et~al.(2019)Du, Luo, Wang, and Zhang]{du2019provably}
+Simon~S Du, Yuping Luo, Ruosong Wang, and Hanrui Zhang.
+\newblock {Provably Efficient Q-learning with Function Approximation via
+  Distribution Shift Error Checking Oracle}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 8058--8068, 2019.
+
+\bibitem[Du et~al.(2020)Du, Lee, Mahajan, and Wang]{du2020agnostic}
+Simon~S Du, Jason~D Lee, Gaurav Mahajan, and Ruosong Wang.
+\newblock Agnostic $ q $-learning with function approximation in deterministic
+  systems: Near-optimal bounds on approximation error and sample complexity.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33, 2020.
+
+\bibitem[Feng et~al.(2020)Feng, Wang, Yin, Du, and Yang]{feng2020provably}
+Fei Feng, Ruosong Wang, Wotao Yin, Simon~S Du, and Lin Yang.
+\newblock {Provably Efficient Exploration for Reinforcement Learning Using
+  Unsupervised Learning}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 22492--22504, 2020.
+
+\bibitem[Hazan and Kale(2010)]{hazan10extracting}
+Elad Hazan and Satyen Kale.
+\newblock {Extracting certainty from uncertainty: Regret bounded by variation
+  in costs}.
+\newblock \emph{Machine Learning}, 80\penalty0 (2):\penalty0 165--188, 2010.
+
+\bibitem[He et~al.(2021)He, Zhou, and Gu]{he2021logarithmic}
+Jiafan He, Dongruo Zhou, and Quanquan Gu.
+\newblock Logarithmic regret for reinforcement learning with linear function
+  approximation.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  4171--4180. PMLR, 2021.
+
+\bibitem[Jiang et~al.(2017)Jiang, Krishnamurthy, Agarwal, Langford, and
+  Schapire]{jiang2017contextual}
+Nan Jiang, Akshay Krishnamurthy, Alekh Agarwal, John Langford, and Robert~E
+  Schapire.
+\newblock Contextual decision processes with low bellman rank are
+  pac-learnable.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1704--1713. PMLR, 2017.
+
+\bibitem[Jin et~al.(2020)Jin, Yang, Wang, and Jordan]{jin2020provably}
+Chi Jin, Zhuoran Yang, Zhaoran Wang, and Michael~I Jordan.
+\newblock Provably efficient reinforcement learning with linear function
+  approximation.
+\newblock In \emph{Conference on Learning Theory}, pages 2137--2143. PMLR,
+  2020.
+
+\bibitem[Krishnamurthy et~al.(2016)Krishnamurthy, Agarwal, and
+  Langford]{krishnamurthy2016pac}
+Akshay Krishnamurthy, Alekh Agarwal, and John Langford.
+\newblock Pac reinforcement learning with rich observations.
+\newblock \emph{arXiv preprint arXiv:1602.02722}, 2016.
+
+\bibitem[Lattimore and Szepesv{\'{a}}ri(2020)]{lattimore20bandit}
+Tor Lattimore and Csaba Szepesv{\'{a}}ri.
+\newblock \emph{{Bandit Algorithms}}.
+\newblock Cambridge University Press, 2020.
+
+\bibitem[Li et~al.(2019)Li, Wang, and Zhou]{li19nearly}
+Yingkai Li, Yining Wang, and Yuan Zhou.
+\newblock {Nearly Minimax-Optimal Regret for Linearly Parameterized Bandits}.
+\newblock In \emph{Proceedings of the Conference on Learning Theory (COLT)},
+  pages 2173--2174, 2019.
+
+\bibitem[Misra et~al.(2020)Misra, Henaff, Krishnamurthy, and
+  Langford]{misra2020kinematic}
+Dipendra Misra, Mikael Henaff, Akshay Krishnamurthy, and John Langford.
+\newblock Kinematic state abstraction and provably efficient rich-observation
+  reinforcement learning.
+\newblock In \emph{Proceedings of the International Conference on Machine
+  Learning (ICML)}, pages 6961--6971. PMLR, 2020.
+
+\bibitem[Russo and {Van Roy}(2013)]{russo13eluder}
+Daniel Russo and Benjamin {Van Roy}.
+\newblock {Eluder dimension and the sample complexity of optimistic
+  exploration}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 2256--2264, 2013.
+
+\bibitem[Sun et~al.(2019)Sun, Jiang, Krishnamurthy, Agarwal, and
+  Langford]{sun2019model}
+Wen Sun, Nan Jiang, Akshay Krishnamurthy, Alekh Agarwal, and John Langford.
+\newblock Model-based rl in contextual decision processes: Pac bounds and
+  exponential improvements over model-free approaches.
+\newblock In \emph{Proceedings of the Conference on Learning Theory (COLT)},
+  pages 2898--2933. PMLR, 2019.
+
+\bibitem[Wagenmaker et~al.(2022)Wagenmaker, Chen, Simchowitz, Du, and
+  Jamieson]{wagenmaker2022first}
+Andrew~J Wagenmaker, Yifang Chen, Max Simchowitz, Simon Du, and Kevin Jamieson.
+\newblock First-order regret in reinforcement learning with linear function
+  approximation: A robust estimation approach.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  22384--22429. PMLR, 2022.
+
+\bibitem[Wang et~al.(2020{\natexlab{a}})Wang, Du, Yang, and
+  Salakhutdinov]{wang2020reward}
+Ruosong Wang, Simon~S Du, Lin Yang, and Russ~R Salakhutdinov.
+\newblock {On Reward-Free Reinforcement Learning with Linear Function
+  Approximation}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 17816--17826, 2020{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2020{\natexlab{b}})Wang, Salakhutdinov, and
+  Yang]{wang2020provably}
+Ruosong Wang, Ruslan Salakhutdinov, and Lin~F Yang.
+\newblock {Provably Efficient Reinforcement Learning with General Value
+  Function Approximation}.
+\newblock \emph{CoRR}, abs/2005.1, 2020{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2019)Wang, Wang, Du, and Krishnamurthy]{wang2019optimism}
+Yining Wang, Ruosong Wang, Simon~S Du, and Akshay Krishnamurthy.
+\newblock Optimism in reinforcement learning with generalized linear function
+  approximation.
+\newblock \emph{arXiv preprint arXiv:1912.04136}, 2019.
+
+\bibitem[Wen and Van~Roy(2013)]{wen2013efficient}
+Zheng Wen and Benjamin Van~Roy.
+\newblock Efficient exploration and value function generalization in
+  deterministic systems.
+\newblock \emph{Advances in Neural Information Processing Systems}, 26, 2013.
+
+\bibitem[Yang and Wang(2019)]{yang2019sample}
+Lin Yang and Mengdi Wang.
+\newblock Sample-optimal parametric q-learning using linearly additive
+  features.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  6995--7004. PMLR, 2019.
+
+\bibitem[Yang and Wang(2020)]{yang2020reinforcement}
+Lin Yang and Mengdi Wang.
+\newblock Reinforcement learning in feature space: Matrix bandit, kernels, and
+  regret bound.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  10746--10756. PMLR, 2020.
+
+\bibitem[Zanette et~al.(2020)Zanette, Lazaric, Kochenderfer, and
+  Brunskill]{zanette2020learning}
+Andrea Zanette, Alessandro Lazaric, Mykel Kochenderfer, and Emma Brunskill.
+\newblock Learning near optimal policies with low inherent bellman error.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  10978--10989. PMLR, 2020.
+
+\bibitem[Zhang et~al.(2021)Zhang, Yang, Ji, and Du]{zhang21variance}
+Zihan Zhang, Jiaqi Yang, Xiangyang Ji, and Simon~S Du.
+\newblock {Variance-Aware Confidence Set: Variance-Dependent Bound for Linear
+  Bandits and Horizon-Free Bound for Linear Mixture MDP}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2021.
+
+\bibitem[Zhou et~al.(2021)Zhou, Gu, and Szepesvari]{zhou2021nearly}
+Dongruo Zhou, Quanquan Gu, and Csaba Szepesvari.
+\newblock Nearly minimax optimal reinforcement learning for linear mixture
+  markov decision processes.
+\newblock In \emph{Conference on Learning Theory}, pages 4532--4576. PMLR,
+  2021.
+
+\end{thebibliography}

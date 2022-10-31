@@ -1,5 +1,7 @@
 .DS_Store
 arxiv-miner/
+grobid-installation/
+grobid_client_python/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

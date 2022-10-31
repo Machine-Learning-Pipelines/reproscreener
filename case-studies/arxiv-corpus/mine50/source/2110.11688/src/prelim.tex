@@ -1,0 +1,114 @@
+
+\section{Preliminaries}
+\label{sec:preliminaries}
+
+
+In this section, we introduce important technical notions that will be used
+throughout the paper.
+
+\paragraph{Norms.}
+We start by defining two conjugate norms that will be crucial in our analysis,
+for they allow to keep track of coordinate-wise quantities.
+Let $\scalar{u}{v} = \sum_{j=1}^p u_i v_i$ be the Euclidean dot product, let $M = \diag(M_1, \dots, M_p)$ with $M_1, \dots, M_p > 0$, and
+\begin{align*}
+  \norm{w}_M = \sqrt{\scalar{Mw}{w}}\enspace,\quad\quad\quad
+  \norm{w}_{M^{-1}} = \sqrt{\scalar{M^{-1}w}{w}} \enspace.
+\end{align*}
+When $M$ is the identity matrix $I$, the $I$-norm $\norm{\cdot}_I$ is the standard $\ell_2$-norm $\norm{\cdot}_2$.
+
+\paragraph{Regularity assumptions.}
+We recall classical regularity assumptions along with ones
+specific to the coordinate-wise setting.
+We denote by $\nabla f$ the gradient of
+a differentiable function $f$, and by $\nabla_j f$ its $j$-th coordinate.
+We denote by $e_j$ the $j$-th vector of $\RR^p$'s canonical basis.
+
+\textit{Convexity:} a differentiable function $f : \RR^p
+  \rightarrow \RR$ is convex if
+for all $v, w \in \RR^p$,
+$f(w) \ge f(v) + \scalar{\nabla f(v)}{w - v}$.
+
+\textit{Strong convexity:} a differentiable function $f : \RR^p \rightarrow
+  \RR$ is
+$\mu_M$-strongly-convex \wrt the norm $\smash{\norm{\cdot}_M}$ if
+for all $v, w \in \RR^p$,
+$f(w) \ge f(v) + \scalar{\nabla f(v)}{w - v} + \frac{\mu_M}{2}\norm{w - v}_M^2$.
+The case $M_1=\cdots=M_p=1$ recovers standard $\mu_I$-strong convexity \wrt
+the $\ell_2$-norm.
+
+\textit{Component Lipschitzness:} a function $f : \RR^p \rightarrow \RR$
+is
+$L$-component-Lipschitz for $L = (L_1,\dots,L_p)$ with $L_1,\dots,L_p > 0$ if
+for all $w \in \RR^p$, $t \in \RR$ and $j \in [p]$,
+$\abs{f(w + t e_j) - f(w)} \le L_j \abs{t}$.
+It is $\Lambda$-Lipschitz if for all $v, w \in \RR^p$,
+$\abs{f(v) - f(w)} \le \Lambda \norm{v - w}_2$.
+
+
+\textit{Component smoothness:} a differentiable function $f : \RR^p
+  \rightarrow \RR$ is
+$M$-component-smooth for $M_1,\dots,M_p > 0$ if
+for all $v, w \in \RR^p$,
+$f(w) \le f(v) + \scalar{\nabla f(v)}{w - v} + \frac{1}{2}\norm{w - v}_{M}^2$.
+When $M_1=\dots=M_p=\beta$, $f$ is said to be $\beta$-smooth.
+
+The above component-wise regularity hypotheses are not restrictive:
+$\Lambda$-Lipschitzness
+implies $(\Lambda, \dots, \Lambda)$-component-Lipschitzness and
+$\beta$-smoothness implies $(\beta, \dots, \beta)$-component-smoothness.
+Yet, the actual component-wise constants of a function can be much
+lower than what can be deduced from their global counterparts.
+This will be crucial for our analysis and in the performance of DP-CD.
+
+\begin{remark}
+  \label{rmq:constrained-regularity-assumptions}
+  When $\psi$ is the characteristic function of a convex set (with separable
+  components), the regularity assumptions only need to hold on this
+  set. This allows considering problem~\eqref{eq:dp-erm} with a smooth
+  objective under box-constraints.
+\end{remark}
+
+
+
+
+\paragraph{Differential privacy (DP).}
+
+Let $\cD$ be a set of datasets and $\cF$ a set of possible outcomes.
+Two datasets $D, D' \in \cD$ are said \textit{neighboring}
+(denoted by $D \sim D'$) if they differ on at most one element.
+
+\begin{definition}[Differential Privacy, \citealt{dwork2006Differential}]
+  A randomized algorithm
+  $\cA : \mathcal D
+    \rightarrow \mathcal F$ is $(\epsilon, \delta)$-differentially private if,
+  for all neighboring datasets $D, D' \in \mathcal D$ and all
+  $S \subseteq \mathcal F$ in the range of $\cA$:
+  \begin{align*}
+    \prob{\cA(D) \in S} \le \exp(\epsilon) \prob{\cA(D') \in S} + \delta \enspace.
+  \end{align*}
+\end{definition}
+The value of a function $h: \mathcal D \rightarrow \mathbb R^p$ can be privately
+released using the Gaussian mechanism, which adds centered Gaussian noise
+to $h(D)$ before releasing it \citep{dwork2013Algorithmic}.
+The scale of the noise is calibrated to the sensitivity $
+  \Delta(h)
+  = \sup_{D \sim D'} \norm{h(D) - h(D')}_2$ of $h$.
+In our setting, we will perturb coordinate-wise gradients: we denote by
+$\Delta(\nabla_j \ell)$ the sensitivity of the $j$\nobreakdash-th coordinate
+of gradient of the loss function $\ell$ with respect to the data.
+When $\ell(\cdot;d)$ is $L$-component-Lipschitz for all $d\in\mathcal{X}$, upper
+bounds on these sensitivities are readily available: we have
+$\Delta(\nabla_j\ell) \le 2L_j$ for any $j\in[p]$ (see \Cref{sec:lemma-sensitivity}).
+The following quantity, relating the coordinate-wise sensitivities of gradients
+to coordinate-wise smoothness is central in our analysis:
+\begin{align}
+  \label{eq:delta-lipschitz-norm}
+  \Delta_{M^{-1}}(\nabla \ell)
+  = \Big(\sum_{j=1}^p \frac{1}{M_j} \Delta (\nabla_j\ell)^2\Big)^{\frac{1}{2}}
+  \leq \! 2 \norm{L}_{M^{-1}}\enspace.
+\end{align}
+In this paper, we consider the classic central model of DP, where a trusted
+curator has access to the raw dataset and releases a model trained on this
+dataset\footnote{In fact, our privacy guarantees hold even if all
+  intermediate iterates are released (not just the final model).}.
+

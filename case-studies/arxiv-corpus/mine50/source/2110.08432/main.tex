@@ -1,0 +1,247 @@
+\documentclass[twoside,11pt]{article}
+
+% Any additional packages needed should be included after jmlr2e.
+% Note that jmlr2e.sty includes epsfig, amssymb, natbib and graphicx,
+% and defines many common macros, such as 'proof' and 'example'.
+%
+% It also sets the bibliographystyle to plainnat; for more information on
+% natbib citation styles, see the natbib documentation, a copy of which
+% is archived at http://www.jmlr.org/format/natbib.pdf
+
+\usepackage{jmlr2e}
+
+\usepackage{amsmath,amssymb,xspace}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+%\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+
+% For citations
+\usepackage{natbib}
+% \usepackage{amsfonts}
+% \usepackage{amssymb, amsmath,amsthm}
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{paralist}
+\usepackage{multirow}
+% Added by Author
+% use Times
+\usepackage{times}
+% For figures
+\usepackage{wrapfig}
+%\usepackage[authoryear]{natbib}
+
+% For algorithms
+\usepackage{url,enumerate}
+\usepackage{color,xcolor}
+\usepackage{makeidx}  % allows for indexgeneration
+% \usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+% \usepackage[small, compact]{titlesec}
+\usepackage{xspace}
+\usepackage{epstopdf}
+\usepackage{cite}
+
+% For algorithms
+\usepackage{mathrsfs}
+\usepackage{times}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{graphicx,epsfig}
+% \usepackage{amsmath,amssymb,xspace}
+\usepackage{url}
+%\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{upgreek}
+\usepackage{cleveref}
+\usepackage{multirow}
+\usepackage{ulem}
+\usepackage{cancel}
+\usepackage{subcaption}
+\usepackage{dsfont}
+\usepackage{adjustbox}
+
+\input{emacscomm.tex}
+
+\newcommand{\dataset}{{\cal D}}
+\newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+
+% \def\thefootnote{*}\footnotetext{equal contribution}
+
+%-------------------------------------------------------------------------
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+% % Enter the paper's authors in order
+% \addauthor{Author1$^\ast$}{mail1@mail.com}{1}
+% \addauthor{Author2$^\ast$}{mail2@mail.com}{1} 
+% \addauthor{Author3}{mail3@mail.com}{1}
+
+% % Enter the institutions
+% % \addinstitution{Name\\Address}
+% \addinstitution{
+% Institute\\
+%  Address
+% }
+
+% \def\eg{\emph{e.g}\bmvaOneDot}
+% \def\Eg{\emph{E.g}\bmvaOneDot}
+% \def\etal{\emph{et al}\bmvaOneDot}
+
+\newcommand{\ours}{{A-MAML}\xspace}
+\newcommand{\bmaml}{{{B-MAML}}\xspace}
+\newcommand{\pmaml}{{{P-MAML}}\xspace}
+\newcommand{\emaml}{{{E-MAML}}\xspace}
+\newcommand{\fomaml}{{{FOMAML}}\xspace}
+\newcommand{\imaml}{{{iMAML}}\xspace}
+\newcommand{\maml}{{{MAML}}\xspace}
+\newcommand{\rap}{{{Reptile}}\xspace}
+%\newcommand{\rap}{{\color{red}{{{Reptile}}\xspace}}}
+\newcommand{\zhec}[1]{\textcolor{blue}{#1}}
+%\newcommand{\zhec}[1]{#1}
+\newcommand{\cmt}[1]{}
+\newcommand{\eg}{{\textit{e.g.},}\xspace}
+\newcommand{\ie}{{\textit{i.e.},}\xspace}
+\newcommand{\etc}{{\textit{etc}.}\xspace}
+
+\newcommand{\zsdc}[1]{{#1}}
+
+\newcommand{\akil}[1]{{\leavevmode\color{red}{#1}}}
+\renewcommand{\akil}[1]{}
+% \newcommand{\cmt}[1]{}
+% \newcommand{\eg}{{\textit{e.g.},}\xspace}
+% \newcommand{\ie}{{\textit{i.e.},}\xspace}
+% \newcommand{\etc}{{\textit{etc}.}\xspace}
+
+% %-------------------------------------------------------------------------
+% % Document starts here
+% \begin{document}
+
+% \maketitle
+% % This creates the footnote text
+% %\blfootnote{$^\ast$ Equal Contribution.}
+
+% Heading arguments are {volume}{year}{pages}{submitted}{published}{author-full-names}
+
+% \jmlrheading{1}{2000}{1-48}{4/00}{10/00}{Marina Meil\u{a} and Michael I. Jordan}
+
+% Short headings should be running head and authors last names
+
+% \ShortHeadings{Meta Learning of Interface Conditions for Multi-Domain Physics-Informed Neural Networks}
+\firstpageno{1}
+
+\begin{document}
+
+\title{Meta-Learning with Adjoint Methods}
+
+\author{\name Shibo Li \email shibo@cs.utah.edu \\
+       \addr School of Computing\\
+       University of Utah
+       \AND
+       \name Zheng Wang \email wzhut@cs.utah.edu\\
+       \addr School of Computing\\
+       University of Utah
+       \AND
+       \name Akil Narayan \email akil@sci.utah.edu\\
+       \addr Department of Mathematics, Scientific Computing and Imaging Institute\\
+       University of Utah
+       \AND
+       \name Robert M. Kirby \email kirby@cs.utah.edu \\
+       \addr School of Computing, Scientific Computing and Imaging Institute\\
+       University of Utah
+       \AND
+       \name Shandian Zhe \email zhe@cs.utah.edu \\
+       \addr School of Computing\\
+       University of Utah }
+
+% \editor{Leslie Pack Kaelbling}
+
+
+\maketitle
+
+\input{./abstract}
+\input{./intro}
+\input{./method}
+\input{./related}
+\input{./exp}
+\input{./conclusion}
+
+% % Acknowledgements should go at the end, before appendices and references
+
+% \acks{We would like to acknowledge support for this project
+% from the National Science Foundation (NSF grant IIS-9988642)
+% and the Multidisciplinary Research Program of the Department
+% of Defense (MURI N00014-00-1-0637). }
+
+% % Manual newpage inserted to improve layout of sample file - not
+% % needed in general before appendices/bibliography.
+
+\newpage
+
+% \input{supp}
+
+% % Note: in this sample, the section number is hard-coded in. Following
+% % proper LaTeX conventions, it should properly be coded as a reference:
+
+% %In this appendix we prove the following theorem from
+% %Section~\ref{sec:textree-generalization}:
+
+% In this appendix we prove the following theorem from
+% Section~6.2:
+
+% \noindent
+% {\bf Theorem} {\it Let $u,v,w$ be discrete variables such that $v, w$ do
+% not co-occur with $u$ (i.e., $u\neq0\;\Rightarrow \;v=w=0$ in a given
+% dataset $\dataset$). Let $N_{v0},N_{w0}$ be the number of data points for
+% which $v=0, w=0$ respectively, and let $I_{uv},I_{uw}$ be the
+% respective empirical mutual information values based on the sample
+% $\dataset$. Then
+% \[
+% 	N_{v0} \;>\; N_{w0}\;\;\Rightarrow\;\;I_{uv} \;\leq\;I_{uw}
+% \]
+% with equality only if $u$ is identically 0.} \hfill\BlackBox
+
+% \noindent
+% {\bf Proof}. We use the notation:
+% \[
+% P_v(i) \;=\;\frac{N_v^i}{N},\;\;\;i \neq 0;\;\;\;
+% P_{v0}\;\equiv\;P_v(0)\; = \;1 - \sum_{i\neq 0}P_v(i).
+% \]
+% These values represent the (empirical) probabilities of $v$
+% taking value $i\neq 0$ and 0 respectively.  Entropies will be denoted
+% by $H$. We aim to show that $\fracpartial{I_{uv}}{P_{v0}} < 0$....\\
+
+% {\noindent \em Remainder omitted in this sample. See http://www.jmlr.org/papers/ for full paper.}
+
+
+% \vskip 0.2in
+% \bibliography{sample}
+
+% \bibliographystyle{apalike}
+\bibliography{AMAML}
+
+\end{document}

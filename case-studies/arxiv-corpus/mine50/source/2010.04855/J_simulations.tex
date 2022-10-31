@@ -1,0 +1,28 @@
+\section{Simulation details}\label{sec:simulations}
+
+In this appendix, we provide simulation details for (i) the dose response design, and (ii) the heterogeneous treatment effect design.
+
+\subsection{Dose response curve}
+
+A single observation consists of the triple $(Y,D,X)$ for outcome, treatment, and covariates where $Y,D\in\mathbb{R}$ and $X\in\mathbb{R}^{100}$. A single observation is generated is as follows. Draw unobserved noise as $\nu,\epsilon \overset{i.i.d.}{\sim}\mathcal{N}(0,1)$. Define the vector $\beta\in\mathbb{R}^{100}$ by $\beta_j=j^{-2}$. Define the matrix $\Sigma\in\mathbb{R}^{100\times 100}$ such that $\Sigma_{ii}=1$ and $\Sigma_{ij}=1(|i-j|=1)/2$ for $i\neq j$. Then draw $X\sim\mathcal{N}(0,\Sigma)$ and set
+\begin{align*}
+    D&=\Phi(3X^{\top}\beta)+0.75\nu,\quad 
+    Y=1.2D+1.2X^{\top}\beta+D^2+DX_1+\epsilon.
+\end{align*}
+
+We implement our estimator $\hat{\theta}^{ATE}(d)$ (\texttt{RKHS}, white) described in Section~\ref{sec:algorithm}, with the tuning procedure described in Supplement~\ref{sec:tuning}. Specifically, we use ridge penalties determined by leave-one-out cross validation, and product exponentiated quadratic kernel with lengthscales set by the median heuristic. We implement \cite{kennedy2017nonparametric} (\texttt{DR1}, checkered white) using the default settings of the command \texttt{ctseff} in the \texttt{R} package \texttt{npcausal}. We implement \cite{colangelo2020double} (\texttt{DR2}, lined white) using default settings in \texttt{Python} code shared by the authors. Specifically, we use random forest for prediction, with the suggested hyperparameter values. For the Nadaraya--Watson smoothing, we select bandwidth that minimizes out-of-sample mean square error. We implement \cite{semenova2021debiased} (\texttt{DR-series}, gray) by modifying \texttt{ctseff}, as instructed by the authors. Importantly, we give \texttt{DR-series} the advantage of correct specification of the true dose response curve as a quadratic function.
+
+
+\subsection{Heterogeneous treatment effect}
+
+A single observations consists of the tuple $(Y,D,V,X)$, where outcome, treatment, and covariate of interest $Y,D,V\in\mathbb{R}$ and other covariates $X\in\mathbb{R}^3$. A single observation is generated as follows. Draw unobserved noise as $\epsilon_j \overset{i.i.d.}{\sim}\mathcal{U}(-1/2,1/2)$ $(j=1,...,4)$ and $\nu\sim \mathcal{N}(0,1/16)$. Then set
+$$
+V=\epsilon_1,\quad X=\begin{Bmatrix} 1+2V+\epsilon_2 \\ 1+2V+\epsilon_3 \\ (V-1)^2+\epsilon_4 \\ \end{Bmatrix}.
+$$
+Draw $D\sim Bernoulli[\Lambda \{(V+X_1+X_2+X_3)/2\}]$ where $\Lambda$ is the logistic link function. Finally set
+$$
+Y=\begin{cases} 0 &\text{ if } D=0;\\ V X_1 X_2 X_3+\nu &\text{ if } D=1. \end{cases}
+$$
+\cite{abrevaya2015estimating} also present a simpler version of this design.
+
+We implement our estimator $\hat{\theta}^{CATE}(d,v)$ (\texttt{RKHS}, white) described in Section~\ref{sec:algorithm}, with the tuning procedure described in Supplement~\ref{sec:tuning}. Specifically, we use ridge penalties determined by leave-one-out cross validation. For multivariate functions, we use products of scalar kernels. For the binary treatment $D$, we use the binary kernel. For continuous variables, we use (product) exponentiated quadratic kernel with lengthscales set by the median heuristic. We implement \cite{abrevaya2015estimating} (\texttt{IPW}, lined gray) using default settings in the \texttt{MATLAB} code shared by the authors. We implement \cite{semenova2021debiased} (\texttt{DR-series}, gray) using the default settings of the command \texttt{best\_linear\_projection} in the \texttt{R} package \texttt{grf}. Importantly, we give \texttt{DR-series} the advantage of correct specification of the true heterogeneous treatment effect as the appropriate polynomial.

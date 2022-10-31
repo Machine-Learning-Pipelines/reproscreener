@@ -1,0 +1,140 @@
+\section{Counterfactual distributions}\label{sec:distribution}
+
+\subsection{Definition}
+
+In the main text, we study causal functions defined as means of potential outcomes. In this section, we extend the estimators and analyses presented in the main text to counterfactual distributions of potential outcomes. A counterfactual distribution can be encoded by a kernel mean embedding using a new feature map $\phi(y)$ for a new scalar valued RKHS $\mathcal{H}_{\mathcal{Y}}$. We now allow $\mathcal{Y}$ to be a Polish space (Assumption~\ref{assumption:original}).
+\begin{definition}[Counterfactual distributions and embeddings] We define %the distribution effects and their mean embeddings by
+\begin{enumerate}
+    \item Counterfactual distribution: $
+\theta_0^{D:ATE}(d)=\text{\normalfont pr}\{Y^{(d)}\}
+$ is the counterfactual distribution of outcomes given intervention $D=d$ for the entire population.
+    \item Counterfactual distribution with distribution shift: $
+\theta_0^{D:DS}(d,\tilde{\text{\normalfont pr}})=\tilde{\text{\normalfont pr}}\{Y^{(d)}\}
+$ is the counterfactual distribution of outcomes given intervention $D=d$ for an alternative population with data distribution $\tilde{\text{\normalfont pr}}$ (elaborated in Assumption~\ref{assumption:covariate}).
+    \item Conditional counterfactual distribution: $
+\theta_0^{D:ATT}(d,d')=\text{\normalfont pr}\{Y^{(d')} \mid D=d\}
+$ is the counterfactual distribution of outcomes given intervention $D=d'$ for the subpopulation who actually received treatment $D=d$.
+    \item Heterogeneous counterfactual distribution: $
+\theta_0^{D:CATE}(d,v)=\text{\normalfont pr}\{Y^{(d)} \mid V=v\}
+$ is the counterfactual distribution of outcomes given intervention $D=d$ for the subpopulation with covariate value $V=v$.
+\end{enumerate}
+Likewise we define counterfactual distribution embeddings, e.g. $
+\check{\theta}_0^{D:ATE}(d)=E\{\phi(Y^{(d)})\}.
+$
+\end{definition}
+
+Our strategy is to estimate the embedding of a  counterfactual distribution. At that point, the analyst may use the embedding to (i) estimate moments of the counterfactual distribution \cite{kanagawa2014recovering} or (ii) sample from the counterfactual distribution \cite{welling2009herding}. Since we already analyze means in the main text, we focus on (ii) in this supplement.
+
+\subsection{Identification}
+
+The same identification results apply to counterfactual distributions.
+
+\begin{lemma}[Identification of counterfactual distributions]\label{theorem:id_treatment_dist}
+If Assumption~\ref{assumption:selection} holds,
+\begin{enumerate}
+     \item $\{\theta_0^{D:ATE}(d)\}(y)=\int \text{\normalfont pr}(y \mid d,x)\mathrm{d}\text{\normalfont pr}(x)$.
+    \item If in addition Assumption~\ref{assumption:covariate} holds, then $\{\theta_0^{D:DS}(d,\tilde{\text{\normalfont pr}})\}(y)=\int \text{\normalfont pr}(y \mid d,x)\mathrm{d}\tilde{\text{\normalfont pr}}(x)$.
+    \item $\{\theta_0^{D:ATT}(d,d')\}(y)=\int \text{\normalfont pr}(y \mid d',x)\mathrm{d}\text{\normalfont pr}(x \mid d)$ \cite{chernozhukov2013inference}.
+    \item $\{\theta_0^{D:CATE}(d,v)\}(y)=\int \text{\normalfont pr}(y \mid d,v,x)\mathrm{d}\text{\normalfont pr}(x \mid v)$.
+\end{enumerate}
+Likewise for embeddings of counterfactual distributions. For example, if in addition Assumption~\ref{assumption:RKHS} holds, then $\check{\theta}_0^{D:ATE}(d)=\int E\{\phi(Y) \mid D=d,X=x\}\mathrm{d}\text{\normalfont pr}(x)
+$.
+\end{lemma}
+The identification results for embeddings of counterfactual distributions resemble those presented in the main text. Define the generalized regressions
+$
+\gamma_0(d,x)=E\{\phi(Y) \mid D=d,X=x\}
+$ and $\gamma_0(d,v,x)=E\{\phi(Y) \mid D=d,V=v,X=x\}$. Then we can express these results in the familiar form, e.g. $\check{\theta}_0^{D:ATE}(d)=\int \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x)$.
+
+\subsection{Closed form solution}
+
+To estimate counterfactual distributions, we extend the RKHS construction in Section~\ref{sec:algorithm}. As before, define scalar valued RKHSs for treatment $D$ and covariates $X$. Define an additional scalar valued RKHS for outcome $Y$. Because the regression $\gamma_0$ is now a conditional mean embedding, we present a construction involving a conditional expectation operator. Define the conditional expectation operator
+$
+E_3:\mathcal{H}_{\mathcal{Y}}\rightarrow \mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}},\; f(\cdot)\mapsto E\{f(Y) \mid D=\cdot,X=\cdot \}
+$. By construction
+$
+\gamma_0(d,x)=E_3^*\{\phi(d)\otimes \phi(x)\}
+$.  As before, we replace $X$ with $(V,X)$ for $\theta_0^{D:CATE}$. We place regularity conditions on this RKHS construction, similar to those in Section~\ref{sec:algorithm}, to represent counterfactual distributions as evaluations of $E_3^*$. This representation allows for continuous treatment, unlike the representation in \cite[eq. 16, 17, 20]{muandet2021counterfactual}.
+
+\begin{theorem}[Decoupling via kernel mean embeddings]\label{theorem:representation_dist}
+Suppose the conditions of Lemma~\ref{theorem:id_treatment_dist} hold. Further suppose Assumption~\ref{assumption:RKHS} holds and $E_3\in\mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$. Then
+\begin{enumerate}
+    \item $\check{\theta}_0^{D:ATE}(d)=E_3^*\{\phi(d)\otimes \mu_x\} $ where $\mu_x=\int\phi(x) \mathrm{d}\text{\normalfont pr}(x) $.
+    \item $\check{\theta}_0^{D:DS}(d,\tilde{\text{\normalfont pr}})=E_3^*\{\phi(d)\otimes \nu_x\}$ where $\nu_x=\int\phi(x) \mathrm{d}\tilde{\text{\normalfont pr}}(x) $.
+    \item $\check{\theta}_0^{D:ATT}(d,d')=E_3^*\{\phi(d')\otimes \mu_x(d)\} $  where $\mu_x(d)=\int\phi(x) \mathrm{d}\text{\normalfont pr}(x \mid d)$.
+    \item $\check{\theta}_0^{D:CATE}(d,v)=E_3^*\{\phi(d)\otimes \phi(v)\otimes \mu_{x}(v)\}$ where $\mu_{x}(v)= \int \phi(x) \mathrm{d}\text{\normalfont pr}(x \mid v)$.
+\end{enumerate}
+For $\theta_0^{D:CATE}$, we instead assume $E_3\in\mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes\mathcal{H}_{\mathcal{V}} \otimes  \mathcal{H}_{\mathcal{X}})$.
+\end{theorem}
+
+
+See Supplement~\ref{sec:derivation} for the proof. The mean embeddings are the same as in Theorem~\ref{theorem:representation_treatment}. They encode the reweighting distributions as elements in the RKHS such that the counterfactual distribution embeddings can be expressed as evaluations of $E_3^*$. 
+
+As in Section~\ref{sec:algorithm}, the abstract representation helps to define estimators with closed form solutions that can be easily computed. In particular, the representation separates the three steps necessary to estimate a counterfactual distribution: estimating a conditional distribution, which may involve many covariates; estimating the distribution for reweighting; and using one distribution to integrate another. For example, for $\check{\theta}_0^{D:CATE}(d,v)$, our estimator is $\hat{\theta}^{D:CATE}(d,v)=\hat{E}_3^*\{\phi(d)\otimes \phi(v) \otimes \hat{\mu}_x(v)\}$. $\hat{E}_3$ and $\hat{\mu}_x(v)$ are generalized kernel ridge regressions, and the latter can be used to integrate the former by simply multiplying the two. This algorithmic insight is a key innovation of the present work, and the reason why our estimators have simple closed form solutions despite complicated causal integration.
+
+\begin{algorithm}[Estimation of counterfactual distribution embeddings]\label{algorithm:dist}
+Denote the empirical kernel matrices
+$
+K_{DD}, K_{XX}, K_{YY}\in\mathbb{R}^{n\times n}
+$. Let $(\tilde{X}_i)$ $(i=1,...,\tilde{n})$ be observations drawn from population $\tilde{\text{\normalfont pr}}$. Denote by $\odot$ the elementwise product. The distribution embedding estimators have the closed form solutions
+\begin{enumerate}
+    \item $\{\hat{\theta}_0^{D:ATE}(d)\}(y)=n^{-1}\sum_{i=1}^n K_{yY}(K_{DD}\odot K_{XX}+n\lambda_3  I )^{-1}(K_{Dd}\odot K_{Xx_i})$;
+    \item $\{\hat{\theta}_0^{D:DS}(d)\}(y)=\tilde{n}^{-1}\sum_{i=1}^{\tilde{n}} K_{yY}(K_{DD}\odot K_{XX}+n\lambda_3  I )^{-1}(K_{Dd}\odot K_{X\tilde{x}_i})$;
+    \item $\{\hat{\theta}_0^{D:ATT}(d,d')\}(y)=K_{yY}(K_{DD}\odot K_{XX}+n\lambda_3  I )^{-1}[K_{Dd'}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]$;
+     \item $\{\hat{\theta}_0^{D:CATE}(d,v)\}(y)=K_{yY}(K_{DD}\odot K_{VV}\odot K_{XX}+n\lambda_3  I )^{-1}[K_{Dd}\odot K_{Vv} \odot \{K_{XX}(K_{VV}+n\lambda_2  I )^{-1}K_{Vv}\}]$;
+\end{enumerate}
+where $(\lambda_1,\lambda_2,\lambda_3)$ are ridge regression penalty hyperparameters.%\footnote{Note that $[\hat{\theta}_0^{D:ATE}(d)](\cdot):\mathcal{Y}\rightarrow \mathbb{R}$ is a function, so $K_{(\cdot) Y}:\mathcal{Y}\rightarrow\mathbb{R}^n$ is a function.} 
+\end{algorithm}
+We derive these estimators in Supplement~\ref{sec:derivation}. We give theoretical values for $(\lambda_1,\lambda_2,\lambda_3)$ that optimally balance bias and variance in Theorem~\ref{theorem:consistency_treatment} below. Supplement~\ref{sec:tuning} gives practical tuning procedures, one of which is asymptotically optimal. 
+%Note that $\hat{\theta}^{D:DS}$ requires observations of covariates from the alternative population $\tilde{\text{\normalfont pr}}$. 
+We avoid the estimation and inversion of propensity scores in \cite[eq. 21]{muandet2021counterfactual}.
+
+Algorithm~\ref{algorithm:dist} estimates counterfactual distribution embeddings. The ultimate parameters of interest are counterfactual distributions. We present a deterministic procedure that uses the distribution embedding to provide samples $(\tilde{Y}_j)$ from the distribution. In Theorem~\ref{theorem:conv_dist} below, we prove that these samples converge in distribution to the counterfactual distribution. The procedure is a variant of kernel herding  \cite{welling2009herding,muandet2021counterfactual}.
+
+\begin{algorithm}[Estimation of counterfactual distributions]\label{algorithm:herding}
+Recall that $\hat{\theta}_0^{D:ATE}(d)$ is a mapping from $\mathcal{Y}$ to $\mathbb{R}$. 
+Given $\hat{\theta}_0^{D:ATE}(d)$, calculate
+\begin{enumerate}
+    \item $\tilde{Y}_1=\argmax_{y\in\mathcal{Y}} \left[ \{\hat{\theta}_0^{D:ATE}(d)\}(y)\right]$;
+    \item $\tilde{Y}_{j}=\argmax_{y\in\mathcal{Y}} \left[ \{\hat{\theta}_0^{D:ATE}(d)\}(y)-(j+1)^{-1}\sum_{\ell=1}^{j-1}k_{\mathcal{Y}}(\tilde{Y}_{\ell},y)\right]$ for $j>1$.
+\end{enumerate}
+Likewise for the other counterfactual distributions, replacing $\hat{\theta}_0^{D:ATE}(d)$ with the other quantities in Algorithm~\ref{algorithm:dist}.
+\end{algorithm}
+By this procedure, samples from counterfactual distributions are straightforward to compute. With such samples, one may visualize a histogram as an estimator of the counterfactual density of potential outcomes. Alternatively, one may test statistical hypotheses.
+
+\subsection{Convergence in distribution}
+
+Towards a guarantee of uniform consistency, we place regularity conditions on the original spaces as in Assumption~\ref{assumption:original}. Importantly, we relax the condition that $\mathcal{Y}\subset \mathbb{R}$; instead, we assume $\mathcal{Y}$ is a Polish space. Next, we assume the regression $\gamma_0$ is smooth and quantify the spectral decay of its RKHS, parameterized in terms of the conditional expectation operator $E_3$. Likewise we assume the conditional mean embeddings $\mu_x(d)$ and $\mu_x(v)$ are smooth and quantify their spectral decay. With these assumptions, we arrive at our next main result.
+\begin{theorem}[Uniform consistency of counterfactual distribution embeddings]\label{theorem:consistency_dist}
+Suppose Assumptions~\ref{assumption:selection},~\ref{assumption:RKHS},~\ref{assumption:original}, and~\ref{assumption:smooth_op} hold with $\mathcal{A}_3=\mathcal{Y}$ and $\mathcal{B}_3=\mathcal{D}\times \mathcal{X}$ (or $\mathcal{B}_3=\mathcal{D}\times \mathcal{V}\times \mathcal{X}$ for $\theta_0^{D:CATE}$). Set $(\lambda_1,\lambda_2,\lambda_3)=\{n^{-1/(c_1+1/b_1)},n^{-1/(c_2+1/b_2)},n^{-1/(c_3+1/b_3)}\}$, which is rate optimal regularization.
+\begin{enumerate}
+    \item Then with high probability
+    $$
+    \sup_{d\in\mathcal{D}}\|\hat{\theta}^{D:ATE}(d)-\check{\theta}_0^{D:ATE}(d)\|_{\mathcal{H}_{\mathcal{Y}}}=O\left[n^{-(c_3-1)/\{2(c_3+1/b_3)\}}\right].
+$$
+ \item If in addition Assumption~\ref{assumption:covariate} holds, then with high probability
+      $$
+     \sup_{d\in\mathcal{D}}\|\hat{\theta}^{D:DS}(d,\tilde{\text{\normalfont pr}})-\check{\theta}_0^{D:DS}(d,\tilde{\text{\normalfont pr}})\|_{\mathcal{H}_{\mathcal{Y}}}=O\left[ n^{-(c_3-1)/\{2(c_3+1/b_3)\}}+\tilde{n}^{-1/2}\right].
+    $$
+    \item If in addition Assumption~\ref{assumption:smooth_op} holds with $\mathcal{A}_1=\mathcal{X}$ and $\mathcal{B}_1=\mathcal{D}$, then with high probability
+        $$
+    \sup_{d,d'\in\mathcal{D}}\|\hat{\theta}^{D:ATT}(d,d')-\check{\theta}_0^{D:ATT}(d,d')\|_{\mathcal{H}_{\mathcal{Y}}}=O\left[n^{-(c_3-1)/\{2(c_3+1/b_3)\}}+n^{-(c_1-1)/\{2(c_1+1/b_1)\}}\right].
+$$
+ \item If in addition Assumption~\ref{assumption:smooth_op} holds with $\mathcal{A}_2=\mathcal{X}$ and $\mathcal{B}_2=\mathcal{V}$, then with high probability
+      $$
+     \sup_{d\in\mathcal{D},v\in\mathcal{V}}\|\hat{\theta}^{D:CATE}(d,v)-\check{\theta}_0^{D:CATE}(d,v)\|_{\mathcal{H}_{\mathcal{Y}}}=O\left[n^{-(c_3-1)/\{2(c_3+1/b_3)\}}+n^{-(c_2-1)/\{2(c_2+1/b_2)\}}\right].
+    $$
+\end{enumerate}
+\end{theorem}
+Explicit constants hidden by the $O(\cdot)$ notation are indicated in Supplement~\ref{sec:proof}, as well as explicit specializations of Assumption~\ref{assumption:smooth_op}. Again, these rates approach $n^{-1/4}$ when $(c_1,c_2,c_3)=2$ and $(b_1,b_2,b_3)\rightarrow \infty$, i.e. when the regressions are smooth and when the effective dimensions are finite. Our assumptions do not include an assumption on the smoothness of an explicit density ratio, which appears in \cite[Theorem 11]{fukumizu2013kernel} and \cite[Assumption 3]{muandet2021counterfactual}. Finally, we state an additional regularity condition under which we can prove that the samples $(\tilde{Y}_j)$ calculated from the distribution embeddings weakly converge to the desired distribution.
+\begin{assumption}[Additional regularity]\label{assumption:regularity}
+Assume
+\begin{enumerate}
+    \item $\mathcal{Y}$ is locally compact.
+    \item $\mathcal{H}_{\mathcal{Y}}\subset\mathcal{C}_0$, where $\mathcal{C}_0$ is the space of bounded, continuous, real valued functions that vanish at infinity.
+\end{enumerate}
+\end{assumption}
+As discussed by \cite{simon2020metrizing}, the combined assumptions that $\mathcal{Y}$ is Polish and locally compact impose weak restrictions. In particular, if $\mathcal{Y}$ is a Banach space, then to satisfy both conditions it must be finite dimensional. Trivially, $\mathcal{Y}=\mathbb{R}^{dim(Y)}$ satisfies both conditions. We arrive at our final result of this section.
+\begin{theorem}[Convergence in distribution of counterfactual distributions]\label{theorem:conv_dist}
+Suppose the conditions of Theorem~\ref{theorem:consistency_dist} hold, as well as Assumption~\ref{assumption:regularity}. Suppose samples $(\tilde{Y}_j)$ are calculated for $\theta_0^{D:ATE}(d)$ as described in Algorithm~\ref{algorithm:herding}. Then $(\tilde{Y}_j)\rightsquigarrow \theta_0^{D:ATE}(d)$. Likewise for the other counterfactual distributions, replacing $\hat{\theta}_0^{D:ATE}(d)$ with the other quantities in Algorithm~\ref{algorithm:dist}.
+\end{theorem}
+See Supplement~\ref{sec:proof} for the proof. Samples are drawn for given value $d$. Though our nonparametric consistency result is uniform across treatment values, this convergence in distribution result is for a fixed treatment value.

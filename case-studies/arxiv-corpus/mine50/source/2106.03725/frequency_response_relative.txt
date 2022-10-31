@@ -1,0 +1,202 @@
+%!TEX root = ../graphons.tex
+
+\pgfplotsset{xtick style={draw=none}}
+\pgfplotsset{ytick style={draw=none}}
+
+\def \thisplotscale {3}
+\def \unit {\thisplotscale cm}
+
+\def \frequencyresponse 
+     { 0.3*exp(-(0.8*(x-2))^2) 
+       - 0.2*exp(-(1*(x-4.5))^2) 
+       + 0.2*exp(-(1*(x-10))^2) 
+       + 0.55}
+
+\newcommand{\drawgaussian}[7]
+{
+   \def \filter { ( \height*exp(-(1/\width*(x-\center))^2) ) }
+   \def \center {#1}
+   \def \width  {#2}
+   \def \height {#3}
+
+   \def \xminhere   {#4}
+   \def \xmaxhere   {#5}
+
+   % Draw filter Three
+   \addplot[ domain     = \center-3.0*\width:\center + 3.0*\width, 
+             samples    = 80, 
+             color      = #6,
+             line width = #7]
+           { \filter };
+
+   \addplot[ domain     = \xminhere:\center-3.0*\width, 
+             samples    = 2, 
+             color      = #6,
+             line width = #7]
+           { 0 };
+   
+   \addplot[ domain     = \center+3.0*\width:\xmaxhere, 
+             samples    = 2, 
+             color      = #6,
+             line width = #7]
+           { 0 };
+}
+
+
+
+\begin{tikzpicture}[x = 1*\unit, y=1*\unit]
+\def \factorx {2.4/8}
+\def \deltax  {0.5*\factorx}
+\def \shadeshift  {0.05}
+
+
+
+\begin{axis}[scale only axis,
+             width  = 2.5*\unit,
+             height = 0.8*\unit,
+             xmin = 0, xmax=8,
+             xtick = { 0,  0.85 ,  1.3,1.9 , 3.2 , 4.1, 5.1},
+             xticklabels = {\black{\footnotesize $0$},
+             				\blue{\footnotesize $\ \Lambda_1$}, 
+                            \blue{\footnotesize $\ \Lambda_2$}, 
+                            \blue{\footnotesize $\ \Lambda_3$}, 
+                            \blue{\footnotesize $\ \Lambda_4$},
+                            \blue{\footnotesize $\ \Lambda_5$}, 
+                            \blue{\footnotesize $\ \Lambda_6$},
+                            },
+             ymin = -0, ymax = 1.15,
+             ytick = {0.55},
+             yticklabels = {\black{\footnotesize $h(\lambda)$}},
+%             ytick = {0.928, 0.55},
+%             yticklabels = {\black{\footnotesize $h_{\mbox{\tiny min}}+Lc$},
+%             				\black{\footnotesize $h_{\mbox{\tiny min}}$}},
+%             yticklabel style={rotate=90},
+             typeset ticklabels with strut,
+             enlarge x limits=false]
+             
+%\addplot [fill=black, fill opacity=0.1, draw opacity = 0]
+ %      coordinates {
+  %          (1, 0) (1.14, 0) (1.14, 1.15) (1, 1.15)  };       
+            
+\addplot [fill=black, fill opacity=0.1, draw opacity = 0]
+       coordinates {
+            (1.8, 0) (2, 0) (2, 1.15) (1.8, 1.15)  };   
+%\addplot [fill=black, fill opacity=0.1, draw opacity = 0]
+ %      coordinates {
+  %          (2.4, 0) (2.63, 0) (2.63, 1.15) (2.4, 1.15)  };  
+
+\addplot [fill=black, fill opacity=0.1, draw opacity = 0]
+      coordinates {
+            (5, 0) (5.2, 0) (5.2, 1.15) (5, 1.15)  };
+            
+
+            
+\addplot [fill=black, fill opacity=0.1, draw opacity = 0]
+      coordinates {
+            (6.72, 0) (8, 0) (8, 1.15) (6.72, 1.15)  }; 
+            
+            
+
+            
+\addplot[ domain=0:8, 
+          samples = 80, 
+          color = black,
+          line width = 1.2]
+         {\frequencyresponse};      
+         
+
+\addplot[samples at = {0, 1, 1.25, 1.8, 2,  3.2, 4.1, 5, 5.2,  6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83},
+         color = blue!60, 
+          ycomb, 
+          mark=otimes*, 
+          mark options={blue!60}]
+         {\frequencyresponse};
+
+\drawgaussian{1}{0.1}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };        
+         
+\drawgaussian{1.25}{0.1}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+
+
+\drawgaussian{1.9}{0.3}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+\drawgaussian{3}{0.4}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+\drawgaussian{4}{0.4}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+\drawgaussian{5.1}{0.4}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+\drawgaussian{7.36}{1}{0.9}{0}{8}{red!60}{1.2}
+ \addplot+[ samples at   = {0, 1, 1.25,   1.8, 2,   3.2,  4.1,   5, 5.2,     6.72,  6.9, 7.1, 7.3,  7.54, 7.7, 7.83}, 
+              solid, 
+              ycomb, 
+              mark         = otimes*, 
+              mark size    = 1.5pt,
+              line width   = 0.8,              
+              color        =  blue!60, 
+              mark options = {red!60}
+            ]
+            { \filter };
+\end{axis}
+\end{tikzpicture}
+
+
+%{-0.22, 0.25, 0.61, 1.05, 1.37, 2.11, 
+%  2.43, 3.07, 3.67, 4.13, 4.31, 5.05, 
+%  5.20, 6.00, 6.42, 7.00}
+

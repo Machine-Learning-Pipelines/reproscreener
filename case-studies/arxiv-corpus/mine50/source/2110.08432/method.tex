@@ -1,0 +1,173 @@
+%talk about meta learing seting and MAML; no need to talk about others; inner and outer level 
+%\vspace{-0.1in}
+\section{Preliminaries}\label{sect:bg}
+%\vspace{-0.1in}
+Suppose we have a family of correlated learning tasks $\Acal $. The size of $\Acal$ can be very large or even infinite. For each task, we use the same machine learning model $\Mcal$, which is parameterized by $\u \in \mathds{R}^d$, \eg a deep neural network. Our goal is to learn an initialization $\btheta$  for $\u$, which can well adapt to all the tasks in $\Acal$. To this end, we sample $N$ tasks, $\Scal = \{\Tcal_{1}, \ldots, \Tcal_{N}\}$, from a task distribution $p$ on $\Acal$, and for each $\Tcal_{n}$, we collect a dataset $\Dcal_n$. We use the $N$ datasets $\widehat{\Dcal} = \{\Dcal_1, \ldots, \Dcal_N\}$ to meta-learn $\btheta$. We expect that given any new task $\Tcal^* \in \Acal$, after initializing  $\u$ with $\btheta$, the training of $\Mcal$ on $\Tcal^{*}$ can achieve better performance with the same or fewer training epochs or iterations or examples.
+
+%\subsection{Model-Agnostic Meta-Learning}
+A particularly successful meta-learning algorithm is model-agnostic meta-learning (\maml)~\citep{finn2017model}, which uses a bi-level optimization approach to estimate $\btheta$. Specifically, each  $\Dcal_n$ is partitioned into a meta-training dataset $\Dcal_n^{\text{tr}}$ and a meta-validation dataset $\Dcal_n^{\text{val}}$. In the inner level, we start with $\btheta$ and optimize the training loss $\Lcal(\u, \Dcal_n^{\text{tr}})$ for each task $n$. Let us denote the trained parameters by $\bpsi_n(\btheta)$. In the outer level, we evaluate these trained parameters on the validation loss, and optimize $\btheta$ accordingly, \ie $\btheta^* = \min\; \frac{1}{N} \sum\nolimits_{j=1}^N \Lcal(\bpsi_n(\btheta), \Dcal_n^{\text{val}})$. 
+%\begin{align}
+%	J(\btheta) = \frac{1}{N} \sum\nolimits_{j=1}^N \Lcal(\bpsi_n(\btheta), \Dcal_n^{\text{val}}). \label{eq:meta-loss}
+%\end{align}
+\maml obtains the gradient w.r.t. $\btheta$ via automatic differentiation, which essentially computes $\frac{\d \bpsi_n(\btheta)}{\d \btheta}$ via back-propagation on a computation graph. However, this is very challenging for long training trajectories to obtain $\bpsi_n(\btheta)$, since the computation graph can rapidly explode and become very expensive to compute.\cmt{, and also suffer from the vanishing gradient problem. } Therefore, in practice, \maml typically only conducts one or a few gradient descent steps in the inner optimization, \eg with one step, $\bpsi_n(\btheta) = \btheta - \alpha \nabla \Lcal(\btheta, \Dcal_n^{\text{tr}})$, %we have
+%\begin{align}
+%	\bpsi_n(\btheta) = \btheta - \alpha \nabla \Lcal(\btheta, \Dcal_n^{\text{tr}}), \label{eq:maml-inner-opt}
+%\end{align}
+where $\alpha$ is the step size.\akil{Use ``learning rate" instead of ``step size"? I assume the former is more common in the ML community?} However, with only one step the obtained parameters are frequently too close to the initialization, and inadequately reflect the actual longer-range training performance.% with $\btheta$ as the initialization.  
+
+To bypass this issue, First-Order \maml (\fomaml)~\citep{finn2017model} drops out the Jacobian $\frac{\d \bpsi_n(\btheta)}{\d \btheta}$ and replaces it with the identity matrix $\I$. In so doing, \fomaml can perform many gradient descent steps to obtain $\bpsi_n$ and  update $\btheta$ with
+\[
+\btheta \leftarrow \btheta - \eta \cdot \frac{1}{N}\sum\nolimits_{n=1}^N \frac{\partial \Lcal(\bpsi_n, \Dcal_n^{\text{val}})}{\partial \bpsi_n},
+\]
+where $\eta$ is the learning rate. With the same idea, \rap~\citep{nichol2018first} instead adjusts the updating direction to $\frac{1}{N}\sum_{j=1}^N \frac{\partial \Lcal(\bpsi_n, \Dcal_n^{\text{val}})}{\partial \bpsi_n} - \btheta$. Despite being efficient, these methods lack accurate gradient information about $\btheta$. To overcome this limitation, the recent work, \imaml~\citep{rajeswaran2019meta}, calculates the accurate gradient via an implicit gradient method. However, it needs to incorporate a proximity regularizer into the training loss to bind $\u$ and $\btheta$ explicitly,  
+\[
+\widehat{\Lcal}(\u, \Dcal_n^{\text{tr}}) = \Lcal(\u, \Dcal_n^{\text{tr}}) + \frac{\lambda}{2} \| \u - \btheta\|^2.
+\]
+The accurate gradient can be obtained (only) when the training reaches the optimum, \ie $\bpsi_n = \argmin_{\u} \widehat{\Lcal}(\u, \Dcal_n^{\text{tr}}) $, since  we can derive the implicit gradient $\frac{\d \bpsi_n}{\d \btheta}$ from the fact  that $\frac{\partial \widehat{\Lcal}}{\partial \bpsi_n} = \0$.
+
+
+\section{Adjoint MAML}
+In this paper, we propose \ours, which can accurately and efficiently compute the gradient of the meta loss w.r.t. the initialization for long training trajectories, without the need for aggressive approximations or additional regularization, and adapts to different trajectory lengths. Hence, our method can be easily integrated with common training strategies, \eg early stopping. 
+\subsection{ODE View of Inner Optimization}
+Specifically, we first view the inner optimization as evolving an ODE system. In more detail, given task $n$,  starting from $\btheta$, we run gradient descent for a long time to train the model. The training procedure can be in more general viewed as solving the following ODE,
+%\begin{align}
+%	\u_n(0) = \btheta, \;\;\;\frac{\d \u_n}{\d t} &= -\frac{\partial \Lcal(\u_n, \Dcal_n^{\text{tr}})}{\partial \u_n},
+%\end{align}
+\begin{equation}
+	\begin{cases}
+	\u_n(0) &= \btheta, \notag \\
+	\frac{\d \u_n}{\d t} &= -\frac{\partial \Lcal(\u_n, \Dcal_n^{\text{tr}})}{\partial \u_n},
+	\end{cases} 
+\end{equation}
+where the state $\u_n(t)$ represents the model parameters at time $t$. Running gradient descent with a step size 
+\akil{again, ``learning rate"?}
+$\alpha$ essentially solves the ODE with the forward Euler method using temporal step size $\alpha$, 
+%where we discretize the time with $\alpha$, 
+corresponding to the update $\u_n(t+\alpha) \leftarrow \u_n(t) - \alpha \frac{\partial \Lcal(\u_n, \Dcal_n^{tr})}{\partial \u_n}$. However, the ODE view allows us to apply a variety of more efficient, high-order solvers to fulfill the training, \eg the Runge-Kutta method~\citep{dormand1980family}. Suppose we stop at time $T$, then we evaluate the trained parameters $\u_n(T)$ on the validation dataset via $\Lcal(\u_n(T), \Dcal_n^{val})$. Therefore, the meta loss is given by
+\begin{align}
+	J(\btheta) = \frac{1}{N}\sum\nolimits_{n=1}^N \Lcal(\u_n(T), \Dcal_n^{\text{val}}). \label{eq:meta-loss-ode}
+\end{align}
+Note that the stopping time $T$ is not necessarily the same for all the tasks; it can vary for different tasks as determined, say, by an early stopping criterion. 
+
+\subsection{Efficient Back-Propagation via Solving Adjoint ODEs}
+To optimize $\btheta$ in \eqref{eq:meta-loss-ode} (in the outer loop), we need to be able to compute the gradient of the  validation loss for each task $n$, \ie $\frac{\d J_n}{\d \btheta}$, where $J_n = \Lcal(\u_n(T), \Dcal_n^{\text{val}})$. We seek to compute this gradient efficiently for large $T$ without creating and growing a computation graph.
+%How to compute this gradient with large $T$, namely, for a long training trajectory? We want to avoid creating and growing a huge computation graph. 
+To this end, we use the adjoint method~\citep{pontryagin1987mathematical}. 
+To simplify the notation, we first define
+\begin{align}
+	J_n(\u_n(T)) &= \Lcal(\u_n(T), \D_n^{\text{val}}), \notag \\
+	f(\u_n, \Dcal_n^{tr}) &= -\left(\frac{\partial \Lcal(\u_n, \Dcal_n^{\text{tr}})}{\partial \u_n}\right)^\top. \label{eq:def}
+\end{align}
+Note that we use the row vector representation of the gradient, \ie $\frac{\partial \Lcal}{\partial \u_n}$ is a $1 \times d$ vector. This is consistent with the shape of Jacobian matrix, and the chain rule can be expressed as the matrix multiplication from left to right, which is natural and convenient. Accordingly, the ODE for $\u_n(t)$ can be written as 
+%\begin{align}
+%	\u_n(0) = \btheta,\;\;\;\frac{\d \u_n}{\d t} = \f(\u_n, \D_n^{tr}).\label{eq:forward-ode}
+%\end{align}
+\begin{equation}
+	\begin{cases}
+			\u_n(0) &= \btheta,  \\
+		\frac{\d \u_n}{\d t} &= \f(\u_n, \D_n^{tr}). \label{eq:forward-ode}
+	\end{cases}
+\end{equation}
+
+Next, to construct an adjoint ODE for efficient gradient computation, we augment the validation loss,
+\begin{align}
+	\whJ_n = J_n\left(\u_n(T)\right) + \int_0^T \blambda(t)^\top \left(f(\u_n, \D_n^{\text{tr}}) - \frac{\d \u_n}{\d t}\right) \d t,  \label{eq:aug-J}
+\end{align}
+where $\blambda(t)$ is a Lagrange multiplier and a $d \times 1$ vector. According to the ODE constraint \eqref{eq:forward-ode},  the extra integral in \eqref{eq:aug-J} is $0$ and $\whJ_n = J_n$. Hence, we have 
+\begin{align}
+	&\frac{\d J_n}{\d \btheta} = \frac{\d \whJ_n}{\d \btheta} = \frac{\partial J_n}{\partial \u_n(T)} \frac{\d \u_n}{\d \btheta}(T) \notag \\
+	&+ \int_0^T \blambda^\top \left[\frac{\partial \f}{\partial \u_n} \frac{\d \u_n}{\d \btheta} - \frac{\d \frac{\d \u_n}{\d t}}{\d \btheta}\right] \d t.  \label{eq:grad}
+\end{align}
+For the second term in the integral, we switch the derivative order and apply integration by parts, 
+	\begin{align}
+		&\int_0^T \blambda^\top  \frac{\d \frac{\d \u_n}{\d t}}{\d \btheta} \d t = \int_0^T \blambda^\top  \frac{\d \frac{\d \u_n}{\d \btheta}}{\d t} \d t \notag \\
+		&= \blambda^\top \frac{\d \u_n}{\d \btheta}\bigg|_0^T - \int_0^T \left(\frac{\d \blambda}{\d t}\right)^\top \frac{\d \u_n}{\d \btheta} \d t \notag \\
+		&= \blambda(T)^\top \frac{\d \u_n}{\d \btheta}(T) - \blambda(0)^\top \frac{\d \u_n}{\d \btheta}(0) - \int_0^T \left(\frac{\d \blambda}{\d t}\right)^\top \frac{\d \u_n}{\d \btheta} \d t. \notag 
+	\end{align}
+Substituting the above into \eqref{eq:grad}, we obtain  
+\begin{align}
+	\frac{\d J_n}{\d \btheta}  &= \frac{\partial J_n}{\partial \u_n(T)} \textcolor{blue}{\frac{\d \u_n}{\d \btheta}(T)} - \blambda(T)^\top \textcolor{blue}{\frac{\d \u_n}{\d \btheta}(T)} + \blambda(0)^\top \frac{\d \u_n}{\d \btheta}(0) \notag \\
+	&+ \int_0^T\left\{ \blambda^\top \frac{\partial \f}{\partial \u_n}\textcolor{blue}{\frac{\d \u_n}{\d \btheta}} + \left(\frac{\d \blambda}{\d t}\right)^\top \textcolor{blue}{\frac{\d \u_n}{\d \btheta}}\right\}\d t. \notag %\label{eq:grad-v2}
+\end{align}
+The computationally expensive term is the Jacobian $\frac{\d \u_n}{\d \btheta}$ (marked as blue), which we efficiently handle by constructing an adjoint ODE for the Lagrange multiplier $\blambda$,   
+\begin{align}
+	\begin{cases}
+	\blambda(T) &= \left(\frac{\partial J_n}{\partial \u_n(T)}\right)^\top, \\
+	 	\left(\frac{\d \blambda}{\d t}\right)^\top& = - \blambda(t)^\top \frac{\partial \f}{\partial \u_n}. \label{eq:adjoint-ode}
+\end{cases}
+\end{align}
+%\begin{equation}
+%	\begin{cases}
+%	\blambda(T) &= \left(\frac{\partial J_n}{\partial \u_n(T)}\right)^\top,  \\
+%	\left(\frac{\d \blambda}{\d t}\right)^\top& = - \blambda(t)^\top \frac{\partial \f}{\partial \u_n}. \label{eq:adjoint-ode}
+%	\end{cases}
+%\end{equation}
+
+Note that the ODE \eqref{eq:adjoint-ode} runs backward in time starting at the terminal time $T$. If we can solve \eqref{eq:adjoint-ode}, the Jacobian terms (blue) will cancel, and the full gradient becomes 
+\begin{align}
+	\frac{\d J_n}{\d \btheta} = \blambda(0)^\top \frac{\d \u_n}{\d \btheta}(0) =  \blambda(0)^\top, 
+\end{align}
+where we have used $\frac{\d \u_n}{\d \btheta}(0) = \I$. We see that the gradient is simply the state of $\blambda$ at time $0$. To confirm the feasibility of solving \eqref{eq:adjoint-ode}, we can see from  \eqref{eq:adjoint-ode} and \eqref{eq:def} that $\frac{\partial \f}{\partial \u_n} = \H({\u_n}) = -\frac{\partial^2 \Lcal(\u_n, \Dcal_n^{tr})}{\partial \u_n^2}$
+%\[
+%\frac{\partial \f}{\partial \u_n} = \H({\u_n}) = -\frac{\partial^2 \Lcal(\u_n, \Dcal_n^{tr})}{\partial \u_n^2}
+%\]
+ is the Hessian matrix of the model parameters. While it seems extremely costly to calculate the Hessian, when we substitute the above Hessian into \eqref{eq:adjoint-ode} and  take the transpose, we find,
+ \begin{align}
+ 	\begin{cases}
+ 	\blambda(T) &= \left(\frac{\partial J_n}{\partial \u_n(T)}\right)^\top, \\
+ 	 \frac{\d \blambda}{\d t} &= - \H(\u_n) \blambda(t). \label{eq:adjoint-ode-v2}
+ 	\end{cases}
+ \end{align}
+%\begin{equation}
+%	\begin{cases}
+%		\blambda(T) &= \left(\frac{\partial J_n}{\partial \u_n(T)}\right)^\top,  \\
+%		\frac{\d \blambda}{\d t} & = - \H(\u_n) \blambda(t). \label{eq:adjoint-ode-v2}
+%	\end{cases}
+%\end{equation}
+Now it is clear that the dynamics of $\blambda$ is a Hessian-vector product. It is known that we never need to explicitly compute the Hessian matrix. We can first compute the gradient $\g =\frac{\partial \Lcal}{\partial \u_n}$,  then the dot product $s = \v^\top \g$, and take the gradient of the scalar $s$ again, which gives exactly $\H\blambda$.  The complexity is the same as computing the gradient.
+%and the complexity of solving the problem above is the same as computing $\frac{\partial \Lcal}{\partial \u_n}$. 
+
+Therefore, to calculate $\frac{\d J_n}{\d \btheta}$, we only need to run standard ODE solvers twice. First, we run a solver to evolve \eqref{eq:forward-ode} from time $0$ to time $T$. Note that even a small $T$ can correspond to many gradient descent steps. For example, $T = 10$ corresponds to running $1000$ gradient descent steps where the step size is set to $0.01$ (a common choice). We can apply high-order methods, like RK45~\citep{dormand1980family} to further improve the speed and accuracy. Next, at the trained parameters $\u(T)$, we jointly solve \eqref{eq:adjoint-ode-v2} and \eqref{eq:forward-ode} backward (note that dynamics of $\blambda$ needs $\u_n$). For solving both ODEs, we never need to create and/or grow  new computation graphs. All we need is to compute the dynamics in \eqref{eq:forward-ode} and \eqref{eq:adjoint-ode-v2}, and the computational complexity is the same as computing the gradient of the training loss w.r.t the model parameters. The memory cost only involves storage of $\u_n$ and $\blambda$, which is proportional to the number of model parameters. We never need to maintain or calculate any Jacobian matrix. The accuracy is determined by the numerical precision of the ODE solvers, which have been developed for decades, are mature, and can easily effect tradeoffs between precision and speed.  Note that our method does not need to add extra regularization into the training loss, although our framework can be easily adjusted to support such regularization. 
+
+Empirically, we found that back-solving can diverge when $T$ is very large, say, $100$. {This might be because a larger $T$ increases the chance that different forward trajectories (\ie starting from different initial states) intersect or even overlap. This is not uncommon for gradient-based training --- even with different initializations, it might still arrive at or explore the same area. If so, when we solve the ODEs backward, it is easy to diverge at the intersection points.} To promote robustness, we track the state $\u_n$ in the training trajectory with a given step size during the forward solve. This can be automatically done via the ODE solver. Then based on the list of states $\{\u_{n,j}\}_j$, we solve the adjoint ODE backward with the modified Euler method~\citep{ascher1998computer} whose global accuracy is $\Ocal(h^2)$ where $h$ is the ODE solver step size.  Specifically, at each step $j$, we first calculate an intermediate value $\widetilde{\blambda}_j$ and then the state $\blambda_j$ via,
+\begin{align}
+	\widetilde{\blambda}_{j} &= \blambda_{j+1} + h \H(\u_{n,j+1})\blambda_{j+1}, \notag \\
+	 \blambda_j &= \blambda_{j+1} + \frac{h}{2}\left[\H(\u_{n,j+1})\blambda_{j+1} + \H(\u_{n,j})\widetilde{\blambda}_{j}\right]. \notag 
+\end{align}
+%\zhec{Note an even cheaper alternative is to Euler method, which is essentially a reverse mode differentiation method~\citep{bengio2000gradient,baydin2014automatic}. However, the global accuracy is $\Ocal(h)$. }
+While this increases memory requirements, it is still linear with the number of parameters, $\Ocal(\frac{T}{h} d)$, and much cheaper than building a computational graph. The experiments show that our method can  scale to long training trajectories very economically (see Sec. \ref{sect:memory}). Our method is summarized in Algorithm \ref{alg:amaml}. 
+
+% \setlength{\textfloatsep}{0pt}
+% \setlength{\floatsep}{0pt}
+\begin{algorithm}                  % enter the algorithm environment
+	\small
+	\caption{\ours ($p(\Tcal)$, $T$, $\eta$, $G$, $\xi$)}          
+	\label{alg:amaml}                           
+	\begin{algorithmic}[1]                    % enter the algorithmic environment
+		\STATE Randomly initialize $\btheta$.
+		\REPEAT 
+		\STATE Sample a mini-batch of tasks $\{\Tcal_n\}_{n=1}^B$ from $p(\Tcal)$.
+		\FOR {each task $\Tcal_n$}
+		\STATE Calculate $\frac{\partial J_n}{\partial \btheta}$ with Algorithm \ref{alg:adjoint}.
+		\ENDFOR
+		\STATE $\btheta \leftarrow \btheta - \eta \cdot \frac{1}{B} \sum_{n=1}^B \frac{\partial J_n}{\partial \btheta}$ (or use ADAM).
+		\UNTIL{$G$ iterations are done or the change of $\btheta$ is less than $\xi$}
+		\STATE Return $\btheta$. 
+	\end{algorithmic}
+\end{algorithm}
+%  \setlength{\floatsep}{0.01pt}
+% \setlength{\textfloatsep}{0.01pt}
+\begin{algorithm}
+	\small 
+	\caption{Adjoint Gradient Computation ($\btheta$, $J_n$, $T$, $h$)}          
+	\label{alg:adjoint}                           
+	\begin{algorithmic} [1]                  % enter the algorithmic environment
+		\STATE $\u_n(0) \leftarrow \btheta$.
+		\STATE Solve forward ODE \eqref{eq:forward-ode} to time $T$ with RK45, and track the states $\{\u_{n,j}\}_j$ in the trajectory with step size $h$.
+		\STATE $\blambda(T) \leftarrow \frac{\partial J_n}{\partial \u_n(T)}$.
+		\STATE Solve the adjoint ODE \eqref{eq:adjoint-ode-v2} to time $0$ with modified Euler method based on the state list $\{\u_{n,j}\}$.
+		\STATE Return  $\blambda(0)$.
+	\end{algorithmic}
+\end{algorithm}
+% \setlength{\floatsep}{0.05pt}
+% \setlength{\textfloatsep}{0.05pt}

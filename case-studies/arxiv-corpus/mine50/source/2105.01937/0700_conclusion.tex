@@ -1,0 +1,26 @@
+\sectiontinyvert{Conclusions and limitations}
+
+We have presented FLEX, a multi-view method for motion reconstruction. 
+%Our model is the only one that is able to reconstruct motion and pose in a multi-view setting when camera parameters are unknown.
+It relies on a key understanding that 3D rotation angles and bone lengths are invariant to camera view, and their direct reconstruction spares the need for camera parameters. 
+%
+On a technical viewpoint, we presented a novel fusion layer with a multi-view convolutional layer and a multi-head attention mechanism that attends views.
+
+%\paragraphtinyvert{Limitations.}
+One limitation of our approach is the dependency on 3D joint location ground-truth, and in particular, the requirement that it is given at the axis system of the train cameras. 
+%This limitation leads us to pursuing self-supervised ways to achieve our goal. 
+Another limitation is the dependency on the 2D backbone quality, and on the accuracy value associated with each joint.
+% 
+Lastly, being ep-free, the output 3D joint positions are only relative to the camera, lacking the transformation with respect to a global axis system.  
+%A straight forward mitigation would be to define an artificial global axis system (e.g., the axes of one of the cameras), and present all results relative to these axes. 
+
+
+In summary, FLEX is unique in fusing multi-view information to reconstruct motion and pose in dynamic photography environments. %
+%In settings where the relative rotations among the cameras are unknown, 
+%our system \sr{is unaffected and can still }maintain a high level of accuracy.
+It is unaffected by settings in which the relative rotations between the cameras are unknown, 
+and can maintain a high level of accuracy regardless.
+%
+FLEX offers a simpler setting, where the correspondence and compatibility among the different views are rather lean, and thus more resilient to input errors and innate inaccuracies.
+%Beyond offering a simpler setting, FLEX is an end-to-end network, and the correspondence and compatibility among the different views are rather leaned, and thus more resilient to input errors and innate inaccuracies. 
+

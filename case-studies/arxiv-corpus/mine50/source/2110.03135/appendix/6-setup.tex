@@ -1,0 +1,118 @@
+\section{Experimental details}
+\label{sect:exp-setting-all}
+
+\subsection{Settings for main experiment results}
+\label{sect: exp-practical}
+\smallsection{Dataset}
+We include experiment results on CIFAR-10, CIFAR-100, Tiny-ImageNet and SVHN.
+
+\smallsection{Training setting}
+We employ SGD as the optimizer. The batch size is fixed to 128. The momentum and weight decay are set to $0.9$ and $0.0005$ respectively. Other settings are listed as follows.
+\begin{itemize}[leftmargin=*,nosep]
+    \item CIFAR-10/CIFAR-100: we conduct the adversarial training for $160$ epochs, with the learning rate starting at $0.1$ and reduced by a factor of $10$ at the $80$ and $120$ epochs.
+    \item Tiny-ImageNet: we conduct the adversarial training for $80$ epochs, with the learning rate starting at $0.1$ and reduced by a factor of $10$ at the $40$ and $60$ epochs.
+    \item SVHN: we conduct the adversarial training for $80$ epochs, with the learning rate starting at $0.01$ (as suggested by \citep{chen2021robust}) and reduced by a factor of $10$ at the $40$ and $60$ epochs.
+\end{itemize}
+
+\smallsection{Adversary setting}
+We conduct adversarial training with $\ell_\infty$ norm-bounded perturbations. We employ adversarial training methods including PGD-AT, TRADES and FGSM. We set the perturbation radius to be $8/255$. For PGD-AT and TRADES, the step size is $2/255$ and the number of attack iterations is $10$.
+% We employ AutoAttack~\citep{Croce2020ReliableEO} For reliable robustness evaluation.
+
+
+\smallsection{Robustness evaluation}
+We consider the robustness against $\ell_\infty$ norm-bounded adversarial attack with perturbation radius $8/255$. We employ AutoAttack for reliable evaluation. We also include the evaluation results again PGD-1000, Square Attack and RayS.
+
+
+\smallsection{Neural architectures}
+We include experiments results on pre-activation ResNet-18, WRN-28-5, WRN-34-10 and VGG-19. 
+
+\smallsection{Hardware}
+We conduct experiments on 
+% NVIDIA GeForce GTX 1080 Ti and 
+NVIDIA Quadro RTX A6000.
+
+
+
+
+
+% ----------------------------------------
+\subsection{Settings for analyzing double descent in adversarial training}
+\label{sect: exp-double-descent}
+
+\smallsection{Dataset}
+We conduct experiments on the CIFAR-10 dataset, without additional data.
+
+\smallsection{Training setting}
+We conduct the adversarial training for $1000$ epochs unless otherwise noted.
+By default we use SGD as the optimizer with a fixed learning rate $0.1$. When we experiment on a subset (see below) we use the Adam optimizer to improve training stability, where the learning rate is fixed as $0.0001$.
+% , since it requires minimal hyper-parameter tuning. 
+The batch size will be fixed to $128$, and the momentum will be set as $0.9$ wherever necessary. No regularization such as weight decay is used. These settings are mostly aligned with the empirical analyse of double descent under standard training~\citep{Nakkiran2020DeepDD}.
+
+\smallsection{Sample size}
+To reduce the computation load demanded by an exponential number of training epochs, we reduce the size of the training set by randomly sampled a subset of size $5000$ from the original training set without replacement. 
+% This will linearly shift the double descent curve but will not significant distort its shape as shown in Appendix~\ref{sect:double-descent-reconcile}. 
+We adopt this setting for extensive experiments for analyzing the dependence of epoch-wise double descent on the perturbation radius and data quality (i.e. Figure~\ref{fig:dependence-perturbation-quality})..
+% and the number of attack iterations.
+% Note that in the experiment associated with data quality, we randomly sampled the training subset from those examples with quality lower than a threshold. 
+% The sampled subset is restricted to class-balanced.
+
+\smallsection{Adversary setting}
+We conduct adversarial training with $\ell_\infty$ norm-bounded perturbations. We employ standard PGD training with the perturbation radius set to $8/255$ unless otherwise noted. The number of attack iterations is fixed as $10$, and the perturbation step size is fixed as $2/255$.
+ 
+\smallsection{Robustness evaluation}
+We consider the robustness against $\ell_\infty$ norm-bounded adversarial attack with perturbation radius $8/255$. We use PGD attack with $10$ attack iterations and step size set to $2/255$.
+
+
+
+\smallsection{Neural architecture}
+By default we experiment on Wide ResNet~\citep{Zagoruyko2016WideRN} with depth $28$ and widening factor $5$ (WRN-28-5) to speed up training. 
+
+\smallsection{Hardware}
+We conduct experiments on 
+% NVIDIA GeForce GTX 1080 Ti and 
+NVIDIA Quadro RTX A6000.
+
+  
+\input{appendix/2-experiments/2.7-data-quality}
+
+
+% \subsection{Settings for adversarial augmentation}
+% \label{sect: exp-ad-augment}
+
+
+
+
+% \subsection{Settings for Mixup augmentation}
+% \label{sect: exp-mixup-augment}
+
+% For every example in the clean training set, we generate a perturbed training example by interpolating it with another example from a different class. All those perturbed examples along with their original labels are then grouped into a new training set, where we conduct standard training for $1000$ epochs. Other settings are same as those listed in Appendix~\ref{sect: exp-double-descent} except no adversary is employed.
+
+\subsection{Settings for standard training on fixed augmented training sets}
+
+\subsubsection{General settings for both adversarial augmentation and Gaussian augmentation}
+
+\smallsection{Dataset}
+We conduct experiments on the CIFAR-10 dataset, without additional data.
+
+\smallsection{Training setting}
+We conduct the standard training for $1000$ epochs.
+We use Adam as the optimizer with a fixed learning rate $0.0001$ to improve training stability with a small training set (see below). The batch size will be fixed to $128$, and the momentum will be set as $0.9$ wherever necessary. No regularization such as weight decay is used.
+
+\smallsection{Sample size}
+To reduce the computation load demanded by an exponential number of training epochs, we reduce the size of the training set by randomly sampled a subset of size $5000$ from the original training set without replacement.
+
+\smallsection{Neural architecture}
+By default we experiment on Wide ResNet~\citep{Zagoruyko2016WideRN} with depth $28$ and widening factor $5$ (WRN-28-5).
+
+\smallsection{Hardware}
+We conduct experiments on 
+% NVIDIA GeForce GTX 1080 Ti and 
+NVIDIA Quadro RTX A6000.
+
+\subsubsection{Construction of the training set}
+
+\input{appendix/2-experiments/2.6-static-noise}
+
+\input{appendix/2-experiments/2.5-gaussian-noise}
+
+

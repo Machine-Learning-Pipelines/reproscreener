@@ -1,0 +1,127 @@
+
+
+\section{DP-CD in Practice}
+\label{sec:dp-cd-practice}
+
+We now discuss practical questions related to DP-CD. First, we show how
+to implement coordinate-wise gradient clipping using a single hyperparameter.
+Second, we explain how to privately estimate the smoothness constants.
+Finally, we
+discuss the possibility of standardizing the features and how this relates
+to estimating smoothness constants for the important problem of fitting
+generalized linear models.
+
+
+\subsection{Coordinate-wise Gradient Clipping}
+\label{sub:clipping}
+
+To bound the sensitivity of coordinate-wise gradients, our analysis of
+Section~\ref{sec:diff-priv-coord} relies on the knowledge of Lipschitz
+constants for the loss function $\ell(\cdot;d)$ that must hold for all
+possible data points
+$d\in \cX$, see
+inequality \eqref{eq:delta-lipschitz-norm} and the discussion above
+it.
+This is classic in the analysis of DP optimization algorithms \citep[see
+  e.g.,][]
+{bassily2014Private,wang2017Differentially}. In practice however, these
+Lipschitz constants can be difficult to bound tightly and often
+give largely pessimistic estimates of sensitivities, thereby making gradients
+overly noisy. To overcome this problem, the common practice in concrete
+deployments of DP-SGD algorithms is to \emph{clip per-sample gradients}
+so that their norm does not exceed a fixed threshold parameter $C > 0$
+\citep{abadi2016Deep}:
+\begin{align}
+  \label{eq:standard_clipping_rule}
+  \clip(\nabla \ell(w), C)
+  = \min\Big(1, \frac{C}{\norm{\nabla \ell(w)}}_2\Big)  \nabla \ell(w)\enspace.
+\end{align}
+This effectively ensures that the sensitivity $\Delta(\clip(\nabla \ell, C))$
+of the clipped gradient is bounded by $2C$.
+
+In DP-CD, gradients are released one coordinate at a time and should
+thus be clipped in a coordinate-wise fashion. Using the same threshold for
+each coordinate would ruin the ability of DP-CD to account for imbalance
+across gradient coordinates, whereas tuning coordinate-wise thresholds as $p$
+individual
+hyperparameters $\{C_j\}_{j=1}^p$
+is impractical.
+
+Instead, we leverage the results of \Cref{thm:cd-utility} to adapt them from a
+single hyperparameter.
+We first remark that our utility guarantees are
+invariant to the scale of the matrix $M$. After rescaling
+$M$ to
+$\widetilde M = \frac{p}{\tr(M)} M$ so that
+$\tr(\widetilde M) = \tr(I) = p$, as proposed by
+\citet{richtarik2014Iteration}, the key quantity
+$\Delta_{\widetilde M^{-1}}(\nabla\ell)$ as defined in \eqref{eq:delta-lipschitz-norm} appears in
+our utility
+bounds instead of $\norm{L}_{M^{-1}}$. This suggests to parameterize the
+$j$-th threshold as $C_j = \sqrt{{M_j}/{\tr(M)}} C$ for some $C > 0$,
+ensuring that $\Delta_{\widetilde M^{-1}}(\{\clip(\nabla_j\ell, C_j)\}_{j=1}^p)
+  \leq 2C$.
+The parameter $C$ thus controls the overall sensitivity, allowing clipped
+DP-CD to perform $p$ iterations for the same privacy budget as one iteration
+of clipped DP-SGD.
+
+\subsection{Private Smoothness Constants}
+\label{sec:priv-smoothn}
+
+DP-CD requires the knowledge of the coordinate-wise smoothness
+constants $M_1,\dots,M_p$ of $f$ to set appropriate step sizes (see
+\Cref{thm:cd-utility}) and clipping thresholds (see
+above).\footnote{In fact, only $\smash{M_j/\sum_{j'} M_{j'}}$ is needed, as we
+  tune the clipping threshold and scaling factor for the step sizes.
+  See \Cref{sec:numerical-experiments}.}  In most problems, the
+$M_j$'s depend on the dataset $D$ and must thus be estimated privately
+using a fraction of the overall privacy budget.  Since $f$ is an
+average of loss terms, its coordinate-wise smoothness constants are
+the average of those of $\ell(\cdot, d)$ over $d\in D$.  These per-sample
+quantities are easy to get for typical losses (see
+\Cref{sec:data-standardization} for the case of linear models).
+Privately estimating $M_1,\dots,M_p$ thus reduces to a classic private
+mean estimation problem for which many methods exist.  For instance,
+assuming that the practitioner knows a crude upper bound on per-sample
+smoothness constants, he/she can compute the smoothness constants of
+the $\ell(\cdot, d)$'s, clip them to the pre-defined upper bounds, and
+privately estimate their mean using the Laplace mechanism
+(see \Cref{sec:priv-estim-smoothn} for
+details).  We show numerically in
+\Cref{sec:numerical-experiments} that dedicating $10\%$ of the total
+budget $\epsilon$ to this strategy allows DP-CD to effectively exploit
+the imbalance across gradients' coordinates.
+
+
+
+\subsection{Feature Standardization}
+\label{sec:data-standardization}
+
+CD algorithms are very popular to solve generalized linear
+models \citep{friedman2010Regularization} and their regularized version (\eg
+LASSO, logistic regression).
+For these problems, the coordinate-wise smoothness constants are
+$M_j \propto \frac 1n \norm{X_{:,j}}_2^2$, where $X_{:,j} \in \RR^{n}$
+is the vector containing the value of the $j$-th feature. Therefore, standardizing the features to have zero mean and
+unit variance (a standard preprocessing step) makes coordinate-wise smoothness
+constants equal. However, this requires to compute the
+mean and variance of each feature in $D$, which is more
+costly than the smoothness
+constants to estimate privately.\footnote{We note that the privacy cost of
+standardization is rarely accounted for in practical evaluations.}
+Moreover, while our theory suggests that DP-CD may not be superior to DP-SGD
+when smoothness constants are all equal (see
+Section~\ref{sec:comparison-with-dp-sgd}), the
+numerical results of \Cref{sec:numerical-experiments} show that DP-CD often
+outperforms DP-SGD even when features are standardized.
+
+Finally, we emphasize that standardization is not always possible.
+This notably happens when solving the problem at hand is a subroutine of another algorithm.
+For instance, the Iteratively Reweighted Least Squares (IRLS) algorithm
+\citep{holland1977Robust} finds the maximum likelihood estimate of a
+generalized linear model by solving a sequence of linear
+regression problems with reweighted features, proscribing standardization.
+Similar situations happen when using reweighted $\ell_1$ methods for
+non-convex sparse regression \citep{Candes_Wakin_Boyd08}, relying on convex (LASSO) solvers for the inner loop.
+DP-CD is thus a method of choice to serve as subroutine in private versions of these algorithms.
+

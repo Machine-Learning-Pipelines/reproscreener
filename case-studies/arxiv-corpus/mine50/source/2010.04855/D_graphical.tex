@@ -1,0 +1,125 @@
+\section{Graphical models}\label{sec:graphical}
+
+In the main text, we study causal functions defined in the potential outcomes framework and identified by selection on observables. In this supplement, we study causal functions and counterfactual distributions defined in the directed acyclic graph (DAG) framework and identified by Pearl's front and back door criteria. We derive estimators, then prove uniform consistency and convergence in distribution.
+
+\subsection{DAG background}
+
+DAGs provide another popular language for causal inference \cite{pearl2009causality}. Rather than reasoning about $\text{\normalfont pr}\{Y^{(d)}\}$, one reasons about $\text{\normalfont pr}\{Y \mid do(D=d)\}$, where both expressions are concerned with the distribution of outcome $Y$ given intervention $D=d$. For a specific setting, graphical criteria in terms of the DAG can help verify conditional independence statements in terms of potential outcomes. In this section, we provide results in terms of causal DAGs, analogous to the results in terms of potential outcomes given in the main text. In particular, we focus on the front and back door criteria, which are the fundamental building blocks of DAG-based causal inference. 
+
+Assume the analyst has access to a causal DAG $G$ with vertex set $W$, partitioned into four disjoint sets $W=(Y,D,X,U)$. $Y$ is the outcome, $D$ is the set of treatments, $X$ is the set of covariates, and $U$ is the set of unobserved variables. Since counterfactual inquiries involve intervention on the graph $G$, we require notation for graph modification. Denote by $G_{\bar{D}}$ the graph obtained by deleting from $G$ all arrows pointing into nodes in $D$. Denote by $G_{\underline{D}}$ the graph obtained by deleting from $G$ all arrows emerging from nodes in $D$. We denote $d$-separation by $\indep_d$. $d$-separation implies statistical independence. Throughout this section, we make the standard faithfulness assumption: $d$-connection implies statistical dependence. 
+
+\subsection{Identification}
+
+We define causal functions and counterfactual distributions in terms of the $do$ operator on the DAG. For clarity of exposition, we focus on the case where $(D,Y)$ are nodes rather than sets.
+\begin{definition}[Causal function and counterfactual distribution: DAG]
+$\theta_0^{do}(d)=E\{Y \mid do(D=d)\}$ is the counterfactual mean outcome given intervention $D=d$ for the entire population. Likewise we define the counterfactual distribution $\theta_0^{D:do}(d)=\text{\normalfont pr}\{Y \mid do(D=d)\}$ and counterfactual distribution embedding $
+\check{\theta}_0^{D:do}(d)=E\{\phi(Y) \mid do(D=d)\}
+$ as in Supplement~\ref{sec:distribution}.
+\end{definition}
+In seminal works, \cite{pearl1993comment,pearl1995causal} states sufficient conditions under which such effects, philosophical quantities defined in terms of interventions on the graph, can be measured from empirical quantities such as outcomes $Y$, treatments $D$, and covariates $X$. We present two sets of sufficient conditions, known as the back door and front door criteria.
+
+\begin{assumption}[Back door criterion]\label{assumption:back-door}
+Assume
+\begin{enumerate}
+    \item No node in $X$ is a descendent of $D$.
+    \item $X$ blocks every path between $D$ and $Y$ that contains an arrow into $D$:
+$
+(Y\indep_d D \mid X)_{G_{\underline{D}}}.
+$
+\end{enumerate}
+\end{assumption}
+Intuitively, the analyst requires sufficiently many and sufficiently well placed covariates $X$ in the context of the graph $G$. Assumption~\ref{assumption:back-door} is satisfied if there is no unobserved confounder $U$, or if any unobserved confounder $U$ with a back door path into treatment $D$ is blocked by $X$. 
+
+\begin{assumption}[Front door criterion]\label{assumption:front-door}
+Assume
+\begin{enumerate}
+    \item $X$ intercepts all directed paths from $D$ to $Y$.
+    \item There is no unblocked back door path from $D$ to $X$.
+    \item All back door paths from $X$ to $Y$ are blocked by $D$.
+    \item $\text{\normalfont pr}(D,X)>0$ almost surely.
+\end{enumerate}
+\end{assumption}
+Intuitively, these conditions ensure that $X$ serves to block all spurious paths from $D$ to $Y$; to leave all directed paths unperturbed; and to create no new spurious paths. As before, define the regression
+$
+\gamma_0(d,x)=E(Y \mid D=d,X=x)
+$.
+\begin{lemma}[Identification of causal function: DAG \cite{pearl1993comment,pearl1995causal}]\label{theorem:id_treatment_dag}
+Depending on which criterion holds, the causal parameter $\theta_0^{do}(d)$ has different expressions.
+\begin{enumerate}
+    \item If Assumption~\ref{assumption:back-door} holds then
+$
+\theta_0^{do}(d)=\int \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x).
+$
+    \item If Assumption~\ref{assumption:front-door} holds then
+$
+\theta_0^{do}(d)=\int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(d')\mathrm{d}\text{\normalfont pr}(x \mid d).
+$
+\end{enumerate}
+If in addition Assumption~\ref{assumption:RKHS} holds then the analogous result holds for counterfactual distribution embeddings using $\gamma_0(d,x)=E\{\phi(Y) \mid D=d,X=x\}$ instead, as in Supplement~\ref{sec:distribution}.
+\end{lemma}
+
+Comparing Lemma~\ref{theorem:id_treatment_dag} with Lemma~\ref{theorem:id_treatment}, we see that if Assumption~\ref{assumption:back-door} holds then
+our dose response estimator $\hat{\theta}^{ATE}(d)$ in Section~\ref{sec:algorithm} is also a uniformly consistent estimator of $\theta_0^{do}(d)$. Similarly our counterfactual distribution estimator $\hat{\theta}^{D:ATE}(d)$ converges in distribution to $\hat{\theta}^{D:do}(d)$. In the remainder of this section, we therefore focus on what happens if Assumption~\ref{assumption:front-door} holds instead. We study the causal function and counterfactual distribution.
+
+\subsection{Closed form solutions}
+
+We maintain notation from Section~\ref{sec:algorithm}.
+
+\begin{theorem}[Decoupling via kernel mean embedding: DAG]\label{theorem:representation_treatment_dag}
+Suppose Assumptions~\ref{assumption:RKHS} and~\ref{assumption:front-door} hold.
+\begin{enumerate}
+    \item If an addition $\gamma_0\in\mathcal{H}$ then
+$
+\theta_0^{do}(d)=\langle \gamma_0,\mu_d\otimes \mu_{x}(d)\rangle_{\mathcal{H}};
+$
+    \item If in addition $E_3\in \mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$ then 
+    $
+\check{\theta}_0^{do}(d)=E^*_3\{\mu_d\otimes \mu_{x}(d)\};
+    $
+\end{enumerate}
+where $\mu_d=\int \phi(d)\mathrm{d}\text{\normalfont pr}(d)$ and $\mu_{x}(d)=\int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid d)$. 
+\end{theorem}
+See Supplement~\ref{sec:derivation} for the proof. The quantity $\mu_d=\int \phi(d)\mathrm{d}\text{\normalfont pr}(d)$ is the mean embedding of $\text{\normalfont pr}(d)$. The quantity $\mu_{x}(d)=\int \phi(x)\mathrm{d}\text{\normalfont pr}(x \mid d)$ is the conditional mean embedding of $\text{\normalfont pr}(x \mid d)$. This representation helps to derive an estimator with a closed form solution. For $\theta_0^{do}(d)$, our estimator will be $\hat{\theta}^{FD}(d)=\langle \hat{\gamma}, \hat{\mu}_d\otimes \hat{\mu}_x(d)\rangle_{\mathcal{H}}$, where $\hat{\gamma}$ is a standard kernel ridge regression, $\hat{\mu}_d$ is an empirical mean, and $\hat{\mu}_x(d)$ is an appropriately defined kernel ridge regression.
+
+\begin{algorithm}[Estimation of causal functions: DAG]\label{algorithm:dag}
+Denote the empirical kernel matrices
+$
+K_{DD}, K_{XX}, K_{YY}\in\mathbb{R}^{n\times n}
+$
+calculated from observations drawn from population $\text{\normalfont pr}$. Denote by $\odot$ the elementwise product. The front door criterion estimators have the closed form solutions
+\begin{enumerate}
+    \item $
+\hat{\theta}^{FD}(d)=n^{-1}\sum_{i=1}^n Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}[K_{Dd_i}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]
+$
+    \item $
+\{\hat{\theta}^{D:FD}(d)\}(y)=n^{-1}\sum_{i=1}^n K_{yY}(K_{DD}\odot K_{XX}+n\lambda_3  I )^{-1}[K_{Dd_i}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]    
+$
+\end{enumerate}
+where $(\lambda,\lambda_1,\lambda_3)$ are ridge regression penalty hyperparameters.
+\end{algorithm}
+We derive this estimator in Supplement~\ref{sec:derivation}. We give theoretical values for $(\lambda,\lambda_1,\lambda_3)$ that optimally balance bias and variance in Theorem~\ref{theorem:consistency_dag} below. Supplement~\ref{sec:tuning} gives practical tuning procedures, one of which is asymptotically optimal.
+
+\subsection{Uniform consistency and convergence in distribution}
+
+Towards a guarantee of uniform consistency, we place the same assumptions as in Section~\ref{sec:algorithm}.
+
+\begin{theorem}[Uniform consistency of causal functions: DAG]\label{theorem:consistency_dag}
+Suppose the conditions of Theorem~\ref{theorem:representation_treatment_dag} hold, as well as Assumptions~\ref{assumption:original} and~\ref{assumption:smooth_op} with $\mathcal{A}_1=\mathcal{X}$ and $\mathcal{B}_1=\mathcal{D}$. Set $(\lambda,\lambda_1,\lambda_3)=\{n^{-1/(c+1/b)},n^{-1/(c_1+1/c_1)},n^{-1/(c_3+1/b_3)}\}$, which is rate optimal regularization.
+\begin{enumerate}
+    \item If in addition Assumption~\ref{assumption:smooth_gamma} holds then with high probability $$    \|\hat{\theta}^{FD}-\theta_0^{do}\|_{\infty}=O\left[n^{-(c-1)/\{2(c+1/b)\}}+n^{-(c_1-1)/\{2(c_1+1/b_1)\}}\right].
+$$
+    \item If in addition Assumption~\ref{assumption:smooth_op} holds with $\mathcal{A}_3=\mathcal{Y}$ and $\mathcal{B}_3=\mathcal{D}\times \mathcal{X}$ then with high probability
+    $$
+    \sup_{d\in\mathcal{D}}\|\hat{\theta}^{D:FD}(d)-\check{\theta}_0^{D:do}(d)\|_{\mathcal{H}_{\mathcal{Y}}}=O\left[n^{-(c_3-1)/\{2(c_3+1/b_3)\}}+n^{-(c_1-1)/\{2(c_1+1/b_1)}\right].
+$$
+\end{enumerate}
+
+\end{theorem}
+Explicit constants hidden by the $O(\cdot)$ notation are indicated in Supplement~\ref{sec:proof}. The rate is at best $n^{-1/4}$ when $(c,c_1,c_3)=2$ and $(b,b_1,b_3)\rightarrow \infty$, i.e. when the regressions are smooth and when the effective dimensions are finite. 
+%The slow rates reflect the challenge of a $\sup$ norm guarantee, which is much stronger than a mean square error guarantee. The $\sup$ norm guarantee encodes caution about worst case scenarios when informing policy decisions. 
+ Finally, we present a convergence in distribution result.
+
+\begin{theorem}[Convergence in distribution of counterfactual distributions: DAG]\label{theorem:conv_dist_dag}
+Suppose the conditions of Theorem~\ref{theorem:consistency_dag} hold, as well as Assumption~\ref{assumption:regularity}. Suppose samples $(\tilde{Y}_j)$ are calculated for $\theta_0^{D:FD}(d)$ as described in Algorithm~\ref{algorithm:herding}. Then $(\tilde{Y}_j)\rightsquigarrow \theta_0^{D:do}(d)$.
+\end{theorem}
+See Supplement~\ref{sec:proof} for the proof. %Note that samples are drawn for given value $d$. Though our nonparametric consistency result is uniform across treatment values, this convergence in distribution result is for a fixed treatment value.

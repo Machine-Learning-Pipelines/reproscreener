@@ -1,0 +1,1011 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Al-Kanj et~al.]{Al-Kanj, Nascimento \harvardand\
+  Powell}{2020}{al2020approximate}
+Al-Kanj, L., Nascimento, J. \harvardand\ Powell, W.~B.  \harvardyearleft
+  2020\harvardyearright , `Approximate dynamic programming for planning a
+  ride-hailing system using autonomous fleets of electric vehicles', {\em
+  European Journal of Operational Research} {\bf 284}(3),~1088--1106.
+
+\harvarditem[Alabbasi et~al.]{Alabbasi, Ghosh \harvardand\
+  Aggarwal}{2019}{al2019deeppool}
+Alabbasi, A., Ghosh, A. \harvardand\ Aggarwal, V.  \harvardyearleft
+  2019\harvardyearright , `Deeppool: Distributed model-free algorithm for
+  ride-sharing using deep reinforcement learning', {\em IEEE Transactions on
+  Intelligent Transportation Systems} {\bf 20}(12),~4714--4727.
+
+\harvarditem{Alonso-Mora, Samaranayake, Wallar, Frazzoli \harvardand\
+  Rus}{2017}{alonso2017demand}
+Alonso-Mora, J., Samaranayake, S., Wallar, A., Frazzoli, E. \harvardand\ Rus,
+  D.  \harvardyearleft 2017\harvardyearright , `On-demand high-capacity
+  ride-sharing via dynamic trip-vehicle assignment', {\em Proceedings of the
+  National Academy of Sciences} {\bf 114}(3),~462--467.
+
+\harvarditem{Alonso-Mora, Wallar \harvardand\ Rus}{2017}{alonso2017predictive}
+Alonso-Mora, J., Wallar, A. \harvardand\ Rus, D.  \harvardyearleft
+  2017\harvardyearright , Predictive routing for autonomous mobility-on-demand
+  systems with ride-sharing, {\em in} `2017 IEEE/RSJ International Conference
+  on Intelligent Robots and Systems (IROS)', IEEE, pp.~3583--3590.
+
+\harvarditem[Angrist et~al.]{Angrist, Caldwell \harvardand\
+  Hall}{2021}{angrist2021uber}
+Angrist, J.~D., Caldwell, S. \harvardand\ Hall, J.~V.  \harvardyearleft
+  2021\harvardyearright , `Uber versus taxi: A driver's eye view', {\em
+  American Economic Journal: Applied Economics} {\bf 13}(3),~272--308.
+
+\harvarditem{Arora \harvardand\ Doshi}{2021}{arora2021survey}
+Arora, S. \harvardand\ Doshi, P.  \harvardyearleft 2021\harvardyearright , `A
+  survey of inverse reinforcement learning: Challenges, methods and progress',
+  {\em Artificial Intelligence} p.~103500.
+
+\harvarditem[Balaji et~al.]{Balaji, Bell-Masterson, Bilgin, Damianou, Garcia,
+  Jain, Luo, Maggiar, Narayanaswamy \harvardand\ Ye}{2019}{balaji2019orl}
+Balaji, B., Bell-Masterson, J., Bilgin, E., Damianou, A., Garcia, P.~M., Jain,
+  A., Luo, R., Maggiar, A., Narayanaswamy, B. \harvardand\ Ye, C.
+  \harvardyearleft 2019\harvardyearright , `Orl: Reinforcement learning
+  benchmarks for online stochastic optimization problems', {\em arXiv preprint
+  arXiv:1911.10641} .
+
+\harvarditem{Bazzan \harvardand\ Chira}{2015}{bazzan2015hybrid}
+Bazzan, A.~L. \harvardand\ Chira, C.  \harvardyearleft 2015\harvardyearright ,
+  A hybrid evolutionary and multiagent reinforcement learning approach to
+  accelerate the computation of traffic assignment, {\em in} `AAMAS',
+  pp.~1723--1724.
+
+\harvarditem{Bazzan \harvardand\ Grunitzki}{2016}{bazzan2016multiagent}
+Bazzan, A.~L. \harvardand\ Grunitzki, R.  \harvardyearleft
+  2016\harvardyearright , A multiagent reinforcement learning approach to
+  en-route trip building, {\em in} `2016 International Joint Conference on
+  Neural Networks (IJCNN)', IEEE, pp.~5288--5295.
+
+\harvarditem{Bei \harvardand\ Zhang}{2018}{bei2018algorithms}
+Bei, X. \harvardand\ Zhang, S.  \harvardyearleft 2018\harvardyearright ,
+  Algorithms for trip-vehicle assignment in ride-sharing, {\em in}
+  `Thirty-second AAAI conference on artificial intelligence'.
+
+\harvarditem[Beirigo et~al.]{Beirigo, Negenborn, Alonso-Mora \harvardand\
+  Schulte}{2022}{beirigo2022business}
+Beirigo, B.~A., Negenborn, R.~R., Alonso-Mora, J. \harvardand\ Schulte, F.
+  \harvardyearleft 2022\harvardyearright , `A business class for autonomous
+  mobility-on-demand: Modeling service quality contracts in dynamic ridesharing
+  systems', {\em Transportation Research Part C: Emerging Technologies} {\bf
+  136},~103520.
+
+\harvarditem[Bello et~al.]{Bello, Pham, Le, Norouzi \harvardand\
+  Bengio}{2016}{bello2016neural}
+Bello, I., Pham, H., Le, Q.~V., Norouzi, M. \harvardand\ Bengio, S.
+  \harvardyearleft 2016\harvardyearright , `Neural combinatorial optimization
+  with reinforcement learning', {\em arXiv preprint arXiv:1611.09940} .
+
+\harvarditem[Berner et~al.]{Berner, Brockman, Chan, Cheung, D{\k{e}}biak,
+  Dennison, Farhi, Fischer, Hashme, Hesse et~al.}{2019}{berner2019dota}
+Berner, C., Brockman, G., Chan, B., Cheung, V., D{\k{e}}biak, P., Dennison, C.,
+  Farhi, D., Fischer, Q., Hashme, S., Hesse, C. et~al.  \harvardyearleft
+  2019\harvardyearright , `Dota 2 with large scale deep reinforcement
+  learning', {\em arXiv preprint arXiv:1912.06680} .
+
+\harvarditem{Bertsimas \harvardand\ Perakis}{2006}{bertsimas2006dynamic}
+Bertsimas, D. \harvardand\ Perakis, G.  \harvardyearleft 2006\harvardyearright
+  , Dynamic pricing: A learning approach, {\em in} `Mathematical and
+  computational models for congestion charging', Springer, pp.~45--79.
+
+\harvarditem[Bimpikis et~al.]{Bimpikis, Candogan \harvardand\
+  Saban}{2019}{bimpikis2019spatial}
+Bimpikis, K., Candogan, O. \harvardand\ Saban, D.  \harvardyearleft
+  2019\harvardyearright , `Spatial pricing in ride-sharing networks', {\em
+  Operations Research} {\bf 67}(3),~744--769.
+
+\harvarditem{Brown}{2020}{wsj2020vacant}
+Brown, E.  \harvardyearleft 2020\harvardyearright , {\em The Ride-Hail Utopia
+  That Got Stuck in Traffic - WSJ}.
+\newblock
+  \url{https://www.wsj.com/articles/the-ride-hail-utopia-that-got-stuck-in-traffic-11581742802}.
+
+\harvarditem[Chaudhari et~al.]{Chaudhari, Byers \harvardand\ Terzi}{2020{\em
+  a}}{chaudhari2020learn}
+Chaudhari, H.~A., Byers, J.~W. \harvardand\ Terzi, E.  \harvardyearleft
+  2020{\em a}\harvardyearright , `Learn to earn: Enabling coordination within a
+  ride hailing fleet', {\em Proceedings of IEEE International Conference on Big
+  Data} .
+
+\harvarditem[Chaudhari et~al.]{Chaudhari, Byers \harvardand\ Terzi}{2020{\em
+  b}}{learn2earn2020code}
+Chaudhari, H.~A., Byers, J.~W. \harvardand\ Terzi, E.  \harvardyearleft
+  2020{\em b}\harvardyearright , `Simulation code for "learn to earn: Enabling
+  coordination within a ride-hailing fleet"'.
+\newblock
+  "\url{https://transparent-framework.github.io/optimize-ride-sharing-earnings/}".
+
+\harvarditem[Chen et~al.]{Chen, Yao, Mo, Zhu \harvardand\
+  Chen}{2021}{chen2021spatial}
+Chen, C., Yao, F., Mo, D., Zhu, J. \harvardand\ Chen, X.~M.  \harvardyearleft
+  2021\harvardyearright , `Spatial-temporal pricing for ride-sourcing platform
+  with reinforcement learning', {\em Transportation Research Part C: Emerging
+  Technologies} {\bf 130},~103272.
+
+\harvarditem{Chen, Jiao, Qin, Tang, Li, An, Zhu \harvardand\
+  Ye}{2019}{chen2019inbede}
+Chen, H., Jiao, Y., Qin, Z., Tang, X., Li, H., An, B., Zhu, H. \harvardand\ Ye,
+  J.  \harvardyearleft 2019\harvardyearright , Inbede: Integrating contextual
+  bandit with td learning for joint pricing and dispatch of ride-hailing
+  platforms, {\em in} `2019 IEEE International Conference on Data Mining
+  (ICDM)', IEEE, pp.~61--70.
+
+\harvarditem{Chen \harvardand\ Sheldon}{2016}{chen2016dynamic}
+Chen, M.~K. \harvardand\ Sheldon, M.  \harvardyearleft 2016\harvardyearright ,
+  `Dynamic pricing in a labor market: Surge pricing and flexible work on the
+  uber platform.', {\em Ec} {\bf 16},~455.
+
+\harvarditem{Chen, Qian, Yao, Wu, Li, Zhou, Hu \harvardand\
+  Xu}{2019}{chen2019can}
+Chen, Y., Qian, Y., Yao, Y., Wu, Z., Li, R., Zhou, Y., Hu, H. \harvardand\ Xu,
+  Y.  \harvardyearleft 2019\harvardyearright , `Can sophisticated dispatching
+  strategy acquired by reinforcement learning?-a case study in dynamic courier
+  dispatching system', {\em arXiv preprint arXiv:1903.02716} .
+
+\harvarditem{Dantzig \harvardand\ Ramser}{1959}{dantzig1959truck}
+Dantzig, G.~B. \harvardand\ Ramser, J.~H.  \harvardyearleft
+  1959\harvardyearright , `The truck dispatching problem', {\em Management
+  science} {\bf 6}(1),~80--91.
+
+\harvarditem[Delarue et~al.]{Delarue, Anderson \harvardand\
+  Tjandraatmadja}{2020}{delarue2020reinforcement}
+Delarue, A., Anderson, R. \harvardand\ Tjandraatmadja, C.  \harvardyearleft
+  2020\harvardyearright , `Reinforcement learning with combinatorial actions:
+  An application to vehicle routing', {\em Advances in Neural Information
+  Processing Systems} {\bf 33},~609--620.
+
+\harvarditem{DiDi}{2021}{didisim}
+DiDi  \harvardyearleft 2021\harvardyearright , `Didi decision intelligence
+  simulation platform'.
+\newblock "\url{https://outreach.didichuxing.com/Simulation}".
+
+\harvarditem{Donovan \harvardand\ Work}{2016}{illinoisdatabankIDB-9610843}
+Donovan, B. \harvardand\ Work, D.  \harvardyearleft 2016\harvardyearright ,
+  `New york city taxi trip data (2010-2013)'.
+\newline\harvardurl{https://doi.org/10.13012/J8PN93H8}
+
+\harvarditem[Dosovitskiy et~al.]{Dosovitskiy, Ros, Codevilla, Lopez
+  \harvardand\ Koltun}{2017}{dosovitskiy2017carla}
+Dosovitskiy, A., Ros, G., Codevilla, F., Lopez, A. \harvardand\ Koltun, V.
+  \harvardyearleft 2017\harvardyearright , Carla: An open urban driving
+  simulator, {\em in} `Conference on robot learning', PMLR, pp.~1--16.
+
+\harvarditem[Duan et~al.]{Duan, Zhan, Hu, Gong, Wei, Zhang \harvardand\
+  Xu}{2020}{duan2020efficiently}
+Duan, L., Zhan, Y., Hu, H., Gong, Y., Wei, J., Zhang, X. \harvardand\ Xu, Y.
+  \harvardyearleft 2020\harvardyearright , Efficiently solving the practical
+  vehicle routing problem: A novel joint learning approach, {\em in}
+  `Proceedings of the 26th ACM SIGKDD International Conference on Knowledge
+  Discovery \& Data Mining', pp.~3054--3063.
+
+\harvarditem[Eshkevari et~al.]{Eshkevari, Tang, Qin, Mei, Zhang, Meng
+  \harvardand\ Xu}{2022}{eshkevari2022reinforcement}
+Eshkevari, S.~S., Tang, X., Qin, Z., Mei, J., Zhang, C., Meng, Q. \harvardand\
+  Xu, J.  \harvardyearleft 2022\harvardyearright , Reinforcement learning in
+  the wild: Scalable rl dispatching algorithm deployed in ridehailing
+  marketplace, {\em in} `Proceedings of the 26th ACM SIGKDD International
+  Conference on Knowledge Discovery \& Data Mining'.
+
+\harvarditem[Feng et~al.]{Feng, Gluzman \harvardand\
+  Dai}{2020}{feng2020scalable}
+Feng, J., Gluzman, M. \harvardand\ Dai, J.  \harvardyearleft
+  2020\harvardyearright , `Scalable deep reinforcement learning for
+  ride-hailing', {\em IEEE Control Systems Letters} .
+
+\harvarditem[Gao et~al.]{Gao, Jiang \harvardand\ Xu}{2018}{gao2018optimize}
+Gao, Y., Jiang, D. \harvardand\ Xu, Y.  \harvardyearleft 2018\harvardyearright
+  , `Optimize taxi driving strategies based on reinforcement learning', {\em
+  International Journal of Geographical Information Science} {\bf
+  32}(8),~1677--1696.
+
+\harvarditem{Garg \harvardand\ Ranu}{2018}{garg2018route}
+Garg, N. \harvardand\ Ranu, S.  \harvardyearleft 2018\harvardyearright , Route
+  recommendations for idle taxi drivers: Find me the shortest route to a
+  customer!, {\em in} `Proceedings of the 24th ACM SIGKDD International
+  Conference on Knowledge Discovery \& Data Mining', pp.~1425--1434.
+
+\harvarditem[Grunitzki et~al.]{Grunitzki, de~Oliveira~Ramos \harvardand\
+  Bazzan}{2014}{grunitzki2014individual}
+Grunitzki, R., de~Oliveira~Ramos, G. \harvardand\ Bazzan, A. L.~C.
+  \harvardyearleft 2014\harvardyearright , Individual versus difference rewards
+  on reinforcement learning for route choice, {\em in} `2014 Brazilian
+  Conference on Intelligent Systems', IEEE, pp.~253--258.
+
+\harvarditem[Gu{\'e}riau et~al.]{Gu{\'e}riau, Cugurullo, Acheampong
+  \harvardand\ Dusparic}{2020}{gueriau2020shared}
+Gu{\'e}riau, M., Cugurullo, F., Acheampong, R.~A. \harvardand\ Dusparic, I.
+  \harvardyearleft 2020\harvardyearright , `Shared autonomous mobility on
+  demand: A learning-based approach and its performance in the presence of
+  traffic congestion', {\em IEEE Intelligent Transportation Systems Magazine}
+  {\bf 12}(4),~208--218.
+
+\harvarditem{Gu{\'e}riau \harvardand\ Dusparic}{2018}{gueriau2018samod}
+Gu{\'e}riau, M. \harvardand\ Dusparic, I.  \harvardyearleft
+  2018\harvardyearright , Samod: Shared autonomous mobility-on-demand using
+  decentralized reinforcement learning, {\em in} `2018 21st International
+  Conference on Intelligent Transportation Systems (ITSC)', IEEE,
+  pp.~1558--1563.
+
+\harvarditem[Haliem et~al.]{Haliem, Mani, Aggarwal \harvardand\
+  Bhargava}{2020}{haliem2020dprs}
+Haliem, M., Mani, G., Aggarwal, V. \harvardand\ Bhargava, B.  \harvardyearleft
+  2020\harvardyearright , A distributed model-free ride-sharing algorithm with
+  pricing using deep reinforcement learning, {\em in} `Computer Science in Cars
+  Symposium', pp.~1--10.
+
+\harvarditem[Haliem et~al.]{Haliem, Mani, Aggarwal \harvardand\
+  Bhargava}{2021}{haliem2020distributed}
+Haliem, M., Mani, G., Aggarwal, V. \harvardand\ Bhargava, B.  \harvardyearleft
+  2021\harvardyearright , `A distributed model-free ride-sharing approach for
+  joint matching, pricing, and dispatching using deep reinforcement learning',
+  {\em IEEE Transactions on Intelligent Transportation Systems} {\bf
+  22}(12),~7931--7942.
+
+\harvarditem{Hall}{1986}{hall1986fastest}
+Hall, R.~W.  \harvardyearleft 1986\harvardyearright , `The fastest path through
+  a network with random time-dependent travel times', {\em Transportation
+  science} {\bf 20}(3),~182--188.
+
+\harvarditem[Han et~al.]{Han, Senellart, Bressan \harvardand\
+  Wu}{2016}{han2016routing}
+Han, M., Senellart, P., Bressan, S. \harvardand\ Wu, H.  \harvardyearleft
+  2016\harvardyearright , Routing an autonomous taxi with reinforcement
+  learning, {\em in} `Proceedings of the 25th ACM International on Conference
+  on Information and Knowledge Management', pp.~2421--2424.
+
+\harvarditem{Haydari \harvardand\ Yilmaz}{2020}{haydari2020survey}
+Haydari, A. \harvardand\ Yilmaz, Y.  \harvardyearleft 2020\harvardyearright ,
+  `Deep reinforcement learning for intelligent transportation systems: A
+  survey', {\em IEEE Transactions on Intelligent Transportation Systems} .
+
+\harvarditem[Holler et~al.]{Holler, Vuorio, Qin, Tang, Jiao, Jin, Singh, Wang
+  \harvardand\ Ye}{2019}{holler2019deep}
+Holler, J., Vuorio, R., Qin, Z., Tang, X., Jiao, Y., Jin, T., Singh, S., Wang,
+  C. \harvardand\ Ye, J.  \harvardyearleft 2019\harvardyearright , Deep
+  reinforcement learning for multi-driver vehicle dispatching and repositioning
+  problem, {\em in} J.~Wang, K.~Shim \harvardand\ X.~Wu, eds, `2019 IEEE
+  International Conference on Data Mining (ICDM)', Institute of Electrical and
+  Electronics Engineers, Washington, DC, pp.~1090--1095.
+
+\harvarditem[Horgan et~al.]{Horgan, Quan, Budden, Barth-Maron, Hessel,
+  Van~Hasselt \harvardand\ Silver}{2018}{horgan2018distributed}
+Horgan, D., Quan, J., Budden, D., Barth-Maron, G., Hessel, M., Van~Hasselt, H.
+  \harvardand\ Silver, D.  \harvardyearleft 2018\harvardyearright ,
+  `Distributed prioritized experience replay', {\em arXiv preprint
+  arXiv:1803.00933} .
+
+\harvarditem[Hu et~al.]{Hu, Hu \harvardand\ Zhu}{2022}{hu2021surge}
+Hu, B., Hu, M. \harvardand\ Zhu, H.  \harvardyearleft 2022\harvardyearright ,
+  `Surge pricing and two-sided temporal responses in ride hailing', {\em
+  Manufacturing \& Service Operations Management} {\bf 24}(1),~91--109.
+
+\harvarditem{Hu \harvardand\ Zhou}{2022}{hu2022dynamic}
+Hu, M. \harvardand\ Zhou, Y.  \harvardyearleft 2022\harvardyearright , `Dynamic
+  type matching', {\em Manufacturing \& Service Operations Management} {\bf
+  24}(1),~125--142.
+
+\harvarditem[James et~al.]{James, Yu \harvardand\ Gu}{2019}{james2019online}
+James, J., Yu, W. \harvardand\ Gu, J.  \harvardyearleft 2019\harvardyearright ,
+  `Online vehicle routing with neural combinatorial optimization and deep
+  reinforcement learning', {\em IEEE Transactions on Intelligent Transportation
+  Systems} {\bf 20}(10),~3806--3817.
+
+\harvarditem[Jiao et~al.]{Jiao, Tang, Qin, Li, Zhang, Zhu \harvardand\
+  Ye}{2021}{jtq2021repos}
+Jiao, Y., Tang, X., Qin, Z.~T., Li, S., Zhang, F., Zhu, H. \harvardand\ Ye, J.
+  \harvardyearleft 2021\harvardyearright , `Real-world ride-hailing vehicle
+  repositioning using deep reinforcement learning', {\em Transportation
+  Research Part C: Emerging Technologies} {\bf 130},~103289.
+
+\harvarditem[Jin et~al.]{Jin, Zhou, Zhang, Li, Guo, Qin, Jiao, Tang, Wang, Wang
+  et~al.}{2019}{jin2019coride}
+Jin, J., Zhou, M., Zhang, W., Li, M., Guo, Z., Qin, Z., Jiao, Y., Tang, X.,
+  Wang, C., Wang, J. et~al.  \harvardyearleft 2019\harvardyearright , Coride:
+  Joint order dispatching and fleet management for multi-scale ride-hailing
+  platforms, {\em in} `Proceedings of the 28th ACM International Conference on
+  Information and Knowledge Management', pp.~1983--1992.
+
+\harvarditem[Jindal et~al.]{Jindal, Qin, Chen, Nokleby \harvardand\
+  Ye}{2018}{jindal2018optimizing}
+Jindal, I., Qin, Z.~T., Chen, X., Nokleby, M. \harvardand\ Ye, J.
+  \harvardyearleft 2018\harvardyearright , Optimizing taxi carpool policies via
+  reinforcement learning and spatio-temporal mining, {\em in} `2018 IEEE
+  International Conference on Big Data (Big Data)', IEEE, pp.~1417--1426.
+
+\harvarditem{Joe \harvardand\ Lau}{2020}{joe2020deep}
+Joe, W. \harvardand\ Lau, H.~C.  \harvardyearleft 2020\harvardyearright , Deep
+  reinforcement learning approach to solve dynamic vehicle routing problem with
+  stochastic customers, {\em in} `Proceedings of the International Conference
+  on Automated Planning and Scheduling', Vol.~30, pp.~394--402.
+
+\harvarditem{Kaggle}{2017}{fivethirtyeight}
+Kaggle  \harvardyearleft 2017\harvardyearright , `Uber pickups in new york city
+  - trip data for over 20 million uber (and other for-hire vehicle) trips in
+  nyc'.
+\newblock
+  "\url{https://www.kaggle.com/fivethirtyeight/uber-pickups-in-new-york-city}".
+
+\harvarditem{Ke, Yang, Li, Wang \harvardand\ Ye}{2020}{ke2020pricing}
+Ke, J., Yang, H., Li, X., Wang, H. \harvardand\ Ye, J.  \harvardyearleft
+  2020\harvardyearright , `Pricing and equilibrium in on-demand ride-pooling
+  markets', {\em Transportation Research Part B: Methodological} {\bf
+  139},~411--431.
+
+\harvarditem{Ke, Yang, Ye et~al.}{2020}{ke2020learning}
+Ke, J., Yang, H., Ye, J. et~al.  \harvardyearleft 2020\harvardyearright ,
+  `Learning to delay in ride-sourcing systems: a multi-agent deep reinforcement
+  learning framework', {\em IEEE Transactions on Knowledge and Data
+  Engineering} .
+
+\harvarditem[Kim et~al.]{Kim, Lewis \harvardand\ White}{2005}{kim2005optimal}
+Kim, S., Lewis, M.~E. \harvardand\ White, C.~C.  \harvardyearleft
+  2005\harvardyearright , `Optimal vehicle routing with real-time traffic
+  information', {\em IEEE Transactions on Intelligent Transportation Systems}
+  {\bf 6}(2),~178--188.
+
+\harvarditem[Kool et~al.]{Kool, Van~Hoof \harvardand\
+  Welling}{2018}{kool2018attention}
+Kool, W., Van~Hoof, H. \harvardand\ Welling, M.  \harvardyearleft
+  2018\harvardyearright , `Attention, learn to solve routing problems!', {\em
+  arXiv preprint arXiv:1803.08475} .
+
+\harvarditem[Kullman et~al.]{Kullman, Cousineau, Goodson \harvardand\
+  Mendoza}{2022}{kullman2021dynamic}
+Kullman, N.~D., Cousineau, M., Goodson, J.~C. \harvardand\ Mendoza, J.~E.
+  \harvardyearleft 2022\harvardyearright , `Dynamic ride-hailing with electric
+  vehicles', {\em Transportation Science} {\bf 56}(3),~775--794.
+
+\harvarditem[Li et~al.]{Li, Chu, Langford \harvardand\
+  Schapire}{2010}{li2010contextual}
+Li, L., Chu, W., Langford, J. \harvardand\ Schapire, R.~E.  \harvardyearleft
+  2010\harvardyearright , A contextual-bandit approach to personalized news
+  article recommendation, {\em in} `Proceedings of the 19th international
+  conference on World wide web', pp.~661--670.
+
+\harvarditem[Li et~al.]{Li, Qin, Jiao, Yang, Gong, Wang, Wang, Wu \harvardand\
+  Ye}{2019}{li2019efficient}
+Li, M., Qin, Z., Jiao, Y., Yang, Y., Gong, Z., Wang, J., Wang, C., Wu, G.
+  \harvardand\ Ye, J.  \harvardyearleft 2019\harvardyearright , Efficient
+  ridesharing order dispatching with mean field multi-agent reinforcement
+  learning, {\em in} `To appear in Proceedings of the 2019 World Wide Web
+  Conference on World Wide Web', International World Wide Web Conferences
+  Steering Committee.
+
+\harvarditem[Lin et~al.]{Lin, Ghaddar \harvardand\ Nathwani}{2021}{lin2021deep}
+Lin, B., Ghaddar, B. \harvardand\ Nathwani, J.  \harvardyearleft
+  2021\harvardyearright , `Deep reinforcement learning for the electric vehicle
+  routing problem with time windows', {\em IEEE Transactions on Intelligent
+  Transportation Systems} .
+
+\harvarditem[Lin et~al.]{Lin, Zhao, Xu \harvardand\
+  Zhou}{2018}{lin2018efficient}
+Lin, K., Zhao, R., Xu, Z. \harvardand\ Zhou, J.  \harvardyearleft
+  2018\harvardyearright , Efficient large-scale fleet management via
+  multi-agent deep reinforcement learning, {\em in} `Proceedings of the 24th
+  ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining',
+  pp.~1774--1783.
+
+\harvarditem{Lin}{1992}{lin1992self}
+Lin, L.-J.  \harvardyearleft 1992\harvardyearright , `Self-improving reactive
+  agents based on reinforcement learning, planning and teaching', {\em Machine
+  learning} {\bf 8}(3-4),~293--321.
+
+\harvarditem[Liu et~al.]{Liu, Li \harvardand\ Wu}{2020}{liu2020context}
+Liu, Z., Li, J. \harvardand\ Wu, K.  \harvardyearleft 2020\harvardyearright ,
+  `Context-aware taxi dispatching at city-scale using deep reinforcement
+  learning', {\em IEEE Transactions on Intelligent Transportation Systems} .
+
+\harvarditem[Lopez et~al.]{Lopez, Behrisch, Bieker-Walz, Erdmann,
+  Fl{\"o}tter{\"o}d, Hilbrich, L{\"u}cken, Rummel, Wagner \harvardand\
+  Wie{\ss}ner}{2018}{SUMO2018}
+Lopez, P.~A., Behrisch, M., Bieker-Walz, L., Erdmann, J., Fl{\"o}tter{\"o}d,
+  Y.-P., Hilbrich, R., L{\"u}cken, L., Rummel, J., Wagner, P. \harvardand\
+  Wie{\ss}ner, E.  \harvardyearleft 2018\harvardyearright , Microscopic traffic
+  simulation using sumo, {\em in} `The 21st IEEE International Conference on
+  Intelligent Transportation Systems', IEEE.
+
+\harvarditem[Lowalekar et~al.]{Lowalekar, Varakantham \harvardand\
+  Jaillet}{2018}{lowalekar2018online}
+Lowalekar, M., Varakantham, P. \harvardand\ Jaillet, P.  \harvardyearleft
+  2018\harvardyearright , `Online spatio-temporal matching in stochastic and
+  dynamic domains', {\em Artificial Intelligence} {\bf 261},~71--112.
+
+\harvarditem[Lowe et~al.]{Lowe, Wu, Tamar, Harb, Pieter~Abbeel \harvardand\
+  Mordatch}{2017}{lowe2017multi}
+Lowe, R., Wu, Y.~I., Tamar, A., Harb, J., Pieter~Abbeel, O. \harvardand\
+  Mordatch, I.  \harvardyearleft 2017\harvardyearright , `Multi-agent
+  actor-critic for mixed cooperative-competitive environments', {\em Advances
+  in neural information processing systems} {\bf 30}.
+
+\harvarditem[Lyu et~al.]{Lyu, Cheung, Teo \harvardand\
+  Wang}{2019}{lyu2019multi}
+Lyu, G., Cheung, W.~C., Teo, C.-P. \harvardand\ Wang, H.  \harvardyearleft
+  2019\harvardyearright , `Multi-objective online ride-matching', {\em
+  Available at SSRN 3356823} .
+
+\harvarditem[Ma et~al.]{Ma, Fang \harvardand\ Parkes}{2020}{ma2020spatio}
+Ma, H., Fang, F. \harvardand\ Parkes, D.~C.  \harvardyearleft
+  2020\harvardyearright , `Spatio-temporal pricing for ridesharing platforms',
+  {\em ACM SIGecom Exchanges} {\bf 18}(2),~53--57.
+
+\harvarditem[Mainali et~al.]{Mainali, Shimada, Mabu \harvardand\
+  Hirasawa}{2008}{mainali2008optimal}
+Mainali, M.~K., Shimada, K., Mabu, S. \harvardand\ Hirasawa, K.
+  \harvardyearleft 2008\harvardyearright , `Optimal route based on dynamic
+  programming for road networks', {\em Journal of Advanced Computational
+  Intelligence and Intelligent Informatics} {\bf 12}(6),~546--553.
+
+\harvarditem[Mao et~al.]{Mao, Liu \harvardand\ Shen}{2020}{mao2020dispatch}
+Mao, C., Liu, Y. \harvardand\ Shen, Z.-J.~M.  \harvardyearleft
+  2020\harvardyearright , `Dispatch of autonomous vehicles for taxi services: A
+  deep reinforcement learning approach', {\em Transportation Research Part C:
+  Emerging Technologies} {\bf 115},~102626.
+
+\harvarditem{Mao \harvardand\ Shen}{2018}{mao2018reinforcement}
+Mao, C. \harvardand\ Shen, Z.  \harvardyearleft 2018\harvardyearright , `A
+  reinforcement learning framework for the adaptive routing problem in
+  stochastic time-dependent network', {\em Transportation Research Part C:
+  Emerging Technologies} {\bf 93},~179--197.
+
+\harvarditem{MarketsAndMarkets}{2018}{markets2018ridesharevol}
+MarketsAndMarkets  \harvardyearleft 2018\harvardyearright , {\em Ride Sharing
+  Market by Type (E-hailing, Station-Based, Car Sharing \& Rental), Car Sharing
+  (P2P, Corporate), Service (Navigation, Payment, Information), Micro-Mobility
+  (Bicycle, Scooter), Vehicle Type, and Region - Global Forecast to 2025}.
+
+\harvarditem[Mazumdar et~al.]{Mazumdar, Ratliff, Fiez \harvardand\
+  Sastry}{2017}{mazumdar2017gradient}
+Mazumdar, E., Ratliff, L.~J., Fiez, T. \harvardand\ Sastry, S.~S.
+  \harvardyearleft 2017\harvardyearright , Gradient-based inverse
+  risk-sensitive reinforcement learning, {\em in} `2017 IEEE 56th Annual
+  Conference on Decision and Control (CDC)', IEEE, pp.~5796--5801.
+
+\harvarditem[Mehta et~al.]{Mehta, Deleu, Raparthy, Pal \harvardand\
+  Paull}{2020}{mehta2020curriculum}
+Mehta, B., Deleu, T., Raparthy, S.~C., Pal, C.~J. \harvardand\ Paull, L.
+  \harvardyearleft 2020\harvardyearright , `Curriculum in gradient-based
+  meta-reinforcement learning', {\em arXiv preprint arXiv:2002.07956} .
+
+\harvarditem[Mnih et~al.]{Mnih, Badia, Mirza, Graves, Lillicrap, Harley, Silver
+  \harvardand\ Kavukcuoglu}{2016}{mnih2016asynchronous}
+Mnih, V., Badia, A.~P., Mirza, M., Graves, A., Lillicrap, T., Harley, T.,
+  Silver, D. \harvardand\ Kavukcuoglu, K.  \harvardyearleft
+  2016\harvardyearright , Asynchronous methods for deep reinforcement learning,
+  {\em in} `International conference on machine learning', pp.~1928--1937.
+
+\harvarditem[Mnih et~al.]{Mnih, Kavukcuoglu, Silver, Rusu, Veness, Bellemare,
+  Graves, Riedmiller, Fidjeland, Ostrovski et~al.}{2015}{mnih2015human}
+Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A.~A., Veness, J., Bellemare,
+  M.~G., Graves, A., Riedmiller, M., Fidjeland, A.~K., Ostrovski, G. et~al.
+  \harvardyearleft 2015\harvardyearright , `Human-level control through deep
+  reinforcement learning', {\em Nature} {\bf 518}(7540),~529--533.
+
+\harvarditem[Nazari et~al.]{Nazari, Oroojlooy, Snyder \harvardand\
+  Tak{\'a}c}{2018}{nazari2018reinforcement}
+Nazari, M., Oroojlooy, A., Snyder, L. \harvardand\ Tak{\'a}c, M.
+  \harvardyearleft 2018\harvardyearright , Reinforcement learning for solving
+  the vehicle routing problem, {\em in} `Advances in Neural Information
+  Processing Systems', pp.~9839--9849.
+
+\harvarditem[Ng et~al.]{Ng, Russell et~al.}{2000}{ng2000algorithms}
+Ng, A.~Y., Russell, S.~J. et~al.  \harvardyearleft 2000\harvardyearright ,
+  Algorithms for inverse reinforcement learning., {\em in} `Icml', Vol.~1,
+  p.~2.
+
+\harvarditem{Oda \harvardand\ Joe-Wong}{2018}{oda2018movi}
+Oda, T. \harvardand\ Joe-Wong, C.  \harvardyearleft 2018\harvardyearright ,
+  Movi: A model-free approach to dynamic fleet management, {\em in} `IEEE
+  INFOCOM 2018-IEEE Conference on Computer Communications', IEEE,
+  pp.~2708--2716.
+
+\harvarditem{{\"O}zkan \harvardand\ Ward}{2020}{ozkan2017dynamic}
+{\"O}zkan, E. \harvardand\ Ward, A.~R.  \harvardyearleft 2020\harvardyearright
+  , `Dynamic matching for real-time ride sharing', {\em Stochastic Systems}
+  {\bf 10}(1),~29--70.
+
+\harvarditem[Piorkowski et~al.]{Piorkowski, Sarafijanovic-Djukic \harvardand\
+  Grossglauser}{2009}{epfl-mobility-20090224}
+Piorkowski, M., Sarafijanovic-Djukic, N. \harvardand\ Grossglauser, M.
+  \harvardyearleft 2009\harvardyearright , `{CRAWDAD} dataset epfl/mobility (v.
+  2009-02-24)', Downloaded from
+  \url{https://crawdad.org/epfl/mobility/20090224}.
+
+\harvarditem{Portal}{2020}{chicago2018data}
+Portal, C.~D.  \harvardyearleft 2020\harvardyearright , `Chicago transportation
+  network providers (rideshare) data'.
+\newblock
+  "\url{https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p}".
+
+\harvarditem{Powell}{2007}{powell2007approximate}
+Powell, W.~B.  \harvardyearleft 2007\harvardyearright , {\em Approximate
+  Dynamic Programming: Solving the curses of dimensionality}, Vol. 703, John
+  Wiley \& Sons.
+
+\harvarditem{Qin, Luo, Yin, Sun \harvardand\ Ye}{2021}{qin2021optimizing}
+Qin, G., Luo, Q., Yin, Y., Sun, J. \harvardand\ Ye, J.  \harvardyearleft
+  2021\harvardyearright , `Optimizing matching time intervals for ride-hailing
+  services using reinforcement learning', {\em Transportation Research Part C:
+  Emerging Technologies} {\bf 129},~103239.
+
+\harvarditem[Qin et~al.]{Qin, Tang, Jiao, Zhang, Xu, Zhu \harvardand\
+  Ye}{2020}{qin2020ride}
+Qin, Z., Tang, X., Jiao, Y., Zhang, F., Xu, Z., Zhu, H. \harvardand\ Ye, J.
+  \harvardyearleft 2020\harvardyearright , `Ride-hailing order dispatching at
+  didi via reinforcement learning', {\em INFORMS Journal on Applied Analytics}
+  {\bf 50}(5),~272--286.
+
+\harvarditem{Qin, Zhu \harvardand\ Ye}{2021}{qin2021reinforcement}
+Qin, Z., Zhu, H. \harvardand\ Ye, J.  \harvardyearleft 2021\harvardyearright ,
+  Reinforcement learning for ridesharing: A survey, {\em in} `appearing in
+  Proceedings of the IEEE Intelligent Transportation Systems Conference'.
+
+\harvarditem[Raju et~al.]{Raju, Narahari \harvardand\
+  Ravikumar}{2003}{raju2003reinforcement}
+Raju, C., Narahari, Y. \harvardand\ Ravikumar, K.  \harvardyearleft
+  2003\harvardyearright , Reinforcement learning applications in dynamic
+  pricing of retail markets, {\em in} `IEEE International Conference on
+  E-Commerce, 2003. CEC 2003.', IEEE, pp.~339--346.
+
+\harvarditem[Ramos et~al.]{Ramos, Bazzan \harvardand\
+  da~Silva}{2018}{ramos2018analysing}
+Ramos, G. d.~O., Bazzan, A.~L. \harvardand\ da~Silva, B.~C.  \harvardyearleft
+  2018\harvardyearright , `Analysing the impact of travel information for
+  minimising the regret of route choice', {\em Transportation Research Part C:
+  Emerging Technologies} {\bf 88},~257--271.
+
+\harvarditem[Rong et~al.]{Rong, Zhou, Yang, Shafiq \harvardand\
+  Liu}{2016}{rong2016rich}
+Rong, H., Zhou, X., Yang, C., Shafiq, Z. \harvardand\ Liu, A.  \harvardyearleft
+  2016\harvardyearright , The rich and the poor: A markov decision process
+  approach to optimizing taxi driver revenue efficiency, {\em in} `Proceedings
+  of the 25th ACM International on Conference on Information and Knowledge
+  Management', pp.~2329--2334.
+
+\harvarditem[Ruch et~al.]{Ruch, H{\"o}rl \harvardand\
+  Frazzoli}{2018}{ruch2018amodeus}
+Ruch, C., H{\"o}rl, S. \harvardand\ Frazzoli, E.  \harvardyearleft
+  2018\harvardyearright , Amodeus, a simulation-based testbed for autonomous
+  mobility-on-demand systems, {\em in} `2018 21st International Conference on
+  Intelligent Transportation Systems (ITSC)', IEEE, pp.~3639--3644.
+
+\harvarditem{Schmoll \harvardand\ Schubert}{2020}{schmollsemi}
+Schmoll, S. \harvardand\ Schubert, M.  \harvardyearleft 2020\harvardyearright ,
+  `Semi-markov reinforcement learning for stochastic resource collection', {\em
+  Proceedings of the Twenty-Ninth International Joint Conference on Artificial
+  Intelligence (IJCAI)} .
+
+\harvarditem[Schulman et~al.]{Schulman, Wolski, Dhariwal, Radford \harvardand\
+  Klimov}{2017}{schulman2017proximal}
+Schulman, J., Wolski, F., Dhariwal, P., Radford, A. \harvardand\ Klimov, O.
+  \harvardyearleft 2017\harvardyearright , `Proximal policy optimization
+  algorithms', {\em arXiv preprint arXiv:1707.06347} .
+
+\harvarditem[Shah et~al.]{Shah, Lowalekar \harvardand\
+  Varakantham}{2020}{shah2020neural}
+Shah, S., Lowalekar, M. \harvardand\ Varakantham, P.  \harvardyearleft
+  2020\harvardyearright , Neural approximate dynamic programming for on-demand
+  ride-pooling, {\em in} `Proceedings of the AAAI Conference on Artificial
+  Intelligence', Vol.~34, pp.~507--515.
+
+\harvarditem[Shang et~al.]{Shang, Li, Qin, Yu, Meng \harvardand\
+  Ye}{2021}{shang2021partially}
+Shang, W., Li, Q., Qin, Z., Yu, Y., Meng, Y. \harvardand\ Ye, J.
+  \harvardyearleft 2021\harvardyearright , `Partially observable environment
+  estimation with uplift inference for reinforcement learning based
+  recommendation', {\em Machine Learning} pp.~1--38.
+
+\harvarditem[Shang et~al.]{Shang, Yu, Li, Qin, Meng \harvardand\
+  Ye}{2019}{shang2019environment}
+Shang, W., Yu, Y., Li, Q., Qin, Z., Meng, Y. \harvardand\ Ye, J.
+  \harvardyearleft 2019\harvardyearright , Environment reconstruction with
+  hidden confounders for reinforcement learning based recommendation, {\em in}
+  `Proceedings of the 25th ACM SIGKDD International Conference on Knowledge
+  Discovery \& Data Mining', pp.~566--576.
+
+\harvarditem[Shen et~al.]{Shen, He, Zhang, Ni, Dou \harvardand\
+  Wang}{2020}{shen2020auxiliary}
+Shen, W., He, X., Zhang, C., Ni, Q., Dou, W. \harvardand\ Wang, Y.
+  \harvardyearleft 2020\harvardyearright , Auxiliary-task based deep
+  reinforcement learning for participant selection problem in mobile
+  crowdsourcing, {\em in} `Proceedings of the 29th ACM International Conference
+  on Information \& Knowledge Management', pp.~1355--1364.
+
+\harvarditem[Shi et~al.]{Shi, Gao, Wang, Yu \harvardand\
+  Ioannou}{2019}{shi2019operating}
+Shi, J., Gao, Y., Wang, W., Yu, N. \harvardand\ Ioannou, P.~A.
+  \harvardyearleft 2019\harvardyearright , `Operating electric vehicle fleet
+  for ride-hailing services with reinforcement learning', {\em IEEE
+  Transactions on Intelligent Transportation Systems} {\bf 21}(11),~4822--4834.
+
+\harvarditem{Shou \harvardand\ Di}{2020{\em a}}{shou2020multi}
+Shou, Z. \harvardand\ Di, X.  \harvardyearleft 2020{\em a}\harvardyearright ,
+  `Multi-agent reinforcement learning for dynamic routing games: A unified
+  paradigm', {\em arXiv preprint arXiv:2011.10915} .
+
+\harvarditem{Shou \harvardand\ Di}{2020{\em b}}{shou2020reward}
+Shou, Z. \harvardand\ Di, X.  \harvardyearleft 2020{\em b}\harvardyearright ,
+  `Reward design for driver repositioning using multi-agent reinforcement
+  learning', {\em Transportation research part C: emerging technologies} {\bf
+  119},~102738.
+
+\harvarditem[Shou et~al.]{Shou, Di, Ye, Zhu, Zhang \harvardand\
+  Hampshire}{2020}{shou2020optimal}
+Shou, Z., Di, X., Ye, J., Zhu, H., Zhang, H. \harvardand\ Hampshire, R.
+  \harvardyearleft 2020\harvardyearright , `Optimal passenger-seeking policies
+  on e-hailing platforms using markov decision process and imitation learning',
+  {\em Transportation Research Part C: Emerging Technologies} {\bf
+  111},~91--113.
+
+\harvarditem{Silver \harvardand\ Hassabis}{2016}{silver2016alphago}
+Silver, D. \harvardand\ Hassabis, D.  \harvardyearleft 2016\harvardyearright ,
+  `Alphago: Mastering the ancient game of go with machine learning', {\em
+  Research Blog} {\bf 9}.
+
+\harvarditem[Simao et~al.]{Simao, Day, George, Gifford, Nienow \harvardand\
+  Powell}{2009}{simao2009approximate}
+Simao, H.~P., Day, J., George, A.~P., Gifford, T., Nienow, J. \harvardand\
+  Powell, W.~B.  \harvardyearleft 2009\harvardyearright , `An approximate
+  dynamic programming algorithm for large-scale fleet management: A case
+  application', {\em Transportation Science} {\bf 43}(2),~178--197.
+
+\harvarditem[Singh et~al.]{Singh, Al-Abbasi \harvardand\
+  Aggarwal}{2021}{singh2019distributed}
+Singh, A., Al-Abbasi, A.~O. \harvardand\ Aggarwal, V.  \harvardyearleft
+  2021\harvardyearright , `A distributed model-free algorithm for multi-hop
+  ride-sharing using deep reinforcement learning', {\em IEEE Transactions on
+  Intelligent Transportation Systems} .
+
+\harvarditem{Smith}{2019}{wtop2019wait}
+Smith, M.  \harvardyearleft 2019\harvardyearright , {\em Here?s how long you
+  have to wait for an Uber or Lyft in DC}.
+\newblock
+  \url{https://wtop.com/dc-transit/2019/12/how-long-you-have-to-wait-for-an-uber-or-lyft-in-d-c/}.
+
+\harvarditem[Song et~al.]{Song, Cho, Kang \harvardand\
+  Hwang}{2020}{song2020application}
+Song, J., Cho, Y.~J., Kang, M.~H. \harvardand\ Hwang, K.~Y.  \harvardyearleft
+  2020\harvardyearright , `An application of reinforced learning-based dynamic
+  pricing for improvement of ridesharing platform service in seoul', {\em
+  Electronics} {\bf 9}(11),~1818.
+
+\harvarditem[Sun et~al.]{Sun, Wang \harvardand\ Wan}{2019}{sun2019model}
+Sun, H., Wang, H. \harvardand\ Wan, Z.  \harvardyearleft 2019\harvardyearright
+  , `Model and analysis of labor supply for ride-sharing platforms in the
+  presence of sample self-selection and endogeneity', {\em Transportation
+  Research Part B: Methodological} {\bf 125},~76--93.
+
+\harvarditem{Sutton}{1988}{sutton1988learning}
+Sutton, R.~S.  \harvardyearleft 1988\harvardyearright , `Learning to predict by
+  the methods of temporal differences', {\em Machine learning} {\bf
+  3}(1),~9--44.
+
+\harvarditem{Sutton \harvardand\ Barto}{2018}{sutton2018reinforcement}
+Sutton, R.~S. \harvardand\ Barto, A.~G.  \harvardyearleft 2018\harvardyearright
+  , {\em Reinforcement learning: An introduction}, MIT press.
+
+\harvarditem[Tang et~al.]{Tang, Qin, Zhang, Wang, Xu, Ma, Zhu \harvardand\
+  Ye}{2019}{tang2019deep}
+Tang, X., Qin, Z., Zhang, F., Wang, Z., Xu, Z., Ma, Y., Zhu, H. \harvardand\
+  Ye, J.  \harvardyearleft 2019\harvardyearright , A deep value-network based
+  approach for multi-driver order dispatching, {\em in} `Proceedings of the
+  25th ACM SIGKDD international conference on knowledge discovery \& data
+  mining', pp.~1780--1790.
+
+\harvarditem[Tang et~al.]{Tang, Zhang, Qin, Wang, Shi, Song, Tong, Zhu
+  \harvardand\ Ye}{2021}{tang2021value}
+Tang, X., Zhang, F., Qin, Z., Wang, Y., Shi, D., Song, B., Tong, Y., Zhu, H.
+  \harvardand\ Ye, J.  \harvardyearleft 2021\harvardyearright , Value function
+  is all you need: A unified learning framework for ride hailing platforms,
+  {\em in} `Proceedings of the 27th ACM SIGKDD Conference on Knowledge
+  Discovery and Data Mining', KDD '21, Association for Computing Machinery, New
+  York, NY, USA, p.~3605–3615.
+
+\harvarditem{TLC}{2020}{nycdataset}
+TLC  \harvardyearleft 2020\harvardyearright , `Nyc taxi \& limousine commission
+  trip record data'.
+\newblock
+  "\url{https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page}".
+
+\harvarditem[Tong et~al.]{Tong, Shi, Xu, Lv, Qin \harvardand\
+  Tang}{2021}{tong2021combinatorial}
+Tong, Y., Shi, D., Xu, Y., Lv, W., Qin, Z. \harvardand\ Tang, X.
+  \harvardyearleft 2021\harvardyearright , `Combinatorial optimization meets
+  reinforcement learning: Effective taxi order dispatching at large-scale',
+  {\em IEEE Transactions on Knowledge and Data Engineering} .
+
+\harvarditem[Tong et~al.]{Tong, Zeng, Zhou, Chen, Ye \harvardand\
+  Xu}{2018}{tong2018unified}
+Tong, Y., Zeng, Y., Zhou, Z., Chen, L., Ye, J. \harvardand\ Xu, K.
+  \harvardyearleft 2018\harvardyearright , `A unified approach to route
+  planning for shared mobility', {\em Proceedings of the VLDB Endowment} {\bf
+  11}(11),~1633.
+
+\harvarditem[Tong et~al.]{Tong, Zhou, Zeng, Chen \harvardand\
+  Shahabi}{2020}{tong2020spatial}
+Tong, Y., Zhou, Z., Zeng, Y., Chen, L. \harvardand\ Shahabi, C.
+  \harvardyearleft 2020\harvardyearright , `Spatial crowdsourcing: a survey',
+  {\em The VLDB Journal} {\bf 29}(1),~217--250.
+
+\harvarditem[Traor{\'e} et~al.]{Traor{\'e}, Caselles-Dupr{\'e}, Lesort, Sun,
+  D{\'\i}az-Rodr{\'\i}guez \harvardand\ Filliat}{2019}{traore2019continual}
+Traor{\'e}, R., Caselles-Dupr{\'e}, H., Lesort, T., Sun, T.,
+  D{\'\i}az-Rodr{\'\i}guez, N. \harvardand\ Filliat, D.  \harvardyearleft
+  2019\harvardyearright , `Continual reinforcement learning deployed in
+  real-life using policy distillation and sim2real transfer', {\em arXiv
+  preprint arXiv:1906.04452} .
+
+\harvarditem[Tumer et~al.]{Tumer, Welch \harvardand\
+  Agogino}{2008}{tumer2008aligning}
+Tumer, K., Welch, Z.~T. \harvardand\ Agogino, A.  \harvardyearleft
+  2008\harvardyearright , Aligning social welfare and agent preferences to
+  alleviate traffic congestion, {\em in} `Proceedings of the 7th international
+  joint conference on Autonomous agents and multiagent systems-Volume 2',
+  Citeseer, pp.~655--662.
+
+\harvarditem[Turan et~al.]{Turan, Pedarsani \harvardand\
+  Alizadeh}{2020}{turan2020dynamic}
+Turan, B., Pedarsani, R. \harvardand\ Alizadeh, M.  \harvardyearleft
+  2020\harvardyearright , `Dynamic pricing and fleet management for electric
+  autonomous mobility on demand systems', {\em Transportation Research Part C:
+  Emerging Technologies} {\bf 121},~102829.
+
+\harvarditem{Uber}{2021}{ubermovement}
+Uber  \harvardyearleft 2021\harvardyearright , `Uber movement'.
+\newblock "\url{https://movement.uber.com/?lang=en-US}".
+
+\harvarditem[Ulmer et~al.]{Ulmer, Goodson, Mattfeld \harvardand\
+  Thomas}{2020}{ulmer2020modeling}
+Ulmer, M.~W., Goodson, J.~C., Mattfeld, D.~C. \harvardand\ Thomas, B.~W.
+  \harvardyearleft 2020\harvardyearright , `On modeling stochastic dynamic
+  vehicle routing problems', {\em EURO Journal on Transportation and Logistics}
+  {\bf 9}(2),~100008.
+
+\harvarditem[Urata et~al.]{Urata, Xu, Ke, Yin, Wu, Yang \harvardand\
+  Ye}{2021}{urata2021learning}
+Urata, J., Xu, Z., Ke, J., Yin, Y., Wu, G., Yang, H. \harvardand\ Ye, J.
+  \harvardyearleft 2021\harvardyearright , `Learning ride-sourcing drivers’
+  customer-searching behavior: A dynamic discrete choice approach', {\em
+  Transportation Research Part C: Emerging Technologies} {\bf 130},~103293.
+
+\harvarditem[Verma et~al.]{Verma, Varakantham, Kraus \harvardand\
+  Lau}{2017}{verma2017augmenting}
+Verma, T., Varakantham, P., Kraus, S. \harvardand\ Lau, H.~C.  \harvardyearleft
+  2017\harvardyearright , Augmenting decisions of taxi drivers through
+  reinforcement learning for improving revenues, {\em in} `Twenty-Seventh
+  International Conference on Automated Planning and Scheduling'.
+
+\harvarditem[Vinyals et~al.]{Vinyals, Fortunato \harvardand\
+  Jaitly}{2015}{vinyals2015pointer}
+Vinyals, O., Fortunato, M. \harvardand\ Jaitly, N.  \harvardyearleft
+  2015\harvardyearright , Pointer networks, {\em in} `Advances in Neural
+  Information Processing Systems', pp.~2692--2700.
+
+\harvarditem[W~Axhausen et~al.]{W~Axhausen, Horni \harvardand\
+  Nagel}{2016}{w2016multi}
+W~Axhausen, K., Horni, A. \harvardand\ Nagel, K.  \harvardyearleft
+  2016\harvardyearright , {\em The multi-agent transport simulation MATSim},
+  Ubiquity Press.
+
+\harvarditem{Wang \harvardand\ Yang}{2019}{wang2019ridesourcing}
+Wang, H. \harvardand\ Yang, H.  \harvardyearleft 2019\harvardyearright ,
+  `Ridesourcing systems: A framework and review', {\em Transportation Research
+  Part B: Methodological} {\bf 129},~122--155.
+
+\harvarditem[Wang et~al.]{Wang, Tong, Long, Xu, Xu \harvardand\
+  Lv}{2019}{wang2019adaptive}
+Wang, Y., Tong, Y., Long, C., Xu, P., Xu, K. \harvardand\ Lv, W.
+  \harvardyearleft 2019\harvardyearright , Adaptive dynamic bipartite graph
+  matching: A reinforcement learning approach, {\em in} `2019 IEEE 35th
+  International Conference on Data Engineering (ICDE)', IEEE, pp.~1478--1489.
+
+\harvarditem[Wang et~al.]{Wang, Bapst, Heess, Mnih, Munos, Kavukcuoglu
+  \harvardand\ de~Freitas}{2016}{wang2016sample}
+Wang, Z., Bapst, V., Heess, N., Mnih, V., Munos, R., Kavukcuoglu, K.
+  \harvardand\ de~Freitas, N.  \harvardyearleft 2016\harvardyearright , `Sample
+  efficient actor-critic with experience replay', {\em arXiv preprint
+  arXiv:1611.01224} .
+
+\harvarditem[Wang et~al.]{Wang, Qin, Tang, Ye \harvardand\
+  Zhu}{2018}{qin2018dispatching}
+Wang, Z., Qin, Z., Tang, X., Ye, J. \harvardand\ Zhu, H.  \harvardyearleft
+  2018\harvardyearright , Deep reinforcement learning with knowledge transfer
+  for online rides order dispatching, {\em in} `International Conference on
+  Data Mining', IEEE.
+
+\harvarditem{Watkins \harvardand\ Dayan}{1992}{watkins1992q}
+Watkins, C.~J. \harvardand\ Dayan, P.  \harvardyearleft 1992\harvardyearright ,
+  `Q-learning', {\em Machine learning} {\bf 8}(3-4),~279--292.
+
+\harvarditem[Wen et~al.]{Wen, Wang \harvardand\ Xu}{2019}{wen2019hierarchical}
+Wen, F., Wang, X. \harvardand\ Xu, X.  \harvardyearleft 2019\harvardyearright ,
+  `Hierarchical sarsa learning based route guidance algorithm', {\em Journal of
+  Advanced Transportation} {\bf 2019}.
+
+\harvarditem[Wen et~al.]{Wen, Zhao \harvardand\
+  Jaillet}{2017}{wen2017rebalancing}
+Wen, J., Zhao, J. \harvardand\ Jaillet, P.  \harvardyearleft
+  2017\harvardyearright , Rebalancing shared mobility-on-demand systems: A
+  reinforcement learning approach, {\em in} `2017 IEEE 20th International
+  Conference on Intelligent Transportation Systems (ITSC)', Ieee, pp.~220--225.
+
+\harvarditem{Williams}{1992}{williams1992simple}
+Williams, R.~J.  \harvardyearleft 1992\harvardyearright , `Simple statistical
+  gradient-following algorithms for connectionist reinforcement learning', {\em
+  Machine learning} {\bf 8}(3-4),~229--256.
+
+\harvarditem[Wong et~al.]{Wong, Szeto \harvardand\ Wong}{2014}{wong2014cell}
+Wong, R., Szeto, W. \harvardand\ Wong, S.  \harvardyearleft
+  2014\harvardyearright , `A cell-based logit-opportunity taxi customer-search
+  model', {\em Transportation Research Part C: Emerging Technologies} {\bf
+  48},~84--96.
+
+\harvarditem[Wu et~al.]{Wu, Kreidieh, Parvate, Vinitsky \harvardand\
+  Bayen}{2017}{wu2017flow}
+Wu, C., Kreidieh, A., Parvate, K., Vinitsky, E. \harvardand\ Bayen, A.~M.
+  \harvardyearleft 2017\harvardyearright , `Flow: Architecture and benchmarking
+  for reinforcement learning in traffic control', {\em arXiv preprint
+  arXiv:1710.05465} p.~10.
+
+\harvarditem[Wu et~al.]{Wu, Joseph \harvardand\ Russell}{2016}{wu2016automated}
+Wu, T., Joseph, A.~D. \harvardand\ Russell, S.~J.  \harvardyearleft
+  2016\harvardyearright , `Automated pricing agents in the on-demand economy',
+  {\em University of California at Berkeley: Berkeley, CA, USA} .
+
+\harvarditem[Xu et~al.]{Xu, Tong, Shi, Tao, Xu \harvardand\
+  Li}{2020}{xu2020efficient}
+Xu, Y., Tong, Y., Shi, Y., Tao, Q., Xu, K. \harvardand\ Li, W.
+  \harvardyearleft 2020\harvardyearright , `An efficient insertion operator in
+  dynamic ridesharing services', {\em IEEE Transactions on Knowledge and Data
+  Engineering} .
+
+\harvarditem[Xu et~al.]{Xu, Li, Guan, Zhang, Li, Nan, Liu, Bian \harvardand\
+  Ye}{2018}{xu2018large}
+Xu, Z., Li, Z., Guan, Q., Zhang, D., Li, Q., Nan, J., Liu, C., Bian, W.
+  \harvardand\ Ye, J.  \harvardyearleft 2018\harvardyearright , Large-scale
+  order dispatch in on-demand ride-hailing platforms: A learning and planning
+  approach, {\em in} `Proceedings of the 24th ACM SIGKDD International
+  Conference on Knowledge Discovery \& Data Mining', ACM, pp.~905--913.
+
+\harvarditem[Yan et~al.]{Yan, Zhu, Korolko \harvardand\
+  Woodard}{2020}{yan2020dynamic}
+Yan, C., Zhu, H., Korolko, N. \harvardand\ Woodard, D.  \harvardyearleft
+  2020\harvardyearright , `Dynamic pricing and matching in ride-hailing
+  platforms', {\em Naval Research Logistics (NRL)} {\bf 67}(8),~705--724.
+
+\harvarditem{Yang, Qin, Ke \harvardand\ Ye}{2020}{yang2020optimizing}
+Yang, H., Qin, X., Ke, J. \harvardand\ Ye, J.  \harvardyearleft
+  2020\harvardyearright , `Optimizing matching time interval and matching
+  radius in on-demand ride-sourcing markets', {\em Transportation Research Part
+  B: Methodological} {\bf 131},~84--105.
+
+\harvarditem{Yang, Shao, Wang \harvardand\ Ye}{2020}{yang2020integrated}
+Yang, H., Shao, C., Wang, H. \harvardand\ Ye, J.  \harvardyearleft
+  2020\harvardyearright , `Integrated reward scheme and surge pricing in a
+  ridesourcing market', {\em Transportation Research Part B: Methodological}
+  {\bf 134},~126--142.
+
+\harvarditem[Yang et~al.]{Yang, Luo, Li, Zhou, Zhang \harvardand\
+  Wang}{2018}{yang2018mean}
+Yang, Y., Luo, R., Li, M., Zhou, M., Zhang, W. \harvardand\ Wang, J.
+  \harvardyearleft 2018\harvardyearright , Mean field multi-agent reinforcement
+  learning, {\em in} `International Conference on Machine Learning', PMLR,
+  pp.~5571--5580.
+
+\harvarditem{Yao \harvardand\ Bekhor}{2021}{yao2021ridesharing}
+Yao, R. \harvardand\ Bekhor, S.  \harvardyearleft 2021\harvardyearright , `A
+  ridesharing simulation platform that considers dynamic supply-demand
+  interactions', {\em arXiv preprint arXiv:2104.13463} .
+
+\harvarditem[Yau et~al.]{Yau, Qadir, Khoo, Ling \harvardand\
+  Komisarczuk}{2017}{yau2017tscsurvey}
+Yau, K.-L.~A., Qadir, J., Khoo, H.~L., Ling, M.~H. \harvardand\ Komisarczuk, P.
+   \harvardyearleft 2017\harvardyearright , `A survey on reinforcement learning
+  models and algorithms for traffic signal control', {\em ACM Comput. Surv.}
+  {\bf 50}(3).
+
+\harvarditem[Yu et~al.]{Yu, Zhou, Li, Mabu \harvardand\
+  Hirasawa}{2012}{yu2012q}
+Yu, S., Zhou, J., Li, B., Mabu, S. \harvardand\ Hirasawa, K.  \harvardyearleft
+  2012\harvardyearright , Q value-based dynamic programming with sarsa learning
+  for real time route guidance in large scale road networks, {\em in} `The 2012
+  International Joint Conference on Neural Networks (IJCNN)', IEEE, pp.~1--7.
+
+\harvarditem[Yu et~al.]{Yu, Gao, Hu \harvardand\ Park}{2019}{yu2019markov}
+Yu, X., Gao, S., Hu, X. \harvardand\ Park, H.  \harvardyearleft
+  2019\harvardyearright , `A markov decision process approach to vacant taxi
+  routing with e-hailing', {\em Transportation Research Part B: Methodological}
+  {\bf 121},~114--134.
+
+\harvarditem{Yu \harvardand\ Shen}{2019}{yu2019integrated}
+Yu, X. \harvardand\ Shen, S.  \harvardyearleft 2019\harvardyearright , `An
+  integrated decomposition and approximate dynamic programming approach for
+  on-demand ride pooling', {\em IEEE Transactions on Intelligent Transportation
+  Systems} {\bf 21}(9),~3811--3820.
+
+\harvarditem[Yuen et~al.]{Yuen, Singh, Goyal, Ranu \harvardand\
+  Bagchi}{2019}{yuen2019beyond}
+Yuen, C.~F., Singh, A.~P., Goyal, S., Ranu, S. \harvardand\ Bagchi, A.
+  \harvardyearleft 2019\harvardyearright , Beyond shortest paths: Route
+  recommendations for ride-sharing, {\em in} `The World Wide Web Conference',
+  pp.~2258--2269.
+
+\harvarditem{Zhang, He, Zhang, Lin \harvardand\ Li}{2020}{zhang2020multi}
+Zhang, K., He, F., Zhang, Z., Lin, X. \harvardand\ Li, M.  \harvardyearleft
+  2020\harvardyearright , `Multi-vehicle routing problems with soft time
+  windows: A multi-agent reinforcement learning approach', {\em Transportation
+  Research Part C: Emerging Technologies} {\bf 121},~102861.
+
+\harvarditem{Zhang, Wang, Li \harvardand\ Xu}{2020}{zhang2020dynamic}
+Zhang, W., Wang, Q., Li, J. \harvardand\ Xu, C.  \harvardyearleft
+  2020\harvardyearright , `Dynamic fleet management with rewriting deep
+  reinforcement learning', {\em IEEE Access} {\bf 8},~143333--143341.
+
+\harvarditem[Zheng et~al.]{Zheng, Chen \harvardand\ Ye}{2018}{zheng2018order}
+Zheng, L., Chen, L. \harvardand\ Ye, J.  \harvardyearleft 2018\harvardyearright
+  , `Order dispatch in price-aware ridesharing', {\em Proceedings of the VLDB
+  Endowment} {\bf 11}(8),~853--865.
+
+\harvarditem[Zhong et~al.]{Zhong, Wan \harvardand\
+  Shen}{2020}{zhong2020queueing}
+Zhong, Y., Wan, Z. \harvardand\ Shen, Z.-J.~M.  \harvardyearleft
+  2020\harvardyearright , `Queueing versus surge pricing mechanism: Efficiency,
+  equity, and consumer welfare', {\em Equity, and Consumer Welfare (September
+  24, 2020)} .
+
+\harvarditem{Zhou, Song, Zhao \harvardand\ Liu}{2020}{zhou2020reinforcement}
+Zhou, B., Song, Q., Zhao, Z. \harvardand\ Liu, T.  \harvardyearleft
+  2020\harvardyearright , `A reinforcement learning scheme for the equilibrium
+  of the in-vehicle route choice problem based on congestion game', {\em
+  Applied Mathematics and Computation} {\bf 371},~124895.
+
+\harvarditem[Zhou et~al.]{Zhou, Lu, Tang, Zhang, Qin, Ye \harvardand\
+  Zhu}{2021}{zhou2021multi}
+Zhou, F., Lu, C., Tang, X., Zhang, F., Qin, Z., Ye, J. \harvardand\ Zhu, H.
+  \harvardyearleft 2021\harvardyearright , Multi-objective distributional
+  reinforcement learning for large-scale order dispatching, {\em in} `2021 IEEE
+  International Conference on Data Mining (ICDM)', IEEE, pp.~1541--1546.
+
+\harvarditem[Zhou et~al.]{Zhou, Jin, Zhang, Qin, Jiao, Wang, Wu, Yu
+  \harvardand\ Ye}{2019}{zhou2019multi}
+Zhou, M., Jin, J., Zhang, W., Qin, Z., Jiao, Y., Wang, C., Wu, G., Yu, Y.
+  \harvardand\ Ye, J.  \harvardyearleft 2019\harvardyearright , Multi-agent
+  reinforcement learning for order-dispatching via order-vehicle distribution
+  matching, {\em in} `Proceedings of the 28th ACM International Conference on
+  Information and Knowledge Management', pp.~2645--2653.
+
+\harvarditem{Zhou, Luo, Villela, Yang, Rusu, Miao, Zhang, Alban, Fadakar, Chen
+  et~al.}{2020}{zhou2020smarts}
+Zhou, M., Luo, J., Villela, J., Yang, Y., Rusu, D., Miao, J., Zhang, W., Alban,
+  M., Fadakar, I., Chen, Z. et~al.  \harvardyearleft 2020\harvardyearright ,
+  `Smarts: Scalable multi-agent reinforcement learning training school for
+  autonomous driving', {\em arXiv preprint arXiv:2010.09776} .
+
+\harvarditem[Zhou et~al.]{Zhou, Rong, Yang, Zhang, Khezerlou, Zheng, Shafiq
+  \harvardand\ Liu}{2018}{zhou2018optimizing}
+Zhou, X., Rong, H., Yang, C., Zhang, Q., Khezerlou, A.~V., Zheng, H., Shafiq,
+  Z. \harvardand\ Liu, A.~X.  \harvardyearleft 2018\harvardyearright ,
+  `Optimizing taxi driver profit efficiency: A spatial network-based markov
+  decision process approach', {\em IEEE Transactions on Big Data} {\bf
+  6}(1),~145--158.
+
+\harvarditem[Zhou et~al.]{Zhou, Yang, Ke, Wang \harvardand\
+  Li}{2022}{zhou2020competitive}
+Zhou, Y., Yang, H., Ke, J., Wang, H. \harvardand\ Li, X.  \harvardyearleft
+  2022\harvardyearright , `Competition and third-party platform-integration in
+  ride-sourcing markets', {\em Transportation Research Part B: Methodological}
+  {\bf 159},~76--103.
+
+\harvarditem[Zhu et~al.]{Zhu, Ke \harvardand\ Wang}{2021}{zhu2021mean}
+Zhu, Z., Ke, J. \harvardand\ Wang, H.  \harvardyearleft 2021\harvardyearright ,
+  `A mean-field markov decision process model for spatial-temporal subsidies in
+  ride-sourcing markets', {\em Transportation Research Part B: Methodological}
+  {\bf 150},~540--565.
+
+\harvarditem[Zou et~al.]{Zou, Yen \harvardand\ Zhao}{2021}{zou2021dynamic}
+Zou, F., Yen, G.~G. \harvardand\ Zhao, C.  \harvardyearleft
+  2021\harvardyearright , `Dynamic multiobjective optimization driven by
+  inverse reinforcement learning', {\em Information Sciences} {\bf
+  575},~468--484.
+
+\end{thebibliography}

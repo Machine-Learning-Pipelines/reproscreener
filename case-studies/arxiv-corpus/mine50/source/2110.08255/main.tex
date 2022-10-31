@@ -1,0 +1,278 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.21 of 2022/01/12
+%
+\pdfoutput=1
+\RequirePackage{amsmath}
+\documentclass[runningheads]{llncs}
+%
+\usepackage[T1]{fontenc}
+% T1 fonts will be used to generate the final print and online PDFs,
+% so please use T1 fonts in your manuscript whenever possible.
+% Other font encondings may result in incorrect characters.
+%
+
+% other packages
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{textcomp} % for \textquotesingle
+\usepackage{subfig}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{siunitx}
+\usepackage[misc]{ifsym}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following two lines
+% to display URLs in blue roman font according to Springer's eBook style:
+%\usepackage{color}
+%\renewcommand\UrlFont{\color{blue}\rmfamily}
+%
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\begin{document}
+%
+
+\title{U-Net Inspired Transformer Architecture for \\Far Horizon Time Series Forecasting}
+
+%
+\titlerunning{Yformer for Far Horizon Time Series Forecasting}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+% \orcidID{0000-0001-6356-8646}
+% \orcidID{1111-2222-3333-4444}
+% \orcidID{0000-0002-7402-4166}
+% \orcidID{2222--3333-4444-5555} 
+% \orcidID{0000-0001-5729-6023}
+
+\author{Kiran Madhusudhanan\inst{1}\Letter \and
+Johannes Burchert \inst{1} \and
+Nghia Duong-Trung \inst{2}\and
+Stefan Born \inst{2} \and
+Lars Schmidt-Thieme \inst{1} 
+}
+\authorrunning{K. Madhusudhanan et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Institute for Computer Science, University of Hildesheim, Hildesheim, Germany \\
+\email{\{madhusudhanan, burchert, schmidt-thieme\}@ismll.uni-hildesheim.de}
+\and
+Technische Universit\"at Berlin, Berlin, Germany \\
+\email{nghia.duong-trung@tu-berlin.de, born@math.tu-berlin.de}}
+
+\toctitle{U-Net Inspired Transformer Architecture for Far Horizon Time Series Forecasting}
+\tocauthor{Kiran~Madhusudhanan, Johannes~Burchert, Nghia~Duong-Trung, Stefan~Born and Lars~Schmidt-Thieme}
+
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+Time series data is ubiquitous in research as well as in a wide variety of industrial applications. Effectively analyzing the available historical data and providing insights into the far future allows us to make effective decisions. Recent research has witnessed the superior performance of transformer-based architectures, especially in the regime of far horizon time series forecasting. However, the current state of the art sparse Transformer architectures fail to couple down- and upsampling procedures to produce outputs in a similar resolution as the input. We propose a U-Net inspired Transformer architecture named Yformer, based on a novel Y-shaped encoder-decoder architecture that (1) uses direct connection from the downscaled encoder layer to the corresponding upsampled decoder layer in a U-Net inspired architecture, (2) Combines the downscaling/upsampling with sparse attention to capture long-range effects, and (3) stabilizes the encoder-decoder stacks with the addition of an auxiliary reconstruction loss. Extensive experiments have been conducted with relevant baselines on three benchmark datasets, demonstrating an average improvement of 19.82, 18.41 percentage MSE and 13.62, 11.85 percentage MAE in comparison to the baselines for the univariate and the multivariate settings respectively.
+
+\keywords{Time series Forecasting  \and Transformer \and U-Net}
+\end{abstract}
+
+\input{sections/introduction.tex}
+
+\input{sections/relatedwork.tex}
+
+\input{sections/background.tex}
+
+\input{sections/methodology.tex}
+
+\input{sections/experiments.tex}
+
+\input{sections/ablation.tex}
+
+\input{sections/conclusion.tex}
+
+
+% % ---- Bibliography ----
+
+% % BibTeX users should specify bibliography style 'splncs04'.
+% % References will then be sorted and formatted in the correct style.
+
+\bibliographystyle{splncs04}
+\begin{thebibliography}{10}
+    \providecommand{\url}[1]{\texttt{#1}}
+    \providecommand{\urlprefix}{URL }
+    \providecommand{\doi}[1]{https://doi.org/#1}
+    
+    \bibitem{layernorm}
+    Ba, L.J., Kiros, J.R., Hinton, G.E.: Layer normalization. CoRR  (2016)
+    
+    \bibitem{BoxArima}
+    Box, G.E.P., Jenkins, G.M.: Some recent advances in forecasting and control.
+      Journal of the Royal Statistical Society. Series C (Applied Statistics)
+      (1968)
+    
+    \bibitem{camacho2013model}
+    Camacho, E.F., Alba, C.B.: Model predictive control. Springer science \&
+      business media (2013)
+    
+    \bibitem{cao2018brits}
+    Cao, W., Wang, D., Li, J., Zhou, H., Li, L., Li, Y.: Brits: Bidirectional
+      recurrent imputation for time series. In: NeurIPS (2018)
+    
+    \bibitem{cirstea2022triformer}
+    Cirstea, R.G., Guo, C., Yang, B., Kieu, T., Dong, X., Pan, S.: Triformer:
+      Triangular, variable-specific attentions for long sequence multivariate time
+      series forecasting. IJCAI  (2022)
+    
+    \bibitem{elu}
+    Clevert, D., Unterthiner, T., Hochreiter, S.: Fast and accurate deep network
+      learning by exponential linear units (elus). In: ICLR (2016)
+    
+    \bibitem{10.1145/3292500.3330662}
+    Fan, C., Zhang, Y., Pan, Y., Li, X., Zhang, C., Yuan, R., Wu, D., Wang, W.,
+      Pei, J., Huang, H.: Multi-horizon time series forecasting with temporal
+      attention learning. In: SIGKDD (2019)
+    
+    \bibitem{he2016deep}
+    He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image
+      recognition. In: CVPR (2016)
+    
+    \bibitem{huang2017densely}
+    Huang, G., Liu, Z., Van Der~Maaten, L., Weinberger, K.Q.: Densely connected
+      convolutional networks. In: CVPR (2017)
+    
+    \bibitem{hyndman2018forecasting}
+    Hyndman, R.J., Athanasopoulos, G.: Forecasting: principles and practice. OTexts
+      (2018)
+    
+    \bibitem{Jarrett2020Target-Embedding}
+    Jarrett, D., van~der Schaar, M.: Target-embedding autoencoders for supervised
+      representation learning. In: ICLR (2020)
+    
+    \bibitem{jawed2019multi}
+    Jawed, S., Rashed, A., Schmidt-Thieme, L.: Multi-step forecasting via
+      multi-task learning. In: IEEE Big Data (2019)
+    
+    \bibitem{tungbcc19}
+    Kieu, T., Yang, B., Guo, C., S.~Jensen, C.: Outlier detection for time series
+      with recurrent autoencoder ensembles. In: IJCAI (2019)
+    
+    \bibitem{kitaev2020reformer}
+    Kitaev, N., Kaiser, L., Levskaya, A.: Reformer: The efficient transformer. In:
+      ICLR (2020)
+    
+    \bibitem{alexnet}
+    Krizhevsky, A., Sutskever, I., Hinton, G.E.: Imagenet classification with deep
+      convolutional neural networks. NeurIPS  (2012)
+    
+    \bibitem{lai2018modeling}
+    Lai, G., Chang, W.C., Yang, Y., Liu, H.: Modeling long-and short-term temporal
+      patterns with deep neural networks. In: SIGIR (2018)
+    
+    \bibitem{le2018supervised}
+    Le, L., Patterson, A., White, M.: Supervised autoencoders: Improving
+      generalization performance with unsupervised regularizers. NeurIPS  (2018)
+    
+    \bibitem{li2019enhancing}
+    Li, S., Jin, X., Xuan, Y., Zhou, X., Chen, W., Wang, Y.X., Yan, X.: Enhancing
+      the locality and breaking the memory bottleneck of transformer on time series
+      forecasting. NeurIPS  (2019)
+    
+    \bibitem{tft}
+    Lim, B., Arık, S.{\"O}., Loeff, N., Pfister, T.: Temporal fusion transformers
+      for interpretable multi-horizon time series forecasting. Int. J. Forecast.
+      (2021)
+    
+    \bibitem{lin2017feature}
+    Lin, T.Y., Doll{\'a}r, P., Girshick, R., He, K., Hariharan, B., Belongie, S.:
+      Feature pyramid networks for object detection. In: CVPR (2017)
+    
+    \bibitem{nbeats}
+    Oreshkin, B.N., Carpov, D., Chapados, N., Bengio, Y.: N-beats: Neural basis
+      expansion analysis for interpretable time series forecasting. In: ICLR (2020)
+    
+    \bibitem{perslev2019u}
+    Perslev, M., Jensen, M., Darkner, S., Jennum, P.J., Igel, C.: U-time: A fully
+      convolutional network for time series segmentation applied to sleep staging.
+      NeurIPS  (2019)
+    
+    \bibitem{petit2021u}
+    Petit, O., Thome, N., Rambour, C., Themyr, L., Collins, T., Soler, L.: U-net
+      transformer: Self and cross attention for medical image segmentation. In:
+      International Workshop on MLMI (2021)
+    
+    \bibitem{qin2017dual}
+    Qin, Y., Song, D., Chen, H., Cheng, W., Jiang, G., Cottrell, G.W.: A dual-stage
+      attention-based recurrent neural network for time series prediction. In:
+      IJCAI (2017)
+    
+    \bibitem{RangapuramDeepState}
+    Rangapuram, S.S., Seeger, M.W., Gasthaus, J., Stella, L., Wang, Y.,
+      Januschowski, T.: Deep state space models for time series forecasting. In:
+      NeurIPS (2018)
+    
+    \bibitem{ronneberger2015u}
+    Ronneberger, O., Fischer, P., Brox, T.: U-net: Convolutional networks for
+      biomedical image segmentation. In: MICCAI (2015)
+    
+    \bibitem{sagheer2019time}
+    Sagheer, A., Kotb, M.: Time series forecasting of petroleum production using
+      deep lstm recurrent networks. Neurocomputing  (2019)
+    
+    \bibitem{salinas2020deepar}
+    Salinas, D., Flunkert, V., Gasthaus, J., Januschowski, T.: Deepar:
+      Probabilistic forecasting with autoregressive recurrent networks. Int. J.
+      Forecast.  (2020)
+    
+    \bibitem{sezer2020financial}
+    Sezer, O.B., Gudelek, M.U., Ozbayoglu, A.M.: Financial time series forecasting
+      with deep learning: A systematic literature review: 2005--2019. Applied soft
+      computing  (2020)
+    
+    \bibitem{vaswani2017attention}
+    Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N.,
+      Kaiser, {\L}., Polosukhin, I.: Attention is all you need. In: NeurIPS (2017)
+    
+    \bibitem{wang2020linformer}
+    Wang, S., Li, B.Z., Khabsa, M., Fang, H., Ma, H.: Linformer: Self-attention
+      with linear complexity. ArXiv  (2020)
+    
+    \bibitem{wang2019srn}
+    Wang, Y., Tao, X., Shen, X., Jia, J.: Wide-context semantic image
+      extrapolation. In: CVPR (2019)
+    
+    \bibitem{wang2017time}
+    Wang, Z., Yan, W., Oates, T.: Time series classification from scratch with deep
+      neural networks: A strong baseline. In: IJCNN (2017)
+    
+    \bibitem{wu2021autoformer}
+    Wu, H., Xu, J., Wang, J., Long, M.: Autoformer: Decomposition transformers with
+      auto-correlation for long-term series forecasting. NeurIPS  (2021)
+    
+    \bibitem{zhou2020informer}
+    Zhou, H., Zhang, S., Peng, J., Zhang, S., Li, J., Xiong, H., Zhang, W.:
+      Informer: Beyond efficient transformer for long sequence time-series
+      forecasting. In: AAAI (2021)
+    
+    \bibitem{zhou2021nnformer}
+    Zhou, H.Y., Guo, J., Zhang, Y., Yu, L., Wang, L., Yu, Y.: nnformer: Interleaved
+      transformer for volumetric segmentation. ArXiv  (2021)
+    
+    \bibitem{ZOU201939}
+    Zou, X., Wang, Z., Li, Q., Sheng, W.: Integration of residual network and
+      convolutional neural network along with various activation functions and
+      global pooling for time series classification. Neurocomputing  (2019)
+    
+    \end{thebibliography}
+    
+
+
+\clearpage
+\input{sections/appendix.tex}
+
+    
+
+\end{document}

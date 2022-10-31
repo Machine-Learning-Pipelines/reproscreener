@@ -1,0 +1,152 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+%\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\newenvironment{proof}[1][Proof]{{\it #1. } }{\ \rule{0.5em}{0.5em}}
+%\usepackage[dvipsnames]{xcolor}
+\usepackage{graphics, theorem, times, cite}
+
+\usepackage{tikz}
+ 
+\usepackage[english]{babel}
+\usepackage{ifpdf}
+%\usepackage{cite} % Orders citations.
+\usepackage{url}
+\usepackage{bm}
+\usepackage{hyperref}
+\ifpdf
+	\usepackage[pdftex]{graphicx}
+	\graphicspath{{./figures/}}
+ 	%\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+	\usepackage[dvips]{graphicx}
+	\graphicspath{./figures/}
+	%\DeclareGraphicsExtensions{.eps}
+\fi
+\usepackage{color}
+\usepackage{pgf, tikz, pgfplots, epstopdf}
+\usetikzlibrary{shapes, arrows, automata}
+\usepackage{caption} % Extended options for captions.
+\usepackage{subcaption} % Similar to caption but for subfigures.
+\usepackage{amsmath}
+\usepackage{amsfonts, amssymb, theorem}
+\usepackage{mathrsfs}
+\usepackage{upgreek}
+%\usepackage[]{algorithm2e}
+\usepackage{algorithm,algpseudocode}
+\usepackage{enumerate}
+\usepackage{multirow}
+\usepackage{rotating}
+\input{mySections.tex}
+\input{mySymbol.sty}
+
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+\newtheorem{assumption}{\hspace{0pt}\bf Assumption\hspace{-0.05cm}}
+\newtheorem{lemma}{\hspace{0pt}\bf Lemma}
+\newtheorem{proposition}{\hspace{0pt}\bf Proposition}
+\newtheorem{observation}{\hspace{0pt}\bf Observation}
+\newtheorem{theorem}{\hspace{0pt}\bf Theorem}
+\newtheorem{corollary}{\hspace{0pt}\bf Corollary}
+\newtheorem{fact}{\hspace{0pt}\bf Fact}
+\newtheorem{remark}{\hspace{0pt}\bf Remark}
+\newtheorem{test}{\hspace{0pt}\it Test Case}
+\newtheorem{definition}{\hspace{0pt}\bf Definition}
+\newtheorem{claim}{\hspace{0pt}\bf Claim}
+\newcommand{\QED}{\hfill\ensuremath{\blacksquare}}
+
+%\renewcommand{\baselinestretch}{.98}
+\addtolength{\textwidth}{3mm}
+\addtolength{\evensidemargin}{-1.5mm}
+\addtolength{\oddsidemargin}{-1.5mm}
+\addtolength{\textheight}{4mm} 
+\addtolength{\topmargin}{-2mm}
+
+\title{Stability to Deformations of Manifold Filters and \\ Manifold Neural Networks}
+
+
+\author{Zhiyang Wang \quad Luana Ruiz \quad Alejandro Ribeiro\thanks{Supported by NSF CCF 1717120, Theorinet Simons. ZW, AR are with the Department of Electrical and Systems Engineering, University of Pennsylvania, PA, email: \{zhiyangw, aribeiro\}@seas.upenn.edu. LR is with the Simons-Berkeley Institute, CA, email: luanaruiz9@berkeley.edu. Preliminary results presented in \cite{wang2021stability}\cite{wang2022stability}. } }
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The paper defines and studies manifold (M) convolutional filters and neural networks (NNs). \emph{Manifold} filters and MNNs are defined in terms of the Laplace-Beltrami operator exponential and are such that \emph{graph} (G) filters and neural networks (NNs) are recovered as discrete approximations when the manifold is sampled. These filters admit a spectral representation which is a generalization of both the spectral representation of graph filters and the frequency response of standard convolutional filters in continuous time. The main technical contribution of the paper is to analyze the stability of manifold filters and MNNs to smooth deformations of the manifold. This analysis generalizes known stability properties of graph filters and GNNs and it is also a generalization of known stability properties of standard convolutional filters and neural networks in continuous time. The most important observation that follows from this analysis is that manifold filters, same as graph filters and standard continuous time filters, have difficulty discriminating high frequency components in the presence of deformations. This is a challenge that can be ameliorated with the use of manifold, graph, or continuous time neural networks. The most important practical consequence of this analysis is to shed light on the behavior of graph filters and GNNs in large scale graphs.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Graph Signal Processing, Graph Neural Networks, Manifolds, Manifold Filters, Manifold Neural Networks, Manifold Deformations, Operator Stability.
+\end{IEEEkeywords}
+
+
+\section{Introduction}
+\label{sec:intro}
+\input{intro}
+
+
+\section{Manifold Convolutional Filters}
+\label{sec:stability_filter}
+\input{stability_manifold_filters}
+
+
+
+\section{Stability of Manifold Neural Networks}
+\label{sec:stability_nn}
+\input{stability_MNN}
+
+
+\section{Discussions}
+\label{subsec:discussion}
+\input{discussion}
+
+
+\section{From Manifold Neural Networks to Graph Neural Networks}
+\label{sec:discre_nn}
+\input{discretization}
+
+
+\section{Numerical Experiments}
+\label{sec:simu}
+\input{simulations}
+
+\section{Conclusions}
+\label{sec:conclusion}
+\input{conclusions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\urlstyle{same}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+
+
+
+\appendix
+ {\section{Appendix}
+ \input{appendix}}
+
+\clearpage
+\setcounter{page}{1}
+\begin{center}
+\textbf{\large Supplemental Materials}
+\end{center}
+
+\section{Supplementary Materials}
+\input{suplement}
+\end{document}

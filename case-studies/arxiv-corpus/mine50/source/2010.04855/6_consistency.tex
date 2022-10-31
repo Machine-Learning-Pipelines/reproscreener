@@ -1,0 +1,117 @@
+\section{Uniform consistency}\label{sec:consistency}
+
+\subsection{RKHS background}
+
+In Section~\ref{sec:problem}, we defined the causal functions of interest, and identified them as partial means. In Section~\ref{sec:algorithm}, we introduced the tensor product RKHS as the function space in which the three steps of nonparametric causal estimation may be decoupled. We then proposed estimators based on kernel ridge regression with closed form solutions. In Section~\ref{sec:detail}, we demonstrated that our estimators generalize known estimators for the binary treatment case. In this section, we prove uniform consistency of the estimators, with finite sample rates that combine minimax optimal rates. To do so, we define our key approximation assumptions, which are standard in RKHS learning theory: smoothness and spectral decay.
+
+To state our key assumptions, we must introduce a certain eigendecomposition. Recall the example of a generic RKHS $\mathcal{H}$ with kernel $k:\mathcal{W}\times \mathcal{W}\rightarrow \mathbb{R}$ consisting of functions $\gamma:\mathcal{W}\rightarrow \mathbb{R}$. Let $\nu$ be any Borel measure on $\mathcal{W}$. We denote by $\mathbb{L}^2_{\nu}(\mathcal{W})$ the space of square integrable functions with respect to measure $\nu$. Given the kernel, define the integral operator
+$
+L:\mathbb{L}_{\nu}^2(\mathcal{W})\rightarrow \mathbb{L}_{\nu}^2(\mathcal{W}),\; \gamma \mapsto \int k(\cdot,w)\gamma(w)\mathrm{d}\nu(w)
+$. 
+If the kernel $k$ is defined on $\mathcal{W}\subset\mathbb{R}^d$ and shift invariant, then $L$ is a convolution of $k$ and $\gamma$. If $k$ is smooth, then $L\gamma$ is a smoothed version of $\gamma$. $L$ is a self adjoint, positive, compact operator, so by the spectral theorem we can denote its countable eigenvalues by $(\eta_j)$ and its countable eigenfunctions, which are equivalence classes, by $\{(\varphi_j)_{\nu}\}$:
+$$
+L\gamma =\sum_{j=1}^{\infty} \eta_j\langle (\varphi_j)_{\nu},\gamma \rangle_{\mathbb{L}^2_{\nu}(\mathcal{W})}  (\varphi_j)_{\nu},\quad (\varphi_j)_{\nu}=\{f:\nu(f\neq \varphi_j)=0\}.
+$$
+Without loss of generality, $\eta_j\geq \eta_{j+1}$, and these are also the eigenvalues of the feature covariance operator $T=E\{\phi(W)\otimes \phi(W)\}$. For simplicity, we assume $(\eta_j)>0$ in this discussion; see \cite[Remark 3]{cucker2002mathematical} for the more general case. $\{(\varphi_j)_{\nu}\}$ form an orthonormal basis of $\mathbb{L}_{\nu}^2(\mathcal{W})$. By the generalized Mercer's Theorem for Polish spaces \cite[Corollary 3.5]{steinwart2012mercer}, we can express the kernel as $k(w,w')=\sum_{j=1}^{\infty}\eta_j \varphi_j(w)\varphi_j(w')$, where $(w,w')$ are in the support of $\nu$, $\varphi_j$ is a continuous element in the equivalence class $(\varphi_j)_{\nu}$, and the convergence is absolute and uniform.
+% \footnote{In the classic statement of Mercer's Theorem, $\mathcal{W}$ is compact and $\nu$ is supported on $\mathcal{W}$, which ensures the strong form of convergence. \cite[Corollary 3.5]{steinwart2012mercer} prove a generalization of Mercer's Theorem in which $\mathcal{W}$ may not be compact but rather Polish, which we use in the present work.}
+
+With this notation, we express $\mathbb{L}_{\nu}^2(\mathcal{W})$ and the RKHS $\mathcal{H}$ in terms of the series $\{(\varphi_j)_{\nu}\}$. If $\gamma\in \mathbb{L}_{\nu}^2(\mathcal{W})$, then $\gamma$ can be uniquely expressed as
+$
+\gamma=\sum_{j=1}^{\infty}\gamma_j(\varphi_j)_{\nu}
+$
+and the partial sums $\sum_{j=1}^J \gamma_j (\varphi_j)_{\nu}$ converge to $\gamma$ in $\mathbb{L}^2_{\nu}(\mathcal{W})$. Indeed, for $\gamma=\sum_{j=1}^{\infty}\gamma_j(\varphi_j)_{\nu}$ and $\gamma'=\sum_{j=1}^{\infty}\gamma_j'(\varphi_j)_{\nu}$,
+$$
+ \mathbb{L}^2_{\nu}(\mathcal{W})=\left\{\gamma=\sum_{j=1}^{\infty}\gamma_j(\varphi_j)_{\nu}:\; \sum_{j=1}^{\infty}\gamma_j^2<\infty\right\},\quad \langle \gamma,\gamma' \rangle_{\mathbb{L}^2_{\nu}(\mathcal{W})}=\sum_{j=1}^{\infty} \gamma_j\gamma_j'.
+$$
+By \cite[Theorem 4]{cucker2002mathematical}, the RKHS $\mathcal{H}$ can be explicitly represented as
+$$
+\mathcal{H}=\left(\gamma=\sum_{j=1}^{\infty}\gamma_j\varphi_j:\;\sum_{j=1}^{\infty} \frac{\gamma_j^2}{\eta_j}<\infty\right),\quad \langle \gamma,\gamma' \rangle_{\mathcal{H}}=\sum_{j=1}^{\infty} \frac{\gamma_j\gamma_j'}{\eta_j}.
+$$
+To interpret this result, recall that $(\eta_j)$ is a weakly decreasing sequence. The RKHS $\mathcal{H}$ is the subset of functions in $\mathbb{L}^2_{\nu}(\mathcal{W})$ which are continuous and for which higher order terms in the series $\{(\varphi_j)_{\nu}\}$ have a smaller contribution. The RKHS inner product penalizes higher order coefficients, and the magnitude of the penalty corresponds to how small the eigenvalue is.
+
+We have seen how to conduct kernel ridge regression with the RKHS $\mathcal{H}$. To analyze the bias from ridge regularization, we place a smoothness assumption called the source condition on the regression function $\gamma_0(w)=E(Y \mid W=w)$ \cite{smale2007learning,caponnetto2007optimal,carrasco2007linear}. 
+% 
+Formally, we place assumptions of the form
+\begin{equation}\label{eq:prior}
+    \gamma_0\in \mathcal{H}^c=\left(f=\sum_{j=1}^{\infty}\gamma_j\varphi_j:\;\sum_{j=1}^{\infty} \frac{\gamma_j^2}{\eta^c_j}<\infty\right)\subset \mathcal{H},\quad c\in(1,2].
+\end{equation}
+While $c=1$ recovers correct specification $\gamma_0\in \mathcal{H}$, $c\in(1,2]$ is a stronger condition: $\gamma_0$ is a particularly smooth element of $\mathcal{H}$, well approximated by the leading terms in the series $\{(\varphi_j)_{\nu}\}$. Smoothness delivers uniform consistency. A larger value of $c$ corresponds to a smoother target $\gamma_0$ and a faster convergence rate for $\hat{\gamma}$. Rates do not further improve for $c>2$, which is known as the saturation effect for ridge regularization. %\cite{bauer2007regularization}.
+%: nonparametric regression with ridge regularization cannot adapt to smoothness any further 
+%.
+
+%Note that $c$ is a joint assumptions on the kernel and data distribution, though the RKHS depends on only the kernel. 
+
+%In Supplement~\ref{sec:consistency}, we use an equivalent formulation that is more convenient for analysis.
+
+To analyze the variance of kernel ridge regression, we place a spectral decay assumption called the effective dimension of the basis $(\varphi_j)$ for the RKHS $\mathcal{H}$. 
+% Recall the definition of the integral operator $
+% L:\mathbb{L}_{\nu}^2(\mathcal{W})\rightarrow \mathbb{L}_{\nu}^2(\mathcal{W}),\; \gamma\mapsto \int k(\cdot,w)\gamma(w)\mathrm{d}\nu(w)
+% $, which has the eigendecomposition $
+% L\gamma =\sum_{j=1}^{\infty} \eta_j\langle \varphi_j,\gamma \rangle_{\mathbb{L}^2_{\nu}(\mathcal{W})}\cdot  \varphi_j
+% $. 
+To obtain faster convergence rates, we place a direct assumption on the rate at which the eigenvalues $(\eta_j)$, and hence the importance of the eigenfunctions $(\varphi_j)$, decay: we assume there exists some constant $C$ such that for all $j$
+\begin{equation}\label{eq:b}
+  \eta_j\leq C j^{-b},\quad b\geq 1.
+\end{equation} 
+A bounded kernel, which we have already assumed, implies $b=1$ \cite[Lemma 10]{fischer2017sobolev}. The limit $b\rightarrow \infty$ may be interpreted as a finite dimensional RKHS \cite{caponnetto2007optimal}. For intermediate values of $b$, the polynomial rate of spectral decay quantifies the effective dimension of the RKHS $\mathcal{H}$ in light of the measure $\nu$. Intuitively, a higher value of $b$ corresponds to a lower effective dimension and a faster convergence rate for $\hat{\gamma}$.
+
+For intuition, we relate the source condition and effective dimension to a familiar notion of smoothness in the Sobolev space. The restriction that defines an RKHS generalizes higher order smoothness in a Sobolev space. Indeed, certain Sobolev spaces are RKHSs. Let $\mathcal{W}\subset \mathbb{R}^p$. Denote by $\mathbb{H}_2^s$ the Sobolev space with $s>p/2$ derivatives that are square integrable. This space can be generated by the Mat\`ern kernel, which converges to the popular exponentiated quadratic kernel as $s\rightarrow \infty$. Suppose $\mathcal{H}=\mathbb{H}_2^s$ is chosen as the RKHS for estimation. Suppose the measure $\nu$ supported on $\mathcal{W}$ is absolutely continuous with respect to the uniform distribution and bounded away from zero. If $\gamma_0\in \mathbb{H}_2^{s_0}$, then $c=s_0/s$ \cite{pillaud2018statistical}. Written another way, $(\mathbb{H}_2^{s})^c=\mathbb{H}_2^{s_0}$. In this sense, $c$ precisely quantifies the additional smoothness of $\gamma_0$ relative to $\mathcal{H}$. Moreover, in this Sobolev space, $b=2s/p>1$ \cite{fischer2017sobolev}. The effective dimension is increasing in the input dimension $p$ and decreasing in the degree of smoothness $s$. The minimax optimal rate in Sobolev norm is $n^{-(c-1)/\{2(c+1/b)\}}=n^{-(s_0-s)/(2s_0+p)}$, which is achieved by kernel ridge regression with the rate optimal regularization $\lambda=n^{-1/(c+1/b)}=n^{-2s/(2s_0+p)}$. Our analysis applies to Sobolev spaces over $\mathbb{R}^p$ as a special case; our results are much more general, allowing treatment and covariates to be in Polish spaces. 
+
+\subsection{Finite sample rates}
+
+Towards a guarantee of uniform consistency, we place regularity conditions on the original spaces. In anticipation of counterfactual distributions in Supplement~\ref{sec:distribution}, we also include conditions for the outcome space in parentheses.
+\begin{assumption}[Original space regularity conditions]\label{assumption:original}
+Assume $\mathcal{D}$, $\mathcal{V}$, $\mathcal{X}$ (and $\mathcal{Y}$) are Polish spaces. Further assume $\mathcal{Y}\subset \mathbb{R}$, $\int y^2 \mathrm{d}\text{\normalfont pr}(y)< \infty$, and a moment condition holds: there exist constants $\sigma,\tau$ such that for all $m\geq 2$, $\int |y-\gamma_0(D,X)|^m\mathrm{d}\text{\normalfont pr}(y \mid D,X)\leq m! \sigma^2 \tau^{m-2}/2$ almost surely. For $\theta_0^{CATE}$, replace $X$ with $(V,X)$.
+\end{assumption}
+A Polish space is a separable and completely metrizable topological space. Random variables with support in a Polish space may be discrete or continuous and may even be infinite dimensional. Bounded $Y$ implies the moment condition.
+
+%$Y$ is bounded almost surely A sufficient condition for the moment condition is that .
+%For simplicity of argument, we require that outcome $Y\in\mathbb{R}$ is bounded. 
+
+Next, we assume the regression $\gamma_0$ is smooth in the sense of~\eqref{eq:prior}, and $\mathcal{H}$ has low effective dimension in the sense of~\eqref{eq:b}. Denote the $j$th eigenvalue of the convolution operator for $\mathcal{H}$ by $\eta_j(\mathcal{H})$. Recall that $\eta_j(\mathcal{H})$ is also the $j$th eigenvalue of the feature covariance operator.
+\begin{assumption}[Smoothness and spectral decay for regression]\label{assumption:smooth_gamma}
+Assume $\gamma_0\in\mathcal{H}^c$ with $c\in(1,2]$, and $\eta_j(\mathcal{H})\leq C j^{-b}$ with $b\geq 1$.
+\end{assumption}
+See Supplement~\ref{sec:proof} for alternative ways of writing and interpreting Assumption~\ref{assumption:smooth_gamma}. We place similar smoothness and spectral decay conditions on the conditional mean embeddings $\mu_x(d)$ and $\mu_x(v)$,  which are generalized conditional expectation functions. We articulate this assumption abstractly for the conditional mean embedding $\mu_{a}(b)=\int \phi(a)\mathrm{d}\text{\normalfont pr}(a \mid b)$ where $a\in\mathcal{A}_{\ell}$ and $b\in\mathcal{B}_{\ell}$. All one has to do is specify $\mathcal{A}_{\ell}$ and $\mathcal{B}_{\ell}$ to specialize the assumption. For $\mu_x(d)$, $\mathcal{A}_1=\mathcal{X}$ and $\mathcal{B}_1=\mathcal{D}$; for $\mu_x(v)$, $\mathcal{A}_2=\mathcal{X}$ and $\mathcal{B}_2=\mathcal{V}$. For fixed $\mathcal{A}_{\ell}$ and $\mathcal{B}_{\ell}$, we parametrize smoothness by $c_{\ell}$ and spectral decay by $b_{\ell}$.
+
+Formally, define the conditional expectation operator $E_{\ell}:\mathcal{H}_{\mathcal{A}_{\ell}}\rightarrow\mathcal{H}_{\mathcal{B}_{\ell}}$, $f(\cdot)\mapsto E\{f(A_{\ell}) \mid B_{\ell}=\cdot\}$. By construction, $E_{\ell}$ encodes the same information as $\mu_{a}(b)$ since
+$$
+\{\mu_{a}(b)\}(\cdot)=\int \phi(a)\mathrm{d}\text{\normalfont pr}(a \mid b) =\{E_{\ell}\phi(\cdot)\}(b) =\{E_{\ell}^* \phi(b)\}(\cdot),\quad a\in\mathcal{A}_{\ell}, \quad b\in\mathcal{B}_{\ell},
+$$
+where $E_{\ell}^*$ is the adjoint of $E_{\ell}$. We denote the space of Hilbert--Schmidt operators between $\mathcal{H}_{\mathcal{A}_{\ell}}$ and $\mathcal{H}_{\mathcal{B}_{\ell}}$ by $\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})$. \cite{grunewalder2013smooth,singh2019kernel} prove that $\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})$ is an RKHS in its own right, for which we can assume smoothness in the sense of~\eqref{eq:prior} and spectral decay in the sense of~\eqref{eq:b}.
+
+% \begin{assumption}[Smoothness and spectral decay for mean embedding]\label{assumption:smooth_op}
+% Assume $E_{\ell}\in [\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})]^{c_{\ell}}$ and $\eta_{\ell}[\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})]\leq C j^{-b_{\ell}}$.
+% \end{assumption}
+
+\begin{assumption}[Smoothness and spectral decay for mean embedding]\label{assumption:smooth_op}
+Assume the following: $E_{\ell}\in \mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}^{c_{\ell}}_{\mathcal{B}_{\ell}})$ with $c_{\ell}\in(1,2]$, and $\eta_{\ell}(\mathcal{H}_{\mathcal{B}_{\ell}})\leq C j^{-b_{\ell}}$ with $b_{\ell}\geq 1$.
+\end{assumption}
+Just as we place approximation assumptions for $\gamma_0$ in terms of $\mathcal{H}$, which provides the features onto which we project $Y$, we place approximation assumptions for $E_{\ell}$ in terms of $\mathcal{H}_{\mathcal{B}_{\ell}}$, which provides the features $\phi(B_{\ell})$ onto which we project $\phi(A_{\ell})$. Under these conditions, we arrive at our main theoretical guarantee.
+\begin{theorem}[Uniform consistency of causal functions]\label{theorem:consistency_treatment}
+Suppose the conditions of Lemma~\ref{theorem:id_treatment} hold, as well as Assumptions~\ref{assumption:RKHS},~\ref{assumption:original}, and~\ref{assumption:smooth_gamma}. Set $(\lambda,\lambda_1,\lambda_2)=\{n^{-1/(c+1/b)},n^{-1/(c_1+1/b_1)},n^{-1/(c_2+1/b_2)}\}$, which is rate optimal regularization.
+\begin{enumerate}
+    \item Then with high probability
+    $
+    \|\hat{\theta}^{ATE}-\theta_0^{ATE}\|_{\infty}=O\left[n^{-(c-1)/\{2(c+1/b)\}}\right]$ and $\|\hat{\theta}^{DS}(\cdot,\tilde{\text{\normalfont pr}})-\theta_0^{DS}(\cdot,\tilde{\text{\normalfont pr}})\|_{\infty}=O\left[ n^{-(c-1)/\{2(c+1/b)\}}+\tilde{n}^{-1/2}\right].
+    $
+    \item If in addition Assumption~\ref{assumption:smooth_op} holds with $\mathcal{A}_1=\mathcal{X}$ and $\mathcal{B}_1=\mathcal{D}$, then with high probability
+      $
+    \|\hat{\theta}^{ATT}-\theta_0^{ATT}\|_{\infty}=O\left[n^{-(c-1)/\{2(c+1/b)\}}+n^{-(c_1-1)/\{2(c_1+1/b_1)\}}\right].
+    $
+    \item If in addition Assumption~\ref{assumption:smooth_op} holds with $\mathcal{A}_2=\mathcal{X}$ and $\mathcal{B}_2=\mathcal{V}$, then with high probability
+      $
+    \|\hat{\theta}^{CATE}-\theta_0^{CATE}\|_{\infty}=O\left[n^{-(c-1)/\{2(c+1/b)\}}+n^{-(c_2-1)/\{2(c_2+1/b_2)\}}\right].
+    $
+\end{enumerate}
+Likewise for incremental functions, e.g. $
+    \|\hat{\theta}^{\nabla:ATE}-\theta_0^{\nabla:ATE}\|_{\infty}=O\left[n^{-(c-1)/\{2(c+1/b)\}}\right].
+    $
+\end{theorem}
+Explicit constants hidden by the $O(\cdot)$ notation, as well as explicit specializations of Assumption~\ref{assumption:smooth_op}, are indicated in Appendices~\ref{sec:proof} and~\ref{sec:operator}. These rates approach $n^{-1/4}$ when $(c,c_1,c_2)=2$ and $(b,b_1,b_2)\rightarrow \infty$, i.e. when the regressions are smooth and when the effective dimensions are finite. Interestingly, each rate combines minimax optimal rates in RKHS norm: $n^{-(c-1)/\{2(c+1/b)\}}$ for standard nonparametric regression \cite[Theorem 2]{fischer2017sobolev}; $\tilde{n}^{-1/2}$ for unconditional mean embeddings \cite[Theorem 1]{tolstikhin2017minimax}; and, in contemporaneous work, $n^{-(c_{\ell}-1)/\{2(c_{\ell}+1/b_{\ell})\}}$ for conditional mean embeddings \cite[Theorem 3]{li2022optimal}.
+
+\begin{remark}[Technical innovation]
+Our conditional mean embedding rate builds on original analysis of conditional expectation operators in Supplement~\ref{sec:operator} that is of independent interest. We improve the rate from $n^{-(c_{\ell}-1)/\{2(c_{\ell}+1)\}}$ \cite[Theorem 2]{singh2019kernel} to $n^{-(c_{\ell}-1)/\{2(c_{\ell}+1/b_{\ell})\}}$. Our consideration of Hilbert--Schmidt norm departs from \cite{park2020measure} and \cite{talwai2022sobolev}, who study surrogate risk and operator norm, respectively. Our assumptions also depart from \cite[Hypothesis 5]{singh2019kernel}, \cite[Theorem 4.5]{park2020measure}, and \cite[Assumptions 3 and 4]{talwai2022sobolev}. Instead, Assumption~\ref{assumption:smooth_op} directly generalizes \cite[Conditions SRC and EVD]{fischer2017sobolev} from RKHS functions to Hilbert--Schmidt operators.
+\end{remark}
+
+Overall, rates slower than $n^{-1/4}$ reflect the challenge of a $\sup$ norm guarantee, which is stronger than a mean square error guarantee and encodes caution about worst case scenarios when informing policy decisions. For comparison, the minimax optimal Sobolev norm rate for learning an $s_0$-smooth regression, using $\mathbb{H}_2^s$ over $\mathbb{R}^p$, is $n^{-(c-1)/\{2(c+1/b)\}}=n^{-(s_0-s)/(2s_0+p)}$.

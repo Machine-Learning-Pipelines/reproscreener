@@ -1,0 +1,208 @@
+\newcommand{\beginsupplementary}{
+    \setcounter{section}{0}
+	\renewcommand{\thesection}{A\arabic{section}}
+	\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+	\renewcommand{\thetable}{A\arabic{table}}
+	\setcounter{table}{0}
+
+	\renewcommand{\thefigure}{A\arabic{figure}}
+	\setcounter{figure}{0}
+}
+
+\newcommand{\suptitle}{Appendix for:\\ \papertitle}
+
+\newcommand{\maketitlesupp}{
+    \vskip .375in
+    \begin{center}
+        \Large \bf \suptitle \par
+    \end{center}
+    \vspace{24pt}}
+\beginsupplementary
+\maketitlesupp
+
+{\noindent The appendix is organized as follows:}
+\begin{itemize}
+\item In~\secref{sec:supp_anomaly_detection}, we present \textbf{a third application}, GAN-based \textit{One-vs-All} anomaly detection using AR features, and show its benefits over standard techniques.
+\item In~\secref{sec:supp_results}, we provide additional experimental results on feature inversion.
+\item In~\secref{sec:supp_additional}, we provide additional experimental results on downstream tasks. 
+\item In~\secref{sec:supp_proposed_method}, we provide implementation and experimental setup details.
+\end{itemize}
+
+\section{Anomaly Detection using AR Representations}
+\label{sec:supp_anomaly_detection}
+\subsection{Approach}
+\textit{One-vs-All} anomaly detection is the task of identifying samples that do not fit an expected pattern \cite{golan_2018_deep,deecke_2018_image,ruff_2019_deep,wang_2019_effective}. Given an unlabeled image dataset with normal (\textit{positives}) and anomalous instances (\textit{negatives}), the goal is to distinguish between them. Following GAN-based techniques \cite{deecke_2018_image}, we train our proposed AR AlexNet autoencoder exclusively on positives to learn a how to accurately reconstruct them. Once trained on such a target distribution, we use its reconstruction accuracy to detect negatives.
+
+Given an unlabeled sample $x$ and its AR features $f$, we search for $\hat{f}$ that yields the best reconstruction $\hat{x}=G_{\tilde{\phi}}(\hat{f})$ based on the following criterion (\figref{fig:proposed_anomaly}):
+\begin{align}
+    \label{eq:anomaly_detection}
+    \hat{f}=\ \text{arg }\underset{f}{\text{min}}&\ \alpha_{\text{pix}}\|G_{\tilde{\phi}}(f)-x\|_{1}+ \alpha_{\text{feat}}\|F_{\tilde{\theta}}\circ G_{\tilde{\phi}}(f)-F_{\tilde{\theta}}(x)\|_{2}^{2},
+\end{align}
+where $\alpha_{\text{pix}}, \alpha_{\text{feat}} \in \mathbb{R}_{++}$ are hyperparameters. Essentially, $x$ is associated to $\hat{f}$ that minimizes pixel and feature losses between estimated and target representations. Since $G_{\tilde{\phi}}$ has been trained on the distribution of positive samples, latent codes of negative samples generate abnormal reconstructions, revealing anomalous instances.
+
+\subsection{Experiments}
+We hypothesize that our AR generator widens the reconstruction gap between in and out-of-distribution samples, improving its performance on anomaly detection. Given a labeled dataset, our generator is trained to invert AR features from samples of a single class (\textit{positives}). Then, we evaluate how accurately samples from the rest of classes (\textit{negatives}) are distinguished from positives on an unlabeled test set.
+\input{supp_data/fig_supp_proposed_anomaly}
+
+\textbf{Experimental Setup.} We compare our technique using AR and standard features against ADGAN \cite{deecke_2018_image,golan_2018_deep}. We evaluate the performance on CIFAR10 and Cats vs. Dogs \cite{parkhi_2012_cats} datasets, where AUROC is computed on their full test sets.
+
+Standard and AR encoders are fully-trained on ImageNet using the parameters described in \secref{sec:supp_results}. By freezing the encoder, generators are trained using pixel and feature losses on positives from the dataset of interest, CIFAR10 or Cats vs. Dogs. Input images are rescaled to $224 \times 224$ px. before being passed to the model, no additional data augmentation is applied during the generator training. The regularization parameters for both standard and AR autoencoders are heuristically selected as:
+\vspace{-0.1\baselineskip}
+\begin{itemize}
+    \setlength\itemsep{0.1\baselineskip}
+    \item Standard autoencoder: $\lambda_{\text{pix}}=2\times 10^{-3},\; \lambda_{\text{feat}}=1\times 10^{-2}$.
+    \item AR autoencoder: $\lambda_{\text{pix}}=2\times 10^{-6},\; \lambda_{\text{feat}}=1\times 10^{-2}$.
+\end{itemize}
+
+\textbf{Iterative Optimization Details.} After training the generator on a particular class of interest, the optimal latent code $\hat{f}$ associated to an arbitrary target image $x$ is obtained via stochastic gradient descent. For both standard and AR autoencoders, the optimization criteria are identical to that used during the generator training. Specifically, we minimize pixel and feature loss components using the following hyperparameters:
+\vspace{-0.1\baselineskip}
+\begin{itemize}
+    \setlength\itemsep{0.1\baselineskip}
+    \item Standard autoencoder: $\alpha_{\text{pix}}=2\times 10^{-3},\; \alpha_{\text{feat}}=1\times 10^{-2}$.
+    \item AR autoencoder: $\alpha_{\text{pix}}=2\times 10^{-6},\; \alpha_{\text{feat}}=1\times 10^{-2}$.
+\end{itemize}
+
+Detection is performed by solving Eq. \eqref{eq:anomaly_detection}, where $f\in \mathbb{R}^{6 \times 6 \times 256}$ is initialized as white Gaussian noise and optimized for $i_{\text{max}}=100$ iterations. The initial learn rate is chosen as $0.1$ and linearly decreases along iterations down to $0.001$.
+
+\textbf{Results.} Full \textit{one-vs-all} anomaly detection results for CIFAR-10 and Cats vs. Dogs datasets are shown in \tabref{tab:supp_anomaly_detection}. On average, our AR model improves on outlier detection over its standard version and ADGAN. Our AR model gets $6.51\%$ and $8.84\%$ relative AUROC improvement over ADGAN on CIFAR-10 and Cats vs. Dogs, respectively. This shows our generator better distinguishes positives and negatives due to its improved reconstruction accuracy.
+\input{supp_data/tab_supp_anomaly}
+
+\section{Additional Experiments on Feature Inversion}
+\label{sec:supp_results}
+
+\subsection{Ablation Study}
+\label{sec:supp_results_ablation}
+
+Feature inversion results obtained using different optimization criteria are illustrated in \figref{fig:supp_ablation}. Results clearly show the effect of each term, $\ell_{1}$ pixel, feature and GAN components, in the final reconstruction. Samples correspond to the ImageNet validation set. Particularly, when inverting features using pixel and feature losses, adversarially robust features show a significant improvement with respect to their standard counterparts. This agrees with the idea of adversarially robust features being perceptually aligned.
+\input{supp_data/fig_supp_ablation}
+
+\subsection{Robustness to Scale Changes}
+\label{sec:supp_results_scale}
+Inversion accuracy on upscaled low-resolution images is illustrated in \figref{fig:sup_hires01} for scale factors $L\in \{1,\dots, 10\}$. While standard inversions show significant distortions for large upscaling factors $L$, reconstructions from adversarially robust representations show almost perfect reconstruction for high upscaling factors. Quantitative results are included in \tabref{tab:supp_hires01}. Results improve almost monotonically when inverting AR representations, even without exposing the Autoencoder to high-resolution images during training and without any fine-tuning.
+
+On the other hand, extended results on feature inversion from high-resolution images are illustrated in \figref{fig:supp_hires02}. Notice that, in contrast to the previous case, input samples correspond to natural high-resolution images and are encoded without any scaling. Results show a good color and edge preservation from our AR autoencoder, while inverting standard features show bogus components and noticeable color distortions.
+\input{supp_data/fig_supp_hires01}
+\input{supp_data/tab_supp_hires}
+\input{supp_data/fig_supp_hires02}
+
+\subsection{ResNet-18: Robustness Level vs. Reconstruction Accuracy}
+\label{sec:supp_inverting_alternative}
+
+We take the ResNet-18 model trained on CIFAR-10 from the \textit{Robustness} library \cite{robustness}, invert its third residual block ($4 \times 4 \times 512$) based on our approach using pixel and feature losses, and evaluate its reconstruction accuracy for standard and AR cases.
+
+We measure the reconstruction accuracy for different robustness levels by training six AR classifiers via $\ell_{2}$ PGD attacks (Madry et al.) with attack radii $\varepsilon$ covering from $0$ to $3.5$ (see \tabref{tab:accuracy02_1}). Accuracy for each model is measured in terms of PSNR, SSIM and LPIPS. We also report the robustness obtained by each model against $\ell_{2}$ PGD attacks.
+\input{supp_data/tab_supp_accuracy}
+
+Results show the best accuracy is reached for $\varepsilon=1.5$ in terms of PSNR and for $\varepsilon=1$ in terms of SSIM and LPIPS. Quality increases almost monotonically for models with low robustness and reaches a peak of approximately $19.62$ dB PSNR. Models with higher robustness slowly decrease in accuracy, yet obtaining a significant boost over the standard model ($\varepsilon=0$).
+
+\subsection{Comparison Against Alternative Methods}
+\label{sec:supp_results_comparison}
+
+Feature inversion accuracy obtained by our proposed model is compared against DeePSiM~\cite{dosovitskiy_2016_generating} and RI~\cite{engstrom_2019_adversarial} methods. \figref{fig:supp_contrast} illustrates the reconstruction accuracy obtained by each method. As previously explained, our generator yields photorealistic results with $37\%$ the trainable parameters required by the DeePSiM generator. Qualitatively, the color distribution obtained by our AR autoencoder is closer to that obtained by DeepSiM. Specifically, without any postprocessing, DeePSiM's results show severe edge distortions, while out method shows minor edge distortions. On the other hand, the optimization based approach from RI introduces several artifacts, despite its use of robust representations. In contrast, our method takes advantage of AR features and minimizes the distortions in a much more efficient manner by replacing the iterative process by a feature inverter (image generator).
+
+Architecture details and training parameters used to train out proposed model are included in \secref{sec:supp_proposed}. DeePSiM results were obtained using its official Caffe implementation. RI results were obtained using its official PyTorch implementation, modified to invert AlexNet \layer{conv5} layer.
+\input{supp_data/fig_supp_contrast}
+
+\section{Additional Results on Downstream Tasks}
+\label{sec:supp_additional}
+    \subsection{Style Transfer}
+    \label{sec:supp_additional_st}
+    \figref{fig:supp_st} shows additional stylization results obtained via the Universal Style Transfer algorithm using standard and AR AlexNet autoencoders. Qualitatively, the multi-level stylization approach used in our experiments show that AR representations allow a good texture transferring while better preserving the content image structure. Regardless the type of scene being stylized (\eg landscapes, portraits or single objects), aligning AR robust features allows to preserve sharp edges and alleviates the distortions generated by aligning standard features. Architecture details and training parameters for the style transfer experiments are covered in \secref{sec:supp_proposed_st}.
+    \input{supp_data/fig_supp_st}
+
+    \input{supp_data/fig_supp_denoising}
+    \subsection{Image Denoising}
+    \label{sec:supp_additional_denoising}
+    \figref{fig:supp_denoising} shows additional denoising results using our standard and AR autoencoders for the CBSDS68, Kodak24 and McMaster datasets. As previously discussed, we leverage the low-level feature representations by adding skip connections to our proposed autoencoder. Low-level features complement the contracted feature map obtained from AlexNet \layer{conv5}, improving the detail preservation. This is observed in the results, both with standard and AR autoencoders.
+    
+    On the other hand, despite the effect of using skip connections, reconstructions from AR representations show a notorious improvement with respect to standard reconstructions. Specifically, by combining skip connections with the rich information already encapsulated in robust representations, results on all three datasets show a substantial denoising improvement.
+
+\section{Implementation Details}\label{sec:supp_proposed_method}
+    \subsection{Architecture and Training Details}
+    \label{sec:supp_proposed}
+    
+    \textbf{Encoder.} For all downstream tasks, our adversarially robust AlexNet classifier was trained using PGD attacks \cite{madry_2018_towards}. The process was performed on ImageNet using stochastic gradient descent. The AR training parameters are as follows:
+    \begin{itemize}
+        \item Perturbation constraint: $\ell_{2}$ ball with $\varepsilon=3$
+        \item PGD attack steps: $7$
+        \item Step size: $0.5$
+        \item Training epochs: $90$
+    \end{itemize}
+    
+    On the other hand, the standard AlexNet classifier was trained using cross-entropy loss as optimization criteria. For both cases, the training parameters were the following:
+    \begin{itemize}
+        \item Initial learning rate: $0.1$
+        \item Optimizer: Learn rate divided by a factor of $10$ every $30$ epochs.
+        \item Batch size: $256$
+    \end{itemize}
+
+    Tested under AutoAttack ($\ell_{2}, \varepsilon=3$), our AR AlexNet obtains a $18.7\%$ top-1 robust accuracy, while our standard AlexNet classifier obtains a $0\%$ top-1 robust accuracy.
+    
+    AR training was performed using the \textit{Robustness} library \cite{robustness} on four Tesla V100 GPUs. Additional details about the model architecture and training parameters used for each experiment and downstream task are as follows.
+    
+    \textbf{Feature Inversion Experiments.} A fully convolutional architecture is used for the decoder or image generator. \tabref{tab:supp_generator01} describes the decoder architecture used to invert both standard and AR representations, where \texttt{conv2d} denotes a $2$D convolutional layer, \texttt{tconv2d} a $2$D transposed convolutional layer, \texttt{BN} batch normalization, \texttt{ReLU} the rectified linear unit operator and \texttt{tanh} the hyperbolic tangent operator.
+    
+    \input{supp_data/fig_supp_disc_diag}
+    
+    \tabref{tab:supp_discriminator01} shows the discriminator architecture, where \texttt{leakyReLU} corresponds to the leaky rectified linear unit, \texttt{linear} to a fully-connected layer, \texttt{apooling} to average pooling and \texttt{sigmoid} to the Sigmoid operator. Motivated by the architecture proposed by Dosovitskiy \& Brox \cite{dosovitskiy_2016_generating}, the discriminator takes as input both a real or fake image and its target \layer{conv5} feature map to compute the probability of the sample being real. \figref{fig:supp_disc_diag} shows the discriminator architecture.
+    
+    
+    Standard and AR autoencoders were trained on ImageNet using $\ell_{1}$ pixel, feature and GAN losses using ADAM. In both cases, all convolutional and transposed convolutional layers are regularized using spectral normalization \cite{miyato_2018_spectral}. Training was performed using Pytorch-only code on two Tesla V100 GPUs.
+    
+    The loss weights and training setup for both standard and AR cases correspond to:
+    \begin{itemize}
+     \setlength\itemsep{0.1\baselineskip}
+        \item Generator weights: $\lambda_{\text{pix}}=2\times 10^{-6}, \lambda_{\text{feat}}=1\times 10^{-2}, \lambda_{\text{GAN}}= 100$
+        \item Discriminator weight: $\lambda_{\text{disc}}=2\times 10^{-6}$
+        \item Training epochs: $90$
+        \item Generator initial learning rate: $3\times 10^{-4}$ (divided by a factor of $10$ every $30$ epochs).
+        \item Discriminator initial learning rate: $12\times 10^{-4}$ (divided by a factor of $10$ every $30$ epochs).
+        \item LeakyReLU factor: $0.2$
+        \item ADAM $\beta\in [0, 0.9]$
+        \item Batch size: $128$
+    \end{itemize}
+    
+    \input{supp_data/tab_supp_gen_model}
+    \input{supp_data/tab_supp_disc_model}
+       
+    \subsection{Style Transfer}
+    \label{sec:supp_proposed_st}
+    
+    While, for standard and AR scenarios, the autoencoder associated to \layer{conv5} corresponds to the model described in \secref{sec:supp_proposed}, those associated to \layer{conv1} and \layer{conv2} use Nearest neighbor interpolation instead of transposed convolution layers to improve the reconstruction accuracy and to avoid the checkerboard effect generated by transposed convolutional layers. \tabref{tab:supp_st01}, and \tabref{tab:supp_st02} describe their architecture details.
+    
+    All generators were fully-trained on ImageNet using Pytorch-only code on two Tesla V100 GPUs. The regularization parameters and training setup for both cases are as follows:
+    \begin{itemize}
+     \setlength\itemsep{0.1\baselineskip}
+        \item Standard generator weights: $\lambda_{\text{pix}}=2\times 10^{-4}, \lambda_{\text{feat}}=1\times 10^{-2}$.
+        \item AR generator weights: $\lambda_{\text{pix}}=2\times 10^{-6}, \lambda_{\text{feat}}=1\times 10^{-2}$.
+        \item Training epochs: $90$.
+        \item Generator initial learning rate: $3\times 10^{-4}$ (divided by a factor of $10$ every $30$ epochs).
+        \item ADAM $\beta\in [0, 0.9]$.
+        \item Batch size: $128$.
+    \end{itemize}
+    
+    \input{supp_data/tab_supp_st01}
+    \input{supp_data/tab_supp_st02}
+    
+    \subsection{Image Denoising}
+    \label{sec:supp_proposed_denoising}
+   
+    Our image denoising model consists of standard and AR autoencoders equipped with skip connections to better preserve image details. \figref{fig:supp_den_diag} illustrates the proposed denoising model, where skip connections follow the Wavelet Pooling approach \cite{yoo_2019_photorealistic}. \tabref{tab:supp_den_enc} and \tabref{tab:supp_den_dec} include additional encoder and decoder architecture details, respectively.
+    \input{supp_data/fig_supp_den_diag}
+    
+    Encoder pooling layers are replaced by Haar wavelet analysis operators, generating an approximation component, denoted as $\{w_{k, \text{LL}}\}$, and three detail components, denoted as $\{w_{k, \text{LH}}, w_{k, \text{HL}}, w_{k, \text{HH}}\}$, where $k$ corresponds to the pooling level. While the approximation (low-frequency) component is passed to the next encoding layer, details are skip-connected to their corresponding stages in the decoder. Following this, transposed convolutional layers in the decoder are replaced by unpooling layers (Haar wavelet synthesis operators), reconstructing a signal with well-preserved details at each level and improving reconstruction.
+    
+    In contrast to the AlexNet architecture, all convolutional layers on the decoder use kernels of size $3 \times 3$. Also, given the striding factor of the first two AlexNet convolutional layers, two additional interpolation layers of striding factor $2$ are used to recover the original input size ($224 \times 224$).
+    
+    Standard and AR robust generators were trained using exclusively $\ell_{1}$ pixel and feature losses. Training was performed on ImageNet using Pytorch-only code on four Tesla V100 GPUs. Generator loss weights and training parameters for both cases correspond to:
+    \begin{itemize}
+     \setlength\itemsep{0.1\baselineskip}
+        \item Generator weights: $\lambda_{\text{pix}}=2\times 10^{-6}, \lambda_{\text{feat}}=1\times 10^{-2}$.
+        \item Training epochs: $90$.
+        \item Generator initial learning rate: $3\times 10^{-4}$ (divided by a factor of $10$ every $30$ epochs).
+        \item ADAM $\beta\in [0, 0.9]$.
+        \item Batch size: $128$.
+    \end{itemize}
+    \input{supp_data/tab_supp_den_enc}
+    \input{supp_data/tab_supp_den_dec}

@@ -1,0 +1,117 @@
+
+\usepackage[utf8]{inputenc} %
+\usepackage[T1]{fontenc}    %
+\usepackage{url}            %
+\usepackage{booktabs}       %
+\usepackage{amsfonts}       %
+\usepackage{nicefrac}       %
+\usepackage{microtype}      %
+\usepackage{xcolor}         %
+
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{makecell} %
+
+\usepackage{caption}
+\usepackage{duckuments}
+\usepackage{xspace}
+
+\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
+\setlength{\marginparwidth}{1.8cm}
+\setuptodonotes{color=pink}
+\usepackage{marginnote}
+\usepackage{zref-savepos}
+
+
+\usepackage{titlesec}
+\titleformat*{\subparagraph}{\itshape}
+
+\newcount\todocount
+
+\newcommand{\paul}[1]{\todo{\textbf{Paul:} #1}}
+\newcommand{\aurelien}[1]{\todo[color=green]{\textbf{Aurelien:} #1}}
+\newcommand{\marc}[2][]{\todo[color=red!60,#1]{\textbf{Marc:} #2}}
+\newcommand{\jo}[2][]{\todo[color=blue!60,#1]{\textbf{Jo:} #2}}
+\newcommand{\jrs}[1]{\textcolor{red}{#1}}
+\renewcommand{\paul}[1]{}
+\renewcommand{\aurelien}[1]{}
+\renewcommand{\marc}[2][]{}
+\renewcommand{\jo}[2][]{}
+\renewcommand{\jrs}[1]{}
+
+
+\newtheorem{claim}{Claim}
+
+
+\newcommand*{\sketchproofname}{Sketch of Proof}
+\newenvironment{sketchproof}[1][\sketchproofname]{
+  \begin{proof}[#1] } {
+  \end{proof}
+}
+
+
+\usepackage{aligned-overset}
+
+
+
+\theoremstyle{theorem}
+\newtheorem{innercustomthm}{Theorem}
+\newenvironment{restate-theorem}[1]
+{\renewcommand\theinnercustomthm{#1}\innercustomthm}
+{\endinnercustomthm}
+
+\newcommand{\norm}[1]{\left \lVert #1 \right \rVert}
+\newcommand{\normin}[1]{\lVert #1 \rVert}
+\newcommand{\scalar}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\card}[1]{\left| #1 \right|}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\prox}{prox}
+\DeclareMathOperator{\clip}{clip}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\expec}[2]{\mathbb E_{#1} \hspace{-0.29em} \left[ #2 \right]}
+\newcommand{\condexpec}[3]{\mathbb E_{#1} \hspace{-0.29em} \left[ #2 \middle\vert #3 \right]}
+\newcommand{\prob}[1]{\textnormal{Pr} \left[ #1 \right]}
+\newcommand{\condprob}[2]{\textnormal{Pr} \left[ #1 \,\middle\vert\, #2 \right]}
+
+\newcommand{\NN}{\mathbb N}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cX}{\mathcal X}
+
+\newcommand{\bbB}{\mathbb B}
+\newcommand{\bbE}{\mathbb E}
+\newcommand{\bbD}{\mathbb D}
+
+\newcommand{\CDsmooth}{\texttt{CD (smooth clip)}}%
+\newcommand{\CDunif}{\texttt{CD (unif clip)}}%
+
+
+\newcommand{\ie}{{\em i.e.,~}}
+\newcommand{\etal}{{\em et al.~}}
+\newcommand{\eg}{{\em e.g.,~}}
+\newcommand{\lcf}{{\em cf.~}}
+\newcommand{\rem}{\underline{Rem}:~}
+\newcommand{\iid}{\textit{i.i.d.}~}
+\newcommand{\VA}{\textit{v.a.}~}
+\newcommand{\wrt}{{\em w.r.t.~}}
+
+\newcommand{\alglinelabel}{%
+    \addtocounter{ALC@line}{-1}%
+    \refstepcounter{ALC@line}%
+    \label%
+}
+

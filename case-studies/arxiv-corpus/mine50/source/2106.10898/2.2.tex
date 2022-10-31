@@ -1,0 +1,21 @@
+\subsection{Contextual Bandit}
+As opposed to the \textit{context-free} bandit, the \textit{contextual} bandit is based on contextual information of the user and items (i.e. feature vector $\mathbf{x}_{t, a}$) to inferring the conditionally expected reward of an action.
+
+For the above contextual bandit, we formulated as follows:
+\begin{framed} 
+\textbf{Problem Formulation}: The  \textit{contextual} bandit\\
+\rule{\textwidth}{0.1mm}
+\textbf{Given}: $T$ rounds, users $u_{t}$, arm set $\mathcal{A}_{t}$, feature vector (context) $\mathbf{x}_{t, a}$.\\
+In each round, for $t\in [T]$, do :
+\begin{itemize}
+    \item [1.] For all $a \in \mathcal{A}_{t}$, algorithm observers the current user $u_{t}$ and arm set $\mathcal{A}_{t}$ with correspond feature vector $\mathbf{x}_{t, a}$.
+    \item[2.] Algorithm chosen action $a_{t}$, and revives the rewards $r_{t,a_{t}}$.
+    \item[3.] With new observation $\mathbf{x}_{t, a}$, $a_{t}$, and $r_{t,a_{t}}$, the algorithm improves its arm selection strategy $\pi$.
+\end{itemize}
+\end{framed} 
+
+As the variant of the multi-armed bandits, the contextual multi-armed bandits (CMAB) are different from the stochastic bandit and adversarial bandits. In the setting of the stochastic setting, the reward of an arm is sampled from the unknown distribution, or so-called reward distribution. In an adversarial environment, the reward for one arm is chosen by the adversarial, rather than drawn from any distribution. Conversely, under the setting of the contextual bandits, what we are interested in is the situation that we need to observe side information at each time slot, where side in formation is the so-called contexts $\mathbf{x}_{t, a}$. For the contextual bandit, there is a set of actions $\mathcal{A}_{t}$, and each action maps a context to an arm, where at each iteration, before the arm selection, the agent will observe the \textit{d}-dimensional context, where $\mathbf{x}_{t, a}\in \mathbb{R}^{d}$. Based on this context, along with the rewards of arms played in the past, to select the arms to be chosen in the current iteration. The goal of the algorithm is to maximize the reward over finite times $t\in [T]$. $\sum_{t=1}^{T} r_{t, a_{t}}$ denote the total rewards of the algorithm and define the optimal expected cumulative reward as $\mathbb{E}\left [ \sum_{t=1}^{T} r_{t, a_{t}^*} \right ]$, where $a_{t}^*$ denote the optimal arm at time $t$. The \textit{regret} of the contextual bandit algorithm is defined as:
+\begin{equation}
+    R(T)\triangleq\mathbb{E}\left [ \sum_{t=1}^{T} r_{t, a_{t}^*} \right ]-\mathbb{E}\left [ \sum_{t=1}^{T} r_{t, a_{t}} \right ]
+\end{equation}
+To address the general situation, different algorithms are proposed, which include LINUCB proposed at \cite{context}, Contextual Thompson Sampling (CTS) described in \cite{tps}, and Neural Bandit in \cite{allesiardo2014neural}, in these algorithms, a linear dependency between the expected payoff of an action and its context is generally hypothesized.

@@ -1,0 +1,30 @@
+\section{Setting}
+\vspace{-0.3cm}
+
+\paragraph{Reinforcement Learning: }
+Let us define a state space $\mathcal{S}$ and an action space $\mathcal{A}$. In the RL setting, one has access to a training \textit{Markov Decision Process} (MDP) denoted $\mathcal{M}$ defined by a transition distribution $P(s'|s,a): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}+$, an initial state distribution $P^{(i)}(s): \mathcal{S} \rightarrow \mathbb{R}+$ and a reward function $r(s,a): \mathcal{S} \times \mathcal{A}\rightarrow \mathbb{R}$. %\laure{\mathbb{R} (pas +) d'après reviewer 3} \ludo{OK done}
+
+A policy is defined as $\pi_\theta(a|s): \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}+$, where $\theta$ denotes the parameters of the policy. A trajectory sampled by a policy $\pi_\theta$ given a MDP $\mathcal{M}$ is denoted $\tau \sim \pi_\theta(\mathcal{M})$. The objective of an RL algorithm is to find a policy that maximizes the expected cumulative (discounted) reward:
+\begin{equation}
+ \theta^* = \arg \max\limits_{\theta} \mathbb{E}_{\tau \sim \pi_\theta(\mathcal{M})}[R(\tau)]  \vspace{-0.15cm} 
+\end{equation}
+where $R(\tau)$ is the discounted cumulative reward over trajectory $\tau$.
+
+\paragraph{Online adaptation: }
+
+We consider the setting where the policy trained over $\mathcal{M}$ will be used over another MDP (denoted $\bar{\mathcal{M}}$) that shares the same state and action space as $\mathcal{M}$, but with a different dynamics and/or initial state distribution and/or reward function\footnote{In the experimental study, one training environment is associated to multiple test environments to analyze the ability to adapt to different variations.}.  Importantly, $\bar{\mathcal{M}}$ is unknown at train time, and cannot be used for model selection, making the tuning of hyper-parameters  difficult.
+
+Given a trained model, we consider the K-shot adaptation setting where the test phase is decomposed into two stages: a first phase in which the model adapts itself to the new test environment over $K$ episodes, and a second phase in which the adapted model is used to collect the reward. We thus expect the first phase to be as short as possible (few episodes), corresponding to a fast adaptation to the new environment. Let us consider that a model $\pi_\theta$ generates a sequence of trajectories $\bar{\tau}_{1}, \bar{\tau}_{2},....,\bar{\tau}_{+\infty}$ over $\bar{\mathcal{M}}$, the performance of such a model, is defined as:
+\begin{equation}
+    Perf(\pi_\theta,\bar{\mathcal{M}},K) = \underset{T \to \infty}{\lim}\:\:\frac{1}{T}\sum_{t=1}^{T}R(\bar{\tau}_{K+t})  \vspace{-0.15cm} 
+\end{equation}    
+which corresponds to the average performance of the policy $\pi_\theta$ over $\bar{\mathcal{M}}$ after $K$ episodes used for adapting the policy. Note that we are interested in methods that adapt quickly to new a test environment and we will consider small values of $K$ in our experiments. In the following, for sake of simplicity, $K$ will refer to the number of policies evaluated during adaptation since each policy may be evaluated over more than a single episode when facing stochastic environments. 
+
+% (i.e., $1$ episode per policy for deterministic environments, and $16$ episodes per policy for stochastic ones).
+
+% \paragraph{Policy adaptation: } Including the horizon $T$ in the evaluation measure is important to evaluate the ability of the policy to adapt to the test environment (see Section XX) since $\pi_\theta$ may have an internal mechanism that update its parameters or internal state at each timestep or episode (e.g finetuning over the test environment). A particular evaluation case is the one where $T = + \infty$ in which case $P(\pi_\theta,\bar{\mathcal{M}},+\infty) $ will denote the performance at convergence of the adaptation mechanism.
+
+
+
+
+

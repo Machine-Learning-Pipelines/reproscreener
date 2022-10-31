@@ -1,0 +1,129 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Akiba et~al.(2019)Akiba, Sano, Yanase, Ohta, and
+  Koyama]{Akiba2019OptunaAN}
+Takuya Akiba, Shotaro Sano, T.~Yanase, Takeru Ohta, and M.~Koyama.
+\newblock Optuna: A next-generation hyperparameter optimization framework.
+\newblock \emph{Proceedings of the 25th ACM SIGKDD International Conference on
+  Knowledge Discovery \& Data Mining}, 2019.
+
+\bibitem[Bernstein(2005)]{Bernstein2005MatrixMT}
+D.~Bernstein.
+\newblock Matrix mathematics: Theory, facts, and formulas with application to
+  linear systems theory.
+\newblock 2005.
+
+\bibitem[Berry and Sauer(2016)]{berry2016consistent}
+Tyrus Berry and Timothy Sauer.
+\newblock Consistent manifold representation for topological data analysis.
+\newblock \emph{arXiv preprint arXiv:1606.02353}, 2016.
+
+\bibitem[Chen and Wong(2020)]{chen2020handling}
+Tianwen Chen and Raymond Chi-Wing Wong.
+\newblock Handling information loss of graph neural networks for session-based
+  recommendation.
+\newblock In \emph{Proceedings of the 26th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, pages 1172--1180, 2020.
+
+\bibitem[De~Maesschalck et~al.(2000)De~Maesschalck, Jouan-Rimbaud, and
+  Massart]{de2000mahalanobis}
+Roy De~Maesschalck, Delphine Jouan-Rimbaud, and D{\'e}sir{\'e}~L Massart.
+\newblock The mahalanobis distance.
+\newblock \emph{Chemometrics and intelligent laboratory systems}, 50\penalty0
+  (1):\penalty0 1--18, 2000.
+
+\bibitem[Ghahramani and Hinton(1996)]{Ghahramani1996TheEA}
+Zoubin Ghahramani and Geoffrey~E. Hinton.
+\newblock The em algorithm for mixtures of factor analyzers.
+\newblock 1996.
+
+\bibitem[Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl]{gilmer2017neural}
+Justin Gilmer, Samuel~S Schoenholz, Patrick~F Riley, Oriol Vinyals, and
+  George~E Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1263--1272. PMLR, 2017.
+
+\bibitem[Hamilton et~al.(2017)Hamilton, Ying, and
+  Leskovec]{Hamilton2017InductiveRL}
+William~L. Hamilton, Zhitao Ying, and J.~Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In \emph{NIPS}, 2017.
+
+\bibitem[Kingma and Ba(2015)]{Kingma2015AdamAM}
+Diederik~P. Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{CoRR}, abs/1412.6980, 2015.
+
+\bibitem[Kipf and Welling(2017)]{Kipf2017SemiSupervisedCW}
+Thomas Kipf and M.~Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock \emph{ArXiv}, abs/1609.02907, 2017.
+
+\bibitem[Kulesza and Taskar(2012)]{Kulesza2012DeterminantalPP}
+A.~Kulesza and B.~Taskar.
+\newblock Determinantal point processes for machine learning.
+\newblock \emph{Found. Trends Mach. Learn.}, 5:\penalty0 123--286, 2012.
+
+\bibitem[Ma et~al.(2019)Ma, Cui, Kuang, Wang, and Zhu]{Ma2019DisentangledGC}
+Jianxin Ma, P.~Cui, Kun Kuang, X.~Wang, and Wenwu Zhu.
+\newblock Disentangled graph convolutional networks.
+\newblock In \emph{ICML}, 2019.
+
+\bibitem[Monti et~al.(2017)Monti, Boscaini, Masci, Rodol{\`a}, Svoboda, and
+  Bronstein]{Monti2017GeometricDL}
+Federico Monti, D.~Boscaini, J.~Masci, E.~Rodol{\`a}, J.~Svoboda, and
+  M.~Bronstein.
+\newblock Geometric deep learning on graphs and manifolds using mixture model
+  cnns.
+\newblock \emph{2017 IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 5425--5434, 2017.
+
+\bibitem[Shchur et~al.(2018)Shchur, Mumme, Bojchevski, and
+  G{\"u}nnemann]{Shchur2018PitfallsOG}
+O.~Shchur, Maximilian Mumme, Aleksandar Bojchevski, and Stephan G{\"u}nnemann.
+\newblock Pitfalls of graph neural network evaluation.
+\newblock \emph{ArXiv}, abs/1811.05868, 2018.
+
+\bibitem[Srivastava et~al.(2014)Srivastava, Hinton, Krizhevsky, Sutskever, and
+  Salakhutdinov]{Srivastava2014DropoutAS}
+N.~Srivastava, Geoffrey~E. Hinton, A.~Krizhevsky, Ilya Sutskever, and
+  R.~Salakhutdinov.
+\newblock Dropout: a simple way to prevent neural networks from overfitting.
+\newblock \emph{J. Mach. Learn. Res.}, 15:\penalty0 1929--1958, 2014.
+
+\bibitem[Velickovic et~al.(2018)Velickovic, Cucurull, Casanova, Romero,
+  Li{\`o}, and Bengio]{Velickovic2018GraphAN}
+Petar Velickovic, Guillem Cucurull, A.~Casanova, A.~Romero, P.~Li{\`o}, and
+  Y.~Bengio.
+\newblock Graph attention networks.
+\newblock \emph{ArXiv}, abs/1710.10903, 2018.
+
+\bibitem[Wu et~al.(2020)Wu, Pan, Chen, Long, Zhang, and Yu]{Wu2020ACS}
+Zonghan Wu, Shirui Pan, Fengwen Chen, G.~Long, C.~Zhang, and P.~Yu.
+\newblock A comprehensive survey on graph neural networks.
+\newblock \emph{IEEE transactions on neural networks and learning systems},
+  2020.
+
+\bibitem[Xie et~al.(2016)Xie, Liang, and Song]{Xie2016DiversityLT}
+B.~Xie, Yingyu Liang, and L.~Song.
+\newblock Diversity leads to generalization in neural networks.
+\newblock \emph{ArXiv}, abs/1611.03131, 2016.
+
+\bibitem[Xie(2018)]{Xie2018DiversityPromotingAL}
+Pengtao Xie.
+\newblock Diversity-promoting and large-scale machine learning for healthcare.
+\newblock 2018.
+
+\bibitem[Yang et~al.(2016)Yang, Cohen, and Salakhutdinov]{Yang2016RevisitingSL}
+Z.~Yang, W.~Cohen, and R.~Salakhutdinov.
+\newblock Revisiting semi-supervised learning with graph embeddings.
+\newblock \emph{ArXiv}, abs/1603.08861, 2016.
+
+\end{thebibliography}

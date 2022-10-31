@@ -1,0 +1,22 @@
+\begin{center}
+\small{
+\resizebox{1\linewidth}{!}{
+\begin{tabular}{|l||cccc|cc|p{2cm}|p{2cm}|} \hline
+& CartPole & Acrobot & Pendulum & Minigrid & Brax HalfCheetah & Brax Ant & ProcGen & toy maze   \\ 
+Nb. Test Env. & 6 & 6 & 3 & 6 & 16 & 15 & 3 & 4 \\ 
+Type of actions & Discr.  & Discr. & Discr.  & Discr. & Cont. & Cont. & Discr. & Discr.  \\ \hline \hline
+Single Policy & 143.4& -99.7 & -52.7 & 0.169 & 7697 & 3338 & 11.09 & -83.2 \\
+LoP  & 149.9& \textbf{-93.2}& \textbf{-28.9}& \textbf{0.447} & \textbf{10589} & \textbf{4031} & \textbf{16.38} & \textbf{-33.6} \\ 
+DIAYN+R  &\textbf{168.1}& -97.0& -47.1& 0.248 & 9680 & 3759 & 11.45 & -42.2 \\
+DIAYN+R $L_2$   &  156.1 & -93.6 & -44.0	& 0.443 & - & - & -& - \\ 
+Lc   &  - &- &- 	&-  & 9547 & 4020 & -& - \\ \hline
+\end{tabular}
+}}
+\end{center}
+\vspace{-0.2cm}
+\caption{Average cumulated reward of the different models over multiple testing environments averaged over 10 training seeds (higher is better). For DIAYN and Lc, we report the results %\textbf{ with  the best value of $\beta$} (this is discussed in the main text) 
+and tested 10 policies for LoP, Lc and DIAYN+R using 10 episodes per policy for stochastic environments, and 1 episode per policy on deterministic ones. Performance is evaluated using the deterministic policy.  Standard deviation is reported for each single test environment in Appendix \ref{sec:appendix_results}.
+}
+\vspace{-0.4cm}
+\label{t:all}
+

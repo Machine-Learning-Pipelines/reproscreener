@@ -1,0 +1,95 @@
+\label{sec:appendix_derivation}
+For an input $\vx$ with label $\vy$, we define the Hessian of single input loss with respect to vector $\vv$ as
+\begin{equation}
+    \mH_\ell(\vv, \vx) = \nabla^2_\vv \ell(f_\vtheta(\vx), \vy) = \nabla^2_\vv \ell(\zx, \vy).
+\end{equation}
+We define the Hessian of loss with respect to $\vv$ for the entire training sample as
+\begin{equation}
+   \HessL(\vv) = \nabla^2_\vv\Ls(\vtheta) = \sum_{i=1}^N \nabla^2_\vv \ell(f_\vtheta(\vx_i), \vy_i)= \sum_{i=1}^N \mH_\ell(\vv, \vx_i) = \E\left[ \mH_\ell(\vv, \vx)\right].
+\end{equation}
+We now derive the Hessian for a fixed input label pair ($\vx, \vy$). Following the definition and notations in \sectionref{sec:prelim}, we also denote output as $\vz = f_\vtheta(\vx)$. We fix a layer $p$ for the layer-wise Hessian. Here the layer-wise weight Hessian is $\mH_\ell(\vw^{(p)}, \vx)$. We also have the output for the layer as $\vz^{(p)}$. Since $\vw^{(p)}$ only appear in the layer but not the subsequent layers, we can consider $ \vz = f_\vtheta(\vx) = g_\vtheta(\vz^{(p)}(\vw,\vx))$ where $g_\vtheta$ only contains the layers after the $p$-th layer and does not depend on $\vw^{(p)}$. Thus, using the Hessian Chain rule \citep{skorski2019chain}, we have 
+\begin{equation}
+    \mH_\ell(\vw^{(p)}, \vx) = \left(\frac{\partial \vz^{(p)}}{\partial\vw^{(p)}}\right)^\T\mH_\ell(\vz^{(p)}, \vx)\left(\frac{\partial \vz^{(p)}}{\partial\vw^{(p)}}\right) + \sum_{i=1}^{m^{(p)}} \frac{\partial \ell(\vz, \vy)}{\partial\evz_i^{(p)}} \nabla^2_{\vw^{(p)}} \evz_i^{(p)},
+\end{equation}
+where $\evz_i^{(p)}$ is the $i$th entry of $\vz^{(p)}$ and $m^{(p)}$ is the number of neurons in $p$-th layer (size of $\vz^{(p)}$).
+
+Since $\vz^{(p)} = \mW^{(p)}\vx^{(p)} + \vb^{(p)}$ and $\vw^{(p)} = \vect(\mW^{(p)})$ we have
+\begin{equation}
+    \frac{\partial \vz^{(p)}}{\partial\vw^{(p)}} = \mI_{m^{(p)}} \otimes \vx^{(p)\T}.
+\end{equation}
+Since $\frac{\partial \vz^{(p)}}{\partial\vw^{(p)}}$ does not depend on $\vw^{(p)}$, for all $i$ we have $\nabla^2_{\vw^{(p)}} \evz_i^{(p)} = 0$.
+Thus, \begin{equation}
+    \mH_\ell(\vw^{(p)}, \vx) = \left(\mI_{m^{(p)}} \otimes \vx^{(p)}\right)\mH_\ell(\vz^{(p)}, \vx)\left(\mI_{m^{(p)}} \otimes \vx^{(p)\T}\right).
+\end{equation}
+We define $\mM^{(p)}_\vx = \mH_\ell(\vz^{(p)}, \vx)$ as in \sectionref{sec:prelim} so that \begin{equation}
+    \mH_\ell(\vw^{(p)}, \vx) = \left(\mI_{m^{(p)}} \otimes \vx^{(p)}\right)\mM^{(p)}_\vx\left(\mI_{m^{(p)}} \otimes \vx^{(p)\T}\right) = \mM_\vx^{(p)} \otimes \vx^{(p)}\vx^{(p)\T}.
+    \label{eqn:appendix_closeformhessian}
+\end{equation}
+
+We now look into $\mM_x^{(p)} = \mH_\ell(\vz^{(p)}, \vx)$. Again we have $\vz = g_\vtheta(\vz^{(p)})$ and can use chain rule here,
+\begin{equation}
+    \mH_\ell(\vz^{(p)}, \vx) = \left(\frac{\partial \vz}{\partial\vz^{(p)}}\right)^\T\mH_\ell(\vz, \vx)\left(\frac{\partial \vz}{\partial\vz^{(p)}}\right) + \sum_{i=1}^{c} \frac{\partial \ell(\vz, \vy)}{\partial\evz_i} \nabla^2_{\vz^{(p)}} \evz_i
+\end{equation}
+By letting $\vp := \softmax(\vz)$ be the output confidence vector, we define the Hessian with respect to output logit $\vz$ as $\mA_\vx$ and have
+\begin{equation}
+    \label{eqn:hessian_decomp_general}
+    \mA_\vx := \mH_\ell(\vz, \vx) = \nabla^2_\vz l(\vz,\vy)= \diag(\vp)- \vp\vp^\T,
+\end{equation}
+according to \citet{singla2019understanding}.
+
+We also define the Jacobian of $\vz$ with respect to $\vz^{(p)}$ (informally logit gradient for layer $p$) as $\mG^{(p)}_\vx := \frac{\partial \vz}{\partial\vz^{(p)}}$.
+For FC layers with ReLUs, we can consider ReLU after the $p$-th layer as multiplying $\vz^{(p)}$ by an indicator function $\1_{\vz^{(p)} > 0}$. To use matrix multiplication, we can turn the indicator function into a diagonal matrix and define it as $\mD^{(p)}$ where
+\begin{equation}
+    \mD^{(p)} := \diag\left(\1_{\vz^{(p)} > 0}\right).
+\end{equation}
+Thus, we have the input of the next layer as $\vx^{(p+1)} = \mD^{(p)}\vz^{(p)}$.
+The FC layers can then be considered as a sequential matrix multiplication and we have the final output as
+\begin{equation}
+    \vz = \mW^{(L)}\mD^{(L-1)}\mW^{(L-1)}\mD^{(L-2)}\cdots \mD^{(p)}\vz^{(p)}.
+\end{equation}
+Thus, \begin{equation}
+    \mG_\vx^{(p)} = \frac{\partial \vz}{\partial\vz^{(p)}} = \mW^{(L)}\mD^{(L-1)}\mW^{(L-1)}\mD^{(L-2)}\cdots \mD^{(p)}.
+\end{equation}
+Since $\mG_\vx^{(p)}$ is independent of $\vz^{(p)}$, we have
+\begin{equation}
+    \nabla^2_{\vz^{(p)}} \evz_i = 0, \forall i.
+    \label{eqn:appendix_zero_logit_output_hessian}
+\end{equation}
+Thus, \begin{equation}
+    \mM_\vx^{(p)} = \mH_\ell(\vz^{(p)}, \vx) = \mG_\vx^{(p)\T}\mA_\vx\mG_\vx^{(p)}.
+\end{equation}
+Moreover, loss Hessian with respect to the bias term $\vb^{(p)}$ equals to that with respect to the output of that layer $\vz^{(p)}$. We thus have
+\begin{equation}
+    \mH_\ell(\vb^{(p)}, \vx) = \mM_\vx^{(p)} = \mG_\vx^{(p)\T}\mA_\vx\mG_\vx^{(p)}.
+\end{equation}
+
+The Hessians of loss for the entire training sample are simply the empirical expectations of the Hessian for single input. We have the formula as the following:
+\begin{align}
+    \HessL(\vw^{(p)}) &= \E\left[\mH_\ell(\vw^{(p)}, \vx)\right] = \E\left[\mM^{(p)}_\vx \otimes \vx^{(p)}\vx^{(p)\T}\right],\label{eqn:app_layerwise_approx}\\
+    \HessL(\vb^{(p)}) &= \HessL(\vz^{(p)}) = \E\left[\mM^{(p)}_\vx\right] = \E\left[\mG_\vx^{(p)\T}\mA_\vx\mG_\vx^{(p)}\right].
+\end{align}
+
+Note that we can further decompose $\mA_\vx = \mQ_\vx^\T\mQ_\vx$, where 
+\begin{equation}
+    \Qx = \diag\left(\sqrt{\vp}\right)\left(\mI_c-\1_c\vp^\T\right),
+    \label{eqn:app_qx}
+\end{equation}
+with $\1_c$ is a all one vector of size $c$, proved in \citet{papyan2019measurements}.
+
+We can further extend the close form expression to off diagonal blocks and the bias entries to get the full Gauss-Newton term of Hessian. Let
+\begin{align}
+    \mF^\T_\vx = \begin{pmatrix}
+    \Gx^{(1)\T} \otimes \vx^{(1)}\\
+    \Gx^{(1)\T}\\
+    \Gx^{(2)\T} \otimes \vx^{(2)}\\
+    \Gx^{(2)\T}\\
+    \vdots\\
+    \Gx^{(L)\T} \otimes \vx^{(n)}\\
+    \Gx^{(L)\T}
+    \end{pmatrix}.
+\end{align}
+The full Hessian is given by
+\begin{equation}
+    \HessL(\vtheta) = \E \left[\mF^\T_{\vx}\mA_\vx\mF_{\vx}\right] + \E\left[\sum_{i=1}^c \frac{\partial \ell(\vz,\vy)}{\evz_i} \nabla^2_\vtheta \evz_i \right].
+\label{eqn:app_full_hessian}
+\end{equation}

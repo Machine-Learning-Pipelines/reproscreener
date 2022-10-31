@@ -1,0 +1,422 @@
+\begin{thebibliography}{10}
+
+\bibitem{gatys_2016_image}
+Gatys, L.A., Ecker, A.S., Bethge, M.:
+\newblock Image style transfer using convolutional neural networks.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2016)  2414--2423
+
+\bibitem{li_2017_universal}
+Li, Y., Fang, C., Yang, J., Wang, Z., Lu, X., Yang, M.H.:
+\newblock Universal style transfer via feature transforms.
+\newblock In: Proceedings of the 31st International Conference on Neural
+  Information Processing Systems. NIPS'17, Red Hook, NY, USA, Curran Associates
+  Inc. (2017)  385--395
+
+\bibitem{yoo_2019_photorealistic}
+Yoo, J., Uh, Y., Chun, S., Kang, B., Ha, J.W.:
+\newblock Photorealistic style transfer via wavelet transforms.
+\newblock In: Proceedings of the IEEE International Conference on Computer
+  Vision. (2019)  9036--9045
+
+\bibitem{yang_2017_high}
+Yang, C., Lu, X., Lin, Z., Shechtman, E., Wang, O., Li, H.:
+\newblock High-resolution image inpainting using multi-scale neural patch
+  synthesis.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2017)  6721--6729
+
+\bibitem{nguyen2017plug}
+Nguyen, A., Clune, J., Bengio, Y., Dosovitskiy, A., Yosinski, J.:
+\newblock Plug \& play generative networks: Conditional iterative generation of
+  images in latent space.
+\newblock In: Proceedings of the IEEE Conference on Computer Vision and Pattern
+  Recognition. (2017)  4467--4477
+
+\bibitem{shocher_2020_semantic}
+Shocher, A., Gandelsman, Y., Mosseri, I., Yarom, M., Irani, M., Freeman, W.T.,
+  Dekel, T.:
+\newblock Semantic pyramid for image generation.
+\newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition. (2020)  7457--7466
+
+\bibitem{nguyen2016synthesizing}
+Nguyen, A., Dosovitskiy, A., Yosinski, J., Brox, T., Clune, J.:
+\newblock Synthesizing the preferred inputs for neurons in neural networks via
+  deep generator networks.
+\newblock In: Advances in neural information processing systems. (2016)
+  3387--3395
+
+\bibitem{rombach_2020_network}
+Rombach, R., Esser, P., Ommer, B.:
+\newblock Network-to-network translation with conditional invertible neural
+  networks.
+\newblock Advances in Neural Information Processing Systems \textbf{33} (2020)
+  2784--2797
+
+\bibitem{santurkar_2019_image}
+Santurkar, S., Ilyas, A., Tsipras, D., Engstrom, L., Tran, B., Madry, A.:
+\newblock Image synthesis with a single (robust) classifier.
+\newblock In: Advances in Neural Information Processing Systems. (2019)
+  1262--1273
+
+\bibitem{zhang_2018_unreasonable}
+Zhang, R., Isola, P., Efros, A.A., Shechtman, E., Wang, O.:
+\newblock The unreasonable effectiveness of deep features as a perceptual
+  metric.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2018)  586--595
+
+\bibitem{goodfellow2016deep}
+Goodfellow, I., Bengio, Y., Courville, A.:
+\newblock Deep learning book.
+\newblock MIT Press \textbf{521} (2016)  800
+
+\bibitem{deecke_2018_image}
+Deecke, L., Vandermeulen, R., Ruff, L., Mandt, S., Kloft, M.:
+\newblock Image anomaly detection with generative adversarial networks.
+\newblock In: Joint european conference on machine learning and knowledge
+  discovery in databases, Springer (2018)  3--17
+
+\bibitem{golan_2018_deep}
+Golan, I., El-Yaniv, R.:
+\newblock Deep anomaly detection using geometric transformations.
+\newblock arXiv preprint arXiv:1805.10917 (2018)
+
+\bibitem{nguyen2019understanding}
+Nguyen, A., Yosinski, J., Clune, J.:
+\newblock Understanding neural networks via feature visualization: A survey.
+\newblock In: Explainable AI: interpreting, explaining and visualizing deep
+  learning.
+\newblock Springer (2019)  55--76
+
+\bibitem{ponce2019evolving}
+Ponce, C.R., Xiao, W., Schade, P.F., Hartmann, T.S., Kreiman, G., Livingstone,
+  M.S.:
+\newblock Evolving images for visual neurons using a deep generative network
+  reveals coding principles and neuronal preferences.
+\newblock Cell \textbf{177} (2019)  999--1009
+
+\bibitem{rombach2022invertible}
+Rombach, R., Esser, P., Blattmann, A., Ommer, B.:
+\newblock Invertible neural networks for understanding semantics of invariances
+  of cnn representations.
+\newblock In: Deep Neural Networks and Data for Automated Driving.
+\newblock Springer (2022)  197--224
+
+\bibitem{bigbigan}
+Donahue, J., Simonyan, K.:
+\newblock Large scale adversarial representation learning.
+\newblock (2019)
+
+\bibitem{dosovitskiy2015inverting}
+Dosovitskiy, A., T.Brox:
+\newblock Inverting visual representations with convolutional networks.
+\newblock In: CVPR. (2016)
+
+\bibitem{dosovitskiy_2016_generating}
+Dosovitskiy, A., Brox, T.:
+\newblock Generating images with perceptual similarity metrics based on deep
+  networks.
+\newblock In: Advances in neural information processing systems. (2016)
+  658--666
+
+\bibitem{esser2021taming}
+Esser, P., Rombach, R., Ommer, B.:
+\newblock Taming transformers for high-resolution image synthesis.
+\newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition. (2021)  12873--12883
+
+\bibitem{esser2021imagebart}
+Esser, P., Rombach, R., Blattmann, A., Ommer, B.:
+\newblock Imagebart: Bidirectional context with multinomial diffusion for
+  autoregressive image synthesis.
+\newblock Advances in Neural Information Processing Systems \textbf{34} (2021)
+  3518--3532
+
+\bibitem{madry_2018_towards}
+Madry, A., Makelov, A., Schmidt, L., Tsipras, D., Vladu, A.:
+\newblock Towards deep learning models resistant to adversarial attacks. iclr.
+\newblock arXiv preprint arXiv:1706.06083 (2018)
+
+\bibitem{engstrom_2019_adversarial}
+Engstrom, L., Ilyas, A., Santurkar, S., Tsipras, D., Tran, B., Madry, A.:
+\newblock Adversarial robustness as a prior for learned representations.
+\newblock arXiv preprint arXiv:1906.00945 (2019)
+
+\bibitem{razavi2019generating}
+Razavi, A., van~den Oord, A., Vinyals, O.:
+\newblock Generating diverse high-fidelity images with vq-vae-2.
+\newblock In: Advances in neural information processing systems. (2019)
+  14866--14876
+
+\bibitem{van2017neural}
+Van Den~Oord, A., Vinyals, O.,  et~al.:
+\newblock Neural discrete representation learning.
+\newblock Advances in neural information processing systems \textbf{30} (2017)
+
+\bibitem{krizhevsky_2012_imagenet}
+Krizhevsky, A., Sutskever, I., Hinton, G.E.:
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In: Advances in neural information processing systems. (2012)
+  1097--1105
+
+\bibitem{simonyan_2014_very}
+Simonyan, K., Zisserman, A.:
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock arXiv preprint arXiv:1409.1556 (2014)
+
+\bibitem{he_2016_deep}
+He, K., Zhang, X., Ren, S., Sun, J.:
+\newblock Deep residual learning for image recognition.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2016)  770--778
+
+\bibitem{krizhevsky_2009_learning}
+Krizhevsky, A., Hinton, G.,  et~al.:
+\newblock Learning multiple layers of features from tiny images.
+\newblock (2009)
+
+\bibitem{russakovsky_2015_imagenet}
+Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S., Huang, Z.,
+  Karpathy, A., Khosla, A., Bernstein, M.,  et~al.:
+\newblock Imagenet large scale visual recognition challenge.
+\newblock International journal of computer vision \textbf{115} (2015)
+  211--252
+
+\bibitem{agustsson_2017_ntire}
+Agustsson, E., Timofte, R.:
+\newblock Ntire 2017 challenge on single image super-resolution: Dataset and
+  study.
+\newblock In: Proceedings of the IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops. (2017)  126--135
+
+\bibitem{dosovitskiy_2015_inverting}
+Dosovitskiy, A., Brox, T.:
+\newblock Inverting convolutional networks with convolutional networks.
+\newblock arXiv preprint arXiv:1506.02753 \textbf{4} (2015)
+
+\bibitem{mahendran_2015_understanding}
+Mahendran, A., Vedaldi, A.:
+\newblock Understanding deep image representations by inverting them.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2015)  5188--5196
+
+\bibitem{mahendran_2016_visualizing}
+Mahendran, A., Vedaldi, A.:
+\newblock Visualizing deep convolutional neural networks using natural
+  pre-images.
+\newblock International Journal of Computer Vision \textbf{120} (2016)
+  233--255
+
+\bibitem{salman_2020_adversarially}
+Salman, H., Ilyas, A., Engstrom, L., Kapoor, A., Madry, A.:
+\newblock Do adversarially robust imagenet models transfer better?
+\newblock arXiv preprint arXiv:2007.08489 (2020)
+
+\bibitem{zhang2020secret}
+Zhang, Y., Jia, R., Pei, H., Wang, W., Li, B., Song, D.:
+\newblock The secret revealer: Generative model-inversion attacks against deep
+  neural networks.
+\newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition. (2020)  253--261
+
+\bibitem{jun2020distribution}
+Jun, H., Child, R., Chen, M., Schulman, J., Ramesh, A., Radford, A., Sutskever,
+  I.:
+\newblock Distribution augmentation for generative modeling.
+\newblock In: International Conference on Machine Learning, PMLR (2020)
+  5006--5019
+
+\bibitem{kingma_2013_auto}
+Kingma, D.P., Welling, M.:
+\newblock Auto-encoding variational bayes.
+\newblock arXiv preprint arXiv:1312.6114 (2013)
+
+\bibitem{ng2011sparse}
+Ng, A.,  et~al.:
+\newblock Sparse autoencoder.
+\newblock CS294A Lecture notes \textbf{72} (2011)  1--19
+
+\bibitem{pan_2009_survey}
+Pan, S.J., Yang, Q.:
+\newblock A survey on transfer learning.
+\newblock IEEE Transactions on knowledge and data engineering \textbf{22}
+  (2009)  1345--1359
+
+\bibitem{johnson_2016_perceptual}
+Johnson, J., Alahi, A., Fei-Fei, L.:
+\newblock Perceptual losses for real-time style transfer and super-resolution.
+\newblock In: European conference on computer vision, Springer (2016)  694--711
+
+\bibitem{simonyan_2013_deep}
+Simonyan, K., Vedaldi, A., Zisserman, A.:
+\newblock Deep inside convolutional networks: Visualising image classification
+  models and saliency maps.
+\newblock arXiv preprint arXiv:1312.6034 (2013)
+
+\bibitem{goodfellow_2014_explaining}
+Goodfellow, I.J., Shlens, J., Szegedy, C.:
+\newblock Explaining and harnessing adversarial examples.
+\newblock arXiv preprint arXiv:1412.6572 (2014)
+
+\bibitem{athalye_2018_obfuscated}
+Athalye, A., Carlini, N., Wagner, D.:
+\newblock Obfuscated gradients give a false sense of security: Circumventing
+  defenses to adversarial examples.
+\newblock arXiv preprint arXiv:1802.00420 (2018)
+
+\bibitem{ulyanov2018deep}
+Ulyanov, D., Vedaldi, A., Lempitsky, V.:
+\newblock Deep image prior.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2018)  9446--9454
+
+\bibitem{vincent_2010_stacked}
+Vincent, P., Larochelle, H., Lajoie, I., Bengio, Y., Manzagol, P.A., Bottou,
+  L.:
+\newblock Stacked denoising autoencoders: Learning useful representations in a
+  deep network with a local denoising criterion.
+\newblock Journal of machine learning research \textbf{11} (2010)
+
+\bibitem{kessy_2018_optimal}
+Kessy, A., Lewin, A., Strimmer, K.:
+\newblock Optimal whitening and decorrelation.
+\newblock The American Statistician \textbf{72} (2018)  309--314
+
+\bibitem{mao_2016_image}
+Mao, X.J., Shen, C., Yang, Y.B.:
+\newblock Image restoration using very deep convolutional encoder-decoder
+  networks with symmetric skip connections.
+\newblock arXiv preprint arXiv:1603.09056 (2016)
+
+\bibitem{el_2020_blind}
+{El Helou}, M., S{\"u}sstrunk, S.:
+\newblock Blind universal bayesian image denoising with gaussian noise level
+  learning.
+\newblock IEEE Transactions on Image Processing \textbf{29} (2020)  4885--4897
+
+\bibitem{zhang_2018_ffdnet}
+Zhang, K., Zuo, W., Zhang, L.:
+\newblock Ffdnet: Toward a fast and flexible solution for cnn-based image
+  denoising.
+\newblock IEEE Transactions on Image Processing \textbf{27} (2018)  4608--4622
+
+\bibitem{moeller_2015_learning}
+Moeller, M., Diebold, J., Gilboa, G., Cremers, D.:
+\newblock Learning nonlinear spectral filters for color image reconstruction.
+\newblock In: Proceedings of the IEEE International Conference on Computer
+  Vision. (2015)  289--297
+
+\bibitem{liu_2018_adv}
+Liu, X., Li, Y., Wu, C., Hsieh, C.J.:
+\newblock Adv-bnn: Improved adversarial defense through robust bayesian neural
+  network.
+\newblock arXiv preprint arXiv:1810.01279 (2018)
+
+\bibitem{zhang_2020_geometry}
+Zhang, J., Zhu, J., Niu, G., Han, B., Sugiyama, M., Kankanhalli, M.:
+\newblock Geometry-aware instance-reweighted adversarial training.
+\newblock arXiv preprint arXiv:2010.01736 (2020)
+
+\bibitem{croce_2020_reliable}
+Croce, F., Hein, M.:
+\newblock Reliable evaluation of adversarial robustness with an ensemble of
+  diverse parameter-free attacks.
+\newblock In: International conference on machine learning, PMLR (2020)
+  2206--2216
+
+\bibitem{sosnovik_2019_scale}
+Sosnovik, I., Szmaja, M., Smeulders, A.:
+\newblock Scale-equivariant steerable networks.
+\newblock arXiv preprint arXiv:1910.11093 (2019)
+
+\bibitem{fan_2020_scale}
+Fan, Y., Yu, J., Liu, D., Huang, T.S.:
+\newblock Scale-wise convolution for image restoration.
+\newblock In: Proceedings of the AAAI Conference on Artificial Intelligence.
+  Volume~34. (2020)  10770--10777
+
+\bibitem{chen2020shape}
+Chen, P., Agarwal, C., Nguyen, A.:
+\newblock The shape and simplicity biases of adversarially robust
+  imagenet-trained cnns.
+\newblock arXiv preprint arXiv:2006.09373 (2020)
+
+\bibitem{rifai2011contractive}
+Rifai, S., Vincent, P., Muller, X., Glorot, X., Bengio, Y.:
+\newblock Contractive auto-encoders: Explicit invariance during feature
+  extraction.
+\newblock In: Icml. (2011)
+
+\bibitem{chen_2016_trainable}
+Chen, Y., Pock, T.:
+\newblock Trainable nonlinear reaction diffusion: A flexible framework for fast
+  and effective image restoration.
+\newblock IEEE transactions on pattern analysis and machine intelligence
+  \textbf{39} (2016)  1256--1272
+
+\bibitem{burger_2012_image}
+Burger, H.C., Schuler, C.J., Harmeling, S.:
+\newblock Image denoising: Can plain neural networks compete with bm3d?
+\newblock In: 2012 IEEE conference on computer vision and pattern recognition,
+  IEEE (2012)  2392--2399
+
+\bibitem{zhang_2011_color}
+Zhang, L., Wu, X., Buades, A., Li, X.:
+\newblock Color demosaicking by local directional interpolation and nonlocal
+  adaptive thresholding.
+\newblock Journal of Electronic imaging \textbf{20} (2011)  023016
+
+\bibitem{MartinFTM01}
+Martin, D., Fowlkes, C., Tal, D., Malik, J.:
+\newblock A database of human segmented natural images and its application to
+  evaluating segmentation algorithms and measuring ecological statistics.
+\newblock In: Proc. 8th Int'l Conf. Computer Vision. Volume~2. (2001)  416--423
+
+\bibitem{anwar_2019_real}
+Anwar, S., Barnes, N.:
+\newblock Real image denoising with feature attention.
+\newblock In: Proceedings of the IEEE/CVF International Conference on Computer
+  Vision. (2019)  3155--3164
+
+\bibitem{guo_2019_toward}
+Guo, S., Yan, Z., Zhang, K., Zuo, W., Zhang, L.:
+\newblock Toward convolutional blind denoising of real photographs.
+\newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition. (2019)  1712--1722
+
+\bibitem{isola2017image}
+Isola, P., Zhu, J.Y., Zhou, T., Efros, A.A.:
+\newblock Image-to-image translation with conditional adversarial networks.
+\newblock In: Proceedings of the IEEE conference on computer vision and pattern
+  recognition. (2017)  1125--1134
+
+\bibitem{ruff_2019_deep}
+Ruff, L., Vandermeulen, R.A., G{\"o}rnitz, N., Binder, A., M{\"u}ller, E.,
+  M{\"u}ller, K.R., Kloft, M.:
+\newblock Deep semi-supervised anomaly detection.
+\newblock arXiv preprint arXiv:1906.02694 (2019)
+
+\bibitem{wang_2019_effective}
+Wang, S., Zeng, Y., Liu, X., Zhu, E., Yin, J., Xu, C., Kloft, M.:
+\newblock Effective end-to-end unsupervised outlier detection via inlier
+  priority of discriminative network.
+\newblock In: NeurIPS. (2019)  5960--5973
+
+\bibitem{parkhi_2012_cats}
+Parkhi, O.M., Vedaldi, A., Zisserman, A., Jawahar, C.:
+\newblock Cats and dogs.
+\newblock In: 2012 IEEE conference on computer vision and pattern recognition,
+  IEEE (2012)  3498--3505
+
+\bibitem{robustness}
+Engstrom, L., Ilyas, A., Salman, H., Santurkar, S., Tsipras, D.:
+\newblock Robustness (python library) (2019)
+
+\bibitem{miyato_2018_spectral}
+Miyato, T., Kataoka, T., Koyama, M., Yoshida, Y.:
+\newblock Spectral normalization for generative adversarial networks.
+\newblock arXiv preprint arXiv:1802.05957 (2018)
+
+\end{thebibliography}

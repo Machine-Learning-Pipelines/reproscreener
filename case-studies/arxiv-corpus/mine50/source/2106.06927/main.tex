@@ -1,0 +1,71 @@
+
+\documentclass[runningheads]{llncs}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{color}
+
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{symbols}
+\input{math_commands}
+\newcommand{\layer}[1]{\ensuremath{\mathsf{#1}\xspace}}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\usepackage{enumitem}
+\usepackage{float}
+\setlist{nolistsep}
+
+\definecolor{mybrown}{rgb}{0.87058824, 0.56078431, 0.01960784}
+\definecolor{myblue}{rgb}{0.3372549 , 0.70588235, 0.91372549}
+\definecolor{mypurple}{rgb}{0.8, 0.47058824, 0.7372549 }
+\definecolor{myorange}{rgb}{0.835, 0.368, 0}
+\definecolor{mygreen}{rgb}{0.00784314, 0.61960784, 0.45098039}
+\definecolor{mygt}{rgb}{0.0078125 , 0.57421875, 0.40625}
+\definecolor{mysp}{rgb}{0.84765625, 0.515625  , 0.0234375}
+\definecolor{mycitecolor}{rgb}{0,0.08,0.45}
+\definecolor{mygr}{rgb}{0.9607,0.9607,0.9607}
+\definecolor{myoo}{rgb}{0.992,0.9176,0.9019}
+\definecolor{myrr}{HTML}{AE031A}
+\definecolor{mybb}{HTML}{0155B3}
+\usepackage[pagebackref=true,
+            breaklinks=true,
+            colorlinks,
+            bookmarks=false,
+            citecolor=mycitecolor,
+            urlcolor=magenta,
+            hypertexnames=false]{hyperref}
+
+
+\begin{document}
+\pagestyle{headings}
+\mainmatter
+
+\def\ACCV22SubNumber{}
+\newcommand{\papertitle}{Inverting Adversarially Robust Networks\\for Image Synthesis}
+\title{\papertitle}
+\titlerunning{Inverting Adversarially Robust Networks for Image Synthesis}
+\authorrunning{R. A. Rojas-Gomez et al.}
+\author{Renan A. Rojas-Gomez\inst{1} \and Raymond A. Yeh\inst{2} \and\\Minh N. Do\inst{1} \and Anh Nguyen\inst{3}}
+\institute{University of Illinois at Urbana-Champaign\and Purdue University \and Auburn University\ \\\email{\{renanar2,minhdo\}@illinois.edu}\quad \email{rayyeh@purdue.edu}\quad \email{anh.ng8@gmail.com}}
+
+\maketitle
+\input{abs}
+\input{sec_intro}
+\input{sec_rel}
+\input{sec_prelim}
+\input{sec_app}
+\input{sec_exp}
+\input{sec_exp_add}
+\input{sec_conc}
+
+\bibliographystyle{splncs}
+\bibliography{refs}
+
+\clearpage
+\input{sec_supp}
+\end{document}

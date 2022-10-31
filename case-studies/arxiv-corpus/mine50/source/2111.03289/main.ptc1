@@ -1,0 +1,16 @@
+{\reset@font\ptcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {A}Proofs for VOFUL2}{\reset@font\ptcSfont 13}{appendix.A}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {A.1}Proof of Lemma \ref {lem:epc}}{\reset@font\ptcSSfont 13}{subsection.A.1}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {A.2}Proof of Lemma \ref {lem:confset}}{\reset@font\ptcSSfont 14}{subsection.A.2}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {A.3}Proof of Lemma \ref {lem:concreg-emp}}{\reset@font\ptcSSfont 15}{subsection.A.3}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {A.4}$d\sqrt {K}$ regret bound of VOFUL2}{\reset@font\ptcSSfont 16}{subsection.A.4}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {A.5}Miscellaneous Lemmas}{\reset@font\ptcSSfont 17}{subsection.A.5}}
+{\reset@font\ptcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {B}Proofs for VARLin2}{\reset@font\ptcSfont 18}{appendix.B}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.1}Proof of Lemma \ref {lem:optimism}}{\reset@font\ptcSSfont 18}{subsection.B.1}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.2}Proof of Lemma \ref {lem:confset-rl} }{\reset@font\ptcSSfont 18}{subsection.B.2}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.3}Proof of Lemma \ref {lem:epc2}}{\reset@font\ptcSSfont 19}{subsection.B.3}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.4}Proof of Lemma \ref {lem:concreg-emp-rl}}{\reset@font\ptcSSfont 20}{subsection.B.4}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.5}The Exact Definition of $I_{k,h}$ and Proof of Lemma\nobreakspace {}\ref {lem-I}}{\reset@font\ptcSSfont 20}{subsection.B.5}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.6}Proof of Proposition \nobreakspace {}\ref {prop:rl-bound}}{\reset@font\ptcSSfont 21}{subsection.B.6}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.7}Proof of Theorem \ref {main-rl}}{\reset@font\ptcSSfont 23}{subsection.B.7}}
+{\reset@font\ptcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {B.8}Miscellaneous lemmas}{\reset@font\ptcSSfont 24}{subsection.B.8}}
+{\reset@font\ptcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {C}Comparison with\nobreakspace {}\citet {he2021logarithmic}}{\reset@font\ptcSfont 24}{appendix.C}}

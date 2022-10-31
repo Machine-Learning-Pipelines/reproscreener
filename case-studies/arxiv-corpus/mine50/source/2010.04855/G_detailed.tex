@@ -1,0 +1,136 @@
+\section{Balancing weight proof}\label{sec:balancing}
+
+In this section, we provide the proofs to relate our algorithm with the balancing weight algorithms in previous work.
+
+\begin{proof}[Proof of Proposition~\ref{prop:balance_exists}]
+This result is standard in causal inference textbooks, e.g.  \cite[Technical Point 3.1]{hernan2010causal}. We state the proof for clarity:
+\begin{align*}
+ \int \gamma (d,x)\alpha_0(d,x)\mathrm{d}\text{\normalfont pr}(d,x)
+    &= \int \int  \gamma(d,x) \frac{1(d=d^*)}{\text{\normalfont pr}(D=d^* \mid x)}  \mathrm{d}\text{\normalfont pr}(d \mid x) \mathrm{d}\text{\normalfont pr}(x)   \\
+    &= \int \frac{1}{\text{\normalfont pr}(D=d^* \mid x)}  \int \gamma(d,x)1(d=d^*) \mathrm{d}\text{\normalfont pr}(d \mid x)\mathrm{d}\text{\normalfont pr}(x)  \\
+    &= \int \frac{1}{\text{\normalfont pr}(D=d^* \mid x)} \gamma(d^*,x) \text{\normalfont pr}(D=d^* \mid x) \mathrm{d}\text{\normalfont pr}(x) \\
+    &=\int \gamma(d^*,x)\mathrm{d}\text{\normalfont pr}(x).
+\end{align*}
+The variance of $\alpha_0$ is finite since $\text{\normalfont pr}(D=d^* \mid X)$ is bounded away from zero almost surely.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:balance_dne}]
+The result follows from the Riesz representation theorem in $\mathbb{L}^2$, e.g. \cite[Theorem 5.3]{luenberger1997optimization} and \cite[Lemma 2.1]{chernozhukov2022debiased}. It is alluded to in e.g. \cite{van1991differentiable,newey1994asymptotic}. We state the proof for clarity.
+
+Consider the functional $F:\gamma \mapsto \int \gamma(d^*,x)\mathrm{d}\text{\normalfont pr}(x)$ over $\mathbb{L}^2$. A Riesz representer $\alpha_0\in \mathbb{L}^2$ exists if and only if the functional $F$ is bounded and linear. Clearly the functional $F$ is linear in the sense that, for any scalar $c\in\mathbb{R}$, $F(c\gamma)=cF(\gamma)$. A linear functional is bounded over $\mathbb{L}^2$  if and only if it is continuous over $\mathbb{L}^2$ \cite[Proposition 5.1]{luenberger1997optimization}. We will show that this functional is not continuous over $\mathbb{L}^2$.
+
+Consider the zero function $\tilde{0}\in \mathbb{L}^2$. The definition of continuity of $F$ at $\tilde{0}$ is as follows: for all $\epsilon>0$, there exists some $\delta>0$ such that for all $\gamma\in \mathbb{L}^2$, $\|\gamma-\tilde{0}\|_{\mathbb{L}^2}<\delta$ implies $|F(\gamma)-F(\tilde{0})|<\epsilon$. To violate continuity, we must show that there exists some $\epsilon>0$ such that for all $\delta>0$, there exists a $\tilde{\gamma}\in \mathbb{L}^2$ whereby $\|\tilde{\gamma}-\tilde{0}\|_{\mathbb{L}^2}<\delta$ yet $|F(\tilde{\gamma})-F(\tilde{0})|>\epsilon$.
+
+To serve as this counterexample, define the function $\tilde{\gamma}$ such that $\tilde{\gamma}(d^*,x)=1$ for any $x$, and $\tilde{\gamma}(d,x)=0$ for any $x$ and any $d\neq d^*$. Observe that, because treatment is continuous, the set of values for which $d=d^*$ is a set with measure zero. Therefore $\|\tilde{\gamma}-\tilde{0}\|_2=0$ yet $|F(\tilde{\gamma})-F(\tilde{0})|=|1-0|=1$.
+
+In summary, we have shown that $F$ is linear but not continuous over $\mathbb{L}^2$ and therefore not bounded over $\mathbb{L}^2$. Therefore its Riesz representer in $\mathbb{L}^2$ does not exist.
+\end{proof}
+
+
+\begin{proof}[Proof of Corollary~\ref{cor:connect}]
+We proceed in steps. For clarity, we focus on the formulation of \cite{hirshberg2019minimax}, who consider estimation of $\theta_0^{ATE}(0)$ for binary treatment. We maintain the notation $\gamma_0(d,x)=E(Y \mid D=d,X=x)$.
+\begin{enumerate}
+    \item Reformulation of \cite{hirshberg2019minimax}. 
+    
+    The authors propose the estimator
+$$
+\tilde{\theta}^{ATE}(0)=n^{-1}\sum_{i=1}^n 1(D_i=0)\hat{w}(X_i) Y_i
+$$
+where $\hat{w}(x)$ is their estimator of $1/\text{\normalfont pr}(d=0 \mid x)$. Define
+$$
+\hat{\alpha}_i=\hat{\alpha}(D_i,X_i)=1(D_i=0)\hat{w}(X_i)
+$$
+so that 
+$$
+\tilde{\theta}^{ATE}(0)=n^{-1}\sum_{i=1}^n \hat{\alpha}_i Y_i.
+$$
+
+    \item Equivalence. 
+    
+    As noted in \cite[Lemma 1]{hirshberg2019minimax},
+    $$
+    \tilde{\theta}^{ATE}(0)=n^{-1}\sum_{i=1}^n\hat{f}(X_i)
+    $$
+    where $\hat{f}(x)$ is a kernel ridge regression estimator of $\gamma_0(0,x)$, which is estimated by subsetting to the untreated observations $(i:D_i=0)$ and then regressing $(Y_i)_{i:D_i=0}$ on $(X_i)_{i:D_i=0}$.
+    
+    \item Reformulation of our proposal.
+    
+    In Algorithm~\ref{algorithm:treatment}, we propose
+    $$
+    \hat{\theta}^{ATE}(0)=n^{-1}\sum_{i=1}^n Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{D0}\odot K_{Xx_i})=n^{-1}\sum_{i=1}^n \hat{\gamma}(0,X_i),
+    $$
+    where $\hat{\gamma}(d,x)$ is a kernel ridge regression estimator of $\gamma_0(d,x)$, which is estimated with all of the observations $(i=1,...,n)$. Take $k_{\mathcal{D}}(d,d')=1(d=d')$ in the product kernel $k(d,x;d',x')=k_{\mathcal{D}}(d,d')k_{\mathcal{X}}(x,x')$ of the tensor product RKHS $\mathcal{H}=\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}$. Then it is numerically equivalent to set $\hat{\gamma}(0,x)=\hat{f}(x)$, where $\hat{f}(x)$ is the kernel ridge regression described above.
+    
+    \item Collecting results.
+    
+    In summary, we have shown
+    $$
+    n^{-1}\sum_{i=1}^n \hat{\alpha}_i Y_i=\tilde{\theta}^{ATE}(0)=n^{-1}\sum_{i=1}^n\hat{f}(X_i)=n^{-1}\sum_{i=1}^n \hat{\gamma}(0,X_i)=\hat{\theta}^{ATE}(0).
+    $$
+\end{enumerate}
+
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:extend}]
+We consider each case, appealing to Algorithm~\ref{algorithm:treatment}. Let $e_j\in \mathbb{R}^n$ be the vector of zeroes whose $j$th component is one. 
+\begin{enumerate}
+    \item $\hat{\theta}^{ATE}(d)=n^{-1}\sum_{i=1}^n Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx_i})  $;
+ 
+    Write $Z=n^{-1}\sum_{i=1}^n(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx_{i}})$. Then
+    $$
+    \hat{\theta}^{ATE}(d)=Y^{\top}Z=\sum_{i=1}^n Y_iZ_i=n^{-1}\sum_{i=1}^n Y_i nZ_i.
+    $$
+    Therefore
+    $$
+    \hat{\alpha}_j^{ATE}=nZ_j=ne_j^{\top} Z=e_j^{\top}\sum_{i=1}^n(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx_{i}}).
+    $$
+    
+    % Write $Z^{(\ell)}=(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx_{\ell}})$. Then
+    % $$
+    % \hat{\theta}^{ATE}(d)=n^{-1}\sum_{\ell=1}^n Y^{\top}Z^{(\ell)}=n^{-1}\sum_{\ell=1}^n  \sum_{i=1}^n Y_{i} Z^{(\ell)}_{i}=n^{-1}\sum_{i=1}^nY_{i}\sum_{\ell=1}^n Z^{(\ell)}_{i}
+    % $$
+    % so
+    % $
+    % \hat{\alpha}_{i}^{ATE}=\sum_{\ell=1}^n Z^{(\ell)}_{i}.
+    % $
+    
+     \item $\hat{\theta}^{DS}(d,\tilde{\text{\normalfont pr}})=\tilde{n}^{-1}\sum_{i=1}^{\tilde{n}} Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{X\tilde{x}_i}) $;
+     
+     The argument is as above, taking $Z=\tilde{n}^{-1}\sum_{i=1}^{\tilde{n}}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{X\tilde{x}_i}) $. Therefore
+     $$
+     \hat{\alpha}_j^{DS}=n\tilde{n}^{-1}e_j^{\top}\sum_{i=1}^{\tilde{n}}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{X\tilde{x}_i}).
+     $$
+     
+    \item $\hat{\theta}^{ATT}(d,d')=Y^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}[K_{Dd'}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]$;
+    
+    The argument is as above, taking $Z=(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}[K_{Dd'}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]$. Therefore
+     $$
+     \hat{\alpha}_j^{ATT}=ne_j^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}[K_{Dd'}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}].
+     $$
+     
+    \item $\hat{\theta}^{CATE}(d,v)=Y^{\top}(K_{DD}\odot K_{VV}\odot K_{XX} +n\lambda  I )^{-1}[K_{Dd}\odot K_{Vv}\odot \{K_{XX}(K_{VV}+n\lambda_2  I )^{-1}K_{Vv} \}] $;
+    
+    The argument is as above, taking $Z=(K_{DD}\odot K_{VV}\odot K_{XX} +n\lambda  I )^{-1}[K_{Dd}\odot K_{Vv}\odot \{K_{XX}(K_{VV}+n\lambda_2  I )^{-1}K_{Vv} \}]$. Therefore
+     $$
+    \hat{\alpha}_j^{CATE}=ne_j^{\top}(K_{DD}\odot K_{VV}\odot K_{XX} +n\lambda  I )^{-1}[K_{Dd}\odot K_{Vv}\odot \{K_{XX}(K_{VV}+n\lambda_2  I )^{-1}K_{Vv} \}].
+     $$
+\end{enumerate}
+Likewise for incremental functions, e.g.
+$$
+\hat{\alpha}_j^{\nabla:ATE}=e_j^{\top}\sum_{i=1}^n(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(\nabla_dK_{Dd}\odot K_{Xx_{i}}).
+$$
+
+\end{proof}
+
+
+
+% See  for the proof. 
+% $(\hat{\alpha}_i^{ATE},\hat{\alpha}_i^{DS},\hat{\alpha}_i^{ATT},\hat{\alpha}_i^{CATE})$ $(i=1,...,n)$ 
+
+% \begin{enumerate}
+%     \item , where $\hat{\alpha}_j^{ATE}=e_j^{\top}\sum_{i=1}^n(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{Xx_{i}})$;
+%      \item where $\hat{\alpha}_j^{DS}=n\tilde{n}^{-1}e_j^{\top}\sum_{i=1}^{\tilde{n}}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(K_{Dd}\odot K_{X\tilde{x}_i})$;
+%     \item  where $\hat{\alpha}_j^{ATT}=ne_j^{\top}(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}[K_{Dd'}\odot \{K_{XX}(K_{DD}+n\lambda_1  I )^{-1}K_{Dd}\}]$;
+%     \item  where $\hat{\alpha}_j^{CATE}=ne_j^{\top}(K_{DD}\odot K_{VV}\odot K_{XX} +n\lambda  I )^{-1}[K_{Dd}\odot K_{Vv}\odot \{K_{XX}(K_{VV}+n\lambda_2  I )^{-1}K_{Vv} \}]$.
+% \end{enumerate}
+%  where $\hat{\alpha}_j^{\nabla:ATE}=e_j^{\top}\sum_{i=1}^n(K_{DD}\odot K_{XX}+n\lambda  I )^{-1}(\nabla_dK_{Dd}\odot K_{Xx_{i}})$

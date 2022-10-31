@@ -1,0 +1,2829 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{abadi2016Deep}{inproceedings}{}
+      \name{author}{7}{}{%
+        {{hash=f39ffee58f8a71d84d8b13c05804b2cc}{%
+           family={Abadi},
+           familyi={A\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=25446ff761c3633df18431097f7205ca}{%
+           family={Chu},
+           familyi={C\bibinitperiod},
+           given={Andy},
+           giveni={A\bibinitperiod}}}%
+        {{hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+        {{hash=707fa44f08f047ab822f84fe38c69dfb}{%
+           family={McMahan},
+           familyi={M\bibinitperiod},
+           given={H.\bibnamedelimi Brendan},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=2eea0075441c4e9acfc378c1345323f2}{%
+           family={Mironov},
+           familyi={M\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+        {{hash=32a08717e0d6dcde59bc98b96800ed6c}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Li},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{1cf6f3c19f4fd018f06a8f6a49bc4394}
+      \strng{fullhash}{6789995b8049ab2d061a5a6e71e0d100}
+      \strng{bibnamehash}{6789995b8049ab2d061a5a6e71e0d100}
+      \strng{authorbibnamehash}{6789995b8049ab2d061a5a6e71e0d100}
+      \strng{authornamehash}{1cf6f3c19f4fd018f06a8f6a49bc4394}
+      \strng{authorfullhash}{6789995b8049ab2d061a5a6e71e0d100}
+      \field{sortinit}{A}
+      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Machine learning techniques based on neural networks are achieving remarkable results in a wide variety of domains. Often, the training of models requires large, representative datasets, which may be crowdsourced and contain sensitive information. The models should not expose private information in these datasets. Addressing this goal, we develop new algorithmic techniques for learning and a refined analysis of privacy costs within the framework of differential privacy. Our implementation and experiments demonstrate that we can train deep neural networks with non-convex objectives, under a modest privacy budget, and at a manageable cost in software complexity, training efficiency, and model quality.}
+      \field{booktitle}{Proceedings of the 2016 {{ACM SIGSAC Conference}} on {{Computer}} and {{Communications Security}}}
+      \field{title}{Deep {{Learning}} with {{Differential Privacy}}}
+      \field{year}{2016}
+      \field{pages}{308\bibrangedash 318}
+      \range{pages}{11}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/abadi_et_al_2016_deep_learning_with_differential_privacy.pdf;/home/pmangold/Documents/references/pdf/abadi_et_al_2016_deep_learning_with_differential_privacy2.pdf
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Machine Learning,deep learning,differential privacy,Statistics - Machine Learning,to read}
+    \endentry
+    \entry{asi2021Private}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=d0e3548c6e437b8c714881fa954ccfcb}{%
+           family={Asi},
+           familyi={A\bibinitperiod},
+           given={Hilal},
+           giveni={H\bibinitperiod}}}%
+        {{hash=2cdf1f22d9f874d0aee7260732af92c3}{%
+           family={Feldman},
+           familyi={F\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+        {{hash=659985b29aa9d2e4c36f4aca0e71466f}{%
+           family={Koren},
+           familyi={K\bibinitperiod},
+           given={Tomer},
+           giveni={T\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{f495a30000cc3319dd53bf7e96bfbd24}
+      \strng{fullhash}{f3df3c5769da9bb26d3dfcc7f6063767}
+      \strng{bibnamehash}{f3df3c5769da9bb26d3dfcc7f6063767}
+      \strng{authorbibnamehash}{f3df3c5769da9bb26d3dfcc7f6063767}
+      \strng{authornamehash}{f495a30000cc3319dd53bf7e96bfbd24}
+      \strng{authorfullhash}{f3df3c5769da9bb26d3dfcc7f6063767}
+      \field{sortinit}{A}
+      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Stochastic convex optimization over an {$\mathscr{l}$}1-bounded domain is ubiquitous in machine learning applications such as LASSO but remains poorly understood when learning with differential privacy. We show that, up to logarithmic factors th{$\surd$}e optimal excess population loss of any ({$\epsilon$}, {$\delta$})-differentially private optimizer is log(d)/n + d/{$\epsilon$}n. The upper bound is based on a new algorithm that combines the iterative localization approach of Feldman et al. [FKT20] with a new analysis of private regularized mirror descent. It applies to {$\mathscr{l}$}p bounded domains for p {$\in$} [1, 2] and queries at most n3/2 gradients improving over the best previously known algorithm for the {$\mathscr{l}$}2 case which needs n2 gradients. Further, we show that when the loss functions satisfy additional smoothness assumptions, the excess loss is upper bounded (up to logarithmic factors) by log(d)/n + (log(d)/{$\epsilon$}n)2/3. This bound is achieved by a new variance-reduced version of the Frank-Wolfe algorithm that requires just a single pass over the data. We also show that the lower bound in this case is the minimum of the two rates mentioned above.}
+      \field{booktitle}{ICML}
+      \field{eprinttype}{arXiv}
+      \field{langid}{english}
+      \field{shorttitle}{Private {{Stochastic Convex Optimization}}}
+      \field{title}{Private Stochastic Convex Optimization: Optimal Rates in {$\ell_1$} Geometry}
+      \field{volume}{139}
+      \field{year}{2021}
+      \field{pages}{393\bibrangedash 403}
+      \range{pages}{11}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/asi_et_al_2021_private_stochastic_convex_optimization.pdf
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Machine Learning,Mathematics - Optimization and Control,Statistics - Machine Learning}
+    \endentry
+    \entry{Balle_subsampling}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=22e757242574b20b1a043348c734d13f}{%
+           family={Balle},
+           familyi={B\bibinitperiod},
+           given={Borja},
+           giveni={B\bibinitperiod}}}%
+        {{hash=a591e71debdbd9a86231c933df50ef0b}{%
+           family={Barthe},
+           familyi={B\bibinitperiod},
+           given={Gilles},
+           giveni={G\bibinitperiod}}}%
+        {{hash=2236e238d6bdc3c54b604fb209e4f6d2}{%
+           family={Gaboardi},
+           familyi={G\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{da4a5c5c69e1b49e9bc5d8f71a2b7b82}
+      \strng{fullhash}{af6aeadf9e6a925b2e550f908890cc31}
+      \strng{bibnamehash}{af6aeadf9e6a925b2e550f908890cc31}
+      \strng{authorbibnamehash}{af6aeadf9e6a925b2e550f908890cc31}
+      \strng{authornamehash}{da4a5c5c69e1b49e9bc5d8f71a2b7b82}
+      \strng{authorfullhash}{af6aeadf9e6a925b2e550f908890cc31}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{NeurIPS}
+      \field{title}{{Privacy Amplification by Subsampling: Tight Analyses via Couplings and Divergences}}
+      \field{year}{2018}
+    \endentry
+    \entry{bassily2020Stability}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=30743e89fbbe422b35bbc4cf057dcbf9}{%
+           family={Bassily},
+           familyi={B\bibinitperiod},
+           given={Raef},
+           giveni={R\bibinitperiod}}}%
+        {{hash=2cdf1f22d9f874d0aee7260732af92c3}{%
+           family={Feldman},
+           familyi={F\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+        {{hash=da0b99fc715a07e97933e280b0d02b2b}{%
+           family={Guzmán},
+           familyi={G\bibinitperiod},
+           given={Cristóbal},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{fullhash}{9800595342011e6605987c6db5969d4f}
+      \strng{bibnamehash}{9800595342011e6605987c6db5969d4f}
+      \strng{authorbibnamehash}{9800595342011e6605987c6db5969d4f}
+      \strng{authornamehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{authorfullhash}{9800595342011e6605987c6db5969d4f}
+      \field{extraname}{1}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{title}{Stability of {{Stochastic Gradient Descent}} on {{Nonsmooth Convex Losses}}}
+      \field{volume}{33}
+      \field{year}{2020}
+      \field{pages}{4381\bibrangedash 4391}
+      \range{pages}{11}
+    \endentry
+    \entry{bassily2019Private}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=30743e89fbbe422b35bbc4cf057dcbf9}{%
+           family={Bassily},
+           familyi={B\bibinitperiod},
+           given={Raef},
+           giveni={R\bibinitperiod}}}%
+        {{hash=2cdf1f22d9f874d0aee7260732af92c3}{%
+           family={Feldman},
+           familyi={F\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ed54d32ef58cfafcee15c8a825911959}{%
+           family={Guha\bibnamedelima Thakurta},
+           familyi={G\bibinitperiod\bibinitdelim T\bibinitperiod},
+           given={Abhradeep},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{fullhash}{2b9d4e5239698cf440e3db5254fac2c4}
+      \strng{bibnamehash}{2b9d4e5239698cf440e3db5254fac2c4}
+      \strng{authorbibnamehash}{2b9d4e5239698cf440e3db5254fac2c4}
+      \strng{authornamehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{authorfullhash}{2b9d4e5239698cf440e3db5254fac2c4}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{title}{Private {{Stochastic Convex Optimization}} with {{Optimal Rates}}}
+      \field{volume}{32}
+      \field{year}{2019}
+    \endentry
+    \entry{bassily2021NonEuclidean}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=30743e89fbbe422b35bbc4cf057dcbf9}{%
+           family={Bassily},
+           familyi={B\bibinitperiod},
+           given={Raef},
+           giveni={R\bibinitperiod}}}%
+        {{hash=e0e6244ca14b682630e026b1170c2d11}{%
+           family={Guzman},
+           familyi={G\bibinitperiod},
+           given={Cristobal},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a772fa58c3b54db04777be2aed87ab31}{%
+           family={Nandi},
+           familyi={N\bibinitperiod},
+           given={Anupama},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{fullhash}{635a72d1426088c59290d20bb614a1a5}
+      \strng{bibnamehash}{635a72d1426088c59290d20bb614a1a5}
+      \strng{authorbibnamehash}{635a72d1426088c59290d20bb614a1a5}
+      \strng{authornamehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{authorfullhash}{635a72d1426088c59290d20bb614a1a5}
+      \field{extraname}{3}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Differentially private (DP) stochastic convex optimization (SCO) is a fundamental problem, where the goal is to approximately minimize the population risk with respect to a convex loss function, given a dataset of i.i.d. samples from a distribution, while satisfying differential privacy with respect to the dataset. Most of the existing works in the literature of private convex optimization focus on the Euclidean (i.e., {$\mathscr{l}$}2{$\mathscr{l}$}2\textbackslash ell\_2) setting, where the loss is assumed to be Lipschitz (and possibly smooth) w.r.t. the {$\mathscr{l}$}2{$\mathscr{l}$}2\textbackslash ell\_2 norm over a constraint set with bounded {$\mathscr{l}$}2{$\mathscr{l}$}2\textbackslash ell\_2 diameter. Algorithms based on noisy stochastic gradient descent (SGD) are known to attain the optimal excess risk in this setting. In this work, we conduct a systematic study of DP-SCO for {$\mathscr{l}$}p{$\mathscr{l}$}p\textbackslash ell\_p-setups. For p=1p=1p=1, under a standard smoothness assumption, we give a new algorithm with nearly optimal excess risk. This result also extends to general polyhedral norms and feasible sets. For p{$\in$}(1,2)p{$\in$}(1,2)p\textbackslash in(1, 2), we give two new algorithms, whose central building block is a novel privacy mechanism, which generalizes the Gaussian mechanism. Moreover, we establish a lower bound on the excess risk for this range of ppp, showing a necessary dependence on d--{$\surd$}d\textbackslash sqrt\{d\}, where ddd is the dimension of the space. Our lower bound implies a sudden transition of the excess risk at p=1p=1p=1, where the dependence on ddd changes from logarithmic to polynomial, resolving an open question in prior work \textbackslash citep\{TTZ15a\}. For p{$\in$}(2,{$\infty$})p{$\in$}(2,{$\infty$})p\textbackslash in (2, \textbackslash infty), noisy SGD attains optimal excess risk in the low-dimensional regime; in particular, this proves the optimality of noisy SGD for p={$\infty$}p={$\infty$}p=\textbackslash infty. Our work draws upon concepts from the geometry of normed spaces, such as the notions of regularity, uniform convexity, and uniform smoothness.}
+      \field{booktitle}{COLT}
+      \field{title}{Non-{{Euclidean Differentially Private Stochastic Convex Optimization}}}
+      \field{year}{2021}
+      \field{pages}{474\bibrangedash 499}
+      \range{pages}{26}
+      \verb{file}
+      \verb /home/pmangold/research/references/pdf/bassily_et_al_2021_non-euclidean_differentially_private_stochastic_convex_optimization3.pdf
+      \endverb
+    \endentry
+    \entry{bassily2016Algorithmic}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=30743e89fbbe422b35bbc4cf057dcbf9}{%
+           family={Bassily},
+           familyi={B\bibinitperiod},
+           given={Raef},
+           giveni={R\bibinitperiod}}}%
+        {{hash=f420df13b9ad6b7a1a9cbcdba96c8381}{%
+           family={Nissim},
+           familyi={N\bibinitperiod},
+           given={Kobbi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=5ccecf114bbd51a1a2979a23dd69c78c}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a8ee507f496e43705d0c170feeb81861}{%
+           family={Steinke},
+           familyi={S\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=a7fe67fb2e782e044074c0b1d5e2dc02}{%
+           family={Stemmer},
+           familyi={S\bibinitperiod},
+           given={Uri},
+           giveni={U\bibinitperiod}}}%
+        {{hash=9e9335807e70a8b4ca12eda1833b293d}{%
+           family={Ullman},
+           familyi={U\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{fullhash}{a7ab349742207bb47740af88481d0441}
+      \strng{bibnamehash}{a7ab349742207bb47740af88481d0441}
+      \strng{authorbibnamehash}{a7ab349742207bb47740af88481d0441}
+      \strng{authornamehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{authorfullhash}{a7ab349742207bb47740af88481d0441}
+      \field{extraname}{4}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the Forty-Eighth Annual {{ACM}} Symposium on {{Theory}} of {{Computing}}}
+      \field{month}{6}
+      \field{series}{{{STOC}} '16}
+      \field{title}{Algorithmic Stability for Adaptive Data Analysis}
+      \field{year}{2016}
+      \field{pages}{1046\bibrangedash 1059}
+      \range{pages}{14}
+    \endentry
+    \entry{bassily2014Private}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=30743e89fbbe422b35bbc4cf057dcbf9}{%
+           family={Bassily},
+           familyi={B\bibinitperiod},
+           given={Raef},
+           giveni={R\bibinitperiod}}}%
+        {{hash=5ccecf114bbd51a1a2979a23dd69c78c}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=caaaf78e4ea5134f14ec5cc490265c9e}{%
+           family={Thakurta},
+           familyi={T\bibinitperiod},
+           given={Abhradeep},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Philadelphia, PA, USA}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{fullhash}{b15d189266cbcfdcd94087de48c9d34a}
+      \strng{bibnamehash}{b15d189266cbcfdcd94087de48c9d34a}
+      \strng{authorbibnamehash}{b15d189266cbcfdcd94087de48c9d34a}
+      \strng{authornamehash}{a06a97b024a9575bba6dc3e588786d72}
+      \strng{authorfullhash}{b15d189266cbcfdcd94087de48c9d34a}
+      \field{extraname}{5}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Convex empirical risk minimization is a basic tool in machine learning and statistics. We provide new algorithms and matching lower bounds for differentially private convex empirical risk minimization assuming only that each data point's contribution to the loss function is Lipschitz and that the domain of optimization is bounded. We provide a separate set of algorithms and matching lower bounds for the setting in which the loss functions are known to also be strongly convex.}
+      \field{booktitle}{2014 {{IEEE}} 55th {{Annual Symposium}} on {{Foundations}} of {{Computer Science}}}
+      \field{month}{10}
+      \field{shorttitle}{Private {{Empirical Risk Minimization}}}
+      \field{title}{Private {{Empirical Risk Minimization}}: Efficient {{Algorithms}} and {{Tight Error Bounds}}}
+      \field{year}{2014}
+      \field{pages}{464\bibrangedash 473}
+      \range{pages}{10}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/bassily_et_al_2014_private_empirical_risk_minimization.pdf
+      \endverb
+    \endentry
+    \entry{bellet2018Personalized}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=13661eaafb5c293bc8bebb8c2250a7d8}{%
+           family={Bellet},
+           familyi={B\bibinitperiod},
+           given={Aurélien},
+           giveni={A\bibinitperiod}}}%
+        {{hash=6d84b5e8da24c645eb6bc438af7621c4}{%
+           family={Guerraoui},
+           familyi={G\bibinitperiod},
+           given={Rachid},
+           giveni={R\bibinitperiod}}}%
+        {{hash=134c730feb1052dbddea741e596953ca}{%
+           family={Taziki},
+           familyi={T\bibinitperiod},
+           given={Mahsa},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4d9d59e463ffcc0a84381261f6cbf35b}{%
+           family={Tommasi},
+           familyi={T\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{648515c9cc368ca42e82038029d0598b}
+      \strng{fullhash}{94f1e01ca52782655aa821a1ee67e90f}
+      \strng{bibnamehash}{94f1e01ca52782655aa821a1ee67e90f}
+      \strng{authorbibnamehash}{94f1e01ca52782655aa821a1ee67e90f}
+      \strng{authornamehash}{648515c9cc368ca42e82038029d0598b}
+      \strng{authorfullhash}{94f1e01ca52782655aa821a1ee67e90f}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The rise of connected personal devices together with privacy concerns call for machine learning algorithms capable of leveraging the data of a large number of agents to learn personalized models un...}
+      \field{booktitle}{International {{Conference}} on {{Artificial Intelligence}} and {{Statistics}}}
+      \field{issn}{2640-3498}
+      \field{langid}{english}
+      \field{month}{3}
+      \field{title}{Personalized and {{Private Peer}}-to-{{Peer Machine Learning}}}
+      \field{year}{2018}
+      \field{pages}{473\bibrangedash 481}
+      \range{pages}{9}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/bellet_et_al_2018_personalized_and_private_peer-to-peer_machine_learning2.pdf;/home/pmangold/zotero/storage/FMP5G3QM/bellet18a.html
+      \endverb
+    \endentry
+    \entry{bun2016Concentrated}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=743c08ac9fef9821a588db73588eb002}{%
+           family={Bun},
+           familyi={B\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a8ee507f496e43705d0c170feeb81861}{%
+           family={Steinke},
+           familyi={S\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=ebbe8901cb4342e1eb1de3afc6cfc064}{%
+           family={Hirt},
+           familyi={H\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=5ccecf114bbd51a1a2979a23dd69c78c}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{52a64f29abe54c01dea2be0820176878}
+      \strng{fullhash}{52a64f29abe54c01dea2be0820176878}
+      \strng{bibnamehash}{52a64f29abe54c01dea2be0820176878}
+      \strng{authorbibnamehash}{52a64f29abe54c01dea2be0820176878}
+      \strng{authornamehash}{52a64f29abe54c01dea2be0820176878}
+      \strng{authorfullhash}{52a64f29abe54c01dea2be0820176878}
+      \strng{editorbibnamehash}{4a8f81083343b650089e2db0382bf2bd}
+      \strng{editornamehash}{4a8f81083343b650089e2db0382bf2bd}
+      \strng{editorfullhash}{4a8f81083343b650089e2db0382bf2bd}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{``Concentrated differential privacy'' was recently introduced by Dwork and Rothblum as a relaxation of differential privacy, which permits sharper analyses of many privacy-preserving computations. We present an alternative formulation of the concept of concentrated differential privacy in terms of the Rényi divergence between the distributions obtained by running an algorithm on neighboring inputs. With this reformulation in hand, we prove sharper quantitative results, establish lower bounds, and raise a few new questions. We also unify this approach with approximate differential privacy by giving an appropriate definition of ``approximate concentrated differential privacy''.}
+      \field{booktitle}{Theory of {{Cryptography}}}
+      \field{series}{Lecture {{Notes}} in {{Computer Science}}}
+      \field{shorttitle}{Concentrated {{Differential Privacy}}}
+      \field{title}{Concentrated {{Differential Privacy}}: Simplifications, {{Extensions}}, and {{Lower Bounds}}}
+      \field{year}{2016}
+      \field{pages}{635\bibrangedash 658}
+      \range{pages}{24}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/bun_steinke_2016_concentrated_differential_privacy.pdf;/home/pmangold/Documents/references/pdf/bun_steinke_2016_concentrated_differential_privacy2.pdf
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Data Structures and Algorithms,Computer Science - Information Theory,Computer Science - Machine Learning,Differential Privacy,Gaussian Mechanism,Lower Bound,Privacy Loss,Rothblum}
+    \endentry
+    \entry{bun2014Fingerprinting}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=743c08ac9fef9821a588db73588eb002}{%
+           family={Bun},
+           familyi={B\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=9e9335807e70a8b4ca12eda1833b293d}{%
+           family={Ullman},
+           familyi={U\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c915d3380da8c4288e9634bbee5ba983}{%
+           family={Vadhan},
+           familyi={V\bibinitperiod},
+           given={Salil},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{c36c58ecaf8cbe40c7cc92ee49c2fd70}
+      \strng{fullhash}{6b822c74f4b7ffc21062e052a28f1b94}
+      \strng{bibnamehash}{6b822c74f4b7ffc21062e052a28f1b94}
+      \strng{authorbibnamehash}{6b822c74f4b7ffc21062e052a28f1b94}
+      \strng{authornamehash}{c36c58ecaf8cbe40c7cc92ee49c2fd70}
+      \strng{authorfullhash}{6b822c74f4b7ffc21062e052a28f1b94}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{STOC}
+      \field{langid}{english}
+      \field{title}{Fingerprinting Codes and the Price of Approximate Differential Privacy}
+      \field{year}{2014}
+      \field{pages}{10}
+      \range{pages}{1}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/bun_et_al_2014_fingerprinting_codes_and_the_price_of_approximate_differential_privacy.pdf;/home/pmangold/research/references/pdf/bun_et_al_2014_fingerprinting_codes_and_the_price_of_approximate_differential_privacy2.pdf
+      \endverb
+      \keyw{differential privacy,fingerprinting codes}
+    \endentry
+    \entry{Candes_Wakin_Boyd08}{article}{}
+      \name{author}{3}{}{%
+        {{hash=6e778dd01d025ffccf9bdde00a1e33cb}{%
+           family={Candès},
+           familyi={C\bibinitperiod},
+           given={E.\bibnamedelimi J.},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=54850ba60f1eabc5bfa4b2e64f10a27d}{%
+           family={Wakin},
+           familyi={W\bibinitperiod},
+           given={M.\bibnamedelimi B.},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=0f664e1f70942aa98c8fb0e77285137d}{%
+           family={Boyd},
+           familyi={B\bibinitperiod},
+           given={S.\bibnamedelimi P.},
+           giveni={S\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{b103e119fdb08489139acb278c70c947}
+      \strng{fullhash}{d0f11ffec5557d8e2d4ac984587daed3}
+      \strng{bibnamehash}{d0f11ffec5557d8e2d4ac984587daed3}
+      \strng{authorbibnamehash}{d0f11ffec5557d8e2d4ac984587daed3}
+      \strng{authornamehash}{b103e119fdb08489139acb278c70c947}
+      \strng{authorfullhash}{d0f11ffec5557d8e2d4ac984587daed3}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Fourier Anal. Applicat.}
+      \field{number}{5-6}
+      \field{title}{Enhancing Sparsity by Reweighted {$l_1$} Minimization}
+      \field{volume}{14}
+      \field{year}{2008}
+      \field{pages}{877\bibrangedash 905}
+      \range{pages}{29}
+    \endentry
+    \entry{chang2008Coordinate}{article}{}
+      \name{author}{3}{}{%
+        {{hash=e92742530fcafbae797b45437638bb01}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Kai-Wei},
+           giveni={K\bibinithyphendelim W\bibinitperiod}}}%
+        {{hash=8ce122ee46af7bc8820d9d1c340793dc}{%
+           family={Hsieh},
+           familyi={H\bibinitperiod},
+           given={Cho-Jui},
+           giveni={C\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=bb8c32ec740b902c4f066796b083badc}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Chih-Jen},
+           giveni={C\bibinithyphendelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{788b78f4f9dbc6dfb352ec6ee17af6a3}
+      \strng{fullhash}{e42d2eaf4f9dfb5995e3f8e7d90b97e1}
+      \strng{bibnamehash}{e42d2eaf4f9dfb5995e3f8e7d90b97e1}
+      \strng{authorbibnamehash}{e42d2eaf4f9dfb5995e3f8e7d90b97e1}
+      \strng{authornamehash}{788b78f4f9dbc6dfb352ec6ee17af6a3}
+      \strng{authorfullhash}{e42d2eaf4f9dfb5995e3f8e7d90b97e1}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Linear support vector machines (SVM) are useful for classifying large-scale sparse data. Problems with sparse features are common in applications such as document classification and natural language processing. In this paper, we propose a novel coordinate descent algorithm for training linear SVM with the L2-loss function. At each step, the proposed method minimizes a one-variable sub-problem while fixing other variables. The sub-problem is solved by Newton steps with the line search technique. The procedure globally converges at the linear rate. As each sub-problem involves only values of a corresponding feature, the proposed approach is suitable when accessing a feature is more convenient than accessing an instance. Experiments show that our method is more efficient and stable than state of the art methods such as Pegasos and TRON.}
+      \field{journaltitle}{J. Mach. Learn. Res.}
+      \field{month}{6}
+      \field{title}{Coordinate {{Descent Method}} for {{Large}}-Scale {{L2}}-Loss {{Linear Support Vector Machines}}}
+      \field{volume}{9}
+      \field{year}{2008}
+      \field{pages}{1369\bibrangedash 1398}
+      \range{pages}{30}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/chang_et_al_2008_coordinate_descent_method_for_large-scale_l2-loss_linear_support_vector_machines.pdf;/home/pmangold/Documents/references/pdf/chang_et_al_coordinate_descent_method_for_large-scale_l2-loss_linear_support_vector_machines.pdf;/home/pmangold/research/references/pdf/chang_et_al_2008_coordinate_descent_method_for_large-scale_l2-loss_linear_support_vector_machines2.pdf
+      \endverb
+    \endentry
+    \entry{chaudhuri2011Differentially}{article}{}
+      \name{author}{3}{}{%
+        {{hash=050c0df95e5eb5c3218fdd148d0e17a4}{%
+           family={Chaudhuri},
+           familyi={C\bibinitperiod},
+           given={Kamalika},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ff4c330e3c54c84a62820821d041b59b}{%
+           family={Monteleoni},
+           familyi={M\bibinitperiod},
+           given={Claire},
+           giveni={C\bibinitperiod}}}%
+        {{hash=3ff382b000b20a67406b75143eb01d05}{%
+           family={Sarwate},
+           familyi={S\bibinitperiod},
+           given={Anand\bibnamedelima D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{4d1e7770366aa87da47b1c8393d68dc6}
+      \strng{fullhash}{6c38ec5b465e0a73d4a778e315aea937}
+      \strng{bibnamehash}{6c38ec5b465e0a73d4a778e315aea937}
+      \strng{authorbibnamehash}{6c38ec5b465e0a73d4a778e315aea937}
+      \strng{authornamehash}{4d1e7770366aa87da47b1c8393d68dc6}
+      \strng{authorfullhash}{6c38ec5b465e0a73d4a778e315aea937}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Mach. Learn. Res.}
+      \field{number}{29}
+      \field{title}{Differentially {{Private Empirical Risk Minimization}}}
+      \field{volume}{12}
+      \field{year}{2011}
+      \field{pages}{1069\bibrangedash 1109}
+      \range{pages}{41}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/chaudhuri_et_al_2011_differentially_private_empirical_risk_minimization2.pdf;/home/pmangold/zotero/storage/67E5FYTK/chaudhuri11a.html
+      \endverb
+    \endentry
+    \entry{damaskinos2021Differentially}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=e1f68ddaf2cb8324735f20c2ec0819f9}{%
+           family={Damaskinos},
+           familyi={D\bibinitperiod},
+           given={Georgios},
+           giveni={G\bibinitperiod}}}%
+        {{hash=e991db7ff4109268a6b63ab01890d05d}{%
+           family={Mendler-Dünner},
+           familyi={M\bibinithyphendelim D\bibinitperiod},
+           given={Celestine},
+           giveni={C\bibinitperiod}}}%
+        {{hash=6d84b5e8da24c645eb6bc438af7621c4}{%
+           family={Guerraoui},
+           familyi={G\bibinitperiod},
+           given={Rachid},
+           giveni={R\bibinitperiod}}}%
+        {{hash=55ec96f3436b806550e0f1aa81152b84}{%
+           family={Papandreou},
+           familyi={P\bibinitperiod},
+           given={Nikolaos},
+           giveni={N\bibinitperiod}}}%
+        {{hash=ed97e7a2b80aadf1c69773c80934573c}{%
+           family={Parnell},
+           familyi={P\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{e1a6bc11644cb0a2b6f1edd7c6cf17dc}
+      \strng{fullhash}{336f10c3ed018f5a0e2e763a128ff710}
+      \strng{bibnamehash}{336f10c3ed018f5a0e2e763a128ff710}
+      \strng{authorbibnamehash}{336f10c3ed018f5a0e2e763a128ff710}
+      \strng{authornamehash}{e1a6bc11644cb0a2b6f1edd7c6cf17dc}
+      \strng{authorfullhash}{336f10c3ed018f5a0e2e763a128ff710}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the {AAAI} {Conference} on {Artificial} {Intelligence}}
+      \field{month}{5}
+      \field{title}{Differentially {Private} {Stochastic} {Coordinate} {Descent}}
+      \field{volume}{35}
+      \field{year}{2021}
+    \endentry
+    \entry{desantis2016Fast}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f32365724a198327ec23fd0c361a21a5}{%
+           family={De\bibnamedelima Santis},
+           familyi={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Marianna},
+           giveni={M\bibinitperiod}}}%
+        {{hash=0f89fe9c45387b46b8397b52747ee6fa}{%
+           family={Lucidi},
+           familyi={L\bibinitperiod},
+           given={Stefano},
+           giveni={S\bibinitperiod}}}%
+        {{hash=02a60f833acad14994897e5fbd88f405}{%
+           family={Rinaldi},
+           familyi={R\bibinitperiod},
+           given={Francesco},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Society for Industrial and Applied Mathematics}%
+      }
+      \strng{namehash}{df6d48b0a94c49a9f4ec64f7fdefabee}
+      \strng{fullhash}{a708dd10f61f1111b3b8048f1889ae32}
+      \strng{bibnamehash}{a708dd10f61f1111b3b8048f1889ae32}
+      \strng{authorbibnamehash}{a708dd10f61f1111b3b8048f1889ae32}
+      \strng{authornamehash}{df6d48b0a94c49a9f4ec64f7fdefabee}
+      \strng{authorfullhash}{a708dd10f61f1111b3b8048f1889ae32}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The problem of finding sparse solutions to underdetermined systems of linear equations arises in several applications (e.g., signal and image processing, compressive sensing, statistical inference). A standard tool for dealing with sparse recovery is the \$\textbackslash ell\_1\$-regularized least squares approach that has been recently attracting the attention of many researchers. In this paper, we describe an active set estimate (i.e., an estimate of the indices of the zero variables in the optimal solution) for the considered problem that tries to quickly identify as many active variables as possible at a given point, while guaranteeing that some approximate optimality conditions are satisfied. A relevant feature of the estimate is that it gives a significant reduction of the objective function when setting to zero all those variables estimated to be active. This enables us to easily embed it into a given globally converging algorithmic framework. In particular, we include our estimate into a block coordinate descent algorithm for \$\textbackslash ell\_1\$-regularized least squares, analyze the convergence properties of this new active set method, and prove that its basic version converges with a linear rate. Finally, we report some numerical results showing the effectiveness of the approach.}
+      \field{journaltitle}{SIAM J. Optim.}
+      \field{month}{1}
+      \field{number}{1}
+      \field{title}{A Fast Active Set Block Coordinate Descent Algorithm for {$\ell_1$}-Regularized Least Squares}
+      \field{volume}{26}
+      \field{year}{2016}
+      \field{pages}{781\bibrangedash 809}
+      \range{pages}{29}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/de_santis_et_al_2016_a_fast_active_set_block_coordinate_descent_algorithm_for_$-ell_1$-regularized.pdf;/home/pmangold/zotero/storage/LMNN73HS/141000737.html
+      \endverb
+    \endentry
+    \entry{dwork2006Differential}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=c6d8866083f4c03af5e37e032df87089}{%
+           family={Dwork},
+           familyi={D\bibinitperiod},
+           given={Cynthia},
+           giveni={C\bibinitperiod}}}%
+      }
+      \name{editor}{4}{}{%
+        {{hash=97929efb37201f68dfe637fc67b0c228}{%
+           family={Bugliesi},
+           familyi={B\bibinitperiod},
+           given={Michele},
+           giveni={M\bibinitperiod}}}%
+        {{hash=0b9d4896fca22178c881b5236f351e05}{%
+           family={Preneel},
+           familyi={P\bibinitperiod},
+           given={Bart},
+           giveni={B\bibinitperiod}}}%
+        {{hash=a670efdfc3b73f51cc0cdbef718bb8e9}{%
+           family={Sassone},
+           familyi={S\bibinitperiod},
+           given={Vladimiro},
+           giveni={V\bibinitperiod}}}%
+        {{hash=5021f98d13876bd4594ef3f15a12cc2b}{%
+           family={Wegener},
+           familyi={W\bibinitperiod},
+           given={Ingo},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{fullhash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{bibnamehash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{authorbibnamehash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{authornamehash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{authorfullhash}{c6d8866083f4c03af5e37e032df87089}
+      \strng{editorbibnamehash}{05cf4d08213ca0e8f49b3826b7803656}
+      \strng{editornamehash}{8059d0097cd8b9134e5ebdd993784f25}
+      \strng{editorfullhash}{05cf4d08213ca0e8f49b3826b7803656}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In 1977 Dalenius articulated a desideratum for statistical databases: nothing about an individual should be learnable from the database that cannot be learned without access to the database. We give a general impossibility result showing that a formalization of Dalenius' goal along the lines of semantic security cannot be achieved. Contrary to intuition, a variant of the result threatens the privacy even of someone not in the database. This state of affairs suggests a new measure, differential privacy, which, intuitively, captures the increased risk to one's privacy incurred by participating in a database. The techniques developed in a sequence of papers [8, 13, 3], culminating in those described in [12], can achieve any desired level of privacy under this measure. In many cases, extremely accurate information about the database can be provided while simultaneously ensuring very high levels of privacy.}
+      \field{booktitle}{Automata, {{Languages}} and {{Programming}}}
+      \field{langid}{english}
+      \field{series}{Lecture {{Notes}} in {{Computer Science}}}
+      \field{title}{Differential {{Privacy}}}
+      \field{year}{2006}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/dwork_2006_differential_privacy.pdf;/home/pmangold/Documents/references/pdf/dwork_2006_differential_privacy2.pdf
+      \endverb
+      \keyw{Auxiliary Information,Differential Privacy,Impossibility Result,Statistical Database,Turing Machine}
+    \endentry
+    \entry{dwork2015Preserving}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=c6d8866083f4c03af5e37e032df87089}{%
+           family={Dwork},
+           familyi={D\bibinitperiod},
+           given={Cynthia},
+           giveni={C\bibinitperiod}}}%
+        {{hash=2cdf1f22d9f874d0aee7260732af92c3}{%
+           family={Feldman},
+           familyi={F\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+        {{hash=e771760b6d0d33f8b4dfd907d8d57ac2}{%
+           family={Hardt},
+           familyi={H\bibinitperiod},
+           given={Moritz},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1813007d96ae80284b22fd39a7996df9}{%
+           family={Pitassi},
+           familyi={P\bibinitperiod},
+           given={Toniann},
+           giveni={T\bibinitperiod}}}%
+        {{hash=6ff631f4e02261486e4a7d47b7aa7d0b}{%
+           family={Reingold},
+           familyi={R\bibinitperiod},
+           given={Omer},
+           giveni={O\bibinitperiod}}}%
+        {{hash=7a34cbdde01d7fbd9a311dc8600acd82}{%
+           family={Roth},
+           familyi={R\bibinitperiod},
+           given={Aaron\bibnamedelima Leon},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{f676b30234623eef69e5ed6be9df75b0}
+      \strng{fullhash}{76cb4515a7d4003489bce0d8323b8e20}
+      \strng{bibnamehash}{76cb4515a7d4003489bce0d8323b8e20}
+      \strng{authorbibnamehash}{76cb4515a7d4003489bce0d8323b8e20}
+      \strng{authornamehash}{f676b30234623eef69e5ed6be9df75b0}
+      \strng{authorfullhash}{76cb4515a7d4003489bce0d8323b8e20}
+      \field{extraname}{1}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the Forty-Seventh Annual {{ACM}} Symposium on {{Theory}} of {{Computing}}}
+      \field{month}{6}
+      \field{series}{{{STOC}} '15}
+      \field{title}{Preserving {{Statistical Validity}} in {{Adaptive Data Analysis}}}
+      \field{year}{2015}
+      \field{pages}{117\bibrangedash 126}
+      \range{pages}{10}
+    \endentry
+    \entry{dwork2006Calibrating}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=c6d8866083f4c03af5e37e032df87089}{%
+           family={Dwork},
+           familyi={D\bibinitperiod},
+           given={Cynthia},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a0e6c99aabdc2587f248892c8bb23f70}{%
+           family={McSherry},
+           familyi={M\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+        {{hash=f420df13b9ad6b7a1a9cbcdba96c8381}{%
+           family={Nissim},
+           familyi={N\bibinitperiod},
+           given={Kobbi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=5ccecf114bbd51a1a2979a23dd69c78c}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=7c86404bf6ef06056efb632aff16d2c0}{%
+           family={Halevi},
+           familyi={H\bibinitperiod},
+           given={Shai},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d0a232b92e9efa1d3b250cd86aeee031}{%
+           family={Rabin},
+           familyi={R\bibinitperiod},
+           given={Tal},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{f676b30234623eef69e5ed6be9df75b0}
+      \strng{fullhash}{77e096c431cfc8d9fee8a2eef9669db1}
+      \strng{bibnamehash}{77e096c431cfc8d9fee8a2eef9669db1}
+      \strng{authorbibnamehash}{77e096c431cfc8d9fee8a2eef9669db1}
+      \strng{authornamehash}{f676b30234623eef69e5ed6be9df75b0}
+      \strng{authorfullhash}{77e096c431cfc8d9fee8a2eef9669db1}
+      \strng{editorbibnamehash}{2cc86bcba7b12686057ffd2baa6b839b}
+      \strng{editornamehash}{2cc86bcba7b12686057ffd2baa6b839b}
+      \strng{editorfullhash}{2cc86bcba7b12686057ffd2baa6b839b}
+      \field{extraname}{2}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We continue a line of research initiated in [10,11]on privacy-preserving statistical databases. Consider a trusted server that holds a database of sensitive information. Given a query function f mapping databases to reals, the so-called true answer is the result of applying f to the database. To protect privacy, the true answer is perturbed by the addition of random noise generated according to a carefully chosen distribution, and this response, the true answer plus noise, is returned to the user.Previous work focused on the case of noisy sums, in which f = {$\sum$} i g(x i ), where x i denotes the ith row of the database and g maps database rows to [0,1]. We extend the study to general functions f, proving that privacy can be preserved by calibrating the standard deviation of the noise according to the sensitivity of the function f. Roughly speaking, this is the amount that any single argument to f can change its output. The new analysis shows that for several particular applications substantially less noise is needed than was previously understood to be the case.The first step is a very clean characterization of privacy in terms of indistinguishability of transcripts. Additionally, we obtain separation results showing the increased value of interactive sanitization mechanisms over non-interactive.}
+      \field{booktitle}{Theory of {{Cryptography}}}
+      \field{langid}{english}
+      \field{series}{Lecture {{Notes}} in {{Computer Science}}}
+      \field{title}{Calibrating {{Noise}} to {{Sensitivity}} in {{Private Data Analysis}}}
+      \field{year}{2006}
+      \field{pages}{265\bibrangedash 284}
+      \range{pages}{20}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/dwork_et_al_2006_calibrating_noise_to_sensitivity_in_private_data_analysis.pdf
+      \endverb
+      \keyw{Laplace Distribution,Privacy Breach,Query Function,Semantic Security,True Answer}
+    \endentry
+    \entry{dwork2013Algorithmic}{article}{}
+      \name{author}{2}{}{%
+        {{hash=c6d8866083f4c03af5e37e032df87089}{%
+           family={Dwork},
+           familyi={D\bibinitperiod},
+           given={Cynthia},
+           giveni={C\bibinitperiod}}}%
+        {{hash=9bb323b3c3d2af68def0dcbde8e6795d}{%
+           family={Roth},
+           familyi={R\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \strng{fullhash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \strng{bibnamehash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \strng{authorbibnamehash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \strng{authornamehash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \strng{authorfullhash}{4d8bf63261aefa96e8725c0b5785f3b3}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations and Trends®{} in Theoretical Computer Science}
+      \field{number}{3-4}
+      \field{title}{The {{Algorithmic Foundations}} of {{Differential Privacy}}}
+      \field{volume}{9}
+      \field{year}{2014}
+      \field{pages}{211\bibrangedash 407}
+      \range{pages}{197}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/dwork_roth_2013_the_algorithmic_foundations_of_differential_privacy2.pdf
+      \endverb
+    \endentry
+    \entry{Electricity}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=656e43581640c08d44b1eb0228846623}{%
+           family={Electricity},
+           familyi={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{656e43581640c08d44b1eb0228846623}
+      \strng{fullhash}{656e43581640c08d44b1eb0228846623}
+      \strng{bibnamehash}{656e43581640c08d44b1eb0228846623}
+      \strng{authorbibnamehash}{656e43581640c08d44b1eb0228846623}
+      \strng{authornamehash}{656e43581640c08d44b1eb0228846623}
+      \strng{authorfullhash}{656e43581640c08d44b1eb0228846623}
+      \field{sortinit}{E}
+      \field{sortinithash}{c554bd1a0b76ea92b9f105fe36d9c7b0}
+      \field{labeldatesource}{nodate}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{OpenML: exploring machine learning better, together.}
+      \field{title}{Electricity {Dataset}}
+      \verb{urlraw}
+      \verb https://www.openml.org/d/151
+      \endverb
+      \verb{url}
+      \verb https://www.openml.org/d/151
+      \endverb
+    \endentry
+    \entry{feldman2020Private}{incollection}{}
+      \name{author}{3}{}{%
+        {{hash=2cdf1f22d9f874d0aee7260732af92c3}{%
+           family={Feldman},
+           familyi={F\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+        {{hash=659985b29aa9d2e4c36f4aca0e71466f}{%
+           family={Koren},
+           familyi={K\bibinitperiod},
+           given={Tomer},
+           giveni={T\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{bcbe5a2f26bfd6eb563bfaa442dde749}
+      \strng{fullhash}{a9190bd5fb63a3c4eb1d12db18529f33}
+      \strng{bibnamehash}{a9190bd5fb63a3c4eb1d12db18529f33}
+      \strng{authorbibnamehash}{a9190bd5fb63a3c4eb1d12db18529f33}
+      \strng{authornamehash}{bcbe5a2f26bfd6eb563bfaa442dde749}
+      \strng{authorfullhash}{a9190bd5fb63a3c4eb1d12db18529f33}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{booktitle}{Proceedings of the 52nd {{Annual ACM SIGACT Symposium}} on {{Theory}} of {{Computing}}}
+      \field{month}{6}
+      \field{shorttitle}{Private Stochastic Convex Optimization}
+      \field{title}{Private Stochastic Convex Optimization: Optimal Rates in Linear Time}
+      \field{year}{2020}
+      \field{pages}{439\bibrangedash 449}
+      \range{pages}{11}
+    \endentry
+    \entry{fercoq2014Accelerated}{article}{}
+      \name{author}{2}{}{%
+        {{hash=44e09f1ded061bc654fe8f584fa9bf57}{%
+           family={Fercoq},
+           familyi={F\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod}}}%
+        {{hash=972f2a6c228c82719a54368d49838fd7}{%
+           family={Richtárik},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \strng{fullhash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \strng{bibnamehash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \strng{authorbibnamehash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \strng{authornamehash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \strng{authorfullhash}{0aa7a23a4c24a8273222ff6f359f42c0}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose a new stochastic coordinate descent method for minimizing the sum of convex functions each of which depends on a small number of coordinates only. Our method (APPROX) is simultaneously Accelerated, Parallel and PROXimal; this is the first time such a method is proposed. In the special case when the number of processors is equal to the number of coordinates, the method converges at the rate 2{$\omega$}¯L¯R2/(k + 1)2, where k is the iteration counter, {$\omega$}¯{} is an average degree of separability of the loss function, L¯{} is the average of Lipschitz constants associated with the coordinates and individual functions in the sum, and R is the distance of the initial point from the minimizer. We show that the method can be implemented without the need to perform full-dimensional vector operations, which is the major bottleneck of accelerated coordinate descent. The fact that the method depends on the average degree of separability, and not on the maximum degree of separability, can be attributed to the use of new safe large stepsizes, leading to improved expected separable overapproximation (ESO). These are of independent interest and can be utilized in all existing parallel stochastic coordinate descent algorithms based on the concept of ESO.}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{SIAM J. Optim.}
+      \field{langid}{english}
+      \field{number}{3}
+      \field{title}{Accelerated, parallel and proximal coordinate descent}
+      \field{volume}{25}
+      \field{year}{2015}
+      \field{pages}{1997\bibrangedash 2013}
+      \range{pages}{17}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/fercoq_richtárik_2014_accelerated,_parallel_and_proximal_coordinate_descent.pdf
+      \endverb
+      \keyw{Computer Science - Distributed; Parallel; and Cluster Computing,Mathematics - Numerical Analysis,Mathematics - Optimization and Control,Statistics - Machine Learning}
+    \endentry
+    \entry{friedman2010Regularization}{article}{}
+      \name{author}{3}{}{%
+        {{hash=971cf69058b64a94326dea0f2a8bbcce}{%
+           family={Friedman},
+           familyi={F\bibinitperiod},
+           given={Jerome},
+           giveni={J\bibinitperiod}}}%
+        {{hash=0cb8fe4210baa81c4b0e67913b4d2768}{%
+           family={Hastie},
+           familyi={H\bibinitperiod},
+           given={Trevor},
+           giveni={T\bibinitperiod}}}%
+        {{hash=8ea2d5234e48983e0a1b875dd71e6ca4}{%
+           family={Tibshirani},
+           familyi={T\bibinitperiod},
+           given={Rob},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{e54417de0fb1cb6eabec74c7e0bc1524}
+      \strng{fullhash}{97ec33f82bb4ec7619b67b2fef4ef1f9}
+      \strng{bibnamehash}{97ec33f82bb4ec7619b67b2fef4ef1f9}
+      \strng{authorbibnamehash}{97ec33f82bb4ec7619b67b2fef4ef1f9}
+      \strng{authornamehash}{e54417de0fb1cb6eabec74c7e0bc1524}
+      \strng{authorfullhash}{97ec33f82bb4ec7619b67b2fef4ef1f9}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We develop fast algorithms for estimation of generalized linear models with convex penalties. The models include linear regression, two-class logistic regression, and multinomial regression problems while the penalties include {$\mathscr{l}$}1 (the lasso), {$\mathscr{l}$}2 (ridge regression) and mixtures of the two (the elastic net). The algorithms use cyclical coordinate descent, computed along a regularization path. The methods can handle large problems and can also deal efficiently with sparse features. In comparative timings we find that the new algorithms are considerably faster than competing methods.}
+      \field{issn}{1548-7660}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{number}{1}
+      \field{title}{Regularization {{Paths}} for {{Generalized Linear Models}} via {{Coordinate Descent}}}
+      \field{volume}{33}
+      \field{year}{2010}
+      \field{pages}{1\bibrangedash 22}
+      \range{pages}{22}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/friedman_et_al_2010_regularization_paths_for_generalized_linear_models_via_coordinate_descent.pdf
+      \endverb
+    \endentry
+    \entry{hanzely2020Variance}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=9afcfad85529fbeea5426832f3b6fcf3}{%
+           family={Hanzely},
+           familyi={H\bibinitperiod},
+           given={Filip},
+           giveni={F\bibinitperiod}}}%
+        {{hash=7c8b6b2fa840a2ce8abfb55f0f3a9311}{%
+           family={Kovalev},
+           familyi={K\bibinitperiod},
+           given={Dmitry},
+           giveni={D\bibinitperiod}}}%
+        {{hash=972f2a6c228c82719a54368d49838fd7}{%
+           family={Richtárik},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{e482308bc80e487e3e1769b0df6f94d4}
+      \strng{fullhash}{cbaa7fd00115a5c75abd87c61319d044}
+      \strng{bibnamehash}{cbaa7fd00115a5c75abd87c61319d044}
+      \strng{authorbibnamehash}{cbaa7fd00115a5c75abd87c61319d044}
+      \strng{authornamehash}{e482308bc80e487e3e1769b0df6f94d4}
+      \strng{authorfullhash}{cbaa7fd00115a5c75abd87c61319d044}
+      \field{extraname}{1}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We propose an accelerated version of stochastic variance reduced coordinate descent –ASVRCD. As other variance reduced coordinate descent methods such as SEGA or SVRCD, our method can deal with problems that include a non-separable and non-smooth regularizer, while accessing a random block of partial derivatives in each iteration only. However, ASVRCD incorporates Nesterov's momentum, which offers favorable iteration complexity guarantees over both SEGA and SVRCD. As a by-product of our theory, we show that a variant of Katyusha [1] is a specific case of ASVRCD, recovering the optimal oracle complexity for the finite sum objective.}
+      \field{booktitle}{ICML}
+      \field{eprinttype}{arXiv}
+      \field{langid}{english}
+      \field{shorttitle}{Variance {{Reduced Coordinate Descent}} with {{Acceleration}}}
+      \field{title}{Variance Reduced Coordinate Descent with Acceleration: New Method With a Surprising Application to Finite-Sum Problems}
+      \field{volume}{119}
+      \field{year}{2020}
+      \field{pages}{4039\bibrangedash 4048}
+      \range{pages}{10}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/hanzely_et_al_2020_variance_reduced_coordinate_descent_with_acceleration.pdf
+      \endverb
+      \keyw{Computer Science - Machine Learning,Mathematics - Optimization and Control}
+    \endentry
+    \entry{hanzely2018SEGA}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=9afcfad85529fbeea5426832f3b6fcf3}{%
+           family={Hanzely},
+           familyi={H\bibinitperiod},
+           given={Filip},
+           giveni={F\bibinitperiod}}}%
+        {{hash=dbe35b250bff9f2ca1bdf7d01177b0d9}{%
+           family={Mishchenko},
+           familyi={M\bibinitperiod},
+           given={Konstantin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=972f2a6c228c82719a54368d49838fd7}{%
+           family={Richtárik},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Red Hook, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates Inc.}%
+      }
+      \strng{namehash}{e482308bc80e487e3e1769b0df6f94d4}
+      \strng{fullhash}{62fb0fb5223495c4667d0a43f1316db4}
+      \strng{bibnamehash}{62fb0fb5223495c4667d0a43f1316db4}
+      \strng{authorbibnamehash}{62fb0fb5223495c4667d0a43f1316db4}
+      \strng{authornamehash}{e482308bc80e487e3e1769b0df6f94d4}
+      \strng{authorfullhash}{62fb0fb5223495c4667d0a43f1316db4}
+      \field{extraname}{2}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We propose a randomized first order optimization method—SEGA (SkEtched GrAdient)—which progressively throughout its iterations builds a variance-reduced estimate of the gradient from random linear measurements (sketches) of the gradient. In each iteration, SEGA updates the current estimate of the gradient through a sketch-and-project operation using the information provided by the latest sketch, and this is subsequently used to compute an unbiased estimate of the true gradient through a random relaxation procedure. This unbiased estimate is then used to perform a gradient step. Unlike standard subspace descent methods, such as coordinate descent, SEGA can be used for optimization problems with a non-separable proximal term. We provide a general convergence analysis and prove linear convergence for strongly convex objectives. In the special case of coordinate sketches, SEGA can be enhanced with various techniques such as importance sampling, minibatching and acceleration, and its rate is up to a small constant factor identical to the best-known rate of coordinate descent.}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{month}{12}
+      \field{series}{{{NIPS}}'18}
+      \field{shorttitle}{{{SEGA}}}
+      \field{title}{{{SEGA}}: Variance Reduction via Gradient Sketching}
+      \field{year}{2018}
+      \field{pages}{2086\bibrangedash 2097}
+      \range{pages}{12}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/hanzely_et_al_2018_sega.pdf
+      \endverb
+    \endentry
+    \entry{hardt2016Train}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=e771760b6d0d33f8b4dfd907d8d57ac2}{%
+           family={Hardt},
+           familyi={H\bibinitperiod},
+           given={Moritz},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ffa081e7e59a2c82fd714ab7ea81fe97}{%
+           family={Recht},
+           familyi={R\bibinitperiod},
+           given={Ben},
+           giveni={B\bibinitperiod}}}%
+        {{hash=300d4990e626d975e0c28630444f63c3}{%
+           family={Singer},
+           familyi={S\bibinitperiod},
+           given={Yoram},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{6715d12818335ad532b3aa871d63dcdf}
+      \strng{fullhash}{4fd1e5f48d77d6306a58d2ce82b236a5}
+      \strng{bibnamehash}{4fd1e5f48d77d6306a58d2ce82b236a5}
+      \strng{authorbibnamehash}{4fd1e5f48d77d6306a58d2ce82b236a5}
+      \strng{authornamehash}{6715d12818335ad532b3aa871d63dcdf}
+      \strng{authorfullhash}{4fd1e5f48d77d6306a58d2ce82b236a5}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{booktitle}{ICML}
+      \field{month}{6}
+      \field{shorttitle}{Train Faster, Generalize Better}
+      \field{title}{Train Faster, Generalize Better: {{Stability}} of Stochastic Gradient Descent}
+      \field{year}{2016}
+      \field{pages}{1225\bibrangedash 1234}
+      \range{pages}{10}
+    \endentry
+    \entry{holland1977Robust}{article}{}
+      \name{author}{2}{}{%
+        {{hash=f77d8823946c674172702e2a9422f960}{%
+           family={Holland},
+           familyi={H\bibinitperiod},
+           given={Paul\bibnamedelima W.},
+           giveni={P\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=7cece0607ab1010bafc8e806955e30dc}{%
+           family={Welsch},
+           familyi={W\bibinitperiod},
+           given={Roy\bibnamedelima E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{e71083d54f6b0accfaac20e4e464709a}
+      \strng{fullhash}{e71083d54f6b0accfaac20e4e464709a}
+      \strng{bibnamehash}{e71083d54f6b0accfaac20e4e464709a}
+      \strng{authorbibnamehash}{e71083d54f6b0accfaac20e4e464709a}
+      \strng{authornamehash}{e71083d54f6b0accfaac20e4e464709a}
+      \strng{authorfullhash}{e71083d54f6b0accfaac20e4e464709a}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The rapid development of the theory of robust estimation (Huber, 1973) has created a need for computational procedures to produce robust estimates. We will review a number of different computational approaches for robust linear regression but focus on one—iteratively reweighted least-squares (IRLS). The weight functions that we discuss are a part of a semi-portable subroutine library called ROSEPACK (RObust Statistical Estimation PACKage) that has been developed by the authors and Virginia Klema at the Computer Research Center of the National Bureau of Economic Research, Inc. in Cambridge, Mass. with the support of the National Science Foundation. This library (Klema, 1976) makes it relatively simple to implement an IRLS regression package.}
+      \field{journaltitle}{Communications in Statistics - Theory and Methods}
+      \field{month}{1}
+      \field{number}{9}
+      \field{title}{Robust regression using iteratively reweighted least-squares}
+      \field{urlday}{18}
+      \field{urlmonth}{1}
+      \field{urlyear}{2022}
+      \field{volume}{6}
+      \field{year}{1977}
+      \field{urldateera}{ce}
+      \field{pages}{813\bibrangedash 827}
+      \range{pages}{15}
+      \verb{file}
+      \verb Snapshot:/home/pmangold/zotero/storage/27WULKL2/03610927708827533.html:text/html
+      \endverb
+      \keyw{one-step estimates,robust weight functions,ROSEPACK,SLASH distribution,small sample variances,tuning constants}
+    \endentry
+    \entry{johnson2013Accelerating}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=e45aaceccfe7fb930bf97a924cba06fa}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Rie},
+           giveni={R\bibinitperiod}}}%
+        {{hash=55926e2ed0c54f92266d978954a4cdc3}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Tong},
+           giveni={T\bibinitperiod}}}%
+      }
+      \name{editor}{5}{}{%
+        {{hash=167dfedfa64097a597226f477da22c44}{%
+           family={Burges},
+           familyi={B\bibinitperiod},
+           given={C.\bibnamedelimi J.\bibnamedelimi C.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=bbfb0f3936c83b7b099561e6f0e32ef3}{%
+           family={Bottou},
+           familyi={B\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=064d84a432787740019dc765d9115718}{%
+           family={Welling},
+           familyi={W\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=b8fd0c0f416ef8a8bbb50286418e9df8}{%
+           family={Ghahramani},
+           familyi={G\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=ad5ed31dbb8d37755c6cb48bedfdfe1d}{%
+           family={Weinberger},
+           familyi={W\bibinitperiod},
+           given={K.\bibnamedelimi Q.},
+           giveni={K\bibinitperiod\bibinitdelim Q\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{f6cd2cd088797362e32ad21567494620}
+      \strng{fullhash}{f6cd2cd088797362e32ad21567494620}
+      \strng{bibnamehash}{f6cd2cd088797362e32ad21567494620}
+      \strng{authorbibnamehash}{f6cd2cd088797362e32ad21567494620}
+      \strng{authornamehash}{f6cd2cd088797362e32ad21567494620}
+      \strng{authorfullhash}{f6cd2cd088797362e32ad21567494620}
+      \strng{editorbibnamehash}{4d5fe782a7c94436755974e2f13259be}
+      \strng{editornamehash}{d840979c71deecc08b81deb7664852e6}
+      \strng{editorfullhash}{4d5fe782a7c94436755974e2f13259be}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{title}{Accelerating Stochastic Gradient Descent Using Predictive Variance Reduction}
+      \field{volume}{26}
+      \field{year}{2013}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/johnson_zhang_2013_accelerating_stochastic_gradient_descent_using_predictive_variance_reduction.pdf
+      \endverb
+    \endentry
+    \entry{jung2021New}{incollection}{}
+      \name{author}{6}{}{%
+        {{hash=6000376f0556a5803073d9b6fac9ae1b}{%
+           family={Jung},
+           familyi={J\bibinitperiod},
+           given={Christopher},
+           giveni={C\bibinitperiod}}}%
+        {{hash=d117e5dcc05ea10241afcd4de0a6afaa}{%
+           family={Ligett},
+           familyi={L\bibinitperiod},
+           given={Katrina},
+           giveni={K\bibinitperiod}}}%
+        {{hash=1595660c2346a436f6e6750e4cf793c0}{%
+           family={Neel},
+           familyi={N\bibinitperiod},
+           given={Seth},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9bb323b3c3d2af68def0dcbde8e6795d}{%
+           family={Roth},
+           familyi={R\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod}}}%
+        {{hash=4ec5889cf96a51723d1b53cdfabf5e2d}{%
+           family={{Sharifi-Malvajerdi}},
+           familyi={S\bibinitperiod},
+           given={Saeed},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f8583d20f5e8c8419ba5008b12922083}{%
+           family={Shenfeld},
+           familyi={S\bibinitperiod},
+           given={Moshe},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{b0663cc6912ea07c6e5ae3533e5afb9a}
+      \strng{fullhash}{f1600a37d51596dfda9d250e3b1f7b28}
+      \strng{bibnamehash}{f1600a37d51596dfda9d250e3b1f7b28}
+      \strng{authorbibnamehash}{f1600a37d51596dfda9d250e3b1f7b28}
+      \strng{authornamehash}{b0663cc6912ea07c6e5ae3533e5afb9a}
+      \strng{authorfullhash}{f1600a37d51596dfda9d250e3b1f7b28}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 53rd {{Annual ACM SIGACT Symposium}} on {{Theory}} of {{Computing}}}
+      \field{month}{6}
+      \field{title}{A New Analysis of Differential Privacy\&\#x2019;s Generalization Guarantees (Invited Paper)}
+      \field{year}{2021}
+      \field{pages}{9}
+      \range{pages}{1}
+    \endentry
+    \entry{kairouz2021Nearly}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=761af8788087acbeff1e33df3d1ff52a}{%
+           family={Kairouz},
+           familyi={K\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=b405d34b60cb5497e7f012578c487186}{%
+           family={Diaz},
+           familyi={D\bibinitperiod},
+           given={Mónica\bibnamedelima Ribero},
+           giveni={M\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8c8ac6f9495c86be23c104635596d974}{%
+           family={Rush},
+           familyi={R\bibinitperiod},
+           given={Keith},
+           giveni={K\bibinitperiod}}}%
+        {{hash=caaaf78e4ea5134f14ec5cc490265c9e}{%
+           family={Thakurta},
+           familyi={T\bibinitperiod},
+           given={Abhradeep},
+           giveni={A\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=b2aeb0539e71c989e52b170b56b1fabd}{%
+           family={Belkin},
+           familyi={B\bibinitperiod},
+           given={Mikhail},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1162b7ca3f617484861379823b7eca5f}{%
+           family={Kpotufe},
+           familyi={K\bibinitperiod},
+           given={Samory},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{b5d6d122fda9b4124d06103e4b2974cd}
+      \strng{fullhash}{d403c547978a01e4af092a5adce87e89}
+      \strng{bibnamehash}{d403c547978a01e4af092a5adce87e89}
+      \strng{authorbibnamehash}{d403c547978a01e4af092a5adce87e89}
+      \strng{authornamehash}{b5d6d122fda9b4124d06103e4b2974cd}
+      \strng{authorfullhash}{d403c547978a01e4af092a5adce87e89}
+      \strng{editorbibnamehash}{9211307f5347b654539e6d0498a80866}
+      \strng{editornamehash}{9211307f5347b654539e6d0498a80866}
+      \strng{editorfullhash}{9211307f5347b654539e6d0498a80866}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We revisit the problem of empirical risk minimziation (ERM) with differential privacy. We show that noisy AdaGrad, given appropriate knowledge and conditions on the subspace from which gradients can be drawn, achieves a regret comparable to traditional AdaGrad plus a well-controlled term due to noise. We show a convergence rate of O(\textbackslash tr(GT)/T)O(\textbackslash tr(GT)/T)O(\textbackslash tr(G\_T)/T), where GTGTG\_T captures the geometry of the gradient subspace. Since \textbackslash tr(GT)=O(T--{$\surd$})\textbackslash tr(GT)=O(T)\textbackslash tr(G\_T)=O(\textbackslash sqrt\{T\}) we can obtain faster rates for convex and Lipschitz functions, compared to the O(1/T--{$\surd$})O(1/T)O(1/\textbackslash sqrt\{T\}) rate achieved by known versions of noisy (stochastic) gradient descent with comparable noise variance. In particular, we show that if the gradients lie in a known constant rank subspace, and assuming algorithmic access to an envelope which bounds decaying sensitivity, one can achieve faster convergence to an excess empirical risk of O\textasciitilde (1/{$\epsilon$}n)O\textasciitilde (1/{$\epsilon$}n)\textbackslash tilde O(1/\textbackslash epsilon n), where {$\epsilon\epsilon\backslash$}epsilon is the privacy budget and nnn the number of samples. Letting ppp be the problem dimension, this result implies that, by running noisy Adagrad, we can bypass the DP-SGD bound O\textasciitilde (p–{$\surd$}/{$\epsilon$}n)O\textasciitilde (p/{$\epsilon$}n)\textbackslash tilde O(\textbackslash sqrt\{p\}/\textbackslash epsilon n) in T=({$\epsilon$}n)2/(1+2{$\alpha$})T=({$\epsilon$}n)2/(1+2{$\alpha$})T=(\textbackslash epsilon n)\^\{2/(1+2\textbackslash alpha)\} iterations, where {$\alpha\geq$}0{$\alpha\geq$}0\textbackslash alpha \textbackslash geq 0 is a parameter controlling gradient norm decay, instead of the rate achieved by SGD of T={$\epsilon$}2n2T={$\epsilon$}2n2T=\textbackslash epsilon\^2n\^2. Our results operate with general convex functions in both constrained and unconstrained minimization. Along the way, we do a perturbation analysis of noisy AdaGrad, which is of independent interest. Our utility guarantee for the private ERM problem follows as a corollary to the regret guarantee of noisy AdaGrad.}
+      \field{booktitle}{COLT}
+      \field{langid}{english}
+      \field{series}{Proceedings of Machine Learning Research}
+      \field{title}{({N}early) {D}imension {I}ndependent {P}rivate {ERM} with {A}da{G}rad {R}ates via {P}ublicly {E}stimated {S}ubspaces}
+      \field{volume}{134}
+      \field{year}{2021}
+      \field{pages}{2717\bibrangedash 2746}
+      \range{pages}{30}
+      \verb{file}
+      \verb /home/pmangold/research/references/pdf/kairouz_et_al_2021_(nearly)_dimension_independent_private_erm_with_adagrad_rates- via_publicly.pdf
+      \endverb
+    \endentry
+    \entry{karimireddy2019Efficient}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=616e54d3bed20a3b4e83a9a128f65cb4}{%
+           family={Karimireddy},
+           familyi={K\bibinitperiod},
+           given={Sai\bibnamedelima Praneeth},
+           giveni={S\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=1f4030e19fca045ae64e65262e79244a}{%
+           family={Koloskova},
+           familyi={K\bibinitperiod},
+           given={Anastasia},
+           giveni={A\bibinitperiod}}}%
+        {{hash=676899385eb3226a6df8fd47634d1127}{%
+           family={Stich},
+           familyi={S\bibinitperiod},
+           given={Sebastian\bibnamedelima U.},
+           giveni={S\bibinitperiod\bibinitdelim U\bibinitperiod}}}%
+        {{hash=bd642ce031840ac707e5caf1affef744}{%
+           family={Jaggi},
+           familyi={J\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{4834429d7288062ec1fe5bc6a5b69d3e}
+      \strng{fullhash}{2a80d570f93e08725f93288f2b419fdd}
+      \strng{bibnamehash}{2a80d570f93e08725f93288f2b419fdd}
+      \strng{authorbibnamehash}{2a80d570f93e08725f93288f2b419fdd}
+      \strng{authornamehash}{4834429d7288062ec1fe5bc6a5b69d3e}
+      \strng{authorfullhash}{2a80d570f93e08725f93288f2b419fdd}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Coordinate descent with random coordinate selection is the current state of the art for many large scale optimization problems. However, greedy selection of the steepest coordinate on smooth proble...}
+      \field{booktitle}{The 22nd {{International Conference}} on {{Artificial Intelligence}} and {{Statistics}}}
+      \field{issn}{2640-3498}
+      \field{langid}{english}
+      \field{month}{4}
+      \field{title}{Efficient {{Greedy Coordinate Descent}} for {{Composite Problems}}}
+      \field{year}{2019}
+      \field{pages}{2887\bibrangedash 2896}
+      \range{pages}{10}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/karimireddy_et_al_2019_efficient_greedy_coordinate_descent_for_composite_problems.pdf;/home/pmangold/zotero/storage/7P3TC8VC/karimireddy19a.html
+      \endverb
+    \endentry
+    \entry{kelleypace1997Sparse}{article}{}
+      \name{author}{2}{}{%
+        {{hash=81e74b6a600fa781ab9a2684ddb1060f}{%
+           family={Kelley\bibnamedelima Pace},
+           familyi={K\bibinitperiod\bibinitdelim P\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=b5b85590544fa5dfd43cdc4ba1633b95}{%
+           family={Barry},
+           familyi={B\bibinitperiod},
+           given={Ronald},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{e8b83df6d09432edb619e72eee0c788b}
+      \strng{fullhash}{e8b83df6d09432edb619e72eee0c788b}
+      \strng{bibnamehash}{e8b83df6d09432edb619e72eee0c788b}
+      \strng{authorbibnamehash}{e8b83df6d09432edb619e72eee0c788b}
+      \strng{authornamehash}{e8b83df6d09432edb619e72eee0c788b}
+      \strng{authorfullhash}{e8b83df6d09432edb619e72eee0c788b}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistics \& Probability Letters}
+      \field{month}{5}
+      \field{title}{Sparse spatial autoregressions}
+      \field{volume}{33}
+      \field{year}{1997}
+      \verb{doi}
+      \verb 10.1016/S0167-7152(96)00140-X
+      \endverb
+    \endentry
+    \entry{lewis2016Proximal}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a3947b36130be0ff4eeab8bd4ffd808a}{%
+           family={Lewis},
+           familyi={L\bibinitperiod},
+           given={A.\bibnamedelimi S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=cb09a7decd6b998193e06f6cf7e9ca80}{%
+           family={Wright},
+           familyi={W\bibinitperiod},
+           given={S.\bibnamedelimi J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{c44bcbe032b984182336514f6df57622}
+      \strng{fullhash}{c44bcbe032b984182336514f6df57622}
+      \strng{bibnamehash}{c44bcbe032b984182336514f6df57622}
+      \strng{authorbibnamehash}{c44bcbe032b984182336514f6df57622}
+      \strng{authornamehash}{c44bcbe032b984182336514f6df57622}
+      \strng{authorfullhash}{c44bcbe032b984182336514f6df57622}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We consider minimization of functions that are compositions of convex or prox-regular functions (possibly extended-valued) with smooth vector functions. A wide variety of important optimization problems fall into this framework. We describe an algorithmic framework based on a subproblem constructed from a linearized approximation to the objective and a regularization term. Properties of local solutions of this subproblem underlie both a global convergence result and an identification property of the active manifold containing the solution of the original problem. Preliminary computational results on both convex and nonconvex examples are promising.}
+      \field{journaltitle}{Mathematical Programming}
+      \field{langid}{english}
+      \field{month}{7}
+      \field{number}{1}
+      \field{title}{A Proximal Method for Composite Minimization}
+      \field{volume}{158}
+      \field{year}{2016}
+      \field{pages}{501\bibrangedash 546}
+      \range{pages}{46}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/lewis_wright_2016_a_proximal_method_for_composite_minimization.pdf
+      \endverb
+    \endentry
+    \entry{liu2009Blockwise}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=1fd24db54860bcc68afc8ed6e58bfa9a}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Han},
+           giveni={H\bibinitperiod}}}%
+        {{hash=136955f783ed2315f45927a0f2abca24}{%
+           family={Palatucci},
+           familyi={P\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=112faefb37293f52cd92c3bb36fcc08b}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Jian},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{5c8959cd476a0a6625c47cbd7824e155}
+      \strng{fullhash}{0cf7217cf43bc1da73b83d229e0dd9b0}
+      \strng{bibnamehash}{0cf7217cf43bc1da73b83d229e0dd9b0}
+      \strng{authorbibnamehash}{0cf7217cf43bc1da73b83d229e0dd9b0}
+      \strng{authornamehash}{5c8959cd476a0a6625c47cbd7824e155}
+      \strng{authorfullhash}{0cf7217cf43bc1da73b83d229e0dd9b0}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We develop a cyclical blockwise coordinate descent algorithm for the multi-task Lasso that efficiently solves problems with thousands of features and tasks. The main result shows that a closed-form Winsorization operator can be obtained for the sup-norm penalized least squares regression. This allows the algorithm to find solutions to very large-scale problems far more efficiently than existing methods. This result complements the pioneering work of Friedman, et al. (2007) for the single-task Lasso. As a case study, we use the multi-task Lasso as a variable selector to discover a semantic basis for predicting human neural activation. The learned solution outperforms the standard basis for this task on the majority of test participants, while requiring far fewer assumptions about cognitive neuroscience. We demonstrate how this learned basis can yield insights into how the brain represents the meanings of words.}
+      \field{booktitle}{ICML}
+      \field{month}{6}
+      \field{title}{Blockwise Coordinate Descent Procedures for the Multi-Task Lasso, with Applications to Neural Semantic Basis Discovery}
+      \field{year}{2009}
+      \field{pages}{649\bibrangedash 656}
+      \range{pages}{8}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/liu_et_al_2009_blockwise_coordinate_descent_procedures_for_the_multi-task_lasso,_with.pdf
+      \endverb
+    \endentry
+    \entry{Luo_Tseng1992}{article}{}
+      \name{author}{2}{}{%
+        {{hash=561f7dbcad0e90349feacdbd157fbf38}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Zlhi-Quau},
+           giveni={Z\bibinithyphendelim Q\bibinitperiod}}}%
+        {{hash=0de9e02af0123ef3a5e6efb649a72e15}{%
+           family={Tseng},
+           familyi={T\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{4c781e1639502372a2d9b17c11ab8d66}
+      \strng{fullhash}{4c781e1639502372a2d9b17c11ab8d66}
+      \strng{bibnamehash}{4c781e1639502372a2d9b17c11ab8d66}
+      \strng{authorbibnamehash}{4c781e1639502372a2d9b17c11ab8d66}
+      \strng{authornamehash}{4c781e1639502372a2d9b17c11ab8d66}
+      \strng{authorfullhash}{4c781e1639502372a2d9b17c11ab8d66}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Optim. Theory Appl.}
+      \field{number}{1}
+      \field{title}{On the convergence of the coordinate descent method for convex differentiable minimization}
+      \field{volume}{72}
+      \field{year}{1992}
+      \field{pages}{7\bibrangedash 35}
+      \range{pages}{29}
+    \endentry
+    \entry{Massias_Gramfort_Salmon18}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=080da58c32abdac992a8f9e85060311f}{%
+           family={Massias},
+           familyi={M\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=955f19cea89ae97bb7936078898e6255}{%
+           family={Gramfort},
+           familyi={G\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=dc3e79706dde26fe3351a956d27f7566}{%
+           family={Salmon},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{42b6c9e2dc68c8b3022706d687b14905}
+      \strng{fullhash}{8aa59b0a0746a52e1fcf5f18b9c6777b}
+      \strng{bibnamehash}{8aa59b0a0746a52e1fcf5f18b9c6777b}
+      \strng{authorbibnamehash}{8aa59b0a0746a52e1fcf5f18b9c6777b}
+      \strng{authornamehash}{42b6c9e2dc68c8b3022706d687b14905}
+      \strng{authorfullhash}{8aa59b0a0746a52e1fcf5f18b9c6777b}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ICML}
+      \field{title}{{Celer: a Fast Solver for the Lasso with Dual Extrapolation}}
+      \field{volume}{80}
+      \field{year}{2018}
+      \field{pages}{3315\bibrangedash 3324}
+      \range{pages}{10}
+    \endentry
+    \entry{mironov2017Renyi}{article}{}
+      \name{author}{1}{}{%
+        {{hash=2eea0075441c4e9acfc378c1345323f2}{%
+           family={Mironov},
+           familyi={M\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{2eea0075441c4e9acfc378c1345323f2}
+      \strng{fullhash}{2eea0075441c4e9acfc378c1345323f2}
+      \strng{bibnamehash}{2eea0075441c4e9acfc378c1345323f2}
+      \strng{authorbibnamehash}{2eea0075441c4e9acfc378c1345323f2}
+      \strng{authornamehash}{2eea0075441c4e9acfc378c1345323f2}
+      \strng{authorfullhash}{2eea0075441c4e9acfc378c1345323f2}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose a natural relaxation of differential privacy based on the Re´nyi divergence. Closely related notions have appeared in several recent papers that analyzed composition of differentially private mechanisms. We argue that the useful analytical tool can be used as a privacy deﬁnition, compactly and accurately representing guarantees on the tails of the privacy loss. We demonstrate that the new deﬁnition shares many important properties with the standard deﬁnition of differential privacy, while additionally allowing tighter analysis of composite heterogeneous mechanisms.}
+      \field{journaltitle}{2017 IEEE 30th Computer Security Foundations Symposium (CSF)}
+      \field{month}{8}
+      \field{note}{arXiv: 1702.07476}
+      \field{title}{Renyi {Differential} {Privacy}}
+      \field{urlday}{27}
+      \field{urlmonth}{11}
+      \field{urlyear}{2020}
+      \field{year}{2017}
+      \field{urldateera}{ce}
+      \field{pages}{263\bibrangedash 275}
+      \range{pages}{13}
+      \verb{file}
+      \verb mironov_2017_renyi_differential_privacy.pdf:/home/pmangold/research/references/pdf/mironov_2017_renyi_differential_privacy.pdf:application/pdf
+      \endverb
+      \keyw{Computer Science - Cryptography and Security}
+    \endentry
+    \entry{mironov2019Enyi}{article}{}
+      \name{author}{3}{}{%
+        {{hash=2eea0075441c4e9acfc378c1345323f2}{%
+           family={Mironov},
+           familyi={M\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod}}}%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+        {{hash=32a08717e0d6dcde59bc98b96800ed6c}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Li},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{5356d49a75131c4df261bb563c16cea2}
+      \strng{fullhash}{e12129204d9e80047cc44dc9eb7dceb3}
+      \strng{bibnamehash}{e12129204d9e80047cc44dc9eb7dceb3}
+      \strng{authorbibnamehash}{e12129204d9e80047cc44dc9eb7dceb3}
+      \strng{authornamehash}{5356d49a75131c4df261bb563c16cea2}
+      \strng{authorfullhash}{e12129204d9e80047cc44dc9eb7dceb3}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The Sampled Gaussian Mechanism (SGM)---a composition of subsampling and the additive Gaussian noise---has been successfully used in a number of machine learning applications. The mechanism's unexpected power is derived from privacy amplification by sampling where the privacy cost of a single evaluation diminishes quadratically, rather than linearly, with the sampling rate. Characterizing the precise privacy properties of SGM motivated development of several relaxations of the notion of differential privacy. This work unifies and fills in gaps in published results on SGM. We describe a numerically stable procedure for precise computation of SGM's R\textbackslash 'enyi Differential Privacy and prove a nearly tight (within a small constant factor) closed-form bound.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1908.10530 [cs, stat]}
+      \field{month}{8}
+      \field{title}{R\textbackslash 'enyi {{Differential Privacy}} of the {{Sampled Gaussian Mechanism}}}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1908.10530
+      \endverb
+      \verb{file}
+      \verb /home/pmangold/research/references/pdf/mironov_et_al_2019_r-'enyi_differential_privacy_of_the_sampled_gaussian_mechanism.pdf
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Machine Learning,Statistics - Machine Learning}
+    \endentry
+    \entry{Nesterov12}{article}{}
+      \name{author}{1}{}{%
+        {{hash=8a41b35fe7b3d1725cb95bd7eec40b01}{%
+           family={Nesterov},
+           familyi={N\bibinitperiod},
+           given={Yurii},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \strng{fullhash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \strng{bibnamehash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \strng{authorbibnamehash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \strng{authornamehash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \strng{authorfullhash}{8a41b35fe7b3d1725cb95bd7eec40b01}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM J. Optim.}
+      \field{number}{2}
+      \field{title}{Efficiency of coordinate descent methods on huge-scale optimization problems}
+      \field{volume}{22}
+      \field{year}{2012}
+      \field{pages}{341\bibrangedash 362}
+      \range{pages}{22}
+    \endentry
+    \entry{nutini2017Let}{article}{}
+      \name{author}{3}{}{%
+        {{hash=ef2efe010316e17a0f001b9311e73625}{%
+           family={Nutini},
+           familyi={N\bibinitperiod},
+           given={Julie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=022086949e078e6d8906851da13d3fd6}{%
+           family={Laradji},
+           familyi={L\bibinitperiod},
+           given={Issam},
+           giveni={I\bibinitperiod}}}%
+        {{hash=6ec4971d3a33801f19547675e0e66e5e}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{eca53aef39825f7a3f08ca7ec592be70}
+      \strng{fullhash}{bf4ec50115495826e3b0b7946eb67e1f}
+      \strng{bibnamehash}{bf4ec50115495826e3b0b7946eb67e1f}
+      \strng{authorbibnamehash}{bf4ec50115495826e3b0b7946eb67e1f}
+      \strng{authornamehash}{eca53aef39825f7a3f08ca7ec592be70}
+      \strng{authorfullhash}{bf4ec50115495826e3b0b7946eb67e1f}
+      \field{extraname}{1}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Block coordinate descent (BCD) methods are widely-used for large-scale numerical optimization because of their cheap iteration costs, low memory requirements, amenability to parallelization, and ability to exploit problem structure. Three main algorithmic choices influence the performance of BCD methods: the block partitioning strategy, the block selection rule, and the block update rule. In this paper we explore all three of these building blocks and propose variations for each that can lead to significantly faster BCD methods. We (i) propose new greedy block-selection strategies that guarantee more progress per iteration than the Gauss-Southwell rule; (ii) explore practical issues like how to implement the new rules when using ``variable'' blocks; (iii) explore the use of message-passing to compute matrix or Newton updates efficiently on huge blocks for problems with a sparse dependency between variables; and (iv) consider optimal active manifold identification, which leads to bounds on the ``active-set complexity'' of BCD methods and leads to superlinear convergence for certain problems with sparse solutions (and in some cases finite termination at an optimal solution). We support all of our findings with numerical results for the classic machine learning problems of least squares, logistic regression, multi-class logistic regression, label propagation, and L1-regularization.}
+      \field{eprintclass}{math}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1712.08859 [math]}
+      \field{langid}{english}
+      \field{month}{12}
+      \field{shorttitle}{Let's {{Make Block Coordinate Descent Go Fast}}}
+      \field{title}{Let's {{Make Block Coordinate Descent Go Fast}}: Faster {{Greedy Rules}}, {{Message}}-{{Passing}}, {{Active}}-{{Set Complexity}}, and {{Superlinear Convergence}}}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1712.08859
+      \endverb
+      \verb{file}
+      \verb /home/pmangold/research/references/pdf/nutini_et_al_2017_let's_make_block_coordinate_descent_go_fast.pdf
+      \endverb
+      \keyw{90C06,Mathematics - Optimization and Control}
+    \endentry
+    \entry{nutini2015Coordinate}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=ef2efe010316e17a0f001b9311e73625}{%
+           family={Nutini},
+           familyi={N\bibinitperiod},
+           given={Julie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6ec4971d3a33801f19547675e0e66e5e}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=022086949e078e6d8906851da13d3fd6}{%
+           family={Laradji},
+           familyi={L\bibinitperiod},
+           given={Issam},
+           giveni={I\bibinitperiod}}}%
+        {{hash=c2c059bde0f21657a9ca66e1bc65b559}{%
+           family={Friedlander},
+           familyi={F\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1a6dc950c283e23d58ed3863b7754620}{%
+           family={Koepke},
+           familyi={K\bibinitperiod},
+           given={Hoyt},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{eca53aef39825f7a3f08ca7ec592be70}
+      \strng{fullhash}{46ed275c1ec602029a2dc5b8cba3c6e9}
+      \strng{bibnamehash}{46ed275c1ec602029a2dc5b8cba3c6e9}
+      \strng{authorbibnamehash}{46ed275c1ec602029a2dc5b8cba3c6e9}
+      \strng{authornamehash}{eca53aef39825f7a3f08ca7ec592be70}
+      \strng{authorfullhash}{46ed275c1ec602029a2dc5b8cba3c6e9}
+      \field{extraname}{2}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{There has been significant recent work on the theory and application of randomized coordinate descent algorithms, beginning with the work of~ Nesterov [SIAM J. Optim., 22(2), 2012], who showed that...}
+      \field{booktitle}{ICML}
+      \field{month}{6}
+      \field{title}{Coordinate {{Descent Converges Faster}} with the {{Gauss}}-{{Southwell Rule Than Random Selection}}}
+      \field{year}{2015}
+      \field{pages}{1632\bibrangedash 1641}
+      \range{pages}{10}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/nutini_et_al_2015_coordinate_descent_converges_faster_with_the_gauss-southwell_rule_than_random2.pdf;/home/pmangold/zotero/storage/B57TIC4V/nutini15.html
+      \endverb
+    \endentry
+    \entry{parikh2014Proximal}{article}{}
+      \name{author}{2}{}{%
+        {{hash=2e1b520f90d2b5de02de6cf5f9896399}{%
+           family={Parikh},
+           familyi={P\bibinitperiod},
+           given={Neal},
+           giveni={N\bibinitperiod}}}%
+        {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
+           family={Boyd},
+           familyi={B\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{05c18423218cfff8f407fe111419ae33}
+      \strng{fullhash}{05c18423218cfff8f407fe111419ae33}
+      \strng{bibnamehash}{05c18423218cfff8f407fe111419ae33}
+      \strng{authorbibnamehash}{05c18423218cfff8f407fe111419ae33}
+      \strng{authornamehash}{05c18423218cfff8f407fe111419ae33}
+      \strng{authorfullhash}{05c18423218cfff8f407fe111419ae33}
+      \field{sortinit}{P}
+      \field{sortinithash}{bb5b15f2db90f7aef79bb9e83defefcb}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This monograph is about a class of optimization algorithms called proximal algorithms. Much like Newton's method is a standard tool for solving unconstrained smooth optimization problems of modest size, proximal algorithms can be viewed as an analogous tool for nonsmooth, constrained, large-scale, or distributed versions of these problems. They are very generally applicable, but are especially well-suited to problems of substantial recent interest involving large or high-dimensional datasets. Proximal methods sit at a higher level of abstraction than classical algorithms like Newton's method: the base operation is evaluating the proximal operator of a function, which itself involves solving a small convex optimization problem. These subproblems, which generalize the problem of projecting a point onto a convex set, often admit closed-form solutions or can be solved very quickly with standard or simple specialized methods. Here, we discuss the many different interpretations of proximal operators and algorithms, describe their connections to many other topics in optimization and applied mathematics, survey some popular algorithms, and provide a large number of examples of proximal operators that commonly arise in practice.}
+      \field{journaltitle}{Foundations and Trends in Optimization}
+      \field{month}{1}
+      \field{number}{3}
+      \field{title}{Proximal {{Algorithms}}}
+      \field{volume}{1}
+      \field{year}{2014}
+      \field{pages}{127\bibrangedash 239}
+      \range{pages}{113}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/parikh_2014_proximal_algorithms.pdf
+      \endverb
+    \endentry
+    \entry{pichapati2019AdaCliP}{article}{}
+      \name{author}{5}{}{%
+        {{hash=daf32004d610a0d21da4e4b590c0d554}{%
+           family={Pichapati},
+           familyi={P\bibinitperiod},
+           given={Venkatadheeraj},
+           giveni={V\bibinitperiod}}}%
+        {{hash=f2bf3c5d64f6e56fe64e06420807322d}{%
+           family={Suresh},
+           familyi={S\bibinitperiod},
+           given={Ananda\bibnamedelima Theertha},
+           giveni={A\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=3d8fad89d7c1a4667ba6f8c6d5572159}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={Felix\bibnamedelima X.},
+           giveni={F\bibinitperiod\bibinitdelim X\bibinitperiod}}}%
+        {{hash=488f216791da731f9fc4cd3a9750676e}{%
+           family={Reddi},
+           familyi={R\bibinitperiod},
+           given={Sashank\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=3b0b77d59993d2550f1dac0336347c8a}{%
+           family={Kumar},
+           familyi={K\bibinitperiod},
+           given={Sanjiv},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{8295b2e1cf29b1791c95cfd5d507ee7c}
+      \strng{fullhash}{3527e273065843447505261f1e2cb7ee}
+      \strng{bibnamehash}{3527e273065843447505261f1e2cb7ee}
+      \strng{authorbibnamehash}{3527e273065843447505261f1e2cb7ee}
+      \strng{authornamehash}{8295b2e1cf29b1791c95cfd5d507ee7c}
+      \strng{authorfullhash}{3527e273065843447505261f1e2cb7ee}
+      \field{sortinit}{P}
+      \field{sortinithash}{bb5b15f2db90f7aef79bb9e83defefcb}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Privacy preserving machine learning algorithms are crucial for learning models over user data to protect sensitive information. Motivated by this, differentially private stochastic gradient descent (SGD) algorithms for training machine learning models have been proposed. At each step, these algorithms modify the gradients and add noise proportional to the sensitivity of the modified gradients. Under this framework, we propose AdaCliP, a theoretically motivated differentially private SGD algorithm that provably adds less noise compared to the previous methods, by using coordinate-wise adaptive clipping of the gradient. We empirically demonstrate that AdaCliP reduces the amount of added noise and produces models with better accuracy.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1908.07643 [cs, stat]}
+      \field{month}{10}
+      \field{shorttitle}{{{AdaCliP}}}
+      \field{title}{{{AdaCliP}}: Adaptive {{Clipping}} for {{Private SGD}}}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1908.07643
+      \endverb
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/pichapati_et_al_2019_adaclip.pdf;/home/pmangold/zotero/storage/SK2JQETW/1908.html
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Machine Learning,Statistics - Machine Learning}
+    \endentry
+    \entry{richtarik2014Iteration}{article}{}
+      \name{author}{2}{}{%
+        {{hash=972f2a6c228c82719a54368d49838fd7}{%
+           family={Richtárik},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=eb83c47cdd9a6edbbd392a27fc868d9a}{%
+           family={Takáč},
+           familyi={T\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{96c3cbefb369f81d4d37e11c864964ef}
+      \strng{fullhash}{96c3cbefb369f81d4d37e11c864964ef}
+      \strng{bibnamehash}{96c3cbefb369f81d4d37e11c864964ef}
+      \strng{authorbibnamehash}{96c3cbefb369f81d4d37e11c864964ef}
+      \strng{authornamehash}{96c3cbefb369f81d4d37e11c864964ef}
+      \strng{authorfullhash}{96c3cbefb369f81d4d37e11c864964ef}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper we develop a randomized block-coordinate descent method for minimizing the sum of a smooth and a simple nonsmooth block-separable convex function and prove that it obtains an {$\epsilon$}-accurate solution with probability at least 1 - {$\rho$} in at most O((n/{$\epsilon$}) log(1/{$\rho$})) iterations, where n is the number of blocks. This extends recent results of Nesterov [Efficiency of coordinate descent methods on huge-scale optimization problems, SIAM J Optimization 22(2), pp. 341–362, 2012], which cover the smooth case, to composite minimization, while at the same time improving the complexity by the factor of 4 and removing {$\epsilon$} from the logarithmic term. More importantly, in contrast with the aforementioned work in which the author achieves the results by applying the method to a regularized version of the objective function with an unknown scaling factor, we show that this is not necessary, thus achieving first true iteration complexity bounds. For strongly convex functions the method converges linearly. In the smooth case we also allow for arbitrary probability vectors and non-Euclidean norms. Finally, we demonstrate numerically that the algorithm is able to solve huge-scale {$\mathscr{l}$}1-regularized least squares with a billion variables.}
+      \field{journaltitle}{Mathematical Programming}
+      \field{langid}{english}
+      \field{month}{4}
+      \field{number}{1-2}
+      \field{title}{Iteration Complexity of Randomized Block-Coordinate Descent Methods for Minimizing a Composite Function}
+      \field{volume}{144}
+      \field{year}{2014}
+      \field{pages}{1\bibrangedash 38}
+      \range{pages}{38}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/richtárik_takáč_2014_iteration_complexity_of_randomized_block-coordinate_descent_methods_for.pdf
+      \endverb
+      \keyw{favorite}
+    \endentry
+    \entry{sardy2000Block}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f88d58f742106081e1e168f61ee49f45}{%
+           family={Sardy},
+           familyi={S\bibinitperiod},
+           given={Sylvain},
+           giveni={S\bibinitperiod}}}%
+        {{hash=560a82b6fceb05fe20d30ac5b845409e}{%
+           family={Bruce},
+           familyi={B\bibinitperiod},
+           given={Andrew\bibnamedelima G.},
+           giveni={A\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=0de9e02af0123ef3a5e6efb649a72e15}{%
+           family={Tseng},
+           familyi={T\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{3d7077c3e00e57a89732323e82da7f92}
+      \strng{fullhash}{34cdc296a847ba011ea28d09c5ec4c9d}
+      \strng{bibnamehash}{34cdc296a847ba011ea28d09c5ec4c9d}
+      \strng{authorbibnamehash}{34cdc296a847ba011ea28d09c5ec4c9d}
+      \strng{authornamehash}{3d7077c3e00e57a89732323e82da7f92}
+      \strng{authorfullhash}{34cdc296a847ba011ea28d09c5ec4c9d}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{An important class of nonparametric signal processing methods entails forming a set of predictors from an overcomplete set of basis functions associated with a fast transform (e.g., wavelet packets). In these methods, the number of basis functions can far exceed the number of sample values in the signal, leading to an ill-posed prediction problem. The ``basis pursuit'' denoising method of Chen, Donoho, and Saunders regularizes the prediction problem by adding an l 1 penalty term on the coefficients for the basis functions. Use of an l 1 penalty instead of l 2 has significant benefits, including higher resolution of signals close in time/frequency and a more parsimonious representation. The l 1 penalty, however, poses a challenging optimization problem that was solved by Chen, Donoho and Saunders using a novel application of interior-point algorithms (IP). This article investigates an alternative optimization approach based on block coordinate relaxation (BCR) for sets of basis functions that are the finite union of sets of orthonormal basis functions (e.g., wavelet packets). We show that the BCR algorithm is globally convergent, and empirically, the BCR algorithm is faster than the IP algorithm for a variety of signal denoising problems.}
+      \field{journaltitle}{Journal of Computational and Graphical Statistics}
+      \field{month}{6}
+      \field{number}{2}
+      \field{title}{Block {{Coordinate Relaxation Methods}} for {{Nonparametric Wavelet Denoising}}}
+      \field{volume}{9}
+      \field{year}{2000}
+      \field{pages}{361\bibrangedash 379}
+      \range{pages}{19}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/sardy_et_al_2000_block_coordinate_relaxation_methods_for_nonparametric_wavelet_denoising.pdf;/home/pmangold/zotero/storage/XIBKM5LE/10618600.2000.html
+      \endverb
+    \endentry
+    \entry{shalev-shwartz2013Stochastic}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a6c5827676b0a2058e5b904c3dd7f878}{%
+           family={{Shalev-Shwartz}},
+           familyi={S\bibinitperiod},
+           given={Shai},
+           giveni={S\bibinitperiod}}}%
+        {{hash=55926e2ed0c54f92266d978954a4cdc3}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Tong},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{b794a06ca688ffb7649fe4d4764a1835}
+      \strng{fullhash}{b794a06ca688ffb7649fe4d4764a1835}
+      \strng{bibnamehash}{b794a06ca688ffb7649fe4d4764a1835}
+      \strng{authorbibnamehash}{b794a06ca688ffb7649fe4d4764a1835}
+      \strng{authornamehash}{b794a06ca688ffb7649fe4d4764a1835}
+      \strng{authorfullhash}{b794a06ca688ffb7649fe4d4764a1835}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Stochastic Gradient Descent (SGD) has become popular for solving large scale supervised machine learning optimization problems such as SVM, due to their strong theoretical guarantees. While the closely related Dual Coordinate Ascent (DCA) method has been implemented in various software packages, it has so far lacked good convergence analysis. This paper presents a new analysis of Stochastic Dual Coordinate Ascent (SDCA) showing that this class of methods enjoy strong theoretical guarantees that are comparable or better than SGD. This analysis justifies the effectiveness of SDCA for practical applications.}
+      \field{journaltitle}{J. Mach. Learn. Res.}
+      \field{month}{2}
+      \field{number}{1}
+      \field{title}{Stochastic Dual Coordinate Ascent Methods for Regularized Loss}
+      \field{volume}{14}
+      \field{year}{2013}
+      \field{pages}{567\bibrangedash 599}
+      \range{pages}{33}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/shalev-shwartz_zhang_2013_stochastic_dual_coordinate_ascent_methods_for_regularized_loss.pdf
+      \endverb
+      \keyw{computational complexity,logistic regression,optimization,regularized loss minimization,ridge regression,stochastic dual coordinate ascent,support vector machines}
+    \endentry
+    \entry{shi2017Primer}{article}{}
+      \name{author}{4}{}{%
+        {{hash=b5ebf07d5f3b400f9a2bee8698b41e78}{%
+           family={Shi},
+           familyi={S\bibinitperiod},
+           given={Hao-Jun\bibnamedelima Michael},
+           giveni={H\bibinithyphendelim J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=a2939bb48288bf61e142bbc73ec81bff}{%
+           family={Tu},
+           familyi={T\bibinitperiod},
+           given={Shenyinying},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e90ea4253a1fc29bd76298287d7babce}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Yangyang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=283c439ffb0015e38107aa1c35da9a6b}{%
+           family={Yin},
+           familyi={Y\bibinitperiod},
+           given={Wotao},
+           giveni={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{59c649e05fdeea9414b34bd29f6a197c}
+      \strng{fullhash}{ef4bc704493d847f388cc5788479d2f0}
+      \strng{bibnamehash}{ef4bc704493d847f388cc5788479d2f0}
+      \strng{authorbibnamehash}{ef4bc704493d847f388cc5788479d2f0}
+      \strng{authornamehash}{59c649e05fdeea9414b34bd29f6a197c}
+      \strng{authorfullhash}{ef4bc704493d847f388cc5788479d2f0}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This monograph presents a class of algorithms called coordinate descent algorithms for mathematicians, statisticians, and engineers outside the field of optimization. This particular class of algorithms has recently gained popularity due to their effectiveness in solving large-scale optimization problems in machine learning, compressed sensing, image processing, and computational statistics. Coordinate descent algorithms solve optimization problems by successively minimizing along each coordinate or coordinate hyperplane, which is ideal for parallelized and distributed computing. Avoiding detailed technicalities and proofs, this monograph gives relevant theory and examples for practitioners to effectively apply coordinate descent to modern problems in data science and engineering.}
+      \field{eprintclass}{math, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1610.00040 [math, stat]}
+      \field{langid}{english}
+      \field{month}{1}
+      \field{title}{A {{Primer}} on {{Coordinate Descent Algorithms}}}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1610.00040
+      \endverb
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/shi_et_al_2017_a_primer_on_coordinate_descent_algorithms.pdf
+      \endverb
+      \keyw{favorite,Mathematics - Optimization and Control,Statistics - Machine Learning,to read}
+    \endentry
+    \entry{shokri2017Membership}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=fcd1e648e4facf942e34fc13811d6a6e}{%
+           family={Shokri},
+           familyi={S\bibinitperiod},
+           given={Reza},
+           giveni={R\bibinitperiod}}}%
+        {{hash=3864d523a96cfd19ab9aef11e8671c11}{%
+           family={Stronati},
+           familyi={S\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=b4778984f6540634409611e0c5414b03}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Congzheng},
+           giveni={C\bibinitperiod}}}%
+        {{hash=29abef6d5f9ba10547dab2eee5bceb2e}{%
+           family={Shmatikov},
+           familyi={S\bibinitperiod},
+           given={Vitaly},
+           giveni={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{697980f5e57fb775b05597f64b0abf88}
+      \strng{fullhash}{c4e315fd34ac758a7e694a6ad5300f7b}
+      \strng{bibnamehash}{c4e315fd34ac758a7e694a6ad5300f7b}
+      \strng{authorbibnamehash}{c4e315fd34ac758a7e694a6ad5300f7b}
+      \strng{authornamehash}{697980f5e57fb775b05597f64b0abf88}
+      \strng{authorfullhash}{c4e315fd34ac758a7e694a6ad5300f7b}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We quantitatively investigate how machine learning models leak information about the individual data records on which they were trained. We focus on the basic membership inference attack: given a data record and black-box access to a model, determine if the record was in the model's training dataset. To perform membership inference against a target model, we make adversarial use of machine learning and train our own inference model to recognize differences in the target model's predictions on the inputs that it trained on versus the inputs that it did not train on. We empirically evaluate our inference techniques on classification models trained by commercial "machine learning as a service" providers such as Google and Amazon. Using realistic datasets and classification tasks, including a hospital discharge dataset whose membership is sensitive from the privacy perspective, we show that these models can be vulnerable to membership inference attacks. We then investigate the factors that influence this leakage and evaluate mitigation strategies.}
+      \field{booktitle}{2017 {{IEEE Symposium}} on {{Security}} and {{Privacy}} ({{SP}})}
+      \field{issn}{2375-1207}
+      \field{month}{5}
+      \field{title}{Membership {{Inference Attacks Against Machine Learning Models}}}
+      \field{year}{2017}
+      \field{pages}{3\bibrangedash 18}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1109/SP.2017.41
+      \endverb
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/shokri_et_al_2017_membership_inference_attacks_against_machine_learning_models.pdf;/home/pmangold/Documents/references/pdf/shokri_et_al_2017_membership_inference_attacks_against_machine_learning_models2.pdf;/home/pmangold/Documents/references/pdf/shokri_et_al_2017_membership_inference_attacks_against_machine_learning_models3.pdf;/home/pmangold/zotero/storage/D8ZJZDEN/7958568.html;/home/pmangold/zotero/storage/YF9NIBWQ/7958568.html
+      \endverb
+      \keyw{Computer Science - Cryptography and Security,Computer Science - Machine Learning,Data models,Google,Predictive models,Privacy,Sociology,Statistics,Statistics - Machine Learning,Training}
+    \endentry
+    \entry{talwar2015Nearly}{article}{}
+      \name{author}{3}{}{%
+        {{hash=1754a40f9d600dea756c1dd1047ce170}{%
+           family={Talwar},
+           familyi={T\bibinitperiod},
+           given={Kunal},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ed54d32ef58cfafcee15c8a825911959}{%
+           family={Guha\bibnamedelima Thakurta},
+           familyi={G\bibinitperiod\bibinitdelim T\bibinitperiod},
+           given={Abhradeep},
+           giveni={A\bibinitperiod}}}%
+        {{hash=32a08717e0d6dcde59bc98b96800ed6c}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Li},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{1635a1ea2a95e34b208b881759bd28a4}
+      \strng{fullhash}{989f8c1e08bd9454b1a69a5c1c57b988}
+      \strng{bibnamehash}{989f8c1e08bd9454b1a69a5c1c57b988}
+      \strng{authorbibnamehash}{989f8c1e08bd9454b1a69a5c1c57b988}
+      \strng{authornamehash}{1635a1ea2a95e34b208b881759bd28a4}
+      \strng{authorfullhash}{989f8c1e08bd9454b1a69a5c1c57b988}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Advances in Neural Information Processing Systems}
+      \field{langid}{english}
+      \field{title}{Nearly {{Optimal Private LASSO}}}
+      \field{volume}{28}
+      \field{year}{2015}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/talwar_et_al_2015_nearly_optimal_private_lasso.pdf;/home/pmangold/Documents/references/pdf/talwar_et_al_2015_nearly_optimal_private_lasso3.pdf;/home/pmangold/zotero/storage/J5XEAIS5/52d080a3e172c33fd6886a37e7288491-Abstract.html
+      \endverb
+    \endentry
+    \entry{tappenden2016Inexact}{article}{}
+      \name{author}{3}{}{%
+        {{hash=beafda6a83c158890e522560ddba1670}{%
+           family={Tappenden},
+           familyi={T\bibinitperiod},
+           given={Rachael},
+           giveni={R\bibinitperiod}}}%
+        {{hash=972f2a6c228c82719a54368d49838fd7}{%
+           family={Richtárik},
+           familyi={R\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=789d42c6b10119b392bd4beb625b25a6}{%
+           family={Gondzio},
+           familyi={G\bibinitperiod},
+           given={Jacek},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{fed4e8bdf9efc9208bc1a8ee97d06e31}
+      \strng{fullhash}{38245f26ca28399502e9d39a79548dce}
+      \strng{bibnamehash}{38245f26ca28399502e9d39a79548dce}
+      \strng{authorbibnamehash}{38245f26ca28399502e9d39a79548dce}
+      \strng{authornamehash}{fed4e8bdf9efc9208bc1a8ee97d06e31}
+      \strng{authorfullhash}{38245f26ca28399502e9d39a79548dce}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{One of the key steps at each iteration of a randomized block coordinate descent method consists in determining the update to a block of variables. Existing algorithms assume that in order to compute the update, a particular subproblem is solved exactly. In this work, we relax this requirement and allow for the subproblem to be solved inexactly, leading to an inexact block coordinate descent method. Our approach incorporates the best known results for exact updates as a special case. Moreover, these theoretical guarantees are complemented by practical considerations: the use of iterative techniques to determine the update and the use of preconditioning for further acceleration.}
+      \field{journaltitle}{J. Optim. Theory Appl.}
+      \field{langid}{english}
+      \field{month}{7}
+      \field{number}{1}
+      \field{shorttitle}{Inexact {{Coordinate Descent}}}
+      \field{title}{Inexact {{Coordinate Descent}}: Complexity and {{Preconditioning}}}
+      \field{volume}{170}
+      \field{year}{2016}
+      \field{pages}{144\bibrangedash 176}
+      \range{pages}{33}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/tappenden_et_al_2016_inexact_coordinate_descent.pdf
+      \endverb
+    \endentry
+    \entry{thakkar2019Differentially}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=a525e6e3997e7e0668009578d4e33327}{%
+           family={Thakkar},
+           familyi={T\bibinitperiod},
+           given={Om},
+           giveni={O\bibinitperiod}}}%
+        {{hash=8091534309f3322f0e44b562780bffae}{%
+           family={Andrew},
+           familyi={A\bibinitperiod},
+           given={Galen},
+           giveni={G\bibinitperiod}}}%
+        {{hash=707fa44f08f047ab822f84fe38c69dfb}{%
+           family={McMahan},
+           familyi={M\bibinitperiod},
+           given={H.\bibnamedelimi Brendan},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{0529ecaf9218628c1c99479ae95b152d}
+      \strng{fullhash}{b1bed62d77d9e8a5955a45aad57ec9a3}
+      \strng{bibnamehash}{b1bed62d77d9e8a5955a45aad57ec9a3}
+      \strng{authorbibnamehash}{b1bed62d77d9e8a5955a45aad57ec9a3}
+      \strng{authornamehash}{0529ecaf9218628c1c99479ae95b152d}
+      \strng{authorfullhash}{b1bed62d77d9e8a5955a45aad57ec9a3}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We introduce a new adaptive clipping technique for training learning models with user-level differential privacy that removes the need for extensive parameter tuning. Previous approaches to this problem use the Federated Stochastic Gradient Descent or the Federated Averaging algorithm with noised updates, and compute a differential privacy guarantee using the Moments Accountant. These approaches rely on choosing a norm bound for each user's update to the model, which needs to be tuned carefully. The best value depends on the learning rate, model architecture, number of passes made over each user's data, and possibly various other parameters. We show that adaptively setting the clipping norm applied to each user's update, based on a differentially private estimate of a target quantile of the distribution of unclipped norms, is sufficient to remove the need for such extensive parameter tuning.}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{title}{Differentially {{Private Learning}} with {{Adaptive Clipping}}}
+      \field{year}{2021}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/thakkar_et_al_2019_differentially_private_learning_with_adaptive_clipping.pdf
+      \endverb
+      \keyw{Computer Science - Machine Learning,Statistics - Machine Learning,to read}
+    \endentry
+    \entry{Tseng_Yun09}{article}{}
+      \name{author}{2}{}{%
+        {{hash=23fbcffd09b4ef36b0956e0a18eb4e72}{%
+           family={Tseng},
+           familyi={T\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a5e482e6aa404d518a1e61258ea6fde7}{%
+           family={Yun},
+           familyi={Y\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{b6bb82e920b471728e991693246f4911}
+      \strng{fullhash}{b6bb82e920b471728e991693246f4911}
+      \strng{bibnamehash}{b6bb82e920b471728e991693246f4911}
+      \strng{authorbibnamehash}{b6bb82e920b471728e991693246f4911}
+      \strng{authornamehash}{b6bb82e920b471728e991693246f4911}
+      \strng{authorfullhash}{b6bb82e920b471728e991693246f4911}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Optim. Theory Appl.}
+      \field{number}{3}
+      \field{title}{Block-coordinate gradient descent method for linearly constrained nonsmooth separable optimization}
+      \field{volume}{140}
+      \field{year}{2009}
+      \field{pages}{513}
+      \range{pages}{1}
+    \endentry
+    \entry{Tseng01}{article}{}
+      \name{author}{1}{}{%
+        {{hash=0de9e02af0123ef3a5e6efb649a72e15}{%
+           family={Tseng},
+           familyi={T\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \strng{fullhash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \strng{bibnamehash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \strng{authorbibnamehash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \strng{authornamehash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \strng{authorfullhash}{0de9e02af0123ef3a5e6efb649a72e15}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Optim. Theory Appl.}
+      \field{number}{3}
+      \field{title}{Convergence of a block coordinate descent method for nondifferentiable minimization}
+      \field{volume}{109}
+      \field{year}{2001}
+      \field{pages}{475\bibrangedash 494}
+      \range{pages}{20}
+    \endentry
+    \entry{vanerven2014Renyi}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ab3fb513f2c06730c51fa9ae565faafb}{%
+           family={{van Erven}},
+           familyi={v\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+        {{hash=3e8a3af32f7e2fc3cb01c712be57425c}{%
+           family={Harremoës},
+           familyi={H\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{218cb66e22c4defb451075081288b24a}
+      \strng{fullhash}{218cb66e22c4defb451075081288b24a}
+      \strng{bibnamehash}{218cb66e22c4defb451075081288b24a}
+      \strng{authorbibnamehash}{218cb66e22c4defb451075081288b24a}
+      \strng{authornamehash}{218cb66e22c4defb451075081288b24a}
+      \strng{authorfullhash}{218cb66e22c4defb451075081288b24a}
+      \field{sortinit}{v}
+      \field{sortinithash}{02432525618c08e2b03cac47c19764af}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Re´nyi divergence is related to Re´nyi entropy much like Kullback-Leibler divergence is related to Shannon's entropy, and comes up in many settings. It was introduced by Re´nyi as a measure of information that satisfies almost the same axioms as Kullback-Leibler divergence, and depends on a parameter that is called its order. In particular, the Re´nyi divergence of order 1 equals the Kullback-Leibler divergence.}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{IEEE Transactions on Information Theory}
+      \field{langid}{english}
+      \field{month}{7}
+      \field{number}{7}
+      \field{title}{Rényi Divergence and {Kullback}-{Leibler} Divergence}
+      \field{volume}{60}
+      \field{year}{2014}
+      \field{pages}{3797\bibrangedash 3820}
+      \range{pages}{24}
+      \verb{file}
+      \verb /home/pmangold/zotero/storage/FHUMTKBT/van Erven and Harremoës - 2014 - R'enyi Divergence and Kullback-Leibler Divergence.pdf
+      \endverb
+      \keyw{Computer Science - Information Theory,Mathematics - Statistics Theory,Statistics - Machine Learning}
+    \endentry
+    \entry{wang2017Differentially}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=ae66067c3dea21e00e9c5b777faa1a4e}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Di},
+           giveni={D\bibinitperiod}}}%
+        {{hash=ccddcb2d1d173ca8b418842467ae735f}{%
+           family={Ye},
+           familyi={Y\bibinitperiod},
+           given={Minwei},
+           giveni={M\bibinitperiod}}}%
+        {{hash=0e4e7048d70cdb17a2447980fe02307f}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Jinhui},
+           giveni={J\bibinitperiod}}}%
+      }
+      \name{editor}{7}{}{%
+        {{hash=e7e74de725116358b68a6e890c026145}{%
+           family={Guyon},
+           familyi={G\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod}}}%
+        {{hash=56e73897155d476124481b099f125669}{%
+           family={Luxburg},
+           familyi={L\bibinitperiod},
+           given={U.\bibnamedelimi V.},
+           giveni={U\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=9b411b6c9cefdde16ffea77ecf612142}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=1444141e07dd9549dbb4b8530fe4ec15}{%
+           family={Wallach},
+           familyi={W\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=f3857e15544199442f3d4fb2cf6645b4}{%
+           family={Fergus},
+           familyi={F\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=c73f06e2fc98c9b0bf52eb5fdce61943}{%
+           family={Vishwanathan},
+           familyi={V\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=36b98b7ab533936cf1b5716148de704f}{%
+           family={Garnett},
+           familyi={G\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{64fc2a15ce03a258266730b198def0a3}
+      \strng{fullhash}{4148300edc377c6065b6691054df3304}
+      \strng{bibnamehash}{4148300edc377c6065b6691054df3304}
+      \strng{authorbibnamehash}{4148300edc377c6065b6691054df3304}
+      \strng{authornamehash}{64fc2a15ce03a258266730b198def0a3}
+      \strng{authorfullhash}{4148300edc377c6065b6691054df3304}
+      \strng{editorbibnamehash}{d19b63f60b76ff116a8eb515123b5698}
+      \strng{editornamehash}{7cffda9a379be8eb9063eee4eb0f58b3}
+      \strng{editorfullhash}{d19b63f60b76ff116a8eb515123b5698}
+      \field{extraname}{1}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems}
+      \field{title}{Differentially Private Empirical Risk Minimization Revisited: Faster and More General}
+      \field{volume}{30}
+      \field{year}{2017}
+      \verb{file}
+      \verb /home/pmangold/research/references/pdf/wang_et_al_2017_differentially_private_empirical_risk_minimization_revisited3.pdf
+      \endverb
+    \endentry
+    \entry{wang2022Differentially}{article}{}
+      \name{author}{4}{}{%
+        {{hash=0cd9d6512902bad6bf21ff144137422f}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Puyu},
+           giveni={P\bibinitperiod}}}%
+        {{hash=96205a74d51a1d6c4e6bc2119c32caf5}{%
+           family={Lei},
+           familyi={L\bibinitperiod},
+           given={Yunwen},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=29226eee0fda9df2cd64fe0eeb7049ab}{%
+           family={Ying},
+           familyi={Y\bibinitperiod},
+           given={Yiming},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=1cab3e44ee4df0da299bc415b219433d}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Hai},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{90a4f6ec9527996f67945b77088ccaa9}
+      \strng{fullhash}{599a99fc5ec74d57c901577b0cb061f8}
+      \strng{bibnamehash}{599a99fc5ec74d57c901577b0cb061f8}
+      \strng{authorbibnamehash}{599a99fc5ec74d57c901577b0cb061f8}
+      \strng{authornamehash}{90a4f6ec9527996f67945b77088ccaa9}
+      \strng{authorfullhash}{599a99fc5ec74d57c901577b0cb061f8}
+      \field{extraname}{2}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Applied and Computational Harmonic Analysis}
+      \field{month}{1}
+      \field{title}{Differentially Private {{SGD}} with Non-Smooth Losses}
+      \field{volume}{56}
+      \field{year}{2022}
+      \field{pages}{306\bibrangedash 336}
+      \range{pages}{31}
+    \endentry
+    \entry{wright2015Coordinate}{article}{}
+      \name{author}{1}{}{%
+        {{hash=c49efb16d3fa7eef002cc3620d42ab8a}{%
+           family={Wright},
+           familyi={W\bibinitperiod},
+           given={Stephen\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \strng{fullhash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \strng{bibnamehash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \strng{authorbibnamehash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \strng{authornamehash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \strng{authorfullhash}{c49efb16d3fa7eef002cc3620d42ab8a}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Coordinate descent algorithms solve optimization problems by successively performing approximate minimization along coordinate directions or coordinate hyperplanes. They have been used in applications for many years, and their popularity continues to grow because of their usefulness in data analysis, machine learning, and other areas of current interest. This paper describes the fundamentals of the coordinate descent approach, together with variants and extensions and their convergence properties, mostly with reference to convex objectives. We pay particular attention to a certain problem structure that arises frequently in machine learning applications, showing that efficient implementations of accelerated coordinate descent algorithms are possible for problems of this type. We also present some parallel variants and discuss their convergence properties under several models of parallel execution.}
+      \field{journaltitle}{Mathematical Programming}
+      \field{langid}{english}
+      \field{month}{6}
+      \field{number}{1}
+      \field{title}{Coordinate Descent Algorithms}
+      \field{volume}{151}
+      \field{year}{2015}
+      \field{pages}{3\bibrangedash 34}
+      \range{pages}{32}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/wright_2015_coordinate_descent_algorithms.pdf;/home/pmangold/Documents/references/pdf/wright_2015_coordinate_descent_algorithms2.pdf
+      \endverb
+      \keyw{Mathematics - Optimization and Control}
+    \endentry
+    \entry{xiao2014Proximal}{article}{}
+      \name{author}{2}{}{%
+        {{hash=2719c25efa416f0f6bcb63e9336c4a29}{%
+           family={Xiao},
+           familyi={X\bibinitperiod},
+           given={Lin},
+           giveni={L\bibinitperiod}}}%
+        {{hash=55926e2ed0c54f92266d978954a4cdc3}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Tong},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Society for Industrial and Applied Mathematics}%
+      }
+      \strng{namehash}{701bba203f380203c95fcbb3c0558cb4}
+      \strng{fullhash}{701bba203f380203c95fcbb3c0558cb4}
+      \strng{bibnamehash}{701bba203f380203c95fcbb3c0558cb4}
+      \strng{authorbibnamehash}{701bba203f380203c95fcbb3c0558cb4}
+      \strng{authornamehash}{701bba203f380203c95fcbb3c0558cb4}
+      \strng{authorfullhash}{701bba203f380203c95fcbb3c0558cb4}
+      \field{sortinit}{X}
+      \field{sortinithash}{e90038f30fa4b9ce59606fc8347e3cc7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We consider the problem of minimizing the sum of two convex functions: one is the average of a large number of smooth component functions, and the other is a general convex function that admits a simple proximal mapping. We assume the whole objective function is strongly convex. Such problems often arise in machine learning, known as regularized empirical risk minimization. We propose and analyze a new proximal stochastic gradient method, which uses a multistage scheme to progressively reduce the variance of the stochastic gradient. While each iteration of this algorithm has similar cost as the classical stochastic gradient method (or incremental gradient method), we show that the expected objective value converges to the optimum at a geometric rate. The overall complexity of this method is much lower than both the proximal full gradient method and the standard proximal stochastic gradient method.}
+      \field{journaltitle}{SIAM J. Optim.}
+      \field{month}{1}
+      \field{number}{4}
+      \field{title}{A {{Proximal Stochastic Gradient Method}} with {{Progressive Variance Reduction}}}
+      \field{volume}{24}
+      \field{year}{2014}
+      \field{pages}{2057\bibrangedash 2075}
+      \range{pages}{19}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/xiao_zhang_2014_a_proximal_stochastic_gradient_method_with_progressive_variance_reduction2.pdf;/home/pmangold/Documents/references/pdf/xiao_zhang_2014_a_proximal_stochastic_gradient_method_with_progressive_variance_reduction3.pdf;/home/pmangold/zotero/storage/XD6D8NEB/1403.html
+      \endverb
+      \keyw{65C60,65Y20,90C25,Mathematics - Optimization and Control,proximal mapping,Statistics - Machine Learning,stochastic gradient method,variance reduction}
+    \endentry
+    \entry{yuan2010Comparison}{article}{}
+      \name{author}{4}{}{%
+        {{hash=19d8f802ae450134bbeace4d6b90af71}{%
+           family={Yuan},
+           familyi={Y\bibinitperiod},
+           given={Guo-Xun},
+           giveni={G\bibinithyphendelim X\bibinitperiod}}}%
+        {{hash=e92742530fcafbae797b45437638bb01}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Kai-Wei},
+           giveni={K\bibinithyphendelim W\bibinitperiod}}}%
+        {{hash=8ce122ee46af7bc8820d9d1c340793dc}{%
+           family={Hsieh},
+           familyi={H\bibinitperiod},
+           given={Cho-Jui},
+           giveni={C\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=bb8c32ec740b902c4f066796b083badc}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Chih-Jen},
+           giveni={C\bibinithyphendelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{8d36e73bafa62ae29d627116b2db3123}
+      \strng{fullhash}{3fb198f84297a69a564e96a042fea448}
+      \strng{bibnamehash}{3fb198f84297a69a564e96a042fea448}
+      \strng{authorbibnamehash}{3fb198f84297a69a564e96a042fea448}
+      \strng{authornamehash}{8d36e73bafa62ae29d627116b2db3123}
+      \strng{authorfullhash}{3fb198f84297a69a564e96a042fea448}
+      \field{sortinit}{Y}
+      \field{sortinithash}{6ae2ff5458ff901249c2745238c951b7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Large-scale linear classification is widely used in many areas. The L1-regularized form can be applied for feature selection; however, its non-differentiability causes more difficulties in training. Although various optimization methods have been proposed in recent years, these have not yet been compared suitably. In this paper, we first broadly review existing methods. Then, we discuss state-of-the-art software packages in detail and propose two efficient implementations. Extensive comparisons indicate that carefully implemented coordinate descent methods are very suitable for training large document data.}
+      \field{journaltitle}{J. Mach. Learn. Res.}
+      \field{month}{12}
+      \field{title}{A {{Comparison}} of {{Optimization Methods}} and {{Software}} for {{Large}}-Scale {{L1}}-Regularized {{Linear Classification}}}
+      \field{volume}{11}
+      \field{year}{2010}
+      \field{pages}{3183\bibrangedash 3234}
+      \range{pages}{52}
+      \verb{file}
+      \verb /home/pmangold/Documents/references/pdf/yuan_et_al_2010_a_comparison_of_optimization_methods_and_software_for_large-scale.pdf;/home/pmangold/research/references/pdf/yuan_et_al_2010_a_comparison_of_optimization_methods_and_software_for_large-scale2.pdf
+      \endverb
+    \endentry
+    \entry{zhou2021Bypassing}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=0b26b1c78aeb69cce32e2648ca4b5c5e}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Yingxue},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=8e96fc2695d6a2a7d8424477130dc8b9}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Steven},
+           giveni={S\bibinitperiod}}}%
+        {{hash=4ddb7b9c38d8c15a70bc573ba4e51ea9}{%
+           family={Banerjee},
+           familyi={B\bibinitperiod},
+           given={Arindam},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{99716419ca7f7915df643fe224db6f8a}
+      \strng{fullhash}{910169cb27a479cf985b0ab15d507da8}
+      \strng{bibnamehash}{910169cb27a479cf985b0ab15d507da8}
+      \strng{authorbibnamehash}{910169cb27a479cf985b0ab15d507da8}
+      \strng{authornamehash}{99716419ca7f7915df643fe224db6f8a}
+      \strng{authorfullhash}{910169cb27a479cf985b0ab15d507da8}
+      \field{sortinit}{Z}
+      \field{sortinithash}{8f7b480688e809b50b6f6577b16f3db5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ICLR}
+      \field{title}{Bypassing the Ambient Dimension: Private {SGD} with Gradient Subspace Identification}
+      \field{year}{2021}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

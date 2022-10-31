@@ -1,0 +1,218 @@
+\section{The \algOnefullname Algorithm} \label{sec:atg}
+\begin{algorithm}[t]
+    \caption{The \adapst Algorithm}
+    \label{alg:atg}
+    \begin{algorithmic}[1]
+      \Procedure{AST}{$f, \mathcal{N}, k, \epsi$}
+      \State \textbf{Input:} evaluation oracle $f:2^{\mathcal N} \to \reals$, constraint $k$,
+      accuracy parameter $\epsi > 0$
+      \State Initialize $M \gets \max_{x \in \mathcal N} f(x)$; 
+      $c \gets 4 + \alpha$, where $\alpha^{-1}$ is ratio of \unc;
+      $\ell \gets \lceil\log_{1 - \epsi}(1/(ck)))\rceil$
+      \For{ $i \gets 0$ to $\ell$ in parallel}\label{line:forconcurrent}
+      \State $\tau_i \gets M \left( 1 - \epsi \right)^i$
+      \State $A_i,A_i' \gets \threseq \left( f, k, \tau_i, \epsi, 1 / 2 \right) $
+      \State $B_i,B_i' \gets \threseq \left( f\restriction_{\mathcal N\setminus A_i}, k, \tau_i, \epsi, 1 / 2 \right)$
+      \State $A_i'' \gets \unc (A_i)$
+      \State $C_i \gets \argmax \{ f(A_i'), f(B_i'), f(A_i'') \}$
+      \EndFor
+      \State \textbf{return} $C \gets \argmax_i \{ f(C_i) \}$
+      \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+In this section, we present the simple algorithm \algOnefullname 
+(\atg, Alg.~\ref{alg:atg}) and show it obtains a ratio of $1/6 - \epsi$ 
+with nearly optimal query and adaptive complexity.
+This algorithm relies on running \threseq for a suitably chosen
+threshold value. A procedure for
+unconstrained maximization is also required.
+% which uses as subroutines \thresam and an $(1/\alpha )$-approximation 
+%algorithm \unc for the unconstrained maximization problem.
+
+\textbf{Overview of Algorithm.}
+Algorithm \atg works as follows.
+First, the \textbf{for} loop 
+guesses a value of $\tau$ close to
+$\frac{\opt}{(4 + \alpha)k}$, where 
+$1/\alpha$ is the ratio of the algorithm used for the unconstrained maximization
+subproblem. 
+Next, \threseq is called with parameter $\tau$ to yield set $A$ and $A'$;
+followed by a second call to \threseq with $f$ restricted to $\mathcal N \setminus A$
+to yield set $B$ and $B'$. Next, an unconstrained
+maximization is performed with $f$ restricted to $A$ to yield
+set $A''$;
+finally, the best of the three candidate sets $A',B',A''$ is returned.
+
+% Our algorithm \atg may be regarded as a simplification
+% of the algorithm \iter of \cite{Gupta2010}, with the
+% standard greedy procedure of \cite{Gupta2010} replaced
+% by an adaptive threshold procedure and $O(\log k)$ guesses
+% for \opt. It is surprising
+% that this simplification can achieve nearly the same
+% ratio of $1/6$ as \iter.
+%We remark that \thresam could be replaced with any
+%procedure that guarantees the average marginal
+%gain of each addition is at least $\tau$.
+% \todo{finish editing}
+% The \thresam algorithm %of \cite{Fahrbach2018} 
+% is used
+% to adaptively add elements with gain at least $\tau$.
+% The $(1/\alpha )$-approximation algorithm for \unc is called upon $A$. 
+% The best solution $C_i$ from the two threshold procedures and 
+% the \unc algorithm is obtained, and the algorithm returns the
+% best $C_i$ found in any iteration of the \textbf{for} loop.
+% Pseudocode for \atg is provided in Algorithm~\ref{alg:atg}. 
+We prove the following theorem concerning the performance of \atg.
+
+\begin{theorem}
+  \label{thm:atg}
+  % \begin{theorem}
+  Suppose there exists an $(1/\alpha )$-approximation for
+  \unc with adaptivity $\Theta$ and query complexity
+  $\Xi$, and let $\epsi > 0$, $c = 4+\alpha$.
+  Then there exists an algorithm for \sm with
+  expected approximation ratio $c^{-1}-\epsi$ with probability
+  at least $1 - 1/n$, expected query complexity
+  $\oh{ \log_{1 - \epsi}(1/(ck)) \cdot \left( n / \epsi + \Xi \right) }$,
+  and adaptivity $\oh{\log( n) / \epsi + \Theta }$.
+\end{theorem}
+\noindent If the algorithm of \shortciteS{Chen2018b} is used for \unc,
+\atg achieves ratio $1/6 - \epsi$
+with adaptive complexity $O\left( \log( n) / \epsi + \log(1 / \epsi) / \epsi \right)$ 
+and query complexity
+$O \left( \log_{1 - \epsi}(1/(6k)) \cdot \left( n / \epsi + n \log^3(1 / \epsi) / \epsi^4 \right) \right)$.
+
+\textbf{Overview of Proof.}
+The proof uses the following strategy: either \threseq finds
+a set $A'$ or $B'$ with value $\approx \tau k$,
+which is sufficient to achieve the ratio, or we
+have two disjoint sets $A$, $B$ of size less than
+$k$, such that for any $x \not \in A \cup B$, $\marge{x}{A} < \tau$
+and $\marge{x}{B} < \tau$. 
+In this case, for any set $O$, we have
+by submodularity, $f(O) \le f(O \cap A) + f(O \setminus A )$.
+The first term is bounded by the unconstrained maximization, and
+the second term is bounded by an application of submodularity and the
+fact that the maximum marginal gain of adding an element into $A$ or $B$ is below $\tau$.
+The choice of constant $c$ balances the trade-off between the two
+cases of the proof. 
+
+%$1/6 - \epsi$ if a $(1/2 - \epsi)$-approximation is used for \unc.
+% $A$ and $B$, such that $A \cap B = \emptyset$. 
+% First, the algorithm guesses the value $\tau = OPT / 6k$
+% in parallel in logarithmically iterations. Within
+% each iteration, the algorithm
+% ensures that (i) elements added to $A$ or $B$ have 
+% marginal gain at least $\tau$
+% in expectation, and (ii) any element not added to $A$ or $B$
+% has marginal gain less than $\tau$. To accomplish
+% (i) and (ii), the algorithm employs \thresam. 
+% Next, an approximation algorithm for \unc is called on $A$ to
+% obtain $A'$,
+% and a set in $\{A', A, B\}$ with maximum $f$
+% value is returned. 
+
+%Hence if $|A| = k$ or $|B| = k$, the solution has
+%expected value at least $OPT / 6$. Moreover, if both
+\begin{proof}[Proof of Theorem~\ref{thm:atg}]
+  Let $(f,k)$ be an instance of \sm, and let $\epsi> 0$.
+  Suppose algorithm \atg uses a procedure for \unc with
+  expected ratio $1/\alpha$.
+  We will show that the
+  set $C$ returned by
+  algorithm $\atg(f,k,\epsi)$ satisfies
+  $\ex{f(C)} \ge \left( c^{-1}-\epsi \right) \opt$
+  with probability at
+  least $(1 - 1/n)$, where $\opt$
+  is the optimal solution value on the instance $(f,k)$.
+
+  Observe that $\tau_0 = M = \max_{x \in \mathcal N} f(x) \ge \opt / k$ 
+  by submodularity of $f$;
+  $\tau_\ell = M(1 - \epsi)^\ell \le \opt / (ck)$ 
+  since $M \le \opt$. 
+  Because $\tau$ decreases by a factor of $1-\epsi$, 
+  there exists $i_0$ such that 
+  $ \frac{(1 - \epsi)\opt}{ck} \le \tau_{i_0} \le \frac{\opt}{ck}$.
+  Let $A,A',B,B',A''$ denote 
+  $A_{i_0},A'_{i_0},B_{i_0},B'_{i_0},A''_{i_0}$, respectively.
+  For the rest of the proof, we assume that
+  the properties of Theorem~\ref{thm:threshold} hold for the calls to \threseq
+  with threshold $\tau_{i_0}$, which happens with at least
+  probability $1 - 1/(2n)$ by the union bound. 
+  
+  \textbf{Case $|A| = k$ or $|B| = k$}.
+  %  Consider the case that there exists 
+  Suppose that $|A|=k$ without loss of generality.
+  By Theorem~\ref{thm:threshold} and the value of $\tau_{i_0}$,
+  it holds that,
+  \begin{align*}
+    f(A') \ge (1-\epsi) \tau_{i_0} |A| \ge 
+    \frac{(1-\epsi)^2\opt}{c} \ge (1/c-\epsi)\opt.
+  \end{align*}
+  Then $f(C) \ge f(A') \ge (1/c - \epsi) \opt$.
+
+  \textbf{Case $|A| < k$ and $|B| < k$}.
+  Let $O$ be a set such that $f(O) = \opt$ 
+  and $|O| \le k$. 
+  Since $|A| < k$, by Theorem~\ref{thm:threshold},
+  it holds that for any $x \in \mathcal N$,
+  $\marge{x}{A} < \tau_{i_0}$. 
+  Similarly, for any $x \in \mathcal N \setminus A$,
+  $\marge{x}{B} < \tau_{i_0}$. 
+  Hence, by submodularity,
+  \begin{equation}
+    \numberthis
+    \label{ineq:1}
+    f(O \cup A) - f(A) \le \sum_{o \in O} \marge{o}{A}
+    < k \tau_{i_0} \nonumber \le \opt / c, 
+  \end{equation}
+  \begin{equation} 
+    \numberthis{}
+    \label{ineq:2}
+    f( (O \setminus A) \cup B ) - f(B) 
+    \le \sum_{o \in O \setminus A} \marge{o}{B} < 
+    k \tau_{i_0} \nonumber \le \opt / c. 
+  \end{equation}
+  Next, from (\ref{ineq:1}), (\ref{ineq:2}), submodularity, nonnegativity, 
+  Theorem~\ref{thm:threshold}, and the fact that $A \cap B = \emptyset$, 
+  it holds that,
+  \begin{align} \label{ineq:3}
+    f(A') + f(B') &\ge f(A) + f(B) \nonumber \\ 
+    &\ge f(O \cup A) + f( (O \setminus A) \cup B ) - 2\opt/c \nonumber \\ 
+    &\ge f(O \setminus A) + f( O \cup A \cup B)- 2\opt/c \nonumber \\ 
+    &\ge f( O \setminus A )- 2\opt/c.
+  \end{align}
+  %From Theorem~\ref{lemm:unc}, we have
+  % \begin{equation} \label{ineq:4}
+  %   \frac{2}{1 - \epsi}\ex{f(A')} \ge f( O \cap A )
+  % \end{equation}
+Since \unc is an $\alpha$-approximation, we have
+\begin{equation} \label{ineq:4}
+  \alpha \ex{f(A'')} \ge f( O \cap A ).
+\end{equation}
+  
+From Inequalities (\ref{ineq:3}), (\ref{ineq:4}),
+and submodularity,
+  we have
+  \begin{align*} 
+    \opt = f(O) &\le f( O \cap A ) + f( O \setminus A ) \\ 
+    &\le \alpha \ex{f(C)} + 2f(C) + 2\opt / c,
+  \end{align*}
+  from which it follows that
+  $\ex{ f(C) } \ge \opt / c.$
+
+  \textbf{Adaptive and query complexities}.
+  The adaptivity of \atg is twice the adaptivity of \threseq
+  plus the adaptivity of \unc plus a constant. 
+  Further, the total query complexity is $\log_{1 - \epsi}(1/(ck))$ times
+  the sum of twice the query complexity of \threseq and the query complexity
+  of \unc.
+  % $O \left( \log_{1 - \epsi}(1/(6k)) \cdot \left( n / \epsi + n \log^3(1 / \epsi) / \epsi^4 \right) \right)$.
+%  Thus, it is bounded by
+%  $O\left( \log( n / \delta ) / \epsi + \log(1 / \epsi) / \epsi \right)$.
+\end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

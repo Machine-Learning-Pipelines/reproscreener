@@ -1,0 +1,418 @@
+\section{Uniform consistency and convergence in distribution proof}\label{sec:proof}
+
+In this supplement, we (i) present an equivalent definition of smoothness and relate our key assumptions with previous work; (ii) present technical lemmas for regression, unconditional mean embeddings, and conditional mean embeddings; (iii) appeal to these lemmas to prove uniform consistency of causal functions as well as convergence in distribution for counterfactual distributions.
+
+\subsection{Assumptions revisited}
+
+\textbf{Alternative representations of smoothness}
+
+\begin{lemma}[Alternative representation of smoothness; Remark 2 of \cite{caponnetto2007optimal}]\label{lemma:alt}
+If the input measure and Mercer measure are the same then there are equivalent formalisms for the source conditions in Assumptions~\ref{assumption:smooth_gamma} and~\ref{assumption:smooth_op}.
+\begin{enumerate}
+    \item The source condition in Assumption~\ref{assumption:smooth_gamma} holds if and only if the regression $\gamma_0$ is a particularly smooth element of $\mathcal{H}$. Formally, define the covariance operator $T$ for $\mathcal{H}$.
+    We assume there exists $ g\in \mathcal{H}$ such that $\gamma_0=T^{(c-1)/2}g$, $c\in(1,2]$, and $\|g\|^2_{\mathcal{H}}\leq\zeta$.
+    \item The source condition in Assumption~\ref{assumption:smooth_op} holds if and only if the conditional expectation operator $E_{\ell}$ is a particularly smooth element of $\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})$. Formally, define the covariance operator $T_{\ell}=E\{\phi(B_{\ell})\otimes \phi(B_{\ell})\}$ for $\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})$.
+    We assume there exists $ G_{\ell}\in \mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})$ such that $E_{\ell}=T_{\ell}^{(c_{\ell}-1)/2}\circ G_{\ell}$, $c_{\ell}\in(1,2]$, and $\|G_{\ell}\|^2_{\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})}\leq\zeta_{\ell}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{remark}[Covariance operator]
+The covariance operator $T$ for the RKHS $\mathcal{H}$ depends on the setting.
+    \begin{enumerate}
+        \item $\theta_0^{ATE}$, $\theta_0^{DS}$, $\theta_0^{ATT}$: $T=E[\{\phi(D)\otimes \phi(X)\}\otimes \{\phi(D)\otimes \phi(X)\}]$;
+        \item $\theta_0^{CATE}$: $T=E[\{\phi(D)\otimes \phi(V)\otimes \phi(X)\}\otimes \{\phi(D)\otimes \phi(V)\otimes \phi(X)\}]$.
+    \end{enumerate}
+\end{remark}
+
+\cite{singh2019kernel} prove that $T_{\ell}$ and its powers are well defined under Assumption~\ref{assumption:RKHS}.
+
+\textbf{Specific representations of smoothness}
+
+Next, we instantiate the source condition in Assumption~\ref{assumption:smooth_op} for the different settings considered in the main text.
+
+\begin{assumption}[Smoothness of mean embedding $\mu_x(d)$]\label{assumption:smooth_ATT}
+Assume
+\begin{enumerate}
+\item The conditional expectation operator $E_1$ is well specified as a Hilbert--Schmidt operator between RKHSs, i.e. $E_1\in \mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{D}})$, where
+    $
+    E_1:\mathcal{H}_{\mathcal{X}} \rightarrow \mathcal{H}_{\mathcal{D}},\; f(\cdot)\mapsto E\{f(X) \mid D=\cdot\}.
+    $
+    \item The conditional expectation operator is a particularly smooth element of $\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{D}})$. Formally, define the covariance operator $T_1=E\{\phi(D)\otimes \phi(D)\}$ for $\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{D}})$.
+    We assume there exists $ G_1\in \mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{D}})$ such that $E_1=T_1^{(c_1-1)/2}\circ G_1$, $c_1\in(1,2]$, and $\|G_1\|^2_{\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{D}})}\leq\zeta_1$.
+    \end{enumerate}
+\end{assumption}
+
+\begin{assumption}[Smoothness of mean embedding $\mu_x(v)$]\label{assumption:smooth_CATE}
+Assume
+\begin{enumerate}
+\item The conditional expectation operator $E_2$ is well specified as a Hilbert--Schmidt operator between RKHSs, i.e. $E_2\in \mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{V}})$, where
+    $
+    E_2:\mathcal{H}_{\mathcal{X}} \rightarrow \mathcal{H}_{\mathcal{V}},\; f(\cdot)\mapsto E\{f(X) \mid V=\cdot\}.
+    $
+    \item The conditional expectation operator is a particularly smooth element of $\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{V}})$. Formally, define the covariance operator $T_2=E\{\phi(V)\otimes \phi(V)\}$ for $\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{V}})$.
+    We assume there exists $ G_2\in \mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{V}})$ such that $E_2=T_2^{(c_2-1)/2}\circ G_2$, $c_2\in(1,2]$, and $\|G_2\|^2_{\mathcal{L}_2(\mathcal{H}_{\mathcal{X}},\mathcal{H}_{\mathcal{V}})}\leq\zeta_2$.
+    \end{enumerate}
+\end{assumption}
+
+\begin{assumption}[Smoothness of conditional expectation operator $E_3$]\label{assumption:smooth_D:ATE}
+Assume
+\begin{enumerate}
+\item The conditional expectation operator $E_3$ is well specified as a Hilbert--Schmidt operator between RKHSs, i.e. $E_3\in \mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$, where
+    $
+    E_3:\mathcal{H}_{\mathcal{Y}} \rightarrow \mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}},\; f(\cdot)\mapsto E\{f(Y) \mid D=\cdot,X=\cdot \}.
+    $
+    \item The conditional expectation operator is a particularly smooth element of $\mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$. Formally, define the covariance operator $T_3=E[\{\phi(D)\otimes \phi(X)\} \otimes  \{\phi(D)\otimes \phi(X)\}]$ for $\mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$.
+    We assume there exists $ G_3\in \mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})$ such that $E_3=T_3^{(c_3-1)/2}\circ G_3$, $c_3\in(1,2]$, and $\|G_3\|^2_{\mathcal{L}_2(\mathcal{H}_{\mathcal{Y}},\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}})}\leq\zeta_3$.
+    \end{enumerate}
+\end{assumption}
+
+\textbf{Interpreting smoothness for tensor products}
+
+Another way to interpret the smoothness assumption for a tensor product RKHS follows from manipulation of the product kernel. For simplicity, consider the RKHS construction for $\theta_0^{ATE}$, take $k_{\mathcal{D}}$ to be the exponentiated quadratic kernel over $\mathcal{D}\subset\mathbb{R}$, and take $k_{\mathcal{X}}$ to be the exponentiated quadratic kernel over $\mathcal{X}\subset\mathbb{R}$. Define the vector of differences 
+$$
+v
+=\begin{pmatrix} v_1 \\ v_2 \end{pmatrix}=\begin{pmatrix} d \\ x \end{pmatrix} - \begin{pmatrix} d' \\ x' \end{pmatrix} =\begin{pmatrix} d-d' \\ x-x' \end{pmatrix}. $$ 
+Then $$
+k(d,x;d',x')
+=\exp\left(-\frac{1}{2}\frac{v_1^2}{\iota_1^2}\right)
+\exp\left(-\frac{1}{2}\frac{v_2^2}{\iota_2^2}\right)
+=\exp\left\{-\frac{1}{2}v^{\top} \begin{pmatrix}\iota_1^{-2} & 0 \\ 0 & \iota_2^{-2}\end{pmatrix}  v  \right\}.
+$$
+In summary, the product of exponentiated quadratic kernels over scalars is an exponentiated quadratic kernel over vectors. Therefore a tensor product of exponentiated quadratic RKHSs $\mathcal{H}_{\mathcal{D}}$ and $\mathcal{H}_{\mathcal{X}}$ begets an exponentiated quadratic RKHS $\mathcal{H}=\mathcal{H}_{\mathcal{D}} \otimes \mathcal{H}_{\mathcal{X}}$, for which the smoothness and spectral decay conditions admit their usual interpretation. The same is true anytime that a product of kernels begets a recognizable kernel.
+
+\textbf{Matching assumptions with previous work}
+
+Finally, we relate our approximation assumptions with previous work. Specifically, we match symbols with \cite{fischer2017sobolev}.
+
+\begin{remark}[Matching assumptions]
+Recall our main approximation assumptions.
+\begin{enumerate}
+    \item Source condition $c\in(1,2]$. \cite{fischer2017sobolev} refer to the source condition as SRC parametrized by $\beta$. Matching symbols, $c=\beta$. A larger value of $c$ is a stronger assumption.
+    \item Effective dimension $b\geq 1$. \cite{fischer2017sobolev} refer to the effective dimension condition as EVD parametrized by $p$. Matching symbols, $b=1/p$. A larger value of $b$ is a stronger assumption.
+    \item Embedding property $a\in(0,1]$. \cite{fischer2017sobolev} place an additional assumption EMB parametrized by $\alpha\in(0,1]$. In our setting of interest, $c\geq 1$ and the kernel is bounded. Together, these conditions imply $\alpha\leq  1$. Matching symbols, $a=\alpha$. A larger value of $a$ is a weaker assumption
+\end{enumerate}
+\end{remark}
+
+In our algorithm derivation, we have already assumed correct specification and bounded kernels, i.e. we have already assumed that $c\geq 1$, $b\geq 1$, and $a\leq 1$. By placing explicit source and effective dimension conditions, we derive rates that adapt to stronger assumptions $c>1$ and $b>1$. 
+
+It turns out that a further assumption of $a<1$ does not improve the rate, so we omit that additional complexity. Observe that $c\geq 1$ and $b\geq 1$ imply $c+1/b>1 \geq a$ for any value $a\in(0,1]$. The regime in which the inequality $c+1/b>a$ holds is the regime in which the rate does not depend on $a$ \cite[Theorem 1.ii]{fischer2017sobolev}, so the weakest version of the embedding property is sufficient for our purpose. We pose as a question for future work how to analyze the misspecified case, in which the stronger assumption of $a<1$ may play an important role.
+
+% One could similarly place the stronger assumption $a>1$; the architecture of our main results would remain the same. However, the reader would have to consider casewise analysis of different spectral regimes for each object estimated by a kernel ridge regression. Because our analysis combines several kernel ridge regressions, and because our priority is to provide interpretable results for causal inference, we omit this additional complexity.
+
+\subsection{Lemmas}
+
+\textbf{Regression}
+
+For expositional purposes, we summarize classic results for the kernel ridge regression estimator $\hat{\gamma}$ for $\gamma_0(w)=E(Y \mid W=w)$. Consider the definitions
+\begin{align*}
+    \gamma_0&=\argmin_{\gamma\in\mathcal{H}}\mathcal{E}(\gamma),\quad \mathcal{E}(\gamma)=E[\{Y-\gamma(W)\}^2]; \\
+    \hat{\gamma}&=\argmin_{\gamma\in\mathcal{H}}\hat{\mathcal{E}}(\gamma),\quad \hat{\mathcal{E}}(\gamma)=n^{-1}\sum_{i=1}^n\{Y_i-\gamma(W_i)\}^2+\lambda\|\gamma\|^2_{\mathcal{H}}.
+\end{align*}
+
+\begin{proposition}[Regression rate]\label{theorem:regression}
+Suppose Assumptions~\ref{assumption:RKHS},~\ref{assumption:original}, and \ref{assumption:smooth_gamma} hold. Set $\lambda=n^{-1/(c+1/b)}$. Then with probability $1-\delta$, for $n$ sufficiently large, we have that
+$$
+\|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\leq r_{\gamma}(n,\delta,b,c)=C\log(4/\delta) \cdot n^{-\frac{1}{2}\frac{c-1}{c+1/b}},
+$$
+where $C$ is a constant independent of $n$ and $\delta$.
+\end{proposition}
+
+Remark~\ref{remark:big_n} in the subsequent, technical supplement elaborates on the meaning of the phrase ``$n$ sufficiently large''.
+
+\begin{proof}
+We verify the conditions of \cite[Theorem 1.ii]{fischer2017sobolev}. By Assumption~\ref{assumption:RKHS}, the kernel is bounded and measurable. Separability of the original spaces together with boundedness of the kernel imply that $\mathcal{H}$ is separable \cite[Lemma 4.33]{steinwart2008support}. By Assumption~\ref{assumption:original}, $\int y^2\mathrm{d}\text{\normalfont pr}(y)<\infty$. Since Assumption~\ref{assumption:smooth_gamma} implies $\gamma_0\in\mathcal{H}$, we have that $\|\gamma_0\|_{\infty}\leq \kappa_w \|\gamma_0\|_{\mathcal{H}}$ by Cauchy-Schwarz inequality. 
+
+Next, we verify the assumptions called EMB, EVD, SRC, and MOM. Boundedness of the kernel implies EMB with $a=1$. EVD is the assumption we call effective dimension, parametrized by $b\geq 1$. SRC is the assumption we call the source condition, parametrized by $c\in(1,2]$ in our case. MOM is a Bernstein moment condition satisfied by hypothesis. We study the RKHS norm guarantee, which corresponds to Hilbert scale equal to one. We are in regime (ii) of the theorem, since $c+1/b>1$. For the exact finite sample constant, see \cite[Theorem 16]{fischer2017sobolev}.
+\end{proof}
+
+
+\textbf{Unconditional mean embedding}
+
+For expositional purposes, we summarize classic results for the unconditional mean embedding estimator $\hat{\mu}_w$ for $\mu_w=E\{\phi(W)\}$.
+
+\begin{lemma}[Bennett inequality; Lemma 2 of \cite{smale2007learning}]\label{lemma:prob}
+Let $(\xi_i)$ be i.i.d. random variables drawn from distribution $\text{\normalfont pr}$ taking values in a real separable Hilbert space $\mathcal{K}$. Suppose there exists $ M$ such that
+$
+    \|\xi_i\|_{\mathcal{K}} \leq M<\infty$ almost surely and $
+    \sigma^2(\xi_i)=E(\|\xi_i\|_{\mathcal{K}}^2)$. Then for all $n\in\mathbb{N}$ and for all $\delta\in(0,1)$,
+$$
+\text{\normalfont pr}\bigg[\bigg\|\dfrac{1}{n}\sum_{i=1}^n\xi_i-E(\xi)\bigg\|_{\mathcal{K}}\leq\dfrac{2M\log(2/\delta)}{n}+\left\{\dfrac{2\sigma^2(\xi)\log(2/\delta)}{n}\right\}^{1/2}\bigg]\geq 1-\delta.
+$$
+\end{lemma}
+
+\begin{proposition}[Mean embedding rate]\label{theorem:mean}
+Suppose Assumptions~\ref{assumption:RKHS} and~\ref{assumption:original} hold. Then with probability $1-\delta$, 
+$$
+\|\hat{\mu}_w-\mu_w\|_{\mathcal{H}_{\mathcal{W}}}\leq r_{\mu}(n,\delta)=\frac{4\kappa_w \log(2/\delta)}{n^{1/2}}.
+$$
+\end{proposition}
+
+\begin{proof}
+The result follows from Lemma~\ref{lemma:prob} with $\xi_i=\phi(W_i)$, since
+$$
+\left\|n^{-1}\sum_{i=1}^n \phi(W_i)-E\{\phi(W)\}\right\|_{\mathcal{H}_{\mathcal{W}}}
+\leq \frac{2 \kappa_w\log(2/\delta)}{n}+\left\{\dfrac{2\kappa^2_w\log(2/\delta)}{n}\right\}^{1/2}\leq \frac{4\kappa_w \log(2/\delta)}{n^{1/2}}.
+$$
+\cite[Theorem 15]{altun2006unifying} originally prove this rate by McDiarmid inequality. See \cite[Theorem 2]{smola2007hilbert} for an argument via Rademacher complexity. See \cite[Proposition A.1]{tolstikhin2017minimax} for an improved constant and the proof that the rate is minimax optimal.
+\end{proof}
+
+\begin{remark}[Kernel bound]\label{remark:2}
+In various applications, $\kappa_w$ varies.
+    \begin{enumerate}
+        \item $\theta_0^{ATE}$ and $\check{\theta}_0^{D:ATE}$: with probability $1-\delta$, $
+\|\hat{\mu}_x-\mu_x\|_{\mathcal{H}_{\mathcal{X}}}\leq r_{\mu}(n,\delta)=4\kappa_x \log(2/\delta)n^{-1/2}.
+$
+        \item $\theta_0^{DS}$ and $\check{\theta}_0^{D:DS}$: with probability $1-\delta$, 
+$
+\|\hat{\nu}_x-\nu_x\|_{\mathcal{H}_{\mathcal{X}}}\leq r_{\nu}(\tilde{n},\delta)=4\kappa_x \log(2/\delta)\tilde{n}^{-1/2}.
+$
+ \item $\theta_0^{FD}$ and $\check{\theta}_0^{D:FD}$: with probability $1-\delta$, 
+$
+\|\hat{\mu}_d-\mu_d\|_{\mathcal{H}_{\mathcal{D}}}\leq r_{\mu}(n,\delta)=4\kappa_d \log(2/\delta)n^{-1/2}.
+$
+    \end{enumerate}
+\end{remark}
+
+\textbf{Conditional expectation operator and conditional mean embedding}
+
+Next, we present original results for the generalized kernel ridge regression estimator $\hat{E}_{\ell}$ of the conditional expectation operator $E_{\ell}:\mathcal{H}_{\mathcal{A}_{\ell}}\rightarrow\mathcal{H}_{\mathcal{B}_{\ell}}$, $f(\cdot)\mapsto E\{f(A_{\ell}) \mid B_{\ell}=\cdot\}$. We prove these results and compare them with previous work in Supplement~\ref{sec:operator}.
+
+Consider the definitions
+\begin{align*}
+    E_{\ell}&=\argmin_{E\in\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})}\mathcal{E}(E),\quad \mathcal{E}(E)=E[\{\phi(A_{\ell})-E^*\phi(B_{\ell})\}^2]; \\
+    \hat{E}_{\ell}&=\argmin_{E\in\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})}\hat{\mathcal{E}}(E),\quad \hat{\mathcal{E}}(E)=n^{-1}\sum_{i=1}^n\{\phi(A_{\ell i})-E^*\phi(B_{\ell i})\}^2+\lambda_{\ell}\|E\|^2_{\mathcal{L}_2(\mathcal{H}_{\mathcal{A}_{\ell}},\mathcal{H}_{\mathcal{B}_{\ell}})}.
+\end{align*}
+
+\begin{proposition}[Conditional mean embedding rate]\label{theorem:conditional}
+Suppose Assumptions~\ref{assumption:RKHS},~\ref{assumption:original}, and~\ref{assumption:smooth_op} hold. Set $\lambda_{\ell}=n^{-1/(c_{\ell}+1/b_{\ell})}$. Then with probability $1-\delta$, for $n$ sufficiently large,
+$$
+\|\hat{E}_{\ell}-E_{\ell}\|_{\mathcal{L}_2}\leq r_E(\delta,n,b_{\ell},c_{\ell})=C\log(4/\delta)\cdot n^{-(c_{\ell}-1)/\{2(c_{\ell}+1/b_{\ell})\}},
+$$
+where $C$ is a constant independent of $n$ and $\delta$. Moreover, for all $b\in\mathcal{B}_{\ell}$
+$$
+  \|\hat{\mu}_a(b)-\mu_a(b)\|_{\mathcal{H}_{\mathcal{A}_{\ell}}}\leq r_{\mu}(\delta,n,b_{\ell},c_{\ell})=\kappa_{b}\cdot
+  r_E(\delta,n,b_{\ell},c_{\ell}).
+    $$
+\end{proposition}
+
+Remark~\ref{remark:big_n} in the subsequent, technical supplement elaborates on the meaning of the phrase ``$n$ sufficiently large''.
+
+\begin{proof}
+We delay the proof of this result to the next supplement due to its technicality.
+\end{proof}
+
+\begin{remark}[Kernel bounds]\label{remark:3}
+In various applications, $\kappa_a$ and $\kappa_b$ vary.
+    \begin{enumerate}
+        \item $\theta_0^{ATT}$ and $\check{\theta}_0^{ATT}$: $\kappa_a=\kappa_x$, $\kappa_b=\kappa_d$;
+        \item $\theta_0^{CATE}$ and $\check{\theta}_0^{CATE}$: $\kappa_a=\kappa_x$, $\kappa_b=\kappa_v$;
+        \item Counterfactual distributions: $\kappa_a=\kappa_y$, $\kappa_b=\kappa_d\kappa_x$.
+    \end{enumerate}
+\end{remark}
+
+
+\subsection{Main results}
+
+Appealing to Propositions~\ref{theorem:regression},~\ref{theorem:mean}, and~\ref{theorem:conditional}, we now prove consistency for (i) causal functions, (ii) counterfactual distributions, and (iii) graphical models. 
+
+\textbf{Causal functions}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:consistency_treatment}]
+We initially consider $\theta_0^{ATE}$. 
+    \begin{align*}
+        &\hat{\theta}^{ATE}(d)-\theta_0^{ATE}(d)
+        =\langle \hat{\gamma} , \phi(d)\otimes \hat{\mu}_x \rangle_{\mathcal{H}} - \langle \gamma_0 , \phi(d)\otimes \mu_x \rangle_{\mathcal{H}} \\
+        &=\langle \hat{\gamma} , \phi(d)\otimes(\hat{\mu}_x-\mu_x) \rangle_{\mathcal{H}} + \langle (\hat{\gamma}-\gamma_0), \phi(d) \otimes \mu_x \rangle_{\mathcal{H}} \\
+        &=\langle (\hat{\gamma}-\gamma_0), \phi(d)\otimes(\hat{\mu}_x-\mu_x) \rangle_{\mathcal{H}} + \langle \gamma_0, \phi(d)\otimes(\hat{\mu}_x-\mu_x) \rangle_{\mathcal{H}}+\langle (\hat{\gamma}-\gamma_0), \phi(d) \otimes \mu_x \rangle_{\mathcal{H}}.
+    \end{align*}
+    Therefore by Propositions~\ref{theorem:regression} and~\ref{theorem:mean}, with probability $1-2\delta$,
+   \begin{align*}
+       &|\hat{\theta}^{ATE}(d)-\theta_0^{ATE}(d)|\leq 
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}} \|\hat{\mu}_x-\mu_x\|_{\mathcal{H}_{\mathcal{X}}}\\
+       &\quad +
+       \|\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\|\hat{\mu}_x-\mu_x\|_{\mathcal{H}_{\mathcal{X}}} \\
+       &\quad + 
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}} \|\mu_x\|_{\mathcal{H}_{\mathcal{X}}}
+      \\
+      &\leq \kappa_d \cdot r_{\gamma}(n,\delta,b,c) \cdot r_{\mu}(n,\delta)+\kappa_d\cdot\|\gamma_0\|_{\mathcal{H}} \cdot r_{\mu}(n,\delta)+\kappa_d\kappa_x \cdot r_{\gamma}(n,\delta,b,c)\\
+      &=O\left(n^{-\frac{1}{2}\frac{c-1}{c+1/b}}\right).
+   \end{align*}
+By the same argument, with probability $1-2\delta$,
+    \begin{align*}
+   &|\hat{\theta}^{DS}(d,\tilde{\text{\normalfont pr}})-\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})| \\
+    &\leq \kappa_d \cdot r_{\gamma}(n,\delta,b,c) \cdot r_{\nu}(\tilde{n},\delta)+\kappa_d\cdot\|\gamma_0\|_{\mathcal{H}} \cdot r_{\nu}(\tilde{n},\delta)+\kappa_d\kappa_x \cdot r_{\gamma}(n,\delta,b,c)\\
+      &=O\left( n^{-\frac{1}{2}\frac{c-1}{c+1/b}}+\tilde{n}^{-\frac{1}{2}}\right).
+    \end{align*}
+    Next, consider $\theta_0^{ATT}$.
+    \begin{align*}
+        &\hat{\theta}^{ATT}(d,d')-\theta_0^{ATT}(d,d') =\langle \hat{\gamma} , \phi(d')\otimes \hat{\mu}_x(d) \rangle_{\mathcal{H}} - \langle \gamma_0 , \phi(d')\otimes \mu_x(d) \rangle_{\mathcal{H}} \\
+        &=\langle \hat{\gamma} , \phi(d')\otimes\{\hat{\mu}_x(d)-\mu_x(d)\} \rangle_{\mathcal{H}} + \langle (\hat{\gamma}-\gamma_0), \phi(d') \otimes \mu_x(d) \rangle_{\mathcal{H}} \\
+        &=\langle (\hat{\gamma}-\gamma_0), \phi(d')\otimes\{\hat{\mu}_x(d)-\mu_x(d)\} \rangle_{\mathcal{H}} \\
+        &\quad + \langle \gamma_0, \phi(d')\otimes\{\hat{\mu}_x(d)-\mu_x(d)\} \rangle_{\mathcal{H}}\\
+        &\quad +\langle (\hat{\gamma}-\gamma_0), \phi(d') \otimes \mu_x(d) \rangle_{\mathcal{H}}.
+    \end{align*}
+    Therefore by Propositions~\ref{theorem:regression} and~\ref{theorem:conditional}, with probability $1-2\delta$,
+   \begin{align*}
+       &|\hat{\theta}^{ATT}(d,d')-\theta_0^{ATT}(d,d')|
+       \leq 
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d')\|_{\mathcal{H}_{\mathcal{D}}} \|\hat{\mu}_x(d)-\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}}\\
+       &\quad +\|\gamma_0\|_{\mathcal{H}}\|\phi(d')\|_{\mathcal{H}_{\mathcal{D}}}\|\hat{\mu}_x(d)-\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}} \\
+       &\quad +
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d')\|_{\mathcal{H}_{\mathcal{D}}} \|\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}}
+      \\
+      &\leq \kappa_d \cdot r_{\gamma}(n,\delta,b,c) \cdot r_{\mu}^{ATT}(n,\delta,b_1,c_1)+\kappa_d\cdot\|\gamma_0\|_{\mathcal{H}} \cdot r_{\mu}^{ATT}(n,\delta,b_1,c_1)
+      +\kappa_d\kappa_x \cdot r_{\gamma}(n,\delta,b,c)
+      \\
+      &=O\left(n^{-\frac{1}{2}\frac{c-1}{c+1/b}}+n^{-\frac{1}{2}\frac{c_1-1}{c_1+1/b_1}}\right).
+   \end{align*}
+    Finally, consider $\theta_0^{CATE}$.
+    \begin{align*}
+        &\hat{\theta}^{CATE}(d,v)-\theta_0^{CATE}(d,v)=\langle \hat{\gamma} , \phi(d)\otimes \phi(v)\otimes \hat{\mu}_{x}(v) \rangle_{\mathcal{H}} - \langle \gamma_0 , \phi(d )\otimes \phi(v) \otimes \mu_{x}(v) \rangle_{\mathcal{H}} \\
+        &=\langle \hat{\gamma} , \phi(d)\otimes \phi(v)\otimes\{\hat{\mu}_{x}(v)-\mu_{x}(v)\} \rangle_{\mathcal{H}} + \langle (\hat{\gamma}-\gamma_0), \phi(d)\otimes \phi(v) \otimes \mu_{x}(v) \rangle_{\mathcal{H}} \\
+        &=\langle (\hat{\gamma}-\gamma_0), \phi(d)\otimes \phi(v)\otimes\{\hat{\mu}_{x}(v)-\mu_{x}(v)\} \rangle_{\mathcal{H}}  \\
+        &\quad + \langle \gamma_0, \phi(d)\otimes \phi(v)\otimes\{\hat{\mu}_{x}(v)-\mu_{x}(v)\} \rangle_{\mathcal{H}}\\
+        &\quad +\langle (\hat{\gamma}-\gamma_0), \phi(d)\otimes \phi(v) \otimes \mu_{x}(v) \rangle_{\mathcal{H}}.
+    \end{align*}
+    Therefore by Propositions~\ref{theorem:regression} and~\ref{theorem:conditional}, with probability $1-2\delta$,
+   \begin{align*}
+       &|\hat{\theta}^{CATE}(d,v)-\theta_0^{CATE}(d,v)|\leq 
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\|\phi(v)\|_{\mathcal{H}_{\mathcal{V}}} \|\hat{\mu}_{x}(v)-\mu_{x}(v)\|_{\mathcal{H}_{\mathcal{X}}}\\
+      &\quad+
+       \|\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\|\phi(v)\|_{\mathcal{H}_{\mathcal{V}}}\|\hat{\mu}_{x}(v)-\mu_{x}(v)\|_{\mathcal{H}_{\mathcal{X}}} \\
+       &\quad+
+       \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\|\phi(v)\|_{\mathcal{H}_{\mathcal{V}}} \|\mu_{x}(v)\|_{\mathcal{H}_{\mathcal{X}}}
+      \\
+      &\leq \kappa_d\kappa_{v} \cdot r_{\gamma}(n,\delta,b,c) \cdot r_{\mu}^{CATE}(n,\delta,b_2,c_2)\\
+      &\quad+\kappa_d\kappa_{v}\cdot\|\gamma_0\|_{\mathcal{H}} \cdot r_{\mu}^{CATE}(n,\delta,b_2,c_2)
+      +\kappa_d\kappa_{v} \kappa_{x} \cdot r_{\gamma}(n,\delta,b,c)
+      \\
+      &=O\left(n^{-\frac{1}{2}\frac{c-1}{c+1/b}}+n^{-\frac{1}{2}\frac{c_2-1}{c_2+1/b_2}}\right).
+   \end{align*}
+    For incremental functions, replace $\phi(d)$ with $\nabla_d \phi(d)$ and hence replace $\|\phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\leq \kappa_d$ with $\|\nabla_d \phi(d)\|_{\mathcal{H}_{\mathcal{D}}}\leq \kappa_d'$.
+\end{proof}
+
+\textbf{Counterfactual distributions}
+
+
+\begin{proof}[Proof of Theorem~\ref{theorem:consistency_dist}]
+   The argument is analogous to Theorem~\ref{theorem:consistency_treatment}. By Propositions~\ref{theorem:mean} and~\ref{theorem:conditional}, for all $d\in\mathcal{D}$, with probability $1-2\delta$,
+   \begin{align*}
+       &\|\hat{\theta}^{D:ATE}(d)-\check{\theta}_0^{D:ATE}(d)\|_{\mathcal{H}_{\mathcal{Y}}}
+      \\
+      &\leq \kappa_d \cdot r_{E}(n,\delta,b_3,c_3) \cdot r_{\mu}(n,\delta)+\kappa_d\cdot\|E_3\|_{\mathcal{L}_2} \cdot r_{\mu}(n,\delta)
+    +\kappa_d\kappa_x \cdot r_{E}(n,\delta,b_3,c_3)\\
+      &=O\left(n^{-\frac{1}{2}\frac{c_3-1}{c_3+1/b_3}}\right).
+   \end{align*}
+Likewise, with probability $1-2\delta$,
+    \begin{align*}
+   &\|\hat{\theta}^{D:DS}(d,\tilde{\text{\normalfont pr}})-\check{\theta}_0^{D:DS}(d,\tilde{\text{\normalfont pr}})\|_{\mathcal{H}_{\mathcal{Y}}} \\
+   &\leq
+   \kappa_d \cdot r_{E}(n,\delta,b_3,c_3) \cdot r_{\nu}(\tilde{n},\delta)+\kappa_d\cdot\|E_3\|_{\mathcal{L}_2} \cdot r_{\nu}(\tilde{n},\delta)
+    +\kappa_d\kappa_x \cdot r_{E}(n,\delta,b_3,c_3)\\
+      &=O\left(n^{-\frac{1}{2}\frac{c_3-1}{c_3+1/b_3}}+\tilde{n}^{-\frac{1}{2}}\right).
+    \end{align*}
+By Proposition~\ref{theorem:conditional}, for all $d,d'\in\mathcal{D}$, with probability $1-2\delta$,
+   \begin{align*}
+       &\|\hat{\theta}^{D:ATT}(d,d')-\check{\theta}_0^{D:ATT}(d,d')\|_{\mathcal{H}_{\mathcal{Y}}}
+      \\
+      &\leq \kappa_d \cdot r_{E}(n,\delta,b_3,c_3) \cdot r^{ATT}_{\mu}(n,\delta,b_1,c_1) \\
+      &\quad +\kappa_d\cdot\|E_3\|_{\mathcal{L}_2} \cdot r^{ATT}_{\mu}(n,\delta,b_1,c_1) 
+      +\kappa_d\kappa_x \cdot r_{E}(n,\delta,b_3,c_3)\\
+      &=O\left(n^{-\frac{1}{2}\frac{c_1-1}{c_1+1/b_1}}+n^{-\frac{1}{2}\frac{c_3-1}{c_3+1/b_3}}\right).
+   \end{align*}
+By Proposition~\ref{theorem:conditional}, for all $d\in\mathcal{D}$ and $v\in\mathcal{V}$ with probability $1-2\delta$,
+   \begin{align*}
+       &\|\hat{\theta}^{D:CATE}(d,v)-\check{\theta}_0^{D:CATE}(d,v)\|_{\mathcal{H}_{\mathcal{Y}}}
+      \leq \kappa_d\kappa_{v} \cdot r_{E}(n,\delta,b_3,c_3) \cdot r_{\mu}^{CATE}(n,\delta,b_2,c_2) \\
+      &\quad +\kappa_d\kappa_{v}\cdot\|E_3\|_{\mathcal{L}_2} \cdot r_{\mu}^{CATE}(n,\delta,b_2,c_2) \\
+      &\quad +\kappa_d\kappa_{v} \kappa_{x} \cdot r_{E}(n,\delta,b_3,c_3)
+      \\
+      &=O\left(n^{-\frac{1}{2}\frac{c_2-1}{c_2+1/b_2}}+n^{-\frac{1}{2}\frac{c_3-1}{c_3+1/b_3}}\right).
+   \end{align*}
+      
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:conv_dist}]
+    Fix $d$. By Theorem~\ref{theorem:consistency_dist}
+    $$
+    \|\hat{\theta}^{D:ATE}(d)-\check{\theta}_0^{D:ATE}(d)\|_{\mathcal{H}_{\mathcal{Y}}}=O_p\left(n^{-1/2\frac{c_3-1}{c_3+1/b_3}}\right).
+    $$
+    Denote the samples constructed by Algorithm~\ref{algorithm:herding} by $\tilde{Y}_j$ $(j=1,...,m)$. Then by \cite[Section 4.2]{bach2012equivalence},
+    $$
+    \left\|\hat{\theta}^{D:ATE}(d)-\frac{1}{m}\sum_{j=1}^m \phi(\tilde{Y}_j)\right\|_{\mathcal{H}_{\mathcal{Y}}}=O(m^{-1/2}).
+    $$
+    Therefore by triangle inequality,
+    $$
+    \left\|\frac{1}{m}\sum_{j=1}^m \phi(\tilde{Y}_j)-\check{\theta}_0^{D:ATE}(d)\right\|_{\mathcal{H}_{\mathcal{Y}}}=O_p\left(n^{-1/2\frac{c_3-1}{c_3+1/b_3}}+m^{-1/2}\right).
+    $$
+    The desired result follows from \cite{sriperumbudur2016optimal}, as quoted by \cite[Theorem 1.1]{simon2020metrizing}. The argument for other counterfactual distributions is identical.
+\end{proof}
+
+\textbf{Graphical models}
+
+\begin{proposition}\label{prop:delta_dag}
+If Assumptions~\ref{assumption:RKHS},~\ref{assumption:original}, and~\ref{assumption:smooth_op} hold with $\mathcal{A}_1=\mathcal{X}$ and $\mathcal{B}_1=\mathcal{D}$, then with probability $1-2\delta$,
+$$
+\|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}}\leq \kappa_x \cdot r_{\mu} (n,\delta)+\kappa_d\cdot   r^{ATT}_{\mu}(n,\delta,b_1,c_1),
+$$
+where $r_{\mu}$ is as defined in Proposition~\ref{theorem:mean} (with $\kappa_w=\kappa_d$) and $r^{ATT}_{\mu}$ is as defined in Proposition~\ref{theorem:conditional}.
+\end{proposition}
+
+\begin{proof}
+By triangle inequality,
+\begin{align*}
+    &\|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}} \\
+    &\leq \|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\hat{\mu}_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}} + 
+    \|\hat{\mu}_d\otimes \mu_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}}.
+\end{align*}
+Focusing on the former term, by Proposition~\ref{theorem:conditional},
+\begin{align*}
+    \|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\hat{\mu}_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}}
+    &\leq  \|\hat{\mu}_d\|_{\mathcal{H}_{\mathcal{D}}}\cdot \|\hat{\mu}_x(d)-\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}}\leq \kappa_d \cdot r^{ATT}_{\mu}(n,\delta,b_1,c_1).
+\end{align*}
+Focusing on the latter term, by Proposition~\ref{theorem:mean},
+\begin{align*}
+      \|\hat{\mu}_d\otimes \mu_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}}
+    &\leq \|\hat{\mu}_d-\mu_d\|_{\mathcal{H}_{\mathcal{D}}}\cdot  \|\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}} \leq  \kappa_x \cdot r_{\mu} (n,\delta).
+\end{align*}
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:consistency_dag}]
+To begin, write
+\begin{align*}
+        \hat{\theta}^{FD}(d)-\theta_0^{do}(d)
+        &=\langle \hat{\gamma} , \hat{\mu}_d\otimes \hat{\mu}_x(d) \rangle_{\mathcal{H}} - \langle \gamma_0 , \mu_d\otimes \mu_x(d) \rangle_{\mathcal{H}} \\
+        &=\langle \hat{\gamma} , \{\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\} \rangle_{\mathcal{H}} + \langle (\hat{\gamma}-\gamma_0), \mu_d\otimes \mu_x(d) \rangle_{\mathcal{H}} \\
+        &=\langle (\hat{\gamma}-\gamma_0), \{\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\}\rangle_{\mathcal{H}} \\
+        &\quad + \langle \gamma_0, \{\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\} \rangle_{\mathcal{H}}\\
+        &\quad +\langle (\hat{\gamma}-\gamma_0), \mu_d\otimes \mu_x(d) \rangle_{\mathcal{H}}.
+    \end{align*}
+    Therefore by Propositions~\ref{theorem:regression},~\ref{theorem:mean},~\ref{theorem:conditional}, and~\ref{prop:delta_dag}, with probability $1-3\delta$,
+  \begin{align*}
+      |\hat{\theta}^{FD}(d)-\theta_0^{do}(d)|
+      &\leq 
+      \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}}\\
+      &\quad +
+      \|\gamma_0\|_{\mathcal{H}}\|\hat{\mu}_d\otimes \hat{\mu}_x(d)-\mu_d\otimes \mu_x(d)\|_{\mathcal{H}_{\mathcal{D}}\otimes \mathcal{H}_{\mathcal{X}}} \\
+      &\quad +
+      \|\hat{\gamma}-\gamma_0\|_{\mathcal{H}}\|\mu_d\|_{\mathcal{H}_{\mathcal{D}}} \|\mu_x(d)\|_{\mathcal{H}_{\mathcal{X}}}
+      \\
+      &\leq r_{\gamma}(n,\delta,b,c)\{\kappa_x \cdot r_{\mu} (n,\delta)+\kappa_d\cdot   r^{ATT}_{\mu}(n,\delta,b_1,c_1)\} \\
+      &\quad +\|\gamma_0\|_{\mathcal{H}}\{\kappa_x \cdot r_{\mu} (n,\delta)+\kappa_d\cdot   r^{ATT}_{\mu}(n,\delta,b_1,c_1)\}\\
+      &\quad +\kappa_d\kappa_x\cdot r_{\gamma}(n,\delta,b,c) \\
+      &=O\left(n^{-\frac{1}{2}\frac{c-1}{c+1/b}}+n^{-\frac{1}{2}\frac{c_1-1}{c_1+1/b_1}}\right).
+  \end{align*}
+  The argument for $\hat{\theta}^{D:FD}$ is analogous. By Propositions~\ref{theorem:mean},~\ref{theorem:conditional}, and~\ref{prop:delta_dag}, for all $d\in\mathcal{D}$, with probability $1-3\delta$,
+   \begin{align*}
+       &\|\hat{\theta}^{D:FD}(d)-\check{\theta}_0^{D:FD}(d)\|_{\mathcal{H}_{\mathcal{Y}}}
+      \\
+      &\leq r_{E}(n,\delta,b_3,c_3)\{\kappa_x \cdot r_{\mu} (n,\delta)+\kappa_d\cdot   r^{ATT}_{\mu}(n,\delta,b_1,c_1)\} \\
+      &\quad +\|E_3\|_{\mathcal{L}_2}\{\kappa_x \cdot r_{\mu} (n,\delta)+\kappa_d\cdot   r^{ATT}_{\mu}(n,\delta,b_1,c_1)\}\\
+      &\quad +\kappa_d\kappa_x\cdot r_{E}(n,\delta,b_3,c_3) \\
+      &=O\left(n^{-\frac{1}{2}\frac{c_3-1}{c_3+1/b_3}}+n^{-\frac{1}{2}\frac{c_1-1}{c_1+1/b_1}}\right).
+   \end{align*}
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{theorem:conv_dist_dag}]
+The argument is identical to the proof of Theorem~\ref{theorem:conv_dist}.
+\end{proof}

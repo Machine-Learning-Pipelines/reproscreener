@@ -1,0 +1,39 @@
+
+
+\section{Conclusion and Discussion}
+\label{sec:conclusion-and-discussion}
+
+We presented the first differentially private proximal coordinate descent
+algorithm for composite DP-ERM.
+Using an original approach to analyze proximal CD with perturbed
+gradients, we derived optimal upper bounds on the privacy-utility trade-off
+achieved by DP-CD. We also prove new lower bounds under a
+component-Lipschitzness
+assumption,
+and showed that DP-CD matches these bounds.
+Our results demonstrate that DP-CD strongly outperforms DP-SGD when
+gradients' coordinates are imbalanced. Numerical experiments show that DP-CD
+also performs very well in balanced regimes.
+The choice of coordinate-wise clipping
+thresholds is crucial for
+DP-CD to achieve good utility in practice, and we provided a simple rule to
+set them.
+
+
+
+Although DP-CD already achieves good utility when most coordinates have small
+sensitivity, our lower bounds suggest that even better utility could be
+achieved by dynamically allocating more privacy budget to
+coordinates with largest sensitivities.
+A promising direction is to design DP-CD algorithms that leverage active set
+methods
+\citep{yuan2010Comparison,lewis2016Proximal,nutini2017Let,desantis2016Fast,Massias_Gramfort_Salmon18}, which could provide practical alternatives to recent DP-SGD approaches that use a
+subspace assumption \citep{zhou2021Bypassing,kairouz2021Nearly}.
+Finally, we believe that adaptive clipping techniques
+\citep{pichapati2019AdaCliP,thakkar2019Differentially} may help to further
+improve the practical performance of DP-CD when coordinate-wise
+smoothness constants are more balanced.
+
+
+
+

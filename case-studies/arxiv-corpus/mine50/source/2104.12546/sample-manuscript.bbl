@@ -1,0 +1,186 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{world2020director}
+{World Health Organization}, Who director-general's opening remarks at the
+  media briefing on covid-19-11 march 2020 (2020).
+
+\bibitem{vaishya2020artificial}
+R.~Vaishya, M.~Javaid, I.~H. Khan, A.~Haleem, Artificial intelligence (ai)
+  applications for covid-19 pandemic, Diabetes \& Metabolic Syndrome: Clinical
+  Research \& Reviews.
+
+\bibitem{jamshidi2020artificial}
+M.~Jamshidi, A.~Lalbakhsh, J.~Talla, Z.~Peroutka, F.~Hadjilooei, P.~Lalbakhsh,
+  M.~Jamshidi, L.~La~Spada, M.~Mirmozafari, M.~Dehghani, et~al., Artificial
+  intelligence and covid-19: deep learning approaches for diagnosis and
+  treatment, IEEE Access 8 (2020) 109581--109595.
+
+\bibitem{lalmuanawma2020applications}
+S.~Lalmuanawma, J.~Hussain, L.~Chhakchhuak, Applications of machine learning
+  and artificial intelligence for covid-19 (sars-cov-2) pandemic: A review,
+  Chaos, Solitons \& Fractals (2020) 110059.
+
+\bibitem{Wang2020CORD19TC}
+L.~L. Wang, K.~Lo, Y.~Chandrasekhar, R.~Reas, J.~Yang, D.~Eide, K.~Funk, R.~M.
+  Kinney, Z.~Liu, W.~Merrill, P.~Mooney, D.~Murdick, D.~Rishi, J.~Sheehan,
+  Z.~Shen, B.~B.~S. Stilson, A.~D. Wade, K.~Wang, C.~Wilhelm, B.~Xie, D.~M.
+  Raymond, D.~S. Weld, O.~Etzioni, S.~Kohlmeier, Cord-19: The covid-19 open
+  research dataset, ArXiv.
+
+\bibitem{becchetti2020understanding}
+L.~Becchetti, G.~Conzo, P.~Conzo, F.~Salustri, Understanding the heterogeneity
+  of adverse covid-19 outcomes: the role of poor quality of air and lockdown
+  decisions, SSRN 3572548.
+
+\bibitem{la2020coronavirus}
+G.~La~Rosa, L.~Bonadonna, L.~Lucentini, S.~Kenmoe, E.~Suffredini, Coronavirus
+  in water environments: Occurrence, persistence and concentration methods-a
+  scoping review, Water Research (2020) 115899.
+
+\bibitem{van2020aerosol}
+N.~Van~Doremalen, T.~Bushmaker, D.~H. Morris, M.~G. Holbrook, A.~Gamble, B.~N.
+  Williamson, A.~Tamin, J.~L. Harcourt, N.~J. Thornburg, S.~I. Gerber, et~al.,
+  Aerosol and surface stability of sars-cov-2 as compared with sars-cov-1, New
+  England Journal of Medicine 382~(16) (2020) 1564--1567.
+
+\bibitem{lavezzo2020suppression}
+E.~Lavezzo, E.~Franchin, C.~Ciavarella, G.~Cuomo-Dannenburg, L.~Barzon,
+  C.~Del~Vecchio, L.~Rossi, R.~Manganelli, A.~Loregian, N.~Navarin, et~al.,
+  Suppression of a sars-cov-2 outbreak in the italian municipality of vo’,
+  Nature 584~(7821) (2020) 425--429.
+
+\bibitem{sloan2011impact}
+C.~Sloan, M.~L. Moore, T.~Hartert, Impact of pollution, climate, and
+  sociodemographic factors on spatiotemporal dynamics of seasonal respiratory
+  viruses, Clinical and translational science 4~(1) (2011) 48--54.
+
+\bibitem{moriyama2020seasonality}
+M.~Moriyama, W.~J. Hugentobler, A.~Iwasaki, Seasonality of respiratory viral
+  infections, Annual review of virology 7.
+
+\bibitem{lolli2020impact}
+S.~Lolli, Y.-C. Chen, S.-H. Wang, G.~Vivone, Impact of meteorological
+  conditions and air pollution on covid-19 pandemic transmission in italy,
+  Scientific reports 10~(1) (2020) 1--15.
+
+\bibitem{ciencewicki2007air}
+J.~Ciencewicki, I.~Jaspers, Air pollution and respiratory viral infection,
+  Inhalation toxicology 19~(14) (2007) 1135--1146.
+
+\bibitem{xing2016impact}
+Y.-F. Xing, Y.-H. Xu, M.-H. Shi, Y.-X. Lian, The impact of pm2. 5 on the human
+  respiratory system, Journal of thoracic disease 8~(1) (2016) E69.
+
+\bibitem{grigg2018air}
+J.~Grigg, Air pollution and respiratory infection: an emerging and troubling
+  association (2018).
+
+\bibitem{setti2020evaluation}
+L.~Setti, F.~Passarini, G.~de~Gennaro, A.~Di~Gilio, J.~Palmisani, P.~Buono,
+  G.~Fornari, M.~G. Perrone, A.~Piazzalunga, P.~Barbieri, et~al., Evaluation of
+  the potential relationship between particulate matter (pm) pollution and
+  covid-19 infection spread in italy (2020) 1--6.
+
+\bibitem{setti2020sars}
+L.~Setti, F.~Passarini, G.~De~Gennaro, P.~Barbieri, M.~G. Perrone, M.~Borelli,
+  J.~Palmisani, A.~Di~Gilio, V.~Torboli, F.~Fontana, et~al., Sars-cov-2rna
+  found on particulate matter of bergamo in northern italy: First evidence,
+  Environmental Research (2020) 109754.
+
+\bibitem{yongjian2020association}
+Z.~Yongjian, X.~Jingu, H.~Fengming, C.~Liqing, Association between short-term
+  exposure to air pollution and covid-19 infection: Evidence from china,
+  Science of the total environment (2020) 138704.
+
+\bibitem{murray2008virion}
+B.~K. Murray, S.~Ohmine, D.~P. Tomer, K.~J. Jensen, F.~B. Johnson, J.~J. Kirsi,
+  R.~A. Robison, K.~L. O’Neill, Virion disruption by ozone-mediated reactive
+  oxygen species, Journal of virological methods 153~(1) (2008) 74--77.
+
+\bibitem{hudson2009development}
+J.~B. Hudson, M.~Sharma, S.~Vimalanathan, Development of a practical method for
+  using ozone gas as a virus decontaminating agent, Ozone: science \&
+  engineering 31~(3) (2009) 216--223.
+
+\bibitem{tseng2008inactivation}
+C.~Tseng, C.~Li, Inactivation of surface viruses by gaseous ozone, Journal of
+  environmental health 70~(10) (2008) 56--63.
+
+\bibitem{zhang2004examination}
+J.-m. Zhang, C.-y. ZHENG, G.-f. XIAO, Y.-q. ZHOU, R.~GAO, Examination of the
+  efficacy of ozone solution disinfectant in inactivating sars virus, Chinese
+  Journal of Disinfection 1.
+
+\bibitem{magurano2020sars}
+F.~Magurano, M.~Baggieri, A.~Marchi, G.~Rezza, L.~Nicoletti, C.-.~S. Group,
+  et~al., Sars-cov-2 infection: the environmental endurance of the virus can be
+  influenced by the increase of temperature, medRxiv.
+
+\bibitem{chin2020stability}
+A.~W. Chin, J.~T. Chu, M.~R. Perera, K.~P. Hui, H.-L. Yen, M.~C. Chan, et~al.,
+  Stability of sars-cov-2 in different environmental conditions, The Lancet
+  Microbe 1~(1) (2020) e10.
+
+\bibitem{sobral2020association}
+M.~F.~F. Sobral, G.~B. Duarte, A.~I.~G. da~Penha~Sobral, M.~L.~M. Marinho,
+  A.~de~Souza~Melo, Association between climate variables and global
+  transmission of sars-cov-2, Science of The Total Environment 729 (2020)
+  138997.
+
+\bibitem{wang2020high}
+J.~Wang, K.~Tang, K.~Feng, W.~Lv, High temperature and high humidity reduce the
+  transmission of covid-19, SSRN.
+
+\bibitem{FRANZESE2019706}
+M.~Franzese, A.~Iuliano, Correlation analysis, in: Encyclopedia of
+  Bioinformatics and Computational Biology, Academic Press, Oxford, 2019, pp.
+  706 -- 721.
+
+\bibitem{benesty2009pearson}
+J.~Benesty, J.~Chen, Y.~Huang, I.~Cohen, Pearson correlation coefficient, in:
+  Noise reduction in speech processing, Springer, 2009, pp. 1--4.
+
+\bibitem{myers2004s}
+L.~Myers, M.~J. Sirois, S pearman correlation coefficients, differences
+  between, Encyclopedia of statistical sciences.
+
+\bibitem{breiman2001random}
+L.~Breiman, Random forests, Machine learning 45~(1) (2001) 5--32.
+
+\bibitem{friedman2002stochastic}
+J.~H. Friedman, Stochastic gradient boosting, Computational statistics \& data
+  analysis 38~(4) (2002) 367--378.
+
+\bibitem{friedman2001greedy}
+J.~H. Friedman, Greedy function approximation: a gradient boosting machine,
+  Annals of statistics (2001) 1189--1232.
+
+\bibitem{shalev2014understanding}
+S.~Shalev-Shwartz, S.~Ben-David, Understanding machine learning: From theory to
+  algorithms, Cambridge university press, 2014.
+
+\bibitem{world2020air}
+{World Air Quality Index Project},
+  \href{https://aqicn.org/data-platform/covid19/}{Air quality open data
+  platform}, accesed 3$^{rd}$ October 2020 (2020).
+\newline\urlprefix\url{https://aqicn.org/data-platform/covid19/}
+
+\bibitem{derrick2004time}
+T.~R. Derrick, J.~M. Thomas, Time series analysis: the cross-correlation
+  function.
+
+\bibitem{Cornelio2021}
+C.~Cornelio, M.~Donini, A.~Loreggia, M.~S. Pini, F.~Rossi,
+  \href{https://doi.org/10.1007/s10458-021-09504-y}{{Voting with random
+  classifiers (VORACE): theoretical and experimental analysis}}, Autonomous
+  Agents and Multi-Agent Systems 35~(2) (2021) 22.
+\newblock \href {http://dx.doi.org/10.1007/s10458-021-09504-y}
+  {\path{doi:10.1007/s10458-021-09504-y}}.
+\newline\urlprefix\url{https://doi.org/10.1007/s10458-021-09504-y}
+
+\end{thebibliography}

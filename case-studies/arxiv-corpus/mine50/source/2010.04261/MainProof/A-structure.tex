@@ -1,0 +1,85 @@
+\subsubsection{Structure of $\rmA$}
+\label{sec:proof-A-structure}
+In this section we will analyze properties of the second output Hessian $\rmA$, which, despite being a $\R^{c\times c}$ ``small'' matrix, provides many important properties to the first output Hessian and the full layer-wise Hessians.
+
+\begin{lemma}
+\label{lemma:A-rank-c-1}
+With probability 1 over $\mW^{(1)}$ and $\rm^{(2)}$, $\tilde{\rmA}\triangleq\lim_{n\to\infty}\E[\rmA]$ exist and is rank-$(c-1)$ .
+\end{lemma}
+
+\begin{proofof}{\lemmaref{lemma:A-rank-c-1}}
+Note that each entry of $\rmA$ is a quadratic function of $\rvp$, and $\rvp$ is a continuous function of $\rvz$. Therefore, we consider $\rmA$ as a function of $\rvz$ and write $\rmA(\rvz)$ when necessary. From \lemmaref{lemma:z-gaussian} we know that $\lim_{n\to\infty}\rvz$ follows a standard normal distribution $\mathcal{N}(0,\gamma \mI_c)$ with probability 1 over $\mW^{(1)}$ and $\mW^{(2)}$, where $\gamma$ is some absolute constant. Therefore, $\tilde{\rmA}\triangleq\lim_{n\to\infty}\E[\rmA]$ exist and it equals $\E[\rmA(\lim_{n\to\infty} \rvz)]=\E_{\rvz\sim\mathcal{N}(0,\gamma \mI_c)}[\rmA(\rvz)]$. For simplicity of notations, we will omit the statement ``with probability 1 over $\mW^{(1)}$ and $\mW^{(2)}$'' when there is no confusion.
+
+From the definition of $\rmA$ we know that $\rmA\triangleq \text{diag}(\rvp)-\rvp\rvp^\T$ where $\rvp$ is the vector obtained by applying softmax to $\rvz$, so $\sum_{i=1}^c \rvp_i=1$ and for all $i\in[c], \rvp_i\in(0,1)$. Therefore, for any vector $\rvp$ satisfying the previous conditions, we have
+\begin{equation}
+\textbf{1}^\T\rmA\textbf{1} = \sum_{i=1}^c\rbr{\rvp_i-\sum_{j=1}^c\rvp_i\rvp_j} = \sum_{i=1}^c(\rvp_i-\rvp_i) =0,
+\end{equation}
+where $\textbf{1}$ is the all-one vector. Therefore, we know that $\rmA$ has an eigenvalue 0 with eigenvector $c^{-\frac12}\textbf{1}$. This means that $\E[\rmA]$ also has an eigenvalue 0 with eigenvector $c^{-\frac12}\textbf{1}$. Thus, $\E[\rmA]$ is at most of rank $(c-1)$.
+
+Then we analyze the other $(c-1)$ eigenvalues of $\tilde{\rmA}$. Since $\rmA=\rmQ\rmQ^\T$ where $\rmQ=\text{diag}(\sqrt{\rvp})(\mI_c-\textbf{1}\rvp^\T)$, we know that $\rmA$ is always a positive semi-definite (PSD) matrix, which indicates that $E[\rmA]$ must also be PSD. Assume the $c$ eigenvalues of $\tilde{\rmA}$ are $\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_{c-1}\geq\lambda_c=0$. Therefore, by definition, we have
+\begin{equation}
+\lambda_{c-1} = \min_{\vv\in S, \norm{\vv}=1}\vv^\T\tilde{\rmA}\vv = \exop{\rvz\sim\mathcal{N}(0,\gamma \mI_c)}{\min_{\vv\in S, \norm{\vv}=1}\vv^\T\rmA\vv},
+\end{equation}
+where $S\triangleq\R^c\backslash\gR\{\textbf{1}^\T\}$ is the orthogonal subspace of the span of $\textbf{1}$. $\vv\in S$ implies that $\vv\perp\textbf{1}$, i.e., $\sum_{i=1}^c \vv_i = 0$.
+
+Direct computation gives us
+\begin{equation}
+\vv^\T\rmA\vv = \sum_{i=1}^c\vv_i^2\rvp_i-\rbr{\sum_{i=1}^c\vv_i\rvp_i}^2.
+\end{equation}
+Define two vectors $\va,\vb\in\R^c$ as for all $i\in[c]$, with $\va_i\triangleq \vv_i\sqrt{\rvp_i}, \vb_i\triangleq\sqrt{\rvp_i}$, then $\ns{\vb}=\sum_{i=1}^c\rvp_i=1$ and
+\begin{equation}
+\vv^\T\rmA\vv = \ns{\va}-\langle\va,\vb\rangle^2 = \ns{\va}\cdot\ns{\vb}-\langle \va,\vb\rangle^2.
+\end{equation}
+Therefore,
+\begin{equation}
+\vv^\T\rmA\vv \geq \ns{\va}\ns{\vb}\sin^2\theta(\va,\vb),
+\end{equation}
+where $\theta(\va,\vb)$ is the angle between $\va$ and $\vb$, i.e., $\theta(\va,\vb)\triangleq\arccos\frac{\langle \va,\vb\rangle}{\norm{\va}\norm{\vb}}$.
+Define $\rvp_0\triangleq\min_{i\in[c]}\rvp_i$, then
+\begin{equation}
+\ns{\va} = \sum_{i=1}^c\vv_i^2\rvp_i \geq \sum_{i=1}^c\vv_i^2\rvp_0 = \rvp_0\ns{\vv} = \rvp_0.
+\end{equation}
+Since $\norm{\vb}=1$, we have
+\begin{equation}
+\sin^2\theta(\va,\vb) = \frac{\ns{\va-\langle \va,\vb\rangle\cdot \vb}}{\ns{\va}}.
+\end{equation}
+Besides,
+\begin{equation}\begin{split}
+\ns{\va-\langle \va,\vb\rangle\cdot \vb} &= \sum_{i=1}^c\rbr{\vv_i\sqrt{\rvp_i}-\rbr{\sum_{j=1}^c\vv_j\rvp_j}\sqrt{\rvp_i}}^2\\
+                                 &= \sum_{i=1}^c\rvp_i\rbr{\vv_i-\sum_{j=1}^c\vv_j\rvp_j}^2\\
+                                 &\geq \rvp_0\sum_{i=1}^c\rbr{\vv_i-\sum_{j=1}^c\vv_j\rvp_j}^2.
+\end{split}\end{equation}
+Define $s\triangleq\arg\max_{i\in[c]}{\vv_i}$ and $t\triangleq\arg\min_{i\in[c]}{\vv_i}$, then
+\begin{equation}
+\sum_{i=1}^c\rbr{\vv_i-\sum_{j=1}^c\vv_j\rvp_j}^2\geq \rbr{\vv_s-\sum_{j=1}^c\vv_j\rvp_j}^2 + \rbr{\vv_t-\sum_{j=1}^c\vv_j\rvp_j}^2 \geq \frac{(\vv_s-\vv_t)^2}{2}.
+\end{equation}
+From $\norm{\vv}=1$ we know that $\max_{i\in[c]}|\vv_i|\geq c^{-\frac12}$. Besides, since $\sum_{i=1}^c\vv_i=0$, we have $\vv_s>0>\vv_t$. Therefore, $\vv_s-\vv_t>\max_{i\in[c]}|\vv_i|\geq c^{-\frac12}$. As a result,
+\begin{equation}
+\ns{\va-\langle \va,\vb\rangle\cdot \vb} \geq \rvp_0\cdot \frac{(\vv_s-\vv_t)^2}{2} > \frac{\rvp_0}{2c}.
+\end{equation}
+Moreover,
+\begin{equation}
+\ns{\va} = \sum_{i=1}^c \vv_i^2\rvp_i \leq \sum_{i=1}^c \rvp_i = 1.
+\end{equation}
+Thus,
+\begin{equation}
+\sin^2\theta(\va,\vb) \geq \frac{\frac{\rvp_0}{2c}}{1} = \frac{\rvp_0}{2c},
+\end{equation}
+which means that
+\begin{equation}
+\vv^\T\rmA\vv \geq \rvp_0\cdot 1\cdot\frac{\rvp_0}{2c} = \frac{\rvp_0^2}{2c}.
+\end{equation}
+Now we analyze the distribution of $\rvp_0$. Since $\rvz$ follows a spherical Gaussian distribution $\mathcal{N}(0,\gamma \mI_c)$, we know that the entries of $\rvz$ are totally independent. Besides, for each entry $\rvz_i(i\in[c])$, we have $|\rvz_i|<\gamma$ with probability $\xi$, where $\xi\approx 0.68$ is an absolute constant. Therefore, with probability $\xi^c$, forall entries $\rvz_i(i\in[c])$, we have $|\rvz_i|<\gamma$. In this case,
+\begin{equation}
+\rvp_0 = \frac{\exp(\min_{i\in[c]}\rvz_i)}{\sum_{i=1}^c\exp(\rvz_i)}\geq\frac{\exp(-\gamma)}{c\exp(\gamma)}.
+\end{equation}
+In other cases, we know that $\rvp_0>0$. Thus,
+\begin{equation}
+\label{lower-bound-c-1-eigenvalue-of-A}
+\lambda_{c-1} = \E_{\rvz\sim\mathcal{N}(0,\gamma \mI_c)}\left[\min_{\vv\in S, \norm{v}=1}\vv^\T\rmA\vv\right]\geq \xi^c\cdot\frac{\rbr{\frac{\exp(-\gamma)}{c\exp(\gamma)}}^2}{2c}.
+\end{equation}
+The right hand side is independent of $n$. Therefore, $\lambda_{c-1}>0$, which means that $\tilde{\rmA}$ has exactly $(c-1)$ positive eigenvalues and a $0$ eigenvalue, and the eigenvalue gap between the smallest positive eigenvalue and 0 is independent of $n$.
+
+Hence we complete the proof.
+
+\end{proofof}

@@ -1,0 +1,51 @@
+
+% \chengyu{Label noise exists -> explains overfitting -> double descent as a verification -> method to mitigate label noise}
+
+
+% In adversarial training, inheriting labels for adversarial examples from their clean counterparts has been a common practice for years.
+% In this paper, we argue that this common practice in fact leads to a mismatch between true label distribution and assigned label distribution, and therefore, introduces label noise to adversarial training implicitly. 
+We show that label noise exists in adversarial training. 
+Such label noise is due to the mismatch between the true label distribution of adversarial examples and the label inherited from clean examples 
+% \jingbo{assigned label is not defined. I prefer the common practice way to describe this.} 
+ -- the true label distribution is distorted by the adversarial perturbation, but is neglected by the common practice that inherits labels from clean examples. 
+Recognizing label noise sheds insights on the prevalence of robust overfitting in adversarial training, and explains its intriguing dependence on perturbation radius and data quality. 
+Also, our label noise perspective aligns well with our observations of the epoch-wise double descent in adversarial training. 
+Guided by our analyses, we proposed a method to automatically calibrate the label to address the label noise and robust overfitting. 
+Our method achieves consistent performance improvements across various models and datasets without introducing  new hyper-parameters or additional tuning.
+
+
+% Here, we study the label noise issue for adversarial training. 
+% We show that after adding adversarial perturbations to the original input, it is inevitable to shift the underlying label distribution.
+% Correspondingly, it \jingbo{what is this ``it''? please try to make it more clear.} introduces label noise by inheriting labels from their clean counterparts for adversarial examples. 
+% To examine the impact of label noise on adversarial training, we conduct empirical analyses on a label noise byproduct ( i.e., epoch-wise double descent) and observe a clear correlation between the level \jingbo{``the level'' reads a bit odd to me. degree? significance? idk.. and I think this part is not mentioned in intro now.} of epoch-wise double descent and the level of label noise. 
+% Our observations verify our intuitions \jingbo{what are our intuitions? I would prefer to say it explicitly ``label noise exists in adversarial training''} and also shed insights on the the prevalence of robust overfitting in adversarial training. 
+% Guided by our analyses, we proposed a method to automatically calibrate the label supervision to address the label noise and robust overfitting. 
+% Our method achieves consistent performance improvements across various models and datasets without introducing  new hyper-parameters or additional tuning.
+
+
+% Here, we study the a long-overlooked issue for adversarial training, i.e., implicit label noise. 
+% We show that, adding adversarial perturbations to the original input image would cause the output  
+% It is known that overfitting is more prominent in  adversarially robust deep learning than standard learning.
+% In this paper, we extend the classic notion of label noise (label flipped for some instances) to implicit label noise (mismatch between true label distribution and assigned label distribution). 
+% Under the perspective of implicit label noise, the prevalence of overfitting in adversarial training is properly aligned with the effect of label noise in standard learning in promoting variance. \jingbo{the last two ``in''s make me feel odd here.}
+% We confirm that robust overfitting\jingbo{robust fitting is not mentioned before. We'd better to stick with the same term here.} can be viewed as a special case of epoch-wise double descent. 
+% To mitigate implicit label noise in adversarial training, We show that model probability can approximate the true label distribution, in line with the existing practice in tackling robust overfitting. Finally, we show that it is possible to further boost the existing practice with temperature scaling and interpolation and validate its effectiveness by extensive experiments on benchmark datasets.
+
+
+
+% In this paper, 
+% we present the double descent phenomena in adversarial training and propose a novel perspective to understand it. 
+% Specifically, 
+% In this paper, we analyze robust overfitting from an epoch-wise double descent, i.e., we observe that the robust test error will start to decrease again after training the model for a considerable number of epochs.
+% Inspired by our observations, 
+% % we further tailored existing analyses and theory to better understand robust overfitting and the epoch-wise double descent. 
+% we further advance the analyses of double descent to understand robust overfitting better. 
+% \sout{In standard training, double descent has been shown to be a result of label flipping noise.}
+% However, this reasoning is not applicable in our setting, since adversarial perturbations are believed not to change the label. 
+% Going beyond label flipping noise, we propose to measure the mismatch between the assigned and (unknown) true label distributions, denoted as \emph{implicit label noise}.
+% We show that the traditional labeling of adversarial examples inherited from their clean counterparts will lead to implicit label noise.
+% % , but not label flipping noise.
+% Towards better labeling, we show that predicted distribution from a classifier, after scaling and interpolation, can provably reduce the implicit label noise under mild assumptions.
+% In light of our analyses, we tailored the training objective accordingly to effectively mitigate the double descent and verified its effectiveness on three benchmark datasets.
+
+

@@ -1,0 +1,59 @@
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abbasi-Yadkori et~al.(2011)Abbasi-Yadkori, Pal, and
+  Szepesvari]{ay11improved}
+Yasin Abbasi-Yadkori, David Pal, and Csaba Szepesvari.
+\newblock {Improved Algorithms for Linear Stochastic Bandits}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, pages 1--19, 2011.
+
+\bibitem[He et~al.(2021)He, Zhou, and Gu]{he2021logarithmic}
+Jiafan He, Dongruo Zhou, and Quanquan Gu.
+\newblock Logarithmic regret for reinforcement learning with linear function
+  approximation.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  4171--4180. PMLR, 2021.
+
+\bibitem[Pollard(1990)]{pollard1990empirical}
+David Pollard.
+\newblock {Empirical processes: theory and applications}.
+\newblock In \emph{NSF-CBMS regional conference series in probability and
+  statistics}, pages i--86. JSTOR, 1990.
+
+\bibitem[Wagenmaker et~al.(2022)Wagenmaker, Chen, Simchowitz, Du, and
+  Jamieson]{wagenmaker2022first}
+Andrew~J Wagenmaker, Yifang Chen, Max Simchowitz, Simon Du, and Kevin Jamieson.
+\newblock First-order regret in reinforcement learning with linear function
+  approximation: A robust estimation approach.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  22384--22429. PMLR, 2022.
+
+\bibitem[Zhang et~al.(2021{\natexlab{a}})Zhang, Ji, and
+  Du]{zhang2021reinforcement}
+Zihan Zhang, Xiangyang Ji, and Simon Du.
+\newblock Is reinforcement learning more difficult than bandits? a near-optimal
+  algorithm escaping the curse of horizon.
+\newblock In \emph{Conference on Learning Theory}, pages 4528--4531. PMLR,
+  2021{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2021{\natexlab{b}})Zhang, Yang, Ji, and
+  Du]{zhang21variance}
+Zihan Zhang, Jiaqi Yang, Xiangyang Ji, and Simon~S Du.
+\newblock {Variance-Aware Confidence Set: Variance-Dependent Bound for Linear
+  Bandits and Horizon-Free Bound for Linear Mixture MDP}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2021{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2021{\natexlab{c}})Zhang, Zhou, and Ji]{zhang2021model}
+Zihan Zhang, Yuan Zhou, and Xiangyang Ji.
+\newblock Model-free reinforcement learning: from clipped pseudo-regret to
+  sample complexity.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  12653--12662. PMLR, 2021{\natexlab{c}}.
+
+\end{thebibliography}

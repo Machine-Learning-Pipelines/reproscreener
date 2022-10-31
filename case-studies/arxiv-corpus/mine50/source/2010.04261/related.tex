@@ -1,0 +1,23 @@
+\textbf{Hessian-based analysis for neural networks (NNs):} Hessian matrices for NNs reflect the second order information about the loss landscape, which is important in characterizing SGD dynamics \citep{jastrzebski2018relation} and related to generalization \citep{li2020hessian}, robustness to adversaries \citep{yao2018hessian} and interpretation of NNs \citep{singla2019understanding}. People have empirically observed several interesting phenomena of the Hessian, e.g., the gradient during training converges to the top eigenspace of Hessian \citep{gur2018gradient, ghorbani2019investigation}, and the eigenspectrum of Hessian contains a ``spike" which has about $c-1$ large eigenvalues and a continuous ``bulk" \citep{sagun2016eigenvalues, sagun2017empirical, papyan2018full}. 
+People have developed different frameworks to explain the low rank structure of the Hessians including hierarchical clustering of logit gradients \citep{papyan2019measurements, papyan2020traces}, independent Gaussian model for logit gradients \citep{fort2019emergent}, and Neural Tangent Kernel \citep{jacot2019asymptotic}.
+A distinguishing feature of this work is that we are able to characterize the top eigenspace of the Hessian directly by the weight matrices of the network.
+
+\textbf{Layer-wise Kronecker factorization (K-FAC) for training NNs:} 
+The idea of using Kronecker product to approximate Hessian-like matrices is not new. \citet{heskes2000natural} uses this idea to approximate Fisher Information Matrix (FIM).
+%The idea of approximating the FIM using Kronecker factorization can be dated back to . More recently 
+\citet{martens2015optimizing} proposed Kronecker-factored approximate curvature which approximates the inverse of FIM using layer-wise Kronecker product. Kronecker factored eigenbasis has also been utilized in training \citep{george2018fast}.
+% K-FAC has been generalized to convolutional and recurrent NNs \citep{grosse2016kronecker,martens2018kronecker}, Bayesian deep learning \citep{zhang2018noisy}, and structured pruning \citep{wang2019eigendamage}.
+Our paper focuses on a different application with different matrix (Hessian vs. inverse FIM) and different ends of the spectrum (top vs. bottom eigenspace).
+%Unlike these previous works which leverages the lower end of the FIM eigenspectrum for training acceleration, in this paper we use Kronecker factorization to explain the structures of the top eigenspace of layer-wise Hessians.
+
+\textbf{Theoretical Analysis for Hessians Eigenstructure:} \citet{karakida2019pathological} showed that the largest $c$ eigenvalues of the FIM for a randomly initialized neural network are much larger than the others. Their results rely on the eigenvalue spectrum analysis in \citet{karakida2019universal, karakida2019normalization}, which assumes the weights used during forward propagation are drawn independently from the weights used in back propagation \citep{schoenholz2016deep}. More recently, \citet{singh2021analytic} provided a Hessian rank formula for linear networks and \citet{liao2021hessian} provided a characterization on the eigenspace structure of G-GLM models (including 1-layer NN). To our best knowledge, theoretical analysis on the Hessians of nonlinear deeper neural networks is still vacant. %The weights used during forward propagation are drawn independently from the weights used in backpropagation.
+
+% that arise in the top eigenspace of the layer-wise Hessians.
+% \znote{some can be removed, such as the ones on distrbuted learning}
+
+\textbf{PAC-Bayes generalization bounds:} People have established generalization bounds for neural networks under PAC-Bayes framework by \citet{mcallester1999some}.
+% This bound was further tightened by \citet{langford2001bounds}, and \citet{catoni2007pac} proposed a faster-rate version. %Under this framework, generalization bounds for linear regression \citep{germain2016pac} and SVM \citep{rivasplata2018pac} are provided. 
+For neural networks, \citet{dziugaite2017computing} proposed the first non-vacuous generalization bound, which used PAC-Bayesian approach with optimization to bound the generalization error for a stochastic neural network.
+% Their bound was then extended to ImageNet scale by \citet{zhou2019non} using compression.
+% \znote{probably should add the new results on training process that envolves minimizing the bound.}
+%The PAC-Bayes framework was also used with other techniques to provide different forms of bounds, e.g., spectrally-normalized Margin bounds \citep{neyshabur2017pac}, deterministic bounds \citep{nagarajan2019deterministic}, or making connections to sharpness \citep{neyshabur2017exploring}, differential privacy \citep{dziugaite2018data}, and Entropy-SGD \citep{dziugaite2018entropy}.

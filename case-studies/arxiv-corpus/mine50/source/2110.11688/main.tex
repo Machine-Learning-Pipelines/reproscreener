@@ -1,0 +1,139 @@
+
+\documentclass[accepted,nohyperref]{article}
+
+\usepackage{fullpage}
+\usepackage{parskip}
+
+
+\usepackage{authblk}
+
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs} %
+
+\usepackage{hyperref}
+
+
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}[theorem]{Remark}
+
+
+\definecolor{linkcolor}{RGB}{83,83,182}
+
+\hypersetup{
+    colorlinks=true,
+    citecolor=linkcolor,
+    linkcolor=linkcolor,
+    urlcolor=linkcolor
+}
+
+\usepackage[backend=biber,natbib=true,style=authoryear,doi=false,isbn=false,url=false,eprint=false,giveninits=true,maxbibnames=200,maxcitenames=2,mincitenames=1,uniquename=false,uniquelist=false,dashed=false]{biblatex}
+
+\newcommand{\noopsort}[1]{#1}
+
+
+\addbibresource{references.bib}%
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=url, match=\regexp{http://(dx.doi.org/|dl.acm.org/)}, final]
+      \step[fieldset=url, null]
+      \step[fieldset=urldate, null]
+    }
+  }
+}
+\setlength\bibitemsep{1ex}
+
+
+\title{Differentially Private Coordinate Descent \\
+  for Composite Empirical Risk Minimization}
+
+\date{}
+
+\author[1]{Paul Mangold}
+\author[1]{Aurélien Bellet}
+\author[2,3]{Joseph Salmon}
+\author[4]{Marc Tommasi}
+
+\affil[1]{Univ. Lille, Inria,  CNRS, Centrale Lille, UMR 9189 - CRIStAL, F-59000 Lille, France}
+\affil[2]{IMAG, Univ Montpellier, CNRS, Montpellier, France}
+\affil[3]{Institut Universitaire de France (IUF)}
+\affil[4]{Univ. Lille, CNRS, Inria, Centrale Lille,  UMR 9189 - CRIStAL, F-59000 Lille, France}
+
+\input{src/preamble}
+\begin{document}
+
+\maketitle
+
+
+
+\begin{abstract}
+  Machine learning models can leak information about the data used to
+  train them. To mitigate this issue, Differentially Private (DP) variants of
+  optimization
+  algorithms like Stochastic Gradient Descent (DP-SGD) have been
+  designed to trade-off utility for privacy in Empirical Risk
+  Minimization (ERM) problems. In this paper, we propose
+  Differentially Private proximal Coordinate Descent (DP-CD), a new
+  method to solve composite DP-ERM problems. We derive utility
+  guarantees through a novel theoretical analysis of inexact
+  coordinate descent. Our results show that, thanks to larger step
+  sizes, DP-CD can exploit imbalance in gradient coordinates to
+  outperform DP-SGD. We also prove new lower bounds for composite
+  DP-ERM under coordinate-wise regularity assumptions, that are nearly
+  matched by DP-CD. For practical implementations, we propose to clip
+  gradients using coordinate-wise thresholds that emerge
+  from our theory, avoiding costly hyperparameter tuning. Experiments
+  on real and synthetic data support our results, and show that DP-CD
+  compares favorably with DP-SGD.
+\end{abstract}
+
+\input{src/intro}
+\input{src/prelim}
+\input{src/dp-cd}
+\input{src/lower-bounds}
+\input{src/practice}
+\input{src/exp}
+\input{src/related_work}
+\input{src/conclu}
+
+\section*{Acknowledgments}
+
+The authors would like to thank the anonymous reviewers who provided
+useful feedback on previous versions of this work, which helped to improve
+the paper.
+
+This work was supported in part by the Inria Exploratory Action FLAMED and
+by the French National Research Agency (ANR) through grant ANR-20-CE23-0015
+(Project PRIDE) and ANR-20-CHIA-0001-01 (Chaire IA CaMeLOt).
+
+
+\printbibliography
+
+
+\input{src/supplement}
+
+\end{document}

@@ -1,0 +1,73 @@
+\section{Multi-Armed Bandit}
+The Multi-armed bandits (MAB) framework provides principled solutions for the dilemma between exploration and exploitation.
+
+As one of the classic problems of reinforcement learning—Multi-armed bandits (MAB)—is different from machine learning (e.g., supervised learning), it is based on environmental interaction and trial-and-error to achieve the effect of learning. Such a learning mode is more similar to the human learning mode.
+
+
+\begin{table}[htbp]
+\centering
+ 
+\resizebox{\textwidth}{8mm}{\begin{tabular}{lll}
+                                                        & \textbf{Action don't change state of world}      & \textbf{Action change state of the world  }           \\ \cline{2-3} 
+\multicolumn{1}{l|}{\textbf{Learn model of outcomes}}            & \multicolumn{1}{l|}{Multi-armed bandits} & \multicolumn{1}{l|}{Reinforcement Learning}  \\ \cline{2-3} 
+\multicolumn{1}{l|}{\textbf{Given model of stochastic outcomes}} & \multicolumn{1}{l|}{Decision theory}    & \multicolumn{1}{l|}{Markov Decision Process} \\ \cline{2-3} 
+\end{tabular}}
+\caption{Four scenarios when making decisions under uncertainty}     
+
+\end{table}
+
+In Table 2.1\footnote[2]{Table from the paper: A Survey on Contextual Multi-armed Bandits.}, four different scenarios have been described, which are the scenarios when making decisions under uncertainty. In the setting of multi-armed bandits, the outcomes (rewards) are unknown, and the outcomes can be stochastic or adversarial. The state of the world can not be changed by actions.
+
+The reinforcement learning process consists of five major elements:  \textit{agent}, \textit{environment}, \textit{state}, \textit{action}, and \textit{reward}. At a certain instant, the intelligence is in a certain state, and after executing an action, the environment receives the action, prompting the agent to move to the next state while feeding back the reward. The agent's purpose is to maximize the accumulated reward and adjust the action accordingly to the amount of the reward to get a higher reward.
+
+For reinforcement learning can using Markov decision process (MDP) to formalize \cite{98sutton}. Formally, a Markov decision process is a 4 tuple (\textit{S}, \textit{A}, \textit{$P_{a}$}, \textit{$R_{a}$}), where:
+\begin{itemize}
+    \item \textit{S} is denote the set of states called the state space, where \textit{S}={\textit{$S_{1}$}, \textit{$S_{2}$}, \textit{$S_{3}$}, \textit{$S_{4}$},$\cdot \cdot \cdot$}
+    
+    \item \textit{A} is denote the set of actions called the action space, where \textit{A}={\textit{$A_{1}$}, \textit{$A_{2}$}, \textit{$A_{3}$}, \textit{$A_{4}$},$\cdot \cdot \cdot$}
+    
+    \item \textit{$P_{a}$} is denote the probability, $P_{a}\left(s, s^{\prime}\right)=\operatorname{Pr}\left(s_{t+1}=s^{\prime} \mid s_{t}=s, a_{t}=a\right)$ is the probability from state $s$ to sate $s^{\prime}$.
+    
+    \item \textit{$R_{a}$} represent the reward. where $R_{a}\left(s, s^{\prime}\right) =\operatorname{E}\left(r_{t} \mid s_{t}=s, a_{t}=a\right)$.
+\end{itemize}
+
+Multi-armed bandits is a classic reinforcement learning problem (essentially a simplified class of reinforcement learning problems) that has non-associative states (learning from only one situation at a time, losing or winning) and focuses only on evaluable feedback. Suppose there is a bandit with \textit{K} arms. Each arm will have a certain probability of getting a reward, so that we have \textit{K} possible actions (each arm corresponds to an action), and the result of each action is only associated with the current state and is not affected by the results of historical actions. This means the reward of each arm is only related to the probability set by the bandit. The previous winning and losing results will not affect this action. So we can formally define multi-armed bandits problems as Markov decision processes with a single state as follows:
+
+\begin{itemize}
+    \item No sate \textit{S}, but \textit{$S_{0}$} can denote as hypothetical constant state.
+    
+    \item \textit{K} arms correspond to \textit{K} different actions, where \textit{A}={\textit{$a_{1}$}, \textit{$a_{2}$}, \textit{$a_{3}$}, ,$\cdot \cdot \cdot$,\textit{$a_{K}$}}.
+    
+    \item Do not have probability \textit{P}, but it can be assumed that the state always transitions from \textit{$S_{0}$} to \textit{$S_{0}$}.
+    
+    \item Have a reward function \textit{R} dependence on action \textit{A} instead of state \textit{S}.
+\end{itemize}
+
+The key idea of the multi-armed bandits is to make the optimal decisions to maximize the total reward through exploration and exploitation.
+
+\subsection{Context-Free Bandit}
+Bandit algorithms can be categorized into \textit{context-free} bandit and \textit{contextual} bandit depending on whether or not contextual features are taken into account. For the traditional \textit{K-armed} bandit due to:
+\begin{itemize}
+    \item [1.] The arm set $\mathcal{A}_{t}=\left \{ a_{1},a_{2},\dots,a_{k}  \right \}$ with $K$ actions are fixed for all $t\in T$, where $T$ denote the total rounds.
+    \item [2.] Both user $u_{t}$ and context $\mathbf{x}_{t, a}$ are unchanged for all $t\in T$.
+\end{itemize}
+Whenever the arm is pulled, as arm set $\mathcal{A}_{t}$ and context  $\mathbf{x}_{t, a}$ are constant, therefore they do not affect the algorithm. So, for this kind of bandit algorithm, we refer to them as the \textit{context-free} bandit \cite{context}.
+
+For the above context-free bandit, we formulated as follows:
+\begin{framed} 
+\textbf{Problem Formulation}: The  \textit{context-free} bandit\\
+\rule{\textwidth}{0.1mm}
+\textbf{Given}: $T$ rounds, $K$ actions, 1 agent.\\
+In each round, for $t\in [T]$, agent chooses the policy :
+\begin{itemize}
+    \item [1.] Policy choose action $a_{t}$.
+    \item[2.] For the chosen action, policy observes the rewards $r_{t}$, with $r_{t}\in [0,1]$.
+\end{itemize}
+\end{framed} 
+
+For context-free bandit, $\mu $ denoting the mean reward vector, where $\mu \in \left [ 0,1 \right ]^{K}$. The mean reward of action $a$ is expressed as $\mu(a) = \mathbb{E}(\mathcal D_{a})$. The $\mu^{*}$ is used to define the best mean reward, where $\mu^{*}:= max_{a_{i}\in \left \{ a_{i} \right \}_{i=1}^{K}}\mu (a)$. We use the notation $\Delta (a)$ to represent the $gap$ of action a. The \textit{gap} describes the difference between the reward received for action $a$ and the reward received for the optimal action, that $\Delta (a):= \mu ^{*}-\mu (a)$ and $a^{*}$ is used to denote the optimal action, which action with $\mu(a)=\mu^{*}$. Formally, \textit{regret} define as follows:
+\begin{equation}
+    R(T)\triangleq \sum_{t=1}^{T}(\mu^{*}-\mathbb{E}[\mu_{(a_{t})}])= T\cdot \mu^{*}-\mathbb{E}\left [ \sum_{t=1}^{T}\mu_{(a_{t})} \right ]
+\end{equation}
+
+The $R(T)$ is called as $regret$ at round $T$, where $a_{t}$ is denote the action chosen at round $t$.

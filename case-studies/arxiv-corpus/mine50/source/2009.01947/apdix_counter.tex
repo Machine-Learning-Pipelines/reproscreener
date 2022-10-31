@@ -1,0 +1,440 @@
+\section{Counterexample for \thresam with Non-monotone Submodular Functions}
+\label{sec:counterexample}
+\shortciteS{Fahrbach2018} proposed a subroutine, 
+\thresam, which returns a solution
+$S \subseteq \mathcal{N}$ that $\ex{f(S)/S} \ge (1-\epsi)\tau$
+within logarithmic rounds and linear time. 
+The full pseudocode for \thresam is given in Alg.~\ref{alg:thresh}.
+The notation $\mathcal U ( S, t )$ represents the uniform distribution 
+over subsets of $S$ of size $t$. 
+\thresam relies upon the procedure \reducedmean, given in Alg.~\ref{alg:rm}.
+The Bernoulli distribution input to \reducedmean is the distribution 
+$\mathcal D_t$, which is defined as follows. 
+\begin{definition} \label{def:indicator}
+  Conditioned on the current state of the algorithm,
+  consider the process where the set $T \sim \mathcal U (A, t - 1)$ and then
+  the element $x \sim A \setminus T$ are drawn uniformly at random.
+  Let $\mathcal D_t$ denote the probability distribution over the indicator
+  random variable 
+  $$I_t = \mathbb I [f( S \cup T  + x) - f( S \cup T ) \ge \tau ]. $$
+\end{definition}
+
+Below, we state the lemma of \thresam in \shortciteS{Fahrbach2018}.
+\begin{lemma}[\citeS{Fahrbach2018}] \label{lemm:thresh} 
+  The algorithm \thresam outputs $S \subseteq \mathcal N$ with
+  $|S| \le k$ in $O( \log (n / \delta ) / \epsi )$ adaptive
+  rounds such that the following properties hold with 
+  probability at least $1 - \delta$: 
+  \begin{itemize}
+    \item[1.] There are $O( n / \epsi )$ oracle queries in expectation.
+    \item[2.] The expected average marginal $\ex{f(S)/|S|} \ge (1-\epsi)\tau$.
+    \item[3.]  If $|S| < k$, then $f_x(S) < \tau$ for all 
+    $x \in \mathcal N$.
+  \end{itemize}
+\end{lemma}
+
+In \shortciteS{Fahrbach2018a} and \shortciteS{kuhnle2021nearly},
+the above Lemma is used with non-monotone submodular functions;
+however, in the case that $f$ is non-monotone, the lemma does not hold.
+Alg.~\ref{alg:rm} only checks (on Line \ref{line:Check}) if there is 
+more than a constant fraction of 
+elements whose marginal gains are larger than the threshold $\tau$.
+If there exist elements with
+large magnitude, \textit{negative} marginal gains, then
+the average marginal gain may fail to satisfy
+the lower bound in Lemma~\ref{lemm:thresh}.
+As for the proof in \shortciteS{Fahrbach2018a},
+the following inequality does not hold (needed for the proof of Lemma
+3.3 of \shortciteS{Fahrbach2018a}):
+\[\ex{\marge{T}{S}}\ge (\ex{I_1}+\ex{I_2} +\ldots +\ex{I_t})\tau,\]
+where $|T| = t^*$ and $t\ge t^*/(1+\hat{\epsi})$.
+Next, we give a counterexample for the two versions of \thresam used in 
+\shortciteS{Fahrbach2018} and \shortciteS{Fahrbach2018a} 
+where the only difference is that
+the if condition in Alg.~\ref{alg:thresh}
+on Line~\ref{line:stopWithA} changes to $|A|<3k$
+in \shortciteS{Fahrbach2018a}.
+\begin{algorithm}[t] 
+  \caption{The \reducedmean algorithm of \shortciteS{Fahrbach2018}} \label{alg:rm}
+  \begin{algorithmic}[1]
+  \State \textbf{Input:} access to a Bernoulli distribution $\mathcal D$,
+ error $\epsi$, failure probability $\delta$
+ \State Set number of samples $m \gets 16 \lceil \log (2 / \delta ) / \epsi^2 \rceil$
+ \State Sample $X_1, X_2, \ldots, X_m \sim \mathcal D$
+ \State Set $\bar \mu \gets \frac{1}{m} \sum_{i = 1}^m X_i$
+ \If{ $\bar \mu \le 1 - 1.5 \epsi$ }
+ \State \textbf{return} \texttt{true}
+ \EndIf
+ \State \textbf{return} \texttt{false}
+ \end{algorithmic}
+ \end{algorithm}
+ \begin{algorithm}[t]
+  \caption{The threshold sampling algorithm of \shortciteS{Fahrbach2018}}
+  \label{alg:thresh}
+  \begin{algorithmic}[1]
+    \Procedure{\thresam}{$f, k, \tau, \epsi,\delta$}
+    \State \textbf{Input:} evaluation oracle $f:2^{\mathcal N} \to \reals$, constraint $k$,
+    threshold $\tau$, error $\epsi$, failure probability $\delta$
+    \State Set smaller error $\hat{\epsi} \gets \epsi / 3$
+    \State Set iteration bounds $r \gets \lceil \log_{(1 - \hat \epsi)^{-1}}(2n / \delta) \rceil, m \gets \lceil \log(k) / \hat \epsi \rceil$
+    \State Set smaller failure probability $\hat \delta \gets \delta / (2r(m + 1))$
+    \State Initialize $S \gets \emptyset, A \gets N$
+    \For{ $r$ sequential rounds }
+    \State Filter $A \gets \{ x \in A : \Delta (x, S) \ge \tau \}$\label{line:filter}
+    \If{$|A| = 0$}\label{line:stopWithA}
+    \State \textbf{break}
+    \EndIf
+    \For{$i = 0$ to $m$ in parallel}\label{thresh:for}
+    \State Set $t \gets \min \{ \lfloor (1 + \hat \epsi)^i \rfloor, |A|\}$
+    \State $rm[t] \gets $\reducedmean $( \mathcal D_t, \hat \epsi, \hat \delta )$ \label{line:Check}
+    \EndFor
+    \State $t' \gets \min t$ such that $rm[t]$ is \texttt{true}
+    \State Sample $T \sim \mathcal U \left( A, \min \{t', k - |S| \} \right)$
+    \State Update $S \gets S \cup T$
+    \If{ $|S| = k$ }
+    \State \textbf{break}
+    \EndIf
+    \EndFor
+    \State \textbf{return} $S$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+% \textbf{Counterexample 1.}
+% Let $|\mathcal{N}|=15$, and for any $B \subseteq \mathcal{N}$,
+% % $f(B) = 5-\left||B|-5 \right|$.
+% \begin{equation*}
+%   f(B)= \left\{
+%     \begin{aligned}
+%       &|B|,&|B| \le 12\\
+%       &60-4|B|, &|B| \ge 13
+%     \end{aligned}
+%   \right. .
+% \end{equation*}
+% Run $\thresam(f, k=15, \tau=1, \epsi=0.3, \delta=0.1)$.
+% \begin{proof}
+%   For any $B \subseteq \mathcal{N}$ and $x\in \mathcal{N} \backslash B$, 
+%   the above set function follows that
+%   \begin{equation*}
+%     \marge{x}{B}= \left\{
+%       \begin{aligned}
+%         &1&, |B| \le 11\\
+%         &-4 &, |B| \ge 12
+%       \end{aligned}
+%     \right. ,
+%   \end{equation*}
+%   which means that $f$ is a non-monotone submodular function.
+
+%   With the input value of $k$, $\tau$, $\epsi$ and $\delta$, 
+%   we can get that $r=55,m=28$.
+%   There are 55 rounds of the outer \textbf{for} loop,
+%   and $t$ is selected from $\{1,2,\ldots, 11,13,14\}$ in the inner for loop.
+%   At the first round, after filtering, it holds that $A=\mathcal{N}$.
+%   When $t\le 11$, since $\marge{x}{B}=1$ with $|B|\le 11$,
+%   random sampling in \textsc{Reduced-Mean} always samples 1,
+%   which makes \textsc{Reduced-Mean} returns a \texttt{false}.
+%   When $t=13$, since $\marge{x}{B}=-4$ with $|B| =12$,
+%   random sampling in \textsc{Reduced-Mean} always samples 0.
+%   In this case, it will always return a \texttt{true}.
+%   Therefore, $t'=13$ in the first iteration of the outer for loop,
+%   and we sample 13 elements from $A$ to $S$.
+%   At the second round, all the elements in $A$ will be filtered out,
+%   since, for any $x \in \mathcal{N}$, it holds that $\marge{x}{S}=-4 < 0$.
+%   \textsc{Threshold-Sampling} algorithm terminates here
+%   and returns a set $S$ with 13 elements.
+
+%   In this example, we will always return a set $S$ that $|S|=13$ and $f(S)=8$.
+%   But $\ex{f(S)/|S|}=8/13 < (1-\epsi)\tau=0.7$.
+% \end{proof}
+
+% \textbf{Counterexample 2.}
+% For $m$ submodular functions $\{g_i: 2^{\mathcal{N}_i} \to \reals\} _{i=1}^m$,
+% where $|\mathcal{N}_i| = 2$ for any $i$,
+% suppose that for any $i$ and $B \subseteq \mathcal{N}_i$,
+% $g_i(B) = 1-||B|-1|$.
+% Define a submodular function $f: 2^{\mathcal{N}} \to \reals$ with 
+% $\mathcal{N} = \bigcup_{i=1}^m \mathcal{N}_i$ as follows,
+% for any $B \subseteq \mathcal{N}$, 
+% $f(B)=\sum_{i=1}^m g_i(B \cap \mathcal{N}_i)$.
+% Run $\thresam(f, k=, \tau=1, \epsi=, \delta=)$.
+% % \begin{equation*} 
+% %   f(B)= \left\{
+% %     \begin{aligned}
+% %       &1-||B|-1|&, \text{if } B \subseteq \mathcal{N}_i\\
+% %       &\sum_{i=1}^m f(B \cap \mathcal{N}_i)&, \text{otherwise}
+% %     \end{aligned}
+% %   \right. .
+% % \end{equation*}
+% \begin{proof}
+%   Fisrt, we prove that $f$ is a non-monotone submodular function.
+%   Obviously, $g_i$ is a non-monotone submodular function for any $i$,
+%   and $f$ is a non-monotone set function.
+%   Then, for any $S \subseteq \mathcal{N}$ and $T \subseteq \mathcal{N}$,
+%   \begin{align*}
+%     f(S) + f(T) &= \sum_{i=1}^m \left( g_i(S \cap \mathcal{N}_i)
+%     +g_i(T \cap \mathcal{N}_i)\right)\\
+%     &\ge \sum_{i=1}^m \left( g_i((S \cap T)\cap \mathcal{N}_i)
+%     +g_i((S\cup T) \cap \mathcal{N}_i)\right)\\
+%     &= f(S \cap T) + f(S \cup T).
+%   \end{align*}
+%   Therefore, $f$ is a non-monotone submodular function.
+
+%   Next, we provide the following lemma.
+%   \begin{lemma}
+%     Within the first round of \thresam,
+%     it holds that,
+%     \[\ex{I_t} = \ex{f(S)/|S|} =  \frac{n-t}{n-1},\]
+%     where $I_t$ is defined in Definition~\ref{def:indicator},
+%     $S \subseteq \mathcal{N}$ and $|S| = t$.
+%   \end{lemma}
+%   \begin{proof}
+%     With Definition~\ref{def:indicator} and $\tau=1$,
+%     $I_t = 1$ if and only if $\marge{x}{T}=1$, where $|T|=t-1$.
+%     Without loss of generality, we assume that $x \in \mathcal{N}_1$.
+%     To have that $\marge{x}{T}=1$, $x$ can be either one in $\mathcal{N}_1$,
+%     and $T$ is selected from $\mathcal{N} \backslash \mathcal{N}_1$.
+%     Then we can calculate $\ex{I_t}$ as follows,
+%     \[\ex{I_t} = \frac{2 \cdot C_{n-2}^{t-1}}{2 \cdot C_{n-1}^{t-1}}=\frac{n-t}{n-1}.\]
+
+%     By the definition of $f$, the objective value of $S$ is the number of 
+%     $\mathcal{N}_i$ where $|S \cap \mathcal{N}_i|=1$.
+%     Let $j$ be the number of $\mathcal{N}_i$ where $|S \cap \mathcal{N}_i|=2$.
+%     Then $f(S) = t-2j$, where $\max\{0, t-m\} \le j \le \lfloor t/2\rfloor$. 
+%     The expectation of objective value of $S$ can be calculated by
+%     considering the possible combinations 
+%     among the $m$ sets where there are $j$ sets such that
+%     $|S \cap \mathcal{N}_i|=2$ and there are $t-2j$ sets such that
+%     $|S \cap \mathcal{N}_i|=1$.
+%     \[\ex{f(S)} =
+%     \frac{1}{C_n^t}\cdot \sum_{j=\max\{0, t-m\}}^{\lfloor t/2\rfloor}
+%     (t-2j)\cdot C_m^i \cdot C_{m-i}^{t-2i} 2^{t-2i}\overset{(a)}{=}
+%     \frac{nC_{n-2}^{t-1}}{C_n^t}=\frac{t(n-t)}{n-1},\]
+%     where Equation (a) follows from Lemma~\ref{lemma:comb} in Appendix~\ref{apx:prob}.
+%   \end{proof}
+% \end{proof}
+
+\textbf{Counterexample 1.}
+Define a set function $f: 2^{\mathcal{N}} \to \reals$ as follows,
+\begin{equation*}
+  f(B)= \left\{
+    \begin{aligned}
+      &n^2 + |B|,&\text{if } a \not \in B\\
+      &n^2 +1- (|B|-1)n, &\text{if }a \in B
+    \end{aligned}
+  \right. .
+\end{equation*}
+Let $k = n = |\mathcal{N}|>400$, $\tau=1$, $\epsi=0.1$, $\delta=0.1$.
+Run $\thresam(f, k, \tau, \epsi, \delta)$.
+\begin{proof}
+  For any $B \subseteq \mathcal{N}$ and $x\in \mathcal{N} \backslash B$, 
+  the above set function follows that
+  \begin{equation*}
+    \marge{x}{B}= \left\{
+      \begin{aligned}
+        &1,&&\text{if } x \neq a \text{ and } a \not \in B\\
+        &-n,&&\text{if } x \neq a \text{ and } a \in B\\
+        &1-|B|(n+1), &&\text{if } x = a
+      \end{aligned}
+    \right. .
+  \end{equation*}
+Thus, $f$ is a non-negative, non-monotone submodular function.
+For any $1 < t \le |\mathcal{N}|$, $|T| = t-1$, and $S = \emptyset$,
+\[\ex{I_t} = \prob{f( S \cup T  + x) - f( S \cup T ) \ge \tau }
+= \prob{x \neq a \text{ and } a \not \in T}
+= 1-\frac{t}{n}.\]
+So, with any value of $\epsi$, 
+\reducedmean returns \texttt{true} when $t> \epsi n/2$.
+The first round of \thresam
+samples a set $T_1$ with $t_1'=|T_1| > \epsi n/2$.
+Then update $S$ by $S = T_1$.
+
+For the \thresam in \shortciteS{Fahrbach2018a} with stop condition
+$|A| < 3k$, the algorithm stopped here after the first iteration,
+no matter what is sampled.
+In this case, the expectation of marginal gains of the set returned
+by the algorithm would be as follows,
+\begin{align*}
+  \ex{\marge{S}{\emptyset}} &= \prob{a \in T_1} \marge{T_1}{\emptyset}
+  + \prob{a \not \in T_1} \marge{T_1}{\emptyset}\\ 
+  &= \frac{t_1'}{n}\left(1-(t_1'-1)n\right) + \frac{n-t_1'}{n}t_1' \\
+  &= t_1'\left(2-t_1'+\frac{1-t_1'}{n}\right) < 0.
+\end{align*}
+
+Next, we consider the \thresam with stop condition $|A|=0$.
+After the first iteration discussed above,
+if $a \in T_1$, all the elements would be filtered out at the second round.
+Algorithm stoped here and returned $S$, say $S_1$.
+If $a \not \in T_1$, $T_1$ and $a$ would be filtered out at the second round,
+which means $A = \mathcal{N} \backslash (S \cup \{a\})$.
+And for any $T \subseteq A $ and 
+$x \in A \backslash T$, 
+\[f(S \cup T + x) - f(S \cup T) = 1.\]
+Therefore, $\ex{I_t} = 1$ for all $t$.
+After several iterations, $S = \mathcal{N} \backslash \{a\}$ would be returned, say $S_2$.
+
+The expectation of objective value of the set returned would be as follows,
+\begin{align*}
+  \ex{\marge{S}{\emptyset}} &= \prob{a \in T_1} \marge{S_1}{\emptyset}
+  + \prob{a \not \in T_1} \marge{S_2}{\emptyset}\\
+  & = \frac{t_1'}{n}(1 - (t_1'-1)n) + \frac{n-t_1'}{n}(n-1)\\
+  &= \frac{2t_1'}{n}-1-t_1'^2+n < 0,
+\end{align*}
+since $\epsi = 0.1$, $n > 400$, and $\epsi n/2 < t_1' < \epsi(1+\epsi/3)n/2$.
+
+% If $a \not \in T$, let $g(B) = f(S \cup B)$,
+% where $B \subseteq \mathcal{N} \backslash S$ and $a \not \in S$. Then,
+% \begin{equation*}
+%   g(B)= \left\{
+%     \begin{aligned}
+%       &n^2 + |S| + |B|,&\text{if } a \not \in B\\
+%       &n^2 +1- (|S| +|B|-1)n, &\text{if }a \in B
+%     \end{aligned}
+%   \right. ,
+% \end{equation*}
+%   \begin{equation*}
+%   \Delta_g(x|B)= \left\{
+%     \begin{aligned}
+%       &1,&&\text{if } a \neq x \text{ and } a \not \in B\\
+%       &-n,&&\text{if } a \neq x \text{ and } a \in B\\
+%       &1-(|S|+|B|)(n+1), &&\text{if } a = x
+%     \end{aligned}
+%   \right. .
+% \end{equation*}
+% Similarly to the first round, the second round samples another
+% $T$ such that $|T| > 2$, and $\ex{\Delta_g(T|\emptyset)} < 0$.
+
+% Thus, each round of the outer for loop samples a set $T$
+% such that $\ex{\marge{T}{S}} < 0$.
+\end{proof}
+
+% For completeness, we give a second 
+% \textbf{Counterexample 2.}
+% Define a set function $f: 2^{\mathcal{N}} \to \reals$ as follows,
+% \begin{equation*}
+%   f(B)= \left\{
+%     \begin{aligned}
+%       &\frac{n}{2}(n-1) + |B|,&|B| \le \frac{n}{2}\\
+%       &n^2 - n|B|, &|B| > \frac{n}{2}
+%     \end{aligned}
+%   \right. ,
+% \end{equation*}
+% where $n=|\mathcal{N}|$.
+% Let $\tau=1$, $\epsi=0.1$, $\delta=0.1$, $k = |\mathcal{N}|=2n_0$.
+% Run $\thresam(f, k, \tau, \epsi, \delta)$.
+% \begin{proof}
+%   For any $B \subseteq \mathcal{N}$ and $x\in \mathcal{N} \backslash B$, 
+%   the above set function follows that
+%   \begin{equation*}
+%     \marge{x}{B}= \left\{
+%       \begin{aligned}
+%         &1,&|B| < \frac{n}{2}\\
+%         &- n, &|B| \ge \frac{n}{2}
+%       \end{aligned}
+%     \right..
+%   \end{equation*}
+%   Therefore, $f$ is a non-monotone submodular function.
+%   % Then we give the following lemma.
+%   % \begin{lemma}\label{lemma:red-mean}
+%   %   With the above submodular function $f: 2^{\mathcal{N}} \to \reals$, 
+%   %   any $S$, $t$, $\epsi$ and $\delta$ as input, 
+%   %   \textsc{Reduced-Mean} always returns a \texttt{false} when $|S| + t\le n_0$
+%   %   and a \texttt{true} when $|S|+t> n_0$.
+%   % \end{lemma}
+%   % \begin{proof}
+
+%     Since the objective value of the set only depends on 
+%     the size of the set, 
+%     for a run of \reducedmean($ \mathcal D_t, \hat \epsi, \hat \delta$ )
+%     over current solution set $S$,
+%     if $|S| + t\le n/2$, $\marge{x}{S \cup T}=1$ 
+%     and 0 is never sampled from $\mathcal{D}$, 
+%     which means \reducedmean always return a \texttt{false};
+%     if $|S| + t> n/2$, $\marge{x}{S \cup T}=-n$ 
+%     and 1 is never sampled from $\mathcal{D}$, 
+%     which means \reducedmean always return a \texttt{true}.
+%   % \end{proof}
+
+%   Within the first iteration, 
+%   no element is filtered out on Line~\ref{line:filter}.
+%   Therefore, $A$ = $\mathcal{N}$.
+%   Due to the above analysis, it holds that 
+%   the first iteration samples $t'$ elements, and $t' > n/2$.
+%   At the second iteration, all the elements are filtered out
+%   since $\marge{x}{S} = -n$, where $|S| = t'$.
+%   Alg.~\ref{alg:thresh} returns a set $S$ with $t'$ elements.
+%   The expected average marginal can be bounded as follows,
+%   \begin{align*}
+%     \ex{\marge{S}{\emptyset}/|S|} = \left(n^2-nt'-\frac{n}{2}(n-1)\right)/t'
+%     = n\left(\frac{n+1}{2}-t'\right)/t' < 0.
+%   \end{align*}
+
+  
+%   % With the input value of $k$, $\epsi$ and $\delta$,
+%   % let $t_{\text{max}}$ be the maximum $t$ within the inner for loop.
+%   % It holds that,
+%   % \[t_{\text{max}} \le \lfloor(1+\hat{\epsi})^{m} \rfloor
+%   % < \left((1+\hat{\epsi})^{1/\hat{\epsi}}\right)^{\log(k) +\hat{\epsi}}
+%   % < e^{\log(n) +\hat{\epsi}}<n.\]
+%   % Then we consider the following two cases.
+
+%   % First, if $\lfloor(1+\hat{\epsi})^{m} \rfloor > n-3$, 
+%   % by Lemma~\ref{lemma:red-mean},
+%   % the first iteration of the outer for loop
+%   % returns a $t'$ such that $t'\ge n-2$. 
+%   % Then we sample a set $T$ with $t'$ elements.
+%   % In the second iteration, the whole ground set will be filtered out.
+%   % The algorithm stops here and returns set $S=T$.
+%   % It holds that,
+%   % \[\ex{f(S)/|S|} = \frac{(n-3)(n-t')}{3t'} \le \frac{2(n-3)}{3(n-2)}
+%   % < (1-\epsi)\tau=0.7.\]
+  
+%   % Next, we give an instance. 
+%   % Let $n=15$. With $k=15$, $\tau=1$, $\epsi=0.3$ and $\delta=0.1$,
+%   % there are 55 iterations of the outer for loop,
+%   % and $t$ is selected from $\{1,2,\ldots, 11,13,14\}$ in the inner for loop.
+%   % By Lemma~\ref{lemma:red-mean}, $rm[t]=\texttt{false}$ when $t\le 11$;
+%   % $rm[t]=\texttt{true}$ when $t=13,14$.
+%   % The first iteration of the outer for loop returns $t'=13$
+%   % and a set $T$ with 13 elements is sampled from the ground set $\mathcal{N}$.
+%   % In the second iteration, the whole ground set is filtered out 
+%   % and the algorithm stops here.
+%   % Therefore, with probability 1, 
+%   % \thresam returns a set $S$ such that $|S|=13$.
+%   % But $\ex{f(S)/|S|}=8/13 < (1-\epsi)\tau=0.7$.
+
+%   % Second, if $\lfloor(1+\hat{\epsi})^{m} \rfloor < n-3$ 
+%   % and $(n-3)\%\lfloor(1+\hat{\epsi})^{m} \rfloor \neq 0$,
+%   % by Lemma~\ref{lemma:red-mean}, at the first several iterations,
+%   % a set $T$ with $|T|=t_{\text{max}}$ is returned,
+%   % until that $|S|+t_{\text{max}} \ge n-3$.
+%   % Then at the iteration that $|S|+t_{\text{max}} > n-3$,
+%   % a set $|T|$ with $t'\ge n-2-|S|$ elements is sampled.
+%   % And the whole ground set is filtered out at the next iteration.
+%   % Therefore, a set $S$ with $|S| \ge n-2$ is returned with probability 1.
+%   % It holds that,
+%   % \[\ex{f(S)/|S|} = \frac{(n-3)(n-|S|)}{3|S|} \le \frac{2(n-3)}{3(n-2)}
+%   % < (1-\epsi)\tau=0.7.\]
+
+%   % We also give an instance here.
+%   % Let $n=60$. With $k=60$, $\tau=1$, $\epsi=0.3$ and $\delta=0.1$,
+%   % there are 68 iterations of the outer for loop,
+%   % and $t_{\text{max}} = 49$.
+%   % Within the first iteration,
+%   % by Lemma~\ref{lemma:red-mean}, $rm[t]=\texttt{false}$ for all $t$.
+%   % Then a set $T$ with 49 elements is sampled from $\mathcal{N}$.
+%   % Within the second iteration, 
+%   % $A = \mathcal{N} \backslash T$,
+%   % and $t$ is selected from 1 to 11.
+%   % By Lemma~\ref{lemma:red-mean}, $\min\{t: rm[t]=\texttt{true}\}=9$.
+%   % Then a set $T$ with 9 elements is sampled from $A$.
+%   % Within the third iteration, for any $x \in A$,
+%   % $\marge{x}{A} < \tau$.
+%   % The algorithm stops at the third iteration,
+%   % and returns a set $S$ with 58 elements with probability 1.
+%   % But $\ex{f(S)/|S|}=38/58 < (1-\epsi)\tau=0.7$.
+% \end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

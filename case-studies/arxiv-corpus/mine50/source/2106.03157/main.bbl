@@ -1,0 +1,178 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agostinelli et~al.(2019)Agostinelli, McAleer, Shmakov, and
+  Baldi]{agostinelli2019solving}
+Agostinelli, F., McAleer, S., Shmakov, A., and Baldi, P.
+\newblock Solving the {R}ubik's {C}ube with deep reinforcement learning and
+  search.
+\newblock \emph{Nature Machine Intelligence}, 1\penalty0 (8):\penalty0
+  356--363, 2019.
+
+\bibitem[Applegate et~al.(2011)Applegate, Bixby, Chv{\'a}tal, and
+  Cook]{applegate2011traveling}
+Applegate, D.~L., Bixby, R.~E., Chv{\'a}tal, V., and Cook, W.~J.
+\newblock The traveling salesman problem.
+\newblock In \emph{The Traveling Salesman Problem}. Princeton university press,
+  2011.
+
+\bibitem[Arfaee et~al.(2011)Arfaee, Zilles, and Holte]{arfaee2011learning}
+Arfaee, S.~J., Zilles, S., and Holte, R.~C.
+\newblock Learning heuristic functions for large state spaces.
+\newblock \emph{Artificial Intelligence}, 175\penalty0 (16):\penalty0
+  2075--2098, 2011.
+\newblock \doi{https://doi.org/10.1016/j.artint.2011.08.001}.
+
+\bibitem[Br{\"u}ngger et~al.(1999)Br{\"u}ngger, Marzetta, Fukuda, and
+  Nievergelt]{brungger1999parallel}
+Br{\"u}ngger, A., Marzetta, A., Fukuda, K., and Nievergelt, J.
+\newblock The parallel search bench {ZRAM} and its applications.
+\newblock \emph{Annals of Operations Research}, 90:\penalty0 45--63, 1999.
+
+\bibitem[Demaine et~al.(2018)Demaine, Eisenstat, and Rudoy]{demaine2018solving}
+Demaine, E.~D., Eisenstat, S., and Rudoy, M.
+\newblock Solving the {R}ubik's {C}ube optimally is {NP}-complete.
+\newblock \emph{arXiv:1706.06708v2}, 2018.
+
+\bibitem[Ebendt \& Drechsler(2009)Ebendt and Drechsler]{ebendt2009weighted}
+Ebendt, R. and Drechsler, R.
+\newblock Weighted a* search--unifying view and application.
+\newblock \emph{Artificial Intelligence}, 173\penalty0 (14):\penalty0
+  1310--1342, 2009.
+
+\bibitem[Glorot et~al.(2011)Glorot, Bordes, and Bengio]{glorot2011deep}
+Glorot, X., Bordes, A., and Bengio, Y.
+\newblock Deep sparse rectifier neural networks.
+\newblock In Gordon, G., Dunson, D., and Dudík, M. (eds.), \emph{Proceedings
+  of the Fourteenth International Conference on Artificial Intelligence and
+  Statistics}, volume~15 of \emph{Proceedings of Machine Learning Research},
+  pp.\  315--323, Fort Lauderdale, FL, USA, 11--13 Apr 2011. Proceedings of
+  Machine Learning Research.
+\newblock URL \url{https://proceedings.mlr.press/v15/glorot11a.html}.
+
+\bibitem[Hart et~al.(1968)Hart, Nilsson, and Raphael]{hart1968formal}
+Hart, P.~E., Nilsson, N.~J., and Raphael, B.
+\newblock A formal basis for the heuristic determination of minimum cost paths.
+\newblock \emph{IEEE Transactions on Systems Science and Cybernetics},
+  4\penalty0 (2):\penalty0 100--107, 1968.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{he2016deep}
+He, K., Zhang, X., Ren, S., and Sun, J.
+\newblock Deep residual learning for image recognition.
+\newblock \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, 2016.
+
+\bibitem[Ioffe \& Szegedy(2015)Ioffe and Szegedy]{ioffe2015batch}
+Ioffe, S. and Szegedy, C.
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock In \emph{International Conference on Machine Learning}, pp.\
+  448--456. Proceedings of Machine Learning Research, 2015.
+
+\bibitem[Joshi et~al.(2022)Joshi, Cappart, Rousseau, and
+  Laurent]{joshi2022learning}
+Joshi, C.~K., Cappart, Q., Rousseau, L.-M., and Laurent, T.
+\newblock Learning the travelling salesperson problem requires rethinking
+  generalization.
+\newblock \emph{Constraints}, pp.\  1--29, 2022.
+
+\bibitem[Kingma \& Ba(2014)Kingma and Ba]{kingma2014adam}
+Kingma, D.~P. and Ba, J.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{arXiv:1412.6980}, 2014.
+
+\bibitem[Korf(1985)]{korf1985depth}
+Korf, R.~E.
+\newblock Depth-first iterative deepening: An optimal admissible tree search.
+\newblock \emph{Artificial Intelligence}, 27\penalty0 (1):\penalty0 97--109,
+  1985.
+
+\bibitem[Korf(1997)]{korf1997finding}
+Korf, R.~E.
+\newblock Finding optimal solutions to {R}ubik's {C}ube using pattern
+  databases.
+\newblock \emph{AAAI}, pp.\  700--705, 1997.
+
+\bibitem[Korf(2008)]{korf2008linear}
+Korf, R.~E.
+\newblock Linear-time disk-based implicit graph search.
+\newblock \emph{Journal of the ACM}, 55\penalty0 (6), 2008.
+
+\bibitem[Kunkle \& Cooperman(2007)Kunkle and Cooperman]{kunkle2007twenty}
+Kunkle, D. and Cooperman, G.
+\newblock Twenty-six moves suffice for {R}ubik's {C}ube.
+\newblock In \emph{Proceedings of the 2007 International Symposium on Symbolic
+  and Algebraic Computation}, pp.\  235--242, 2007.
+
+\bibitem[Mazyavkina et~al.(2021)Mazyavkina, Sviridov, Ivanov, and
+  Burnaev]{mazyavkina2021reinforcement}
+Mazyavkina, N., Sviridov, S., Ivanov, S., and Burnaev, E.
+\newblock Reinforcement learning for combinatorial optimization: A survey.
+\newblock \emph{Computers \& Operations Research}, 2021.
+
+\bibitem[McAleer et~al.(2018)McAleer, Agostinelli, Shmakov, and
+  Baldi]{mcaleer2018solving}
+McAleer, S., Agostinelli, F., Shmakov, A., and Baldi, P.
+\newblock Solving the {R}ubik's {C}ube with approximate policy iteration.
+\newblock \emph{International Conference on Learning Representations}, 2018.
+
+\bibitem[Nair \& Hinton(2010)Nair and Hinton]{nair2010rectified}
+Nair, V. and Hinton, G.~E.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In \emph{International Conference on Machine Learning}, 2010.
+
+\bibitem[Papadimitriou \& Steiglitz(1998)Papadimitriou and
+  Steiglitz]{papadimitriou1998combinatorial}
+Papadimitriou, C.~H. and Steiglitz, K.
+\newblock \emph{Combinatorial Optimization: Algorithms and Complexity}.
+\newblock Courier Corporation, 1998.
+
+\bibitem[Pohl(1970)]{pohl1970heuristic}
+Pohl, I.
+\newblock Heuristic search viewed as path finding in a graph.
+\newblock \emph{Artificial Intelligence}, 1\penalty0 (3-4):\penalty0 193--204,
+  1970.
+
+\bibitem[Rego et~al.(2011)Rego, Gamboa, Glover, and
+  Osterman]{rego2011traveling}
+Rego, C., Gamboa, D., Glover, F., and Osterman, C.
+\newblock Traveling salesman problem heuristics: Leading methods,
+  implementations and latest advances.
+\newblock \emph{European Journal of Operational Research}, 211\penalty0
+  (3):\penalty0 427--441, 2011.
+
+\bibitem[Rokicki et~al.(2014)Rokicki, Kociemba, Davidson, and
+  Dethridge]{rokicki2014diameter}
+Rokicki, T., Kociemba, H., Davidson, M., and Dethridge, J.
+\newblock The diameter of the {R}ubik's {C}ube group is twenty.
+\newblock \emph{SIAM Review}, 56\penalty0 (4):\penalty0 645--670, 2014.
+
+\bibitem[Russell \& Norvig(2021)Russell and Norvig]{russell2021artificial}
+Russell, S. and Norvig, P.
+\newblock \emph{Artificial Intelligence: A Modern Approach. 4th}.
+\newblock Pearson, 2021.
+
+\bibitem[{van Bevern} \& Slugina(2020){van Bevern} and
+  Slugina]{vanbevern2020118}
+{van Bevern}, R. and Slugina, V.~A.
+\newblock A historical note on the 3/2-approximation algorithm for the metric
+  traveling salesman problem.
+\newblock \emph{Historia Mathematica}, 53:\penalty0 118--127, 2020.
+\newblock ISSN 0315-0860.
+\newblock \doi{https://doi.org/10.1016/j.hm.2020.04.003}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/S0315086020300240}.
+
+\bibitem[Vesselinova et~al.(2020)Vesselinova, Steinert, Perez-Ramirez, and
+  Boman]{vesselinova2020learning}
+Vesselinova, N., Steinert, R., Perez-Ramirez, D.~F., and Boman, M.
+\newblock Learning combinatorial optimization on graphs: A survey with
+  applications to networking.
+\newblock \emph{IEEE Access}, 8:\penalty0 120388--120416, 2020.
+\newblock \doi{10.1109/ACCESS.2020.3004964}.
+
+\end{thebibliography}

@@ -1,0 +1,204 @@
+\begin{thebibliography}{10}
+
+\bibitem{lecun2015deep}
+Yann LeCun, Yoshua Bengio, and Geoffrey Hinton.
+\newblock Deep learning.
+\newblock {\em Nature}, 521(7553):436--444, 2015.
+
+\bibitem{alphafold}
+Andrew~W Senior, Richard Evans, John Jumper, James Kirkpatrick, Laurent Sifre,
+  Tim Green, Chongli Qin, Augustin {\v{Z}}{\'\i}dek, Alexander~WR Nelson, Alex
+  Bridgland, et~al.
+\newblock Improved protein structure prediction using potentials from deep
+  learning.
+\newblock {\em Nature}, 577(7792):706--710, 2020.
+
+\bibitem{MLtomo}
+Z.~Hradil.
+\newblock Quantum-state estimation.
+\newblock {\em Phys. Rev. A}, 55:R1561--R1564, Mar 1997.
+
+\bibitem{manybody}
+Giuseppe Carleo and Matthias Troyer.
+\newblock Solving the quantum many-body problem with artificial neural
+  networks.
+\newblock {\em Science}, 355(6325):602--606, 2017.
+
+\bibitem{phasematter}
+Juan Carrasquilla and Roger~G Melko.
+\newblock Machine learning phases of matter.
+\newblock {\em Nature Physics}, 13(5):431--434, 2017.
+
+\bibitem{QMBstateDNN}
+Xun {Gao} and Lu-Ming {Duan}.
+\newblock {Efficient representation of quantum many-body states with deep
+  neural networks}.
+\newblock {\em Nature Communications}, 8:662, September 2017.
+
+\bibitem{MLPhaseTrans}
+Evert P.~L. {van Nieuwenburg}, Ye-Hua {Liu}, and Sebastian~D. {Huber}.
+\newblock {Learning phase transitions by confusion}.
+\newblock {\em Nature Physics}, 13(5):435--439, February 2017.
+
+\bibitem{MLTopoState}
+Dong-Ling Deng, Xiaopeng Li, and S.~Das~Sarma.
+\newblock Machine learning topological states.
+\newblock {\em Phys. Rev. B}, 96:195145, Nov 2017.
+
+\bibitem{MLNNQST}
+Giacomo {Torlai}, Guglielmo {Mazzola}, Juan {Carrasquilla}, Matthias {Troyer},
+  Roger {Melko}, and Giuseppe {Carleo}.
+\newblock {Neural-network quantum state tomography}.
+\newblock {\em Nature Physics}, 14:447--450, March 2018.
+
+\bibitem{MLdeepmatrices}
+Xizhi Han and Sean~A. Hartnoll.
+\newblock Deep quantum geometry of matrices.
+\newblock {\em Phys. Rev. X}, 10:011069, Mar 2020.
+
+\bibitem{supremacy1}
+Sergio Boixo, Sergei~V Isakov, Vadim~N Smelyanskiy, Ryan Babbush, Nan Ding,
+  Zhang Jiang, Michael~J Bremner, John~M Martinis, and Hartmut Neven.
+\newblock Characterizing quantum supremacy in near-term devices.
+\newblock {\em Nature Physics}, 14(6):595--600, 2018.
+
+\bibitem{supremacy2}
+Frank Arute, Kunal Arya, Ryan Babbush, Dave Bacon, Joseph~C Bardin, Rami
+  Barends, Rupak Biswas, Sergio Boixo, Fernando~GSL Brandao, David~A Buell,
+  et~al.
+\newblock Quantum supremacy using a programmable superconducting processor.
+\newblock {\em Nature}, 574(7779):505--510, 2019.
+
+\bibitem{lloyd2013quantum}
+Seth Lloyd, Masoud Mohseni, and Patrick Rebentrost.
+\newblock Quantum algorithms for supervised and unsupervised machine learning.
+\newblock {\em arXiv preprint arXiv:1307.0411}, 2013.
+
+\bibitem{quantumpca}
+Seth Lloyd, Masoud Mohseni, and Patrick Rebentrost.
+\newblock Quantum principal component analysis.
+\newblock {\em Nature Physics}, 10(9):631--633, 2014.
+
+\bibitem{huang2021information}
+Hsin-Yuan Huang, Richard Kueng, and John Preskill.
+\newblock Information-theoretic bounds on quantum advantage in machine
+  learning.
+\newblock {\em arXiv preprint arXiv:2101.02464}, 2021.
+
+\bibitem{KernelNature}
+Vojt{\v{e}}ch Havl{\'\i}{\v{c}}ek, Antonio~D C{\'o}rcoles, Kristan Temme,
+  Aram~W Harrow, Abhinav Kandala, Jerry~M Chow, and Jay~M Gambetta.
+\newblock Supervised learning with quantum-enhanced feature spaces.
+\newblock {\em Nature}, 567(7747):209--212, 2019.
+
+\bibitem{KernelPRL}
+Maria Schuld and Nathan Killoran.
+\newblock Quantum machine learning in feature hilbert spaces.
+\newblock {\em Physical Review Letters}, 122(4):040504, 2019.
+
+\bibitem{deepqnn}
+Kerstin Beer, Dmytro Bondarenko, Terry Farrelly, Tobias~J Osborne, Robert
+  Salzmann, Daniel Scheiermann, and Ramona Wolf.
+\newblock Training deep quantum neural networks.
+\newblock {\em Nature communications}, 11(1):1--6, 2020.
+
+\bibitem{cao2017quantum}
+Yudong Cao, Gian~Giacomo Guerreschi, and Al{\'a}n Aspuru-Guzik.
+\newblock Quantum neuron: an elementary building block for machine learning on
+  quantum computers.
+\newblock {\em arXiv preprint arXiv:1711.11240}, 2017.
+
+\bibitem{wecker2016training}
+Dave Wecker, Matthew~B Hastings, and Matthias Troyer.
+\newblock Training a quantum optimizer.
+\newblock {\em Physical Review A}, 94(2):022309, 2016.
+
+\bibitem{killoran2019continuous}
+Nathan Killoran, Thomas~R Bromley, Juan~Miguel Arrazola, Maria Schuld,
+  Nicol{\'a}s Quesada, and Seth Lloyd.
+\newblock Continuous-variable quantum neural networks.
+\newblock {\em Physical Review Research}, 1(3):033063, 2019.
+
+\bibitem{arrazola2019machine}
+Juan~Miguel Arrazola, Thomas~R Bromley, Josh Izaac, Casey~R Myers, Kamil
+  Br{\'a}dler, and Nathan Killoran.
+\newblock Machine learning method for state preparation and gate synthesis on
+  photonic quantum computers.
+\newblock {\em Quantum Science and Technology}, 4(2):024004, 2019.
+
+\bibitem{steinbrecher2019quantum}
+Gregory~R Steinbrecher, Jonathan~P Olson, Dirk Englund, and Jacques Carolan.
+\newblock Quantum optical neural networks.
+\newblock {\em npj Quantum Information}, 5(1):1--9, 2019.
+
+\bibitem{jozsa1994fidelity}
+Richard Jozsa.
+\newblock Fidelity for mixed quantum states.
+\newblock {\em Journal of modern optics}, 41(12):2315--2323, 1994.
+
+\bibitem{petz2001entropy}
+D{\'e}nes Petz.
+\newblock Entropy, von neumann and the von neumann entropy.
+\newblock In {\em John von Neumann and the foundations of quantum physics},
+  pages 83--96. Springer, 2001.
+
+\bibitem{relative1}
+Benjamin Schumacher and Michael~D Westmoreland.
+\newblock Relative entropy in quantum information theory.
+\newblock {\em Contemporary Mathematics}, 305:265--290, 2002.
+
+\bibitem{relative2}
+Vlatko Vedral.
+\newblock The role of relative entropy in quantum information theory.
+\newblock {\em Reviews of Modern Physics}, 74(1):197, 2002.
+
+\bibitem{casini2008relative}
+Horacio Casini.
+\newblock Relative entropy and the bekenstein bound.
+\newblock {\em Classical and Quantum Gravity}, 25(20):205021, 2008.
+
+\bibitem{gu2010fidelity}
+Shi-Jian Gu.
+\newblock Fidelity approach to quantum phase transitions.
+\newblock {\em International Journal of Modern Physics B}, 24(23):4371--4458,
+  2010.
+
+\bibitem{muller2013renyi}
+Martin M{\"u}ller-Lennert, Fr{\'e}d{\'e}ric Dupuis, Oleg Szehr, Serge Fehr, and
+  Marco Tomamichel.
+\newblock On quantum r{\'e}nyi entropies: A new generalization and some
+  properties.
+\newblock {\em Journal of Mathematical Physics}, 54(12):122203, 2013.
+
+\bibitem{jafferis2016relative}
+Daniel~L Jafferis, Aitor Lewkowycz, Juan Maldacena, and S~Josephine Suh.
+\newblock Relative entropy equals bulk relative entropy.
+\newblock {\em Journal of High Energy Physics}, 2016(6):1--20, 2016.
+
+\bibitem{berta2017variational}
+Mario Berta, Omar Fawzi, and Marco Tomamichel.
+\newblock On variational expressions for quantum relative entropies.
+\newblock {\em Letters in Mathematical Physics}, 107(12):2239--2265, 2017.
+
+\bibitem{shangnan2019complexity}
+Zhou Shangnan.
+\newblock Complexity, entropy, and markov chains.
+\newblock {\em arXiv preprint arXiv:1902.10538}, 2019.
+
+\bibitem{Barren}
+Jarrod~R McClean, Sergio Boixo, Vadim~N Smelyanskiy, Ryan Babbush, and Hartmut
+  Neven.
+\newblock Barren plateaus in quantum neural network training landscapes.
+\newblock {\em Nature communications}, 9(1):1--6, 2018.
+
+\bibitem{MLbookcross}
+Kevin~P Murphy.
+\newblock {\em Machine learning: a probabilistic perspective}.
+\newblock MIT press, 2012.
+
+\bibitem{NielsenChuang}
+Michael~A Nielsen and Isaac~L Chuang.
+\newblock {\em Quantum Computation and Quantum Information}.
+\newblock Cambridge University Press, 2011.
+
+\end{thebibliography}

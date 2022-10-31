@@ -1,0 +1,69 @@
+\section{Causal functions}\label{sec:problem}
+
+%\subsection{Definition}
+
+A causal function summarizes the expected counterfactual outcome $Y^{(d)}$ given a hypothetical intervention on continuous treatment that sets $D=d$. The causal inference literature studies a rich variety of causal functions with nuanced interpretation, which we define below. Unless otherwise noted, expectations are with respect to the population distribution $\text{\normalfont pr}$.
+
+\begin{definition}[Causal functions]\label{def:causal_param}
+We define
+\begin{enumerate}
+    \item Dose response: $\theta_0^{ATE}(d)=E\{Y^{(d)}\}$ is the counterfactual mean outcome given intervention $D=d$ for the entire population.
+     \item Dose response with distribution shift: $ \theta_0^{DS}(d,\tilde{\text{\normalfont pr}})=E_{\tilde{\text{\normalfont pr}}}\{Y^{(d)}\}$ is the counterfactual mean outcome given intervention $D=d$ for an alternative population with data distribution $\tilde{\text{\normalfont pr}}$. %(elaborated in Assumption~\ref{assumption:covariate}).
+    \item Conditional response: $ \theta_0^{ATT}(d,d')=E\{Y^{(d')} \mid D=d\}$ is the counterfactual mean outcome given intervention $D=d'$ for the subpopulation who actually received treatment $D=d$.
+     \item Heterogeneous response: $\theta_0^{CATE}(d,v)=E\{Y^{(d)} \mid V=v\}$ is the counterfactual mean outcome given intervention $D=d$ for the subpopulation with subcovariate value $V=v$.
+\end{enumerate}
+Likewise we define incremental functions, e.g. $\theta_0^{\nabla:ATE}(d)=E\{\nabla_d Y^{(d)}\}$ where $\nabla_d$ means $\partial / \partial d$.
+%and $\theta_0^{\nabla:ATT}(d,d')=E\{\nabla_{d'} Y^{(d')} \mid D=d\}$.
+\end{definition}
+The superscript of each nonparametric causal function corresponds to its familiar parametric analogue. Results for means of potential outcomes immediately imply results for differences thereof. See Supplement~\ref{sec:distribution} for counterfactual distributions and Supplement~\ref{sec:graphical} for graphical models.
+
+The  dose response curves $\theta_0^{ATE}(d)$ and $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})$ are causal functions for entire populations. 
+%They are also called average structural functions in econometrics. 
+ The second argument of $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})$ gets to the heart of external validity: though our data were drawn from population $\text{\normalfont pr}$, what would be the dose response curve for a different population $\tilde{\text{\normalfont pr}}$? For example, a job training study may be conducted in Virginia, yet we may wish to inform policy in Arkansas, a state with different demographics \cite{hotz2005predicting}. 
+%This learning problem may be viewed as a potential outcome refinement of the policy effect introduced by \cite{stock1989nonparametric}. It may also be viewed as a generalization of the policy relevant treatment effect defined in \cite{heckman2001policy}. 
+Predictive questions of this nature are widely studied in machine learning under the names of transfer learning, distribution shift, and covariate shift \cite{quinonero2009dataset}.
+
+$\theta_0^{ATE}(d)$ and $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})$ are dose response curves for entire populations, but causal functions may vary for different subpopulations. Towards the goal of personalized or targeted interventions, an analyst may ask another nuanced counterfactual question: what would have been the effect of treatment $D=d'$ for the subpopulation who actually received treatment $D=d$? When treatment is continuous, we may define the conditional response $ \theta_0^{ATT}(d,d')=E\{Y^{(d')} \mid D=d\}$. %This quantity is also called the conditional average structural function in econometrics.% \cite{altonji2005cross}.
+
+In $\theta_0^{ATT}(d,d')$, heterogeneity is indexed by treatment $D$. Heterogeneity may instead be indexed by some interpretable covariate subvector $V$, e.g. age, race, or gender \cite{abrevaya2015estimating}. An analyst may therefore prefer to measure heterogeneous effects for subpopulations characterized by different values of $V$. For simplicity, we will write covariates as $(V,X)$ for this setting, where $X$ are additional identifying covariates besides the interpretable covariates $V$. While many works focus on the special case where treatment is binary, our definition of heterogeneous response curve $\theta_0^{CATE}(d,v)=E\{Y^{(d)} \mid V=v\}$ allows for continuous treatment.
+
+%\subsection{Identification}
+
+% \begin{wrapfigure}{R}{0.4\textwidth}
+% \vspace{-15pt}
+% \begin{center}
+% \begin{adjustbox}{width=.4\textwidth}
+%  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+%                     semithick]
+%   \tikzstyle{every state}=[draw=black,text=black]
+
+%   \node[state]         (x) [fill=gray]                   {$X$};
+%   \node[state]         (d) [right of=x, fill=gray]       {$D$};
+%   \node[state]         (y) [right of=d, fill=gray]       {$Y$};
+%   \node[state]         (e) [above of=x]                  {$U$};
+
+%   \path (x) edge              node {$ $} (d)
+%              edge [bend right]          node {$ $} (y)
+%         (d) edge              node {$ $} (y)
+%         (e) edge           node {$ $} (x)
+%           edge           node {$ $} (y);;
+% \end{tikzpicture}
+% \end{adjustbox}
+% \vspace{-20pt}
+% \caption{Back door criterion}
+% \label{dag:te}
+% \end{center}
+% %\vspace{-20pt}
+% \vspace{-20pt}
+% \end{wrapfigure}
+
+\begin{lemma}[Identification of causal functions \cite{rosenbaum1983central,robins1986new}]\label{theorem:id_treatment}
+Under standard assumptions of selection on observables and covariate shift in Supplement~\ref{sec:id},
+$\theta_0^{ATE}(d)=\int \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x)$, $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})=\int \gamma_0(d,x)\mathrm{d}\tilde{\text{\normalfont pr}}(x)$, $\theta_0^{ATT}(d,d')=\int \gamma_0(d',x)\mathrm{d}\text{\normalfont pr}(x \mid d)$, and $\theta_0^{CATE}(d,v)=\int \gamma_0(d,v,x)\mathrm{d}\text{\normalfont pr}(x \mid v)$, 
+where $\gamma_0(d,x)=E(Y \mid D=d,X=x)$ and $\gamma_0(d,v,x)=E(Y \mid D=d,V=v,X=x)
+$. Likewise we identify incremental functions, e.g. $\theta_0^{\nabla:ATE}(d)=\int \nabla_d \gamma_0(d,x)\mathrm{d}\text{\normalfont pr}(x)$ \cite{altonji2005cross}.
+\end{lemma}
+
+Lemma~\ref{theorem:id_treatment} clarifies the data requirements for estimating each causal function. The dose response $\theta_0^{ATE}(d)$ and conditional response $\theta_0^{ATT}(d,d')$ require observations of outcome $Y$, treatment $D$, and covariates $X$ drawn from the population $\text{\normalfont pr}$. The dose response with distribution shift $\theta_0^{DS}(d,\tilde{\text{\normalfont pr}})$ additionally requires observations of covariates $\tilde{X}$ drawn from the alternative population $\tilde{\text{\normalfont pr}}$. For the heterogeneous response $\theta_0^{CATE}(d,v)$, we abuse notation by denoting the covariates by $(V,X)$, where $V$ is the subcovariate of interest and selection is with respect to the union $(V,X)$. An analyst requires observations of $(Y,D,V,X)$ drawn from the population $\text{\normalfont pr}$.
+
+In particular, Lemma~\ref{theorem:id_treatment} expresses each causal function as an integral of the regression function $\gamma_0$ according to a marginal or conditional distribution. As previewed in Section~\ref{sec:intro}, nonparametric estimation of $\theta_0^{CATE}(d,v)$ involves three steps: estimating a nonlinear regression $\gamma_0(d,v,x)$, which may involve many covariates $X$; estimating the conditional distribution $\text{\normalfont pr}(x \mid v)$ for reweighting; and using the latter to integrate the former. In the next section, we propose original estimators that achieve all three steps in a one line, closed form solution. 

@@ -1,0 +1,93 @@
+\begin{thebibliography}{}
+
+\bibitem[Balestriero, 2017]{ndt}
+Balestriero, R. (2017).
+\newblock Neural decision trees.
+\newblock {\em arXiv preprint arXiv:1702.07360}.
+
+\bibitem[Bekkerman, 2015]{kddreview}
+Bekkerman, R. (2015).
+\newblock The present and the future of the kdd cup competition: an outsider's
+  perspective.
+\newblock
+  \url{https://www.linkedin.com/pulse/present-future-kdd-cup-competition-outsiders-ron-bekkerman}.
+
+\bibitem[Chen and Guestrin, 2016]{xgboost}
+Chen, T. and Guestrin, C. (2016).
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In {\em Proceedings of the 22nd acm sigkdd international conference
+  on knowledge discovery and data mining}, pages 785--794.
+
+\bibitem[Dorogush et~al., 2018]{catboost}
+Dorogush, A.~V., Ershov, V., and Gulin, A. (2018).
+\newblock Catboost: gradient boosting with categorical features support.
+\newblock {\em arXiv preprint arXiv:1810.11363}.
+
+\bibitem[Dumont et~al., 2009]{multitree}
+Dumont, M., Marée, R., Wehenkel, L., and Geurts, P. (2009).
+\newblock Fast multi-class image annotation with random subwindows and multiple
+  output randomized trees.
+\newblock volume~2, pages 196--203.
+
+\bibitem[Friedman, 2001]{gbm}
+Friedman, J.~H. (2001).
+\newblock Greedy function approximation: a gradient boosting machine.
+\newblock {\em Annals of statistics}, pages 1189--1232.
+
+\bibitem[Grubb and Bagnell, 2011]{grubb2011generalized}
+Grubb, A. and Bagnell, J.~A. (2011).
+\newblock Generalized boosting algorithms for convex optimization.
+\newblock In {\em Proceedings of the 28th International Conference on
+  International Conference on Machine Learning}, pages 1209--1216.
+
+\bibitem[Horrell, 2019]{blog}
+Horrell, M. (2019).
+\newblock Gradient fitting for deep learning.
+\newblock
+  \url{https://mthorrell.github.io/horrellblog/2019/04/28/gradient-fitting-for-deep-learning/}.
+\newblock Accessed: 2020-07-19.
+
+\bibitem[Ke et~al., 2017]{lightgbm}
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., and Liu,
+  T.-Y. (2017).
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock In {\em Advances in neural information processing systems}, pages
+  3146--3154.
+
+\bibitem[Ke et~al., 2019]{deepgbm}
+Ke, G., Xu, Z., Zhang, J., Bian, J., and Liu, T.-Y. (2019).
+\newblock Deepgbm: A deep learning framework distilled by gbdt for online
+  prediction tasks.
+\newblock In {\em Proceedings of the 25th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, pages 384--394.
+
+\bibitem[Kontschieder et~al., 2015]{dndf}
+Kontschieder, P., Fiterau, M., Criminisi, A., and Rota~Bulo, S. (2015).
+\newblock Deep neural decision forests.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 1467--1475.
+
+\bibitem[LeCun and Cortes, 2010]{mnist}
+LeCun, Y. and Cortes, C. (2010).
+\newblock {MNIST} handwritten digit database.
+\newblock \url{http://yann.lecun.com/exdb/mnist/}.
+
+\bibitem[Levin et~al., 2022]{levin2022transfer}
+Levin, R., Cherepanova, V., Schwarzschild, A., Bansal, A., Bruss, C.~B.,
+  Goldstein, T., Wilson, A.~G., and Goldblum, M. (2022).
+\newblock Transfer learning with deep tabular models.
+\newblock {\em arXiv preprint arXiv:2206.15306}.
+
+\bibitem[Microsoft, 2020]{microsoft}
+Microsoft (2020).
+\newblock Lightgbm: Machine learning challenge winning solutions.
+\newblock
+  \url{https://github.com/microsoft/LightGBM/tree/master/examples#machine-learning-challenge-winning-solutions}.
+
+\bibitem[Popov et~al., 2019]{node}
+Popov, S., Morozov, S., and Babenko, A. (2019).
+\newblock Neural oblivious decision ensembles for deep learning on tabular
+  data.
+\newblock {\em arXiv preprint arXiv:1909.06312}.
+
+\end{thebibliography}

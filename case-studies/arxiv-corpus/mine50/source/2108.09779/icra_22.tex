@@ -1,0 +1,1245 @@
+% \documentclass{article}
+
+% \usepackage{corl_2021} % Use this for the initial submission.
+% \usepackage[final]{corl_2021} % Uncomment for the camera-ready ``final'' version.
+% \usepackage[preprint]{corl_2021} % Uncomment for pre-prints (e.g., arxiv); This is like ``final'', but will remove the CORL footnote.
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+
+
+\usepackage{eso-pic} % used by \AddToShipoutPicture
+% \usepackage{fancyhdr}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{sidecap}		% Can be removed after putting your text content
+\usepackage{graphicx}
+% \usepackage{natbib}
+
+% *** CITATION PACKAGES ***
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+\usepackage[numbers]{natbib}
+
+\usepackage{lipsum}
+\usepackage{multirow}
+\usepackage{multicol}
+% \usepackage{bbm}
+% \usepackage{cm-super}
+\usepackage{xcolor,colortbl}
+\usepackage{multirow}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{footnote}
+\usepackage{flushend} %balance refs on last page
+\let\labelindent\relax
+\usepackage{enumitem}
+% \usepackage[style=numeric-comp]{biblatex}
+\usepackage{lscape}      % Useful for wide tables or figures.
+\usepackage{flushend}
+
+
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
+\definecolor{Light}{RGB}{193, 237, 246}
+\definecolor{Gray1}{gray}{0.0}
+\definecolor{Gray2}{gray}{0.1}
+\definecolor{Gray3}{gray}{0.25}
+\definecolor{Gray4}{gray}{0.4}
+
+% \pagestyle{fancy}
+\usepackage[ruled,vlined]{algorithm2e}
+\setcounter{secnumdepth}{4}
+
+\newcommand{\etal}{\textit{et al}. }
+\newcommand{\ie}{\textit{i}.\textit{e}., }
+\newcommand{\eg}{\textit{e}.\textit{g}. }
+
+\newcommand{\secref}[1]{Sec.~\ref{#1}}
+\newcommand{\eqtref}[1]{Eq.~\ref{#1}}
+\newcommand{\figref}[1]{Fig.~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\algref}[1]{Algorithm~\ref{#1}}
+\newcommand{\appref}[1]{App.~\ref{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% space tweaks 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \setlength{\abovecaptionskip}{0.5mm}
+% \setlength{\belowcaptionskip}{0.2mm} 
+% \setlength{\textfloatsep}{1mm}
+% \setlength{\dbltextfloatsep}{1mm}
+% \usepackage{titlesec}
+% \titlespacing*{\section}
+% {0pt}{5pt plus 3pt minus 2pt}{4pt plus 2pt}
+% \titlespacing*{\subsection}
+% {0pt}{4pt plus 3pt minus 1pt}{3pt plus 2pt}
+% \titlespacing*{\paragraph}
+% {0pt}{2pt plus 1pt minus 1pt}{2pt plus 1pt}
+
+\setlength{\abovecaptionskip}{0.75mm}
+\setlength{\belowcaptionskip}{0.75mm} 
+\setlength{\textfloatsep}{2.0mm}
+\setlength{\dbltextfloatsep}{1.0mm}
+
+\renewcommand{\baselinestretch}{0.99}
+
+
+% \setlength{\abovecaptionskip}{0.75mm}
+% \setlength{\belowcaptionskip}{0.5mm} 
+% \setlength{\textfloatsep}{4.5mm}
+% \setlength{\dbltextfloatsep}{1.5mm}
+
+% \title{Learning dexterous 6-DoF manipulation of a object with a 3-fingered hand}
+% \title{KeyPR: Remote learning of 6-DoF dexterous manipulation through KeyPoint Representations}
+\title{Transferring Dexterous Manipulation from GPU Simulation \\ to a Remote Real-World TriFinger}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+% NOTE: authors will be visible only in the camera-ready and preprint versions (i.e., when using the option 'final' or 'preprint'). 
+% 	For the initial submission the authors will be anonymized.
+
+\author{
+   Arthur Allshire$^{1,2}$, % <-this % stops a space 
+   Mayank Mittal$^{2,3}$, % <-this % stops a space 
+   Varun Lodaya$^{1}$, % <-this % stops a space
+   Viktor Makoviychuk$^{2}$, % <-this % stops a space
+   Denys Makoviichuk$^{4}$, \\
+   Felix Widmaier$^{5}$, % <-this % stops a space
+   Manuel Wüthrich$^{5}$, % <-this % stops a space
+   Stefan Bauer$^{6}$, % <-this % stops a space
+   Ankur Handa$^{2}$, % <-this % stops a space
+   Animesh Garg$^{1,2}$%
+\thanks{$^{1}$University of Toronto, Vector Institute,
+   $^{2}$Nvidia,
+   $^{3}$ETH Zurich,
+   $^{4}$Snap,
+   $^{5}$MPI Tubingen,
+   $^{6}$KTH.
+   Email: \texttt{arthur@allshire.org}
+   }
+}
+
+%   Arthur Allshire (arthur.allshire@mail.utoronto.ca)
+%   Mayank Mittal (mittalma@ethz.ch)
+%   Varun Lodaya (email: varun.lodaya@mail.utoronto.ca)
+%   Viktor Makoviychuk  (victor.makoviychuk@gmail.com)
+%   Denys Makoviichuk (trrrrr97@gmail.com)
+%   Felix Widmaier (felix.widmaier@tuebingen.mpg.de)
+%   Manuel Wüthrich (manuel.wuthrich@tuebingen.mpg.de)
+%   Stefan Bauer (stefan.bauer@tuebingen.mpg.de)
+%   Ankur Handa (email: handa.ankur@gmail.com)
+%   Animesh Garg (garg@cs.toronto.edu)
+
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{ACK TODO $\dagger$ $\ddagger$ $^*$ \\
+% $\dagger$ University of Toronto \& Vector Institute \\
+% $\ddagger$ NVIDIA \\
+% $^*$ ETH Zurich
+% % TODO\\
+% % Department of Computer Science\\
+% % Cranberry-Lemon University\\
+% % Pittsburgh, PA 15213, USA \\
+% % \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% % Arthur, Mayank, etc
+% % \And
+% % Ji Q. Ren \& Yevgeny LeNet \\
+% % Department of Computational Neuroscience \\
+% % University of the Witwatersrand \\
+% % Joburg, South Africa \\
+% % \texttt{\{robot,net\}@wits.ac.za} \\
+% }
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\usepackage{float}
+
+\begin{document}
+
+\makeatletter
+    \let\@oldmaketitle\@maketitle% Store \@maketitle
+    \renewcommand{\@maketitle}{\@oldmaketitle
+    % Update \@maketitle to insert...
+    % \fbox{\rule{0pt}{2in} \rule{.9\linewidth}{0pt}}
+    \begin{minipage}[c]{\textwidth}
+    \centering
+    % \vspace{-15pt}
+    \includegraphics[width=0.9\textwidth]{figure/teaser.pdf}
+    \captionof{figure}{\textit{Top:} Our system learns to grasp and manipulate objects to 6-DoF goal poses with a single policy, entirely in simulation, across a variety of objects. \textit{Bottom:} We then transfer to a real robot located thousands of kilometers away from where development work is done.}
+    \label{fig:teaser}
+   \end{minipage}
+  \vspace{-15pt}
+    }
+\makeatother
+
+\maketitle
+\IEEEpeerreviewmaketitle
+
+\begin{abstract}
+% TODO - edit abstract more
+In-hand manipulation of objects is an important capability to enable robots to carry-out tasks which demand high levels of dexterity. This work presents a robot systems approach to learning dexterous manipulation tasks involving moving objects to arbitrary 6-DoF poses. We show empirical benefits, both in simulation and sim-to-real transfer, of using keypoint-based representations for object pose in policy observations and reward calculation to train a model-free reinforcement learning agent. By utilizing domain randomization strategies and large-scale training, we achieve a high success rate of 83\% on a real TriFinger system, with a single policy able to perform grasping, ungrasping, and finger gaiting in order to achieve arbitrary poses within the workspace. We demonstrate that our policy can generalise to unseen objects, and success rates can be further improved through finetuning. With the aim of assisting further research in learning in-hand manipulation, we provide a detailed exposition of our system and make the codebase of our system available, along with checkpoints trained on billions of steps of experience, at \url{https://s2r2-ig.github.io}
+\end{abstract}
+
+% \begin{figure}[ht]
+%   \vspace{-10pt}
+%   \centering
+%   \includegraphics[width=\textwidth]{figure/teaser_sim_real.pdf}
+%   \caption{Our system learns to manipulate a object to desired 6-DoF goal poses (position+orientation) entirely in simulation. Training is done on desktop-scale compute using a GPU-based physics engine. We then transfer to a real robot located thousands of kilometers away from where development work is done.}
+%   \label{fig:teaser}
+%   \vspace{-20pt}
+% \end{figure}
+
+\section{Introduction}
+
+% Dexterous manipulation is hard
+% Sim to real with Dexterous Manipulation is hard
+% When the robot is not yours, all these problems can be evaluated. You can't fix the system.
+%   -> OAI designed the hardware, it isn't over engineered
+% 
+% Because we had to make our simulator 
+% Can argue that we don't assume eg. starting with fingers in object, not structured with sub-policies. Have a singular policy that works for multiple phases of the task and also multiple objects
+% Perhaps - baseline with vision system, state system showing neither of these is efficient compared to keypoints representation.
+% Multiple objects - handled by correct representation rather than multiple policies
+% Different phases - handled by data scale and efficiency of learning stemming from the representation
+
+Multi-fingered robotic platforms are essential for executing complicated tasks such as fruit harvesting, and circuit assembly. However, performing such dexterous manipulation tasks requires dealing with various challenging factors. These include high-dimensionality, hybrid dynamics, and uncertainties about the environment~\cite{okamura2000overview}.
+
+Therefore, performing multi-fingered manipulation in the context of deployed systems poses unique challenges which practical controllers must overcome. In our work, we provide a method for creating controllers capable of achieving reliable dexterous manipulation tasks across a variety of domain shifts, both from sim to real and across different simulation scenarios. We demonstrate the robustness of our system through: showing transfer of policies created in simulation to the real world, varying system parameters and showing robustness, and changing the object being manipulated.
+
+Our controllers are trained and evaluated on the TriFinger~\citep{trifinger-platform} hand. Despite the challenging configuration of the Trifinger system (hand oriented down) and task (grasping and subsequent reposing), we train a unified  neural-network to achieve effective and robust control over the system. 
+
+The Trifinger robots are run as cloud-based robot farms. Such remote robotic systems promise to alleviate many of the upfront requirements to install and maintain robot hardware~\cite{kehoe2015cloudrobsurvey}. However, RaaS systems are also more rigid than commonly used research platforms, as controllers designed for individual platforms must be rolled out across the entire fleet. Hence, the robustness of our learning-based approach is further proven out by deployment on a system which we lacked physical access to.
+
+
+% \begin{figure*}[!t]
+%   \centering
+% %   \includegraphics[width=\linewidth]{figure/teaser_sim_real.pdf}
+%   \includegraphics[width=\textwidth]{figure/teaser_sim_real.pdf}
+%   \caption{\textit{Top:} Our system learns to grasp and manipulate objects to 6-DoF goal poses with a single policy, entirely in simulation, across a variety of objects. \textit{Bottom:} We then transfer to a real robot located thousands of kilometers away from where development work is done.}
+%   \label{fig:teaser}
+% \end{figure*}
+
+The key insight of this paper lies in a careful integration and evaluation of empirical advances in reinforcement learning with high-speed simulation, and practical deployment on a remote robot system. 
+In particular, contribution of this robot systems work are:
+\begin{enumerate}[noitemsep,topsep=0pt,leftmargin=1em]
+% \begin{enumerate}[noitemsep, wide, labelwidth=!, labelindent=0pt]
+    \item We provide a framework for learning the skill of in-hand manipulation tasks robust to sim-to-real transfer and object morphology.
+    % using far fewer computational resources (1 GPU \& CPU) than prior work but that can also benefit from large scale training. 
+    \item Unlike previous in-hand manipulation systems, we produce a single policy which performs both grasping and re-posing, simplifying the pipeline of using RL in such systems.
+    \item  We show the benefits of using keypoints to represent the object in RL algorithms for in-hand manipulation, especially when reposing in 6-DoF.
+    \item We show our system is robust to changing object morphology and physics parameters, shown through simulated experiments and demonstrated sim-to-real transfer.
+    
+    % \item We demonstrate the ability to learn a challenging 6-DoF manipulation task, re-posing various objects, with simulation data alone, and deploying on a third-party remote physical robot setup.
+    % \item We open-source the software platform to run training in simulation and inference of the resulting policies for other researchers to build on top of.
+\end{enumerate}
+
+
+% Rather than proposing a new algorithm, our contribution is showing that these features can be achieved by careful integration of existing techniques.
+
+% Can argue that we don't assume eg. starting with fingers in object, not structured with sub-policies. Have a singular policy that works for multiple phases of the task and also multiple objects
+% Perhaps - baseline with vision system, state system showing neither of these is efficient compared to keypoints representation.
+% Multiple objects - handled by correct representation rather than multiple policies
+% Different phases - handled by data scale and efficiency of learning stemming from the representation
+
+% comment on difficulty
+
+\vspace{-3pt}
+\section{Related Work}
+\vspace{-3pt}
+
+\subsection{Learning Dexterous Manipulation with Robot Hands}
+
+\noindent \textbf{1. Reinforcement Learning} Advances in RL algorithms and computational hardware have enabled rapid progression in the capability of real robots in dynamic scenes. Techniques such as domain randomization and large-scale training have enabled results across a variety of tasks with sim-to-real, including in-hand manipulation \citep{openai-sh, openai-rubiks}, as well as in legged locomotion \citep{Hwangbo_2019, shi2020circus}. Active identification of system parameters has also been shown to be helpful in the context of learning manipulation tasks~\citep{chebotar2019closing}.
+
+\noindent \textbf{2. Dextrous Manipulation} Dexterous manipulation requires dealing with high-dimensionality of the system, hybrid dynamics, and uncertainties about the environment~\cite{okamura2000overview}. Prior work has trained a control policy for in-hand manipulation of a block with a Shadow Dexterous Hand~\cite{openai-sh}. However, this relied on expensive robot hardware in a controlled environment which could be reset and tuned by engineers.  Recent works have extended this setup to other object morphologies \citep{huang21, chen21}.
+
+\noindent \textbf{3. Hand Platforms} Recently,~\citet{trifinger-platform} designed an open-sourced robotic platform for dexterous manipulation called \emph{TriFinger}. The Trifinger platform allows remote deployment of policies on a pre-determined experimental setup \citep{reproducible-cluster}, without tweaking of system parameters. As a result of the "reset-free" nature of the robot, the hand is facing down, and objects must first be picked up from the ground to be manipulated. Prior works do not provide a method to learn this behaviour in a simple way, either choosing to address only one step in this process or resorting to chaining multiple policies together to accomplish the complete reorientation task \citep{openai-sh, chen21}. In contrast, in this work, we present an approach to address these shortcomings.
+
+Our system is able to perform 6-DoF in-hand manipulation, as opposed to just 3-DoF reorientation. Furthermore, as the object starts outside of the hand, our single learned policy is able to perform not just picking, but also grasping and un-grasping, in contrast to these prior works.
+
+\vspace{-3pt}
+\subsection{Sim-to-real transfer with RL Policies}
+\vspace{-3pt}
+
+\noindent \textbf{1. Challenges of Sim-to-Real} Our method relies on learning control policies using gradient-based optimisation combined with large-scale accelerated simulation, a proven method of learning a wide variety of complex robotic tasks \citep{makoviychuk2021isaac, brax2021github, mandlekar2017arpl, Jason:ICRA:2018}. However, doing so means that policies must solve the "sim-to-real transfer" problem of being robust to inference in a different environment than which they were trained. Sim-to-real transfer of manipulation policies is a challenging problem for two major reasons: 1) differences between real-world environment interactions and that of the simulation where policies are trained, and 2) state estimation of objects being manipulated. For the former, a variety of practical methods have been proposed including Domain Randomisation in simulation \citep{Jason:ICRA:2018, mandlekar2017arpl}, Bayesian optimisation on the real system \citep{trifinger-benchmarking}, and optimisation of the simulator parameters \citep{chebotar2019closing, bayessim}.
+
+\noindent \textbf{2. State Estimation} Previous methods of state estimation have included pose estimation \citep{openai-sh, tremblay2018deep} more recently, policy distillation as a method to solve sim-to-real problem for state estimation \citep{chen21, Hwangbo_2019}. However this is limited by the visual fidelity of current simulators and has only been shown to work for individual objects, limiting the generality of the policy. As a result, practical approaches leveraging existing work in vision still must rely on using pose tracking in the real world.
+
+\setcounter{figure}{1}
+\begin{figure}[!t]
+\centering
+\begin{subfigure}{.50\linewidth}
+  \centering
+  \includegraphics[trim={0.7 1.5cm 0.4 1.5cm},clip,width=.85\linewidth]{figure/misc/shadow_hand_setup.jpg}
+  \caption{OpenAI's shadow hand setup. The cube starts placed in the hand.}
+  \vspace{3mm}
+\end{subfigure}%
+\hfill
+\begin{subfigure}{.46\linewidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{figure/misc/trifinger_setup.jpg}
+  \caption{The Trifinger setup. The object starts outside of the hand to enable reset-free setup.}
+\end{subfigure}
+\caption{Previous setups for performing RL-based dexterous manipulation in the real world have relied on specialised hardware or configurations which may be impractical to scale. For example, OpenAI's work on Shadow Hand \citep{openai-sh} started with the cube in hand (avoiding the need to learn to grasp it), relied on phase space tracking, and only set in-hand orientation goals (rather than full pose goals). In contrast, the Trifinger setup relies only on sensor inputs from RGB cameras and encoders in the fingers, and the object starts in a random position on the ground outside of the hand, yet our system achieves 6-DoF reposing on multiple objects across the workspace.}
+\label{fig:comparison-shadow-trifinger}
+\end{figure}
+
+% Dexterous manipulation requires dealing with high-dimensionality of the system, hybrid dynamics, and uncertainties about the environment~\cite{okamura2000overview}. Prior work has trained a control policy for in-hand manipulation of a block with a Shadow Dexterous Hand~\cite{openai-sh}. This was achieved through scientific compute clusters for distributed training in simulation and access to specialized hardware (the ``cage'') to receive reliable state information during object interaction in the real-world. While impressive, the requirement of such an exorbitant infrastructure makes this kind of study typically non-reproducible bordering impractical, hence the paucity of results building upon this work for further research into learning manipulation.
+
+% Contrarily,~\citet{trifinger-platform} designed an open-sourced low-cost robotic platform for dexterous manipulation called \emph{TriFinger}. They showed that the robot is suitable for deploying learned policies due to its hardware robustness and software safety checks. Building upon this work, the authors organized the `Real Robot Challenge (RRC)'~\cite{real-robot-challenge}, for which they developed a farm of TriFinger systems. For the challenge the authors provided access to PyBullet simulation of the robot~\cite{coumans2013bullet}. This challenge reinforced the inaccessibility of applying learning-based systems for such tasks: most competing teams elected to use structured policies with manually tuned high-level controllers or residual learning on top~\cite{trifinger-benchmarking, rrc-submission-chen, rrc-submission-yoneda}.
+
+% One of the reasons for the above is the ubiquity of CPU-based simulators~\cite{pybullet,MuJoCo}. Due to its low sample generating rate, it is highly time-consuming to tune and train a successful policy on PyBullet (a CPU based simulator) for such a complex task. The TriFinger platform is based on low-cost open-source hardware \citep{trifinger-platform}.  The TriFinger system uses a vision-based tracker to triangulate the object pose. The tracker functions at a low frequency and provides noisy estimates of the object pose, making reliable policy inference difficult. Lastly, working on the cloud-based platform Trans-Atlantic with limited access to the hardware slows down the iteration cycles. While the overall cost of the system is reduced when compared to a high-end setup like the Shadow Hand used by OpenAI, more noise and delays are present due to the commodity nature of the hardware. This makes sim-to-real transfer non-trivial.
+
+\begin{figure*}[ht]
+\begin{minipage}[c]{0.75\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figure/system.pdf}
+\end{minipage}
+\,
+\begin{minipage}[c]{0.23\textwidth}
+%   \vspace*{0.1pt}
+  \caption{Our system trains using the IsaacGym simulator\protect\footnotemark \citep{makoviychuk2021isaac} on 16,384 environments in parallel on a single NVIDIA Tesla V100 or RTX 3090 GPU. Inference is then conducted remotely on a TriFinger robot located across the Atlantic in Germany using the uploaded actor weights. The infrastructure on which we perform sim-to-real transfer is provided courtesy of the organisers of the Real Robot Challenge \citep{real-robot-challenge}.} 
+  \label{fig:trifinger}
+  \end{minipage}
+  \vspace*{10pt}
+\end{figure*}
+
+% This effort aims to overcome these limitations through a systems approach to robotics with infrastructure around a GPU-accelerated simulator coupled with a remote Trifinger system for successful sim-to-real transfer of a learned policy, as shown in~\figref{fig:teaser}. Using NVIDIA's IsaacGym~\cite{pmlr-v87-liang18a}, we train a policy to learn 6-DoF object manipulation successfully in \textit{under a day on a single desktop-grade GPU}. While not directly comparable to the Trifinger task, this number is in contrast to previous efforts with in-hand manipulation, for example, OpenAI's distributed training infrastructure, which took several days to learn a robust policy for object rotation on a large distributed server involving large CPU and GPU clusters. Additionally, we investigate different object pose representations for observations and rewards formulation. To allow successful sim-to-real transfer, we perform domain randomization on various physics properties in the simulator along with different noise models for observations and actions.  
+
+% SOMEHOW THE FIRST PARA STORY IS NOW LOST :((((((
+
+% This corresponds to a wall-clock time of 1.5 hours and 50 hours in their simulation setup." <- doesn't convey much. Hmm 1.5 wall clock on distributed computing vs 5 hours on a single gpu.... might be fair to say this?
+
+% Dexterous manipulation is blah blah blah. It is a long standing challenge blah blah blah. Elaborate: OpenAI trained shadow hand for dexterous manipulation with X engineers for X years with robot spending 130, 000 hours learning. We show that using the simulator we can achieve a similar task in a billion timesteps, which are equivalent to X years of human experience. We create infrastructure around the simulator that allows training on a single-gpu instead of specialized compute clusters for scientific computing. By training solely in simulation, we show sim2real transfer on a robot remotely located on the other side of the globe. Our work highlights an important step towards the future, where robotics can be offered as a service- with roboticists making use of compute locally aailable for large-scale simulation and deploy their methods into platforms that they don't need to purchase. Such a future is crucial for the growth of the field. In the remaining of the paper, we dive deeper into our case study on achieving dexterous manipulation using Trifinger robot.
+
+% THIS COULD BE RELATED WORK SUBSECTION
+% Now we start talking more about the trifinger robot and current works on dexteerous manipulation. Write about RRC challenge where this robot was first introduced. Maybe summarize briefly the outcome of the challenge. Say abou tthe controllers people used in a tiny more detail and what those limitations are. Then say more about RL and how it was hard to achieve any meaningful result with the pybullet simulator that the organizers provided. Physics simulation wasn't realisitic, low throughput, not suitable for such complex tasks. 
+
+% THIS COULD BE CONTRIBUTIONS SUBSECTION
+% Now we describe a bit more on what we do: To overcome this limitation, we built upon the infrastructure on NVIDIA's isaacgym for reinforcement learning. Our instructure simulates various noise models that are encountered in the real world during object interaction. For instance, the Trifinger platform uses a vision-based tracker to triangulate the object pose. However, the tracker works at a slow frequency, is noisy and has a jumpy signal. We inject these noise models into our simulator which allows us to perform sim2real transfer. (Can we claim: we are the first time someone has shown dexterous manipulation without requiring a highly specialized setup (like the one OpenAI used)?). To enable research in this direction and designing more complex learning based solutions, we open-source our inftrastructure which is available........
+
+
+
+% Achieving robust training and sim2real performance on this task required a combination of large-scale training, Domain Randomisation (DR), as well as a novel keypoints-based representation of the pose of the object in the policy and to calculate the reward function. 
+% Our framework is agnostic to the morphology of the hand and we release the code for our system in the hope that other researchers can use it to help push forward the frontiers of sim2real for manipulation in robotics.
+
+% \begin{figure}[t]
+% \centering
+% \begin{subfigure}{0.55\linewidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figure/trifinger_sim_zoom.png}
+%         \caption{\footnotesize{Robot in simulation.}}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}{0.38\linewidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figure/real_robot_hd.jpg}
+%         \caption{\footnotesize{Robot in the real world}}
+%     \end{subfigure}
+% \caption{\small
+% The Trifinger Robot \citep{trifinger-platform}. Evaluation on the real robot is done remotely, courtesy of \citep{real-robot-challenge}}  \vspace{1mm}
+% \label{fig:trifinger}
+% \end{figure}
+
+
+% This paper primarily makes robot systems contributions as follows:
+% \begin{enumerate}[noitemsep,topsep=0pt,leftmargin=1em]
+% % \begin{enumerate}[noitemsep, wide, labelwidth=!, labelindent=0pt]
+%     \item We provide a framework for learning similar in-hand manipulation tasks with sim-to-real transfer using far fewer computational resources (1 GPU \& CPU) than prior work but that can also benefit from large scale training. 
+%     \item We show the benefits of using keypoints as representations of object pose and in reward computation with RL algorithms for in-hand manipulation, especially when reposing in $SE(3)$.
+%     \item We demonstrate the ability to learn a challenging 6-DoF manipulation task, re-posing various objects, with simulation data alone and deploying on a third-party remote physical robot setup.
+%     \item We open-source the software platform to run training in simulation and inference of the resulting policies for other researchers to build on top of.
+% \end{enumerate}
+
+% Jeanette's group in-hand manipulation control that defines primitives based on analytical model and trains a high level policy over these~\cite{li2020learning}
+% Optimal control for finger-gait plannning: \cite{fan2017real, kumar2014real}
+
+% % Related work for simulators?
+% % here-
+
+% The choice of a simulator is critical for a successful robotics and especially sim-to-real research. A physically correct simulator allows to reduction of the sim-to-real gap. Performance is another key metric of the simulator: higher throughout allows a faster idea-experiment cycle at the early stages of the work, and performing larger-scale experiments later on. Being able to generate more samples per second also helps with solving more challenging tasks. Overcoming the sim-to-real gap can be helped by increasing domain randomization or related techniques.
+
+% The most widely used simulators for robot learning research are MuJoCo \cite{MuJoCo} and Pybullet \cite{pybullet}. While both have proven to be successful for various robotics locomotion and manipulation tasks, they are often slow for complicated environments and require CPU clusters putting some limits on their scalability. Brax \cite{brax2021github}, on the other hand, supports GPU / TPU acceleration, but it comes at the cost of simplified physics simulation assumptions and simple environments. IsaacGym \citep{pmlr-v87-liang18a} offers high-fidelity physics modelling and GPU acceleration support. It also supports directly sharing observations and actions through GPU memory between policy network and the physics engine, massively increasing throughput. Part of our contribution is to demonstrate the viability of the approach of GPU-based simulation to sim2real for in-hand manipulation. 
+
+
+% CONTINUE- WE ARE JUST MAKING A DUMMY SUBMISSION. Ok!
+% Mujoco
+% Pybullet
+% Brax
+% Tiny simulator?
+% Dart?
+% Algorix?
+% Flex and FlexGym as the preceding work?
+
+% This paper aims to address both of these limitations. Our work uses an alternative representation to compute policy observations and rewards, enabling learning of the task which bridges the sim2real gap. We provide the software for to run training for our system
+
+\vspace{-3pt}
+\section{Method}
+\vspace{-3pt}
+
+% \vspace{-6pt}
+\subsection{Problem Setup: The Trifinger Task}
+\label{sec:environment}
+\vspace{-3pt}
+
+% Mayank Mittal: Should emphasize here again WHY this system is interesting and what makes this particularly interesting. In fact, I suggest to add images of this next to OpenAI setup and show gravity and other issues in that figure. We should drive this point clearly that it is indeed non-trivial.
+
+% \subsubsection{Nature of the Task}
+\noindent \textbf{1. Task Description}.
+In this paper, we propose a method for training a controller for the Trifinger hand \citep{trifinger-platform} to 
+perform 6-DoF manipulation of objects. The objects start on the ground, and the goal of the system is to move the object to a target position and orientation and hold it there. Any solution must be able to move the fingers to the object, grasp it, and perform appropriate un-grasping and finger-gaiting to achieve the corresponding target orientation.
+
+Our aim is to use Reinforcement Learning (RL) to learn a single policy with a unified reward model to achieve closed-loop controller for this task, in contrast to previous works which have used relied on carefully designed state machines on top of RL based low-level skills to produce such multi-modal behaviour (see \figref{fig:comparison-shadow-trifinger}). 
+
+\noindent \textbf{2. Policy Inference on a Remote Real Robot}. It is important to show performance on real world rather than simply simulated systems. This is because of the inherent difficulty in having a simulator with the same physics parameters as a real robot, and the necessity of state estimation in the real world, making it the true test of practical methods in robotics.
+
+% We evaluate our policy remotely on the TriFinger system \citep{trifinger-platform, real-robot-challenge}. 
+On the Trifinger system, the pose of the object is tracked on the system using 3 cameras \citep{trifinger-object-tracking}. We convert the position+quaternion representation output by this system into the keypoint representation described in \secref{sec:poserepr} and use it as input to the policy. Observations of the object pose from the camera system are provided at 10Hz, compared to the higher frequency of 50Hz that the policy is run at. This means our method has to deal with relatively low-frequency and noisy object observations based on camera sensing. The torque on each joint is limited such that it does not damage the equipment while in operation, however the exact values of these parameters may vary and are not exposed, meaning our system must be robust to a range of these parameters. The policy is uploaded to the remote system and run on a the robot's local computer to mitigate latency issues.
+
+
+\vspace{-3pt}
+\subsection{Reinforcement Learning for Dexterous Manipulation}
+\label{sec:learning}
+% \vspace{-3pt}
+
+% move this section in the corresponding order. Add details of the algorithm. If you aren't presenting the basics, they just think it is tips and tricks.
+
+
+\begin{table}[]
+\centering
+    \begin{subtable}[h]{\linewidth}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{sc}
+        \begin{tabular}{l|l|c} 
+            \toprule
+            % \rowcolor{Light}
+            \rowcolor[HTML]{CBCEFB}
+            \multicolumn{2}{c|}{Observation space}                                   & Degrees of freedom  \\ 
+            \midrule
+            % \multirow{3}{*}{Finger Joints} & 9 & 24 \\ 
+            \rule{0pt}{2ex}    
+            \multirow{2}{*}{Finger joints}                        & position  & $3 \text{ fingers} \cdot 3 \text{ joints} \cdot 1[\mathbb{R}^1]=9$\\ 
+            %\cline{2-3}
+                                                                  & velocity  & $3 \text{ fingers} \cdot 3 \text{ joints} \cdot 1[\mathbb{R}^1] = 9$ \\ 
+            %\cline{2-3}
+            % \hline
+            \rowcolor[HTML]{EFEFEF} 
+            % \rule{0pt}{2.5ex}    
+            \multirow{1}{*}{Object pose}                           & keypoints      & $8 \text{ keypoints} \cdot3 \text{ } [\mathbb{R}^3]=24$                    \\ 
+            % \hline
+            % \rule{0pt}{2.5ex}    
+            \multirow{1}{*}{Goal pose}                           & keypoints      & $8 \text{ keypoints} \cdot3 \text{ } [\mathbb{R}^3]=24$                    \\ 
+            % \hline
+            % \rule{0pt}{2.5ex}    
+            \rowcolor[HTML]{EFEFEF} 
+            \multirow{1}{*}{Last action}                        & torque  & $3 \text{ fingers} \cdot 3 \text{ joints} \cdot 1[\mathbb{R}^1]=9$ \\ 
+            %\cline{2-3}
+            \midrule
+            % \rowcolor{Light} 
+            \rowcolor[HTML]{CBCEFB}
+            \multicolumn{2}{c|}{Total}                                  & 75                 \\
+            \bottomrule
+        \end{tabular}
+        \end{sc}
+        }
+        \caption{Actor Observations}
+        \label{table:policyobs}
+    \end{subtable}
+    ~
+    \begin{subtable}[h]{\linewidth}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{sc}
+        \begin{tabular}{l|l|c} 
+            \toprule
+            % \rowcolor{Light}
+            \rowcolor[HTML]{CBCEFB}
+            \multicolumn{2}{c|}{Observation space}                                   & Degrees of freedom  \\ 
+            \midrule
+            \multicolumn{2}{c|}{Actor Observations (w/o DR)} & 75 \\
+            % \hline
+            \rowcolor[HTML]{EFEFEF} 
+            % \multirow{3}{*}{Finger Joints} & 9 & 24 \\ 
+            % \rule{0pt}{2ex}    
+            Object                        & velocity & $6 \text{ }[\mathbb{R}^6]$ \\
+            % \hline
+            % \rule{0pt}{2.5ex}    
+            \multirow{3}{*}{Fingertips state}                     & pose & $3 \text{ fingers} \cdot7 \text{ } [\mathbb{R}^3 \times SO(3)]=21$ \\ 
+            % \rule{0pt}{2.5ex}    
+                                                                  & velocity & $3 \text{ fingers} \cdot6 \text{ }[\mathbb{R}^6]=18$ \\ 
+            % \rule{0pt}{2.5ex}    
+                                                                  & wrench& $3 \text{ fingers} \cdot6 \text{ } [\mathbb{R}^6]=18$ \\ 
+            % \hline 
+            \rowcolor[HTML]{EFEFEF} 
+            % \rule{0pt}{2.5ex}    
+            \multirow{1}{*}{Finger joints}                        & torque & $3 \text{ fingers} \cdot 3 \text{ joints} \cdot 1[\mathbb{R}^1]=9$\\ 
+            \midrule
+            % \rowcolor{Light} 
+            \rowcolor[HTML]{CBCEFB}
+            \multicolumn{2}{c|}{Total}                                  & 147                 \\
+            \bottomrule
+            \end{tabular}
+            \end{sc}
+        }
+        \caption{Critic Observations}
+        \label{table:valueobs}
+     \end{subtable}
+     \caption{\textbf{Asymmetric actor-critic to learn dexterous manipulation.} While the actor receives noisy observations, which are added as a part of DR (\secref{sec:environment}), the critic receives the same information without any noise and also has access to certain privileged information from simulator.}
+     \label{tab:temps}
+    %  \vspace{-10pt}
+\end{table}
+
+\noindent \textbf{1. RL Formulation} We model our problem using a sequential decision making formulation in which the robotic agent interacts with the environment with the objective of maximising the sum of discounted rewards. This is modelled as a discrete time, partially observable Markov Decision Process (POMDP), represented as the tuple $(\mathcal S, \mathcal O, \mathcal A, P, r, \gamma, \mathcal S_0)$, where $\mathcal S$ is the state space, $\mathcal O$ are the observations corresponding to partial information about the system states, $\mathcal A$ is the action space,  $P: \mathcal S \times \mathcal S \times \mathcal A \to \mathbb{R}$ are the probabilistic state transition dynamics, $r$ is the reward, $\gamma$ is the discount factor per timestep, and $\mathcal S_0: S \to \mathbb{R}$ is the distribution over the system's initial state at the beginning of an episode.
+
+\begin{figure}[t]
+    \centering
+    % \begin{center}
+    %   \includegraphics[width=0.9\textwidth, trim={0 180 50 0}, clip]{figure/architecture.pdf}
+    \includegraphics[width=0.98\linewidth]{figure/architecture.pdf}
+    % \end{center}
+    \caption{
+    The actor and critic networks are parameterized using fully-connected layers with \texttt{ELU} activation functions~\cite{clevert2015fast}.
+    }   
+    \label{fig:architectures}
+\end{figure}
+
+\noindent \textbf{1. Proximal Policy Optimisation} (PPO) is an actor-critic RL algorithm \citep{schulman2017proximal} that we build on learning a parametric stochastic policy, $\pi_\theta(a, o)$ mapping from observations to an action distribution to maximise the sum of discounted rewards in each episode. Along with the policy $\pi$, PPO learns a value function $V^{\pi}_\phi(s)$ which approximates the on-policy value function. Following \citep{asymmetric-ac}, the learned value function is a function of states $\mathcal S$ rather than observations $\mathcal O$, which improves the accuracy of value function estimates. The observations $o \in \mathcal O$ of the policy are described in~\tabref{table:policyobs} and the states $s \in S$ provided in the value function are described in~\tabref{table:valueobs}.
+
+\noindent \textbf{2. Parametrization} While multiple formulations of reward and observations are possible, we choose to use a parametrisation based on a keypoint formulation to represent the object pose, which we find boosts the ability of the RL algorithm to learn the task at hand (see Sec. \ref{sec:poserepr}, \ref{sec:reward}, \ref{sec:posereprexp}).
+
+% TODO - include the PPO equation? How to justify choice of algorithm...
+
+\noindent \textbf{3. Hyper-parameters} For PPO, we use the following hyper-parameters: discount factor $\gamma=0.99$, clipping $\epsilon=0.2$. The learning rate is annealed linearly over the course of training from $5\mathrm{e}{-3}$ to $1\mathrm{e}{-6}$. Our policy $\pi_\theta: \mathcal S \to \mathcal A$ is a Multilayer perceptron (MLP) with 4 hidden layers, 2 of size 256 followed by 2 of size 128, and 9 outputs which are scaled to the torque ranges of the real robot. Our value function  $V^\pi_\phi: \mathcal S \to R$ is an MLP with 2 layers of size 512, followed by 2 layers of size 256 and 128 each and produces a scalar value function as output. The action space $\mathcal A$ of our policy is torque on each of the 9 joints of the robot. 
+
+\noindent \textbf{4. RL Library} We build on the implementation of PPO from the RL Games library \citep{rl-games}, which vectorizes observations and actions on GPU allowing us to take advantage of the parallelising provided by the simulator (see \secref{sec:environment}) by reducing the overhead in CPU-GPU communication typical to most CPU-based simulators. 
+
+\vspace{-6pt}
+\subsection{Representation of the Object Pose: Keypoints}
+\label{sec:poserepr}
+% \vspace{-3pt}
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=1.0\textwidth]{figure/solution_evolution.pdf}
+%   \vspace{-6mm}
+%   \caption{Illustration of keypoints.}
+%   \label{fig:keypoints}
+% \end{figure}
+
+We focus on the task of manipulating an object in 6 degrees of freedom. As such, we must represent the pose of the object at multiple stages of our training pipeline. In order to capture both position and orientation in the same space in our representation, we use eight keypoints at the edges of the oriented bounding box of the object being manipulated. In the object's local frame these are denoted $\mathsf{k^L_i} \in \mathbb{R}^3, \, i=1, \dots, 8$. The keypoints in the world frame are related to those in the local frame by a transformation $\mathsf{k^C_i} = \mathbf{T} \mathsf{k^L_i}$, where $\mathbf{T}$ depends on the current pose of the object.
+
+In \secref{sec:posereprexp}, we contrast keypoint representations to a position+quaterinon formulation used in \citep{openai-sh, pmlr-v87-liang18a}, finding that keypoints improve the policy's success rate substantially. During policy inference in the real world, we note as long as we are able to get the bounding box of the object (via classical trackers as on the Trifinger \citep{trifinger-object-tracking}, or with learning-based setups which commonly rely on the same keypoints on the oriented bounding box, such as~\citep{tremblay2018deep, cosypose}), we are able to obtain the keypoints on the object bounding box required to use this representation in policy input.
+
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.4\textwidth]{figure/network_arch.pdf}
+%   \caption{policy architecture.}
+%   \label{fig:policy}
+% \end{figure}
+
+% \begin{figure}[t]
+% \centerline{
+% \includegraphics[width=0.9\textwidth, trim={0 180 50 0}, clip]{figure/architecture.pdf}
+% }
+% % \includegraphics[width=\textwidth]{figure/network_arch.pdf}
+% % \centerline{
+% % \hfill
+% % \makebox[0.4\linewidth][c] { \footnotesize{(a) Actor} }
+% % \hspace{25mm}
+% % \makebox[0.346\linewidth][c] { \footnotesize{(a) Critic} }
+% % }
+% \caption{\small
+% The actor and critic networks are parameterized using fully-connected layers with \texttt{elu} activation.} \vspace{1mm}
+% \label{fig:network_architectures}
+% \end{figure}
+
+
+
+\begin{table}[!t]
+    \begin{subtable}[h]{\linewidth}
+        \resizebox{\linewidth}{!}{%
+        \centering
+        \begin{sc}
+        \begin{tabular}{l|c|c|c} 
+            \toprule
+            \rowcolor[HTML]{CBCEFB}
+            % \rowcolor{Light} 
+            Parameter                                   &  Range & $\sigma$  & $\sigma_{corr}$ \\ 
+            \midrule
+            \multicolumn{4}{l}{\textbf{Observation Noise}} \\
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} Object Position\footnotemark & [-0.30, 0.30] & 0.002 & 0.000 \\
+            \hspace*{0.5cm} Object Orientation\footnotemark[\value{footnote}] \footnotetext{The noise to keypoints is not applied directly, instead it is added to the object pose in the world frame before computing the keypoints through it.} & [-1.00, 1.00] & 0.020 & 0.000 \\
+            % \hline
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} Finger Joint Position & [-2.70, 1.57] & 0.003 & 0.004 \\
+            % \hline
+            \hspace*{0.5cm} Finger Joint Velocity & [-10.00, 10.0] & 0.003 & 0.004 \\
+            \midrule
+             \multicolumn{4}{l}{\textbf{Action Noise}} \\
+            % \rowcolor{Light} Parameter                                   & Original Range & Timestep $\sigma$  & Correlated $\sigma$ \\ 
+            % \midrule
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} Applied Joint Torque & $[-0.36, 0.36]$ & 0.02 & 0.01 \\
+            \bottomrule
+        \end{tabular}
+        \end{sc}
+        }
+        % \caption{}
+        \label{table:noise}
+    \end{subtable}
+    ~
+    \begin{subtable}[h]{0.8\linewidth}
+        \resizebox{\linewidth}{!}{%
+        \centering
+        \begin{sc}
+        \begin{tabular}{l|c} 
+        
+            \toprule
+            % \rowcolor{Light} 
+            \rowcolor[HTML]{CBCEFB}
+            Parameter & Scaling Distribution \\
+            \midrule
+            \multicolumn{2}{l}{\textbf{Environment Parameters}} \\
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} Object Scale & $ \textrm{uniform}(0.97, 1.03)$ \\
+            % \hline
+            \hspace*{0.5cm} Object Mass & $ \textrm{uniform}(0.70, 1.30)$ \\
+            % \hline
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} Object Friction & $ \textrm{uniform}(0.70, 1.30)$ \\
+            % \hline
+            \hspace*{0.5cm} Table Friction & $ \textrm{uniform}(0.50, 1.50)$ \\
+            \rowcolor[HTML]{EFEFEF} 
+            \hspace*{0.5cm} External Forces & Refer to~\cite[pp.~9]{openai-sh} \\
+            \bottomrule
+            \end{tabular}
+            \end{sc}
+        }
+        % \caption{Critic Observations}
+        % \label{table:valueobs}
+     \end{subtable}
+     \vspace{2pt}
+     \caption{For observations and actions, $\sigma$ and $\sigma_{corr}$ are the standard deviation of additive gaussian noise sampled every timestep and at the start of each episode, respectively.  For environment, the parameters represent scaling factor applied to the nominal values in the real robot model.
+     }
+     \label{tab:dr}
+\end{table}
+
+
+
+% \vspace{-6pt}
+\subsection{Reward Formulation \& Curriculum}
+\label{sec:reward}
+% \vspace{-3pt}
+\noindent \textbf{1. Kernel} Our reward function $r: \mathcal S \times \mathcal A \to R$ has three components. Following \citep{Hwangbo_2019}, we use a logistic kernel to convert tracking error in Euclidean space into a bounded reward function. We generalise the kernel formulation to account for a range of distance scales, defining, $\mathcal{K}(x) = \left(e^{ax} + b + e^{-ax}\right)^{-1}$, where $a$ is a scaling factor and $b$ controls the sensitivity of the kernel at low distances.
+% \vspace{-2mm}
+% \[
+% \mathcal{K}(x) = \frac{1}{e^{ax} + b + e^{-ax}}
+% \]
+% \vspace{-2mm}
+
+ \noindent \textbf{2. Object Displacement Reward} As noted in \secref{sec:poserepr}, we use keypoints in order to calculate the reward in a natural space for 3-D reposing. The component of the reward corresponding to the difference between the object's current pose and the desired target pose is given by 
+ $r_o = \sum_{i=1}^N \mathcal{K}(|| \mathsf{k^C_i} - \mathsf{k^T_i} ||)$, where the $\mathsf{k^C_i}$ and $\mathsf{k^T_i}$ lie at the $N=8$ vertices of the bounding boxes of the object at the current and target configurations respectively (see \secref{sec:poserepr}).
+ 
+ %$\texttt{object\_goal\_reward} = \sum_{i=1}^N \mathcal{K}(||\mathsf{k_{curr,i}}-\mathsf{k_{target, i}}||_2)$, where $\mathsf{k_{curr,i}}$ and $\mathsf{k_{target,i}}$ are each of the $N=8$ keypoints at the corners of the current and target objects, respectively.
+% \vspace{-2mm}
+% \[
+% \texttt{object\_goal\_reward} = \sum_{i=1}^N \mathcal{K}(||\mathsf{k_{curr,i}}-\mathsf{k_{target, i}}||_2)
+% \]
+% \vspace{-2mm}
+
+ \noindent \textbf{3. Finger Reaching Reward} To encourage the fingers to reach the object during initial exploration, we give a reward for moving the fingers towards the object, which was also found to be helpful in \citep{causalworld}. This term is defined by sum of the movement of each fingertip towards the goal per timestep: $r_f = \sum_{i=1}^3 \Delta^t_i$, where $\Delta$ denotes the change across the timestep of the fingertip distance to the centroid of the object, $\Delta^t_i=||\mathsf{f_{i, t}}-\mathsf{p^C_t}||_2 - ||\mathsf{f_{i, t-1}}-\mathsf{p^C_ {t-1}}||_2$, and $\mathsf{f_i} \in \mathbb{R}^3$ denotes the position of the $i$-th fingertip, and $p_t^C$ denotes the position of the centroid of the object. 
+
+% $\Delta^t_i=||\mathsf{ft_{i, t}}-\mathsf{p_{curr, centroid, t}}||_2 - ||\mathsf{ft_{i, t-1}}-\mathsf{p_{curr, centroid, t-1}}||_2$, and $\mathsf{ft_i}$ denotes the position of the $i$-th fingertip. 
+% \vspace{-2mm}
+% \[
+% \texttt{fingertip\_to\_object} = \sum_{i=1}^3 \Delta^t_i
+% \]
+
+Finally, we define a penalty on the movement of each finger: $r_v = \sum_{i=1}^3 ||\dot{\mathsf{f_i}}||_2^2$ where $\dot{\mathsf{f_i}}$ denotes the velocity of the $i$'th fingertip in the global frame.
+% \vspace{-2mm}
+% \[
+% \texttt{fingertip\_velocity\_penalty} = \sum_{i=1}^3 ||\dot{\mathsf{ft_i}}||_2^2
+% \]
+% \vspace{-2mm}
+
+ \noindent \textbf{4. Total Reward} Our total reward is defined as:
+\vspace{-4pt}
+\begin{multline*}
+% \begin{split}
+R(s, a) = w_{f} \times r_f \times  \mathbf{I}(t \leq \texttt{N}_v)
++ w_{v} \times r_v
++ w_{o} \times r_o
+% \end{split}
+\end{multline*}
+\vspace{-15pt}
+
+where $w_{f}=-750$, $w_{v}=-0.5$ and $w_{o}=40$ are the weights of each reward component, determined through search over numerous training runs. We also found in initial experimentation that the curriculum reducing the weight of $r_f$ reward to $0$ after $\texttt{N}_v=5e7$ timesteps was needed in order to allow the robot to perform ungrasping needed to facilitate reorientation which is learned later in training. However, having the reward term during the initial phases of training sped up learning by encouraging the robot to interact with the object. In the kernel $\mathcal K$ we use $a=30$ and $b=2$ which provided a good balance between learning behaviour early in training and good accuracy later in training.
+
+
+
+% \begin{table}[t!]
+% \centering
+% \caption{Domain Randomisation Applied. For observations and actions, $\sigma$ represents the standard deviation of additive gaussian noise.  For Environment Parameters, the scaling distribution represents the value used to scale about the approximation of the value in the robot model. \\(*) noise to keypoints is not applied directly but rather to the position and quaternion used to transform from the local frame to the global frame.}
+% \label{table:dr}
+% \begin{sc}
+% \begin{tabular}{l|l|l|c} 
+
+% \end{tabular}
+% \end{sc}
+% \end{table}
+
+
+
+
+\begin{figure}[!t]
+\centering
+% \begin{center}
+\centering
+  \includegraphics[width=\linewidth]{figure/exp1/pos_ori_legend.pdf}  
+     \includegraphics[width=0.7\linewidth]{figure/exp1/pos_ori_total_success.pdf}  
+% \end{center}
+    \caption{
+              Training curves on a reward function similar to prior work~\cite{trifinger-benchmarking, rrc-submission-chen} for the setting with DR. We take the average of 5 seeds; the shaded areas show standard deviation, noting that curves for \texttt{Orientation} and \texttt{Position+Orientation} overlap during training. It is worth noting that the nature of the reward makes it very difficult for the policy to optimize, particularly achieving an orientation goal.
+    }   \label{fig:exp1}
+% \end{wrapfigure}
+\end{figure}
+
+% \vspace{-6pt}
+\subsection{Simulation Environment}
+\label{sec:environment}
+% \vspace{-3pt}
+
+\noindent \textbf{1. Choice of Simulator} We train on the IsaacGym simulator \citep{makoviychuk2021isaac}, a simulation environment tailored towards allowing policy learning with a high sampling rate by parallising physics on a single GPU (>50K samples/sec in policy inference on Tesla V100 and around 100K samples/sec on RTX 3090). A high sampling rate is essential to learn complex dynamic robotics tasks quickly \citep{makoviychuk2021isaac, brax2021github}, and the ability to perform training and inference on desktop-level systems is important for enabling other researchers to build on our work and use it for in-hand manipulation.
+
+
+\begin{figure*}[t]
+\begin{minipage}[c]{0.69\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figure/exp2/training_nodr+dr_clock.pdf}
+  \centerline{
+    \makebox[0.6\linewidth][c] { \footnotesize{(a) No DR.} }
+    \hfill
+    \makebox[0.4\linewidth][c] { \footnotesize{(b) With DR.} }
+    }
+\end{minipage}
+% \,
+\begin{minipage}[c]{0.25\textwidth}
+\centering
+\caption{\small
+Success Rate over the course of training without and with domain randomization. Each curve is the average of 5 seeds; the shaded areas show standard deviation. Note that training without DR is shown to 1B steps to verify performance; use of DR didn't have a large impact on simulation success rates after initial training.}
+\label{fig:exp2}
+  \end{minipage}
+%   \vspace*{10pt}
+\end{figure*}
+
+\noindent \textbf{2. Domain Randomisation} Domain Randomization (DR) is a method for improving the robustness of policies for sim-to-real transfer \citep{openai-dr,Jason:ICRA:2018,mandlekar2017arpl}. In Domain Randomisation, simulator parameters are sampled from a distribution, $\xi \sim P(\mathbf{\Xi})$ in order to modify the physics behaviour of the simulated environment. If the real-world physics parameters $\xi$ are within the support of the distribution $P(\mathbf{\Xi})$, then a policy which successfully achieves the task in simulation will be able to perform comparably in the real world.
+
+We choose our Domain Randomization parameters to account for modelling errors in the environment as well as noise in sensor measurements. These parameters are listed in \tabref{tab:dr}. In addition to these randomizations, we apply random forces to the object as described in \citep{openai-sh} in order to improve the stability of grasps and represent un-modelled dynamics. We mimic the refresh rate of the camera on the real system, by repeating the observation of the keypoints for 5 frames (See \secref{sec:environment}). To mimic possible extra camera latency, with $3\%$ probability, we repeat the camera-based object-pose observations for subsequent rounds of policy to mimic dropped frames from the tracker. Up-to-date proprioceptive data is provided to allow the policy to take advantage of the high-frequency and more reliable encoder information available on the real system.
+
+\vspace{-5pt}
+\section{Experiments}
+\label{sec:experiments}
+\vspace{-5pt}
+
+% \begin{figure}[t]
+% \centering
+% % \includegraphics[width=\textwidth]{figure/legend_reward_curves.pdf}
+% % \centerline{
+% % \includegraphics[width=0.5\textwidth]{figure/nodr.pdf}
+% % \includegraphics[width=0.5\textwidth]{figure/exp2/dr_32000.pdf}
+% % }
+% \includegraphics[width=\linewidth]{figure/exp2/training_nodr+dr_clock.pdf}
+% \centerline{
+% \makebox[0.6\linewidth][c] { \footnotesize{(a) No DR.} }
+% \hfill
+% \makebox[0.4\linewidth][c] { \footnotesize{(b) With DR.} }
+% }
+% \caption{\small
+% Success Rate over the course of training without and with domain randomization. Each curve is the average of 5 seeds; the shaded areas show standard deviation. Note that training without DR is shown to 1B steps to verify performance; use of DR didn't have a large impact on simulation success rates after initial training.}
+% \label{fig:exp2}
+% \end{figure}
+
+In our experiments, we aim to answer the following four questions pertaining to learning a robust policy for this task, as well as evaluating how well it transfers to the real world:
+\begin{enumerate}[noitemsep, wide, labelwidth=!, labelindent=0pt]
+    \item How well does our system learn 6-DoF manipulation with a reward function based on prior works?
+    \item How does performance change when we use a task-appropriate representation - keypoints - for reward computation and policy input in the 6-DoF reposing task?
+    \item Is our system robust to sensor noise and varying environment parameters, and to changes in object morphology?
+    \item How well do our policies, trained entirely in simulation, transfer to the real TriFinger system?
+\end{enumerate}
+
+% 1) training and impact of representations
+% 2) robustness in context with DR
+% 3) sim-to-real
+% 4) other objects...
+
+
+
+\vspace{-5pt}
+\subsection{Experiment 1: Training}
+\label{sec:initialtrainingexp}
+% \vspace{-3pt}
+% \begin{wrapfigure}{r}{0.5\linewidth}
+% \centering
+% \rule{0.9\linewidth}{0.75\linewidth}
+% \caption{Dummy figure.}
+% \label{fig:myfig}
+% \end{wrapfigure}
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.7\textwidth]{figure/exp1/pos_ori_legend.pdf}
+%     \centering
+%   \includegraphics[width=0.5\textwidth]{figure/exp1/pos_ori_total_success.pdf}
+%   \caption{Training curves on a reward similar to what has been tried in previous tasks. The nature of the reward makes it very difficult for the policy to learn to satisfy the orientation goal.}
+%   \label{fig:exp1}
+% \end{figure}
+
+
+% \begin{wrapfigure}{r}{0.5\textwidth}
+% \begin{center}
+% % \vspace{-3000pt}
+%   \includegraphics[width=0.5\textwidth]{figure/exp1/pos_ori_legend.pdf}
+%   \includegraphics[width=0.5\textwidth]{figure/exp1/pos_ori_total_success.pdf}  
+% \end{center}
+%     \caption{
+%       Training curves on a reward similar to what has been tried in previous tasks. The nature of the reward makes it very difficult for the policy to learn to satisfy the orientation goal.
+%       }   \label{fig:exp1}
+% \end{wrapfigure}
+
+
+\noindent \textbf{1. Success Criterion} The aim in our 6-DoF manipulation task is to get the position and orientation of the object to a specified goal position and orientation. We define our metric for `success' in this task as getting the position within 2\,cm, and orientation within 0.4 rad (22\textdegree) of the target goal pose as used in \citep{openai-sh}; comparable to mean results obtained in \citep{trifinger-benchmarking}. Following previous works dealing with similar tasks \citep{openai-sh, openai-rubiks, causalworld}, we apply a reward based on the position and orientation components of error individually.
+
+\noindent \textbf{2. Alternative Reward Formulation} Following experimentation, the best candidate reward of this format was: 
+
+\begin{equation*}
+    r_o = \mathcal{K}(||\mathsf{t^C} - \mathsf{t^T}||_2) + \frac{1}{3 \times \mathsf{|d^r|}+0.01}
+\end{equation*}
+
+where $\mathsf{t^C}$ and $\mathsf{t^T}$ are the current and goal positions of the object, $d^r = 2 \times \arcsin (\min(1.0, ||\mathsf{q_{diff}}||_2)), \mathsf{q_{diff}} = \mathsf{q^C} \mathsf{(q^T)^{*}}$. $\mathcal{K}$ is the logistic kernel that takes L2 norm between the current and target object position as input, and $\mathsf{d^r}$ is the distance in radians between the current and target object orientation. We use the alternative scaling parameter $a=50$ in $\mathcal{K}$, which we found to work better in this reward formulation (see \secref{sec:reward}). We use the same weightings for each of the 3 components of the reward as in \secref{sec:reward}. For this experiment, we trained on the $6.5 \text{cm}$ cube used in the Real Robot Challenge \citep{real-robot-challenge}.
+
+\noindent \textbf{3. Results} The results are shown in \figref{fig:exp1}. We found that while this formulation of the reward was good at allowing PPO to learn a policy to get the object to the goal, even after 1 Billion steps in an environment with no Domain Randomization it was learning very slowly to achieve the orientation goal.
+
+\begin{figure*}[t]
+\begin{minipage}[c]{0.78\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{figure/dr_object_rebuttal.pdf}
+\end{minipage}
+% \,
+\begin{minipage}[c]{0.21\textwidth}
+\centering
+\caption{We show the robustness to varying the object parameters outside the DR range it was trained for. In the evaluations, all the other DR is turned off to ensure a controlled setting. Each success is evaluated over 1024 runs with random goal and object initialization.}
+\label{fig:dr_experiments_obj}
+  \end{minipage}
+%   \vspace*{10pt}
+\end{figure*}
+
+\begin{figure*}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figure/misc/closed_loop.pdf}
+  \caption{The use of a single, continuous policy for grasping and reposing allows the policy to automatically recover from failures. For example in the sequence above the system recovers from a failure and re-grasps the cube to achieve the desired goal pose.}
+  \label{fig:qualitative-rollout}
+\end{figure*}
+
+\vspace{-3pt}
+\subsection{Experiment 2: Representation of Pose}
+\label{sec:posereprexp}
+% \vspace{-3pt}
+
+\noindent \textbf{1. Comparison} The poor results in Experiment 1 (\secref{sec:initialtrainingexp}) lead us to search for alternative representations of object pose in the calculation of the reward and policy observations; these are described in \secref{sec:poserepr} and \secref{sec:reward}.
+We compared our method of using keypoints to represent the object pose and using positions and quaternions in two ways: firstly, using it as the policy input as compared to a position and quaternion representation, and secondly, using it to calculate the reward as compared to a reward based on the linear and angular rotational distances individually.
+
+\noindent \textbf{2. Experimental Setup} For the observations, in order to provide a fair comparison between position/quaternion and keypoints as policy input, observation noise and delays are applied in the same manner (by applying them in the position and quaternion space before transforming to keypoints, as noted in \secref{sec:environment}). Also note that both representations only rely on the spatial pose information and fixed size of the object to compute. The pose of the object is represented with a 7-dim vector involving translation and quaternion ($\mathsf{t}$,  $\mathsf{q}$). The position and quaternion of the goal pose are provided as input to the actor and critic, replacing the keypoints in Tables \ref{table:policyobs} and \ref{table:valueobs}.
+
+For the reward, in order to provide a fair comparison to the keypoints reward, as mentioned previously, many hours were spent tuning the kernels and parameters used in the translation based reward, described in Experiment 1. In comparison, little effort was spent tuning the keypoints function, with only one tweak to the weightings in the logistic kernel, showing the relative simplicity of working with this formulation. For this experiment, we trained on the $6.5 \text{cm}$ cube used in the Real Robot Challenge \citep{real-robot-challenge}, with keypoints placed at the bounding box (in this case the corners of the cube).
+
+\noindent \textbf{3. Results} \figref{fig:exp2} shows the results of training, with both timesteps and wall-clock time. In the curve without any Domain Randomization, we trained for 1 billion steps over the course of 6 hours on a single GPU. Using keypoints in observations and the reward function performs the best of the four policies, also exhibiting a low variance among seeds.
+
+When Domain Randomization is applied, the two curves with a keypoints-based reward are far better in terms of success rate at the end of training and in terms of convergence rate; however, in this case having keypoint observations seems to matter somewhat less. This is perhaps due to the longer training (4b steps \& 24 hours on a single GPU) overwhelming the inductive bias introduced by using keypoints as representations. However, using keypoints to compute the reward provided a large benefit in both cases, showing the improvement caused by calculating the reward in Euclidean space rather than mixing linear and angular displacements through addition.
+
+
+% \begin{figure*}[t]
+% \centering
+% % \includegraphics[width=\textwidth]{figure/dr_object.pdf}
+% \includegraphics[width=0.8\linewidth]{figure/dr_object_rebuttal.pdf}
+% \caption{We show the robustness to varying the object parameters outside the DR range it was trained for. In the evaluations, all the other DR is turned off to ensure a controlled setting. Each success is evaluated over 1024 runs with random goal and object initialization.}
+% \label{fig:dr_experiments_obj}
+% \end{figure*}
+
+
+\begin{figure*}[t]
+\centering
+  \includegraphics[width=0.9\linewidth]{figure/misc/grasps.pdf}  
+    \caption{
+       A selection of the trifinger manipulating various different objects from the EGAD dataset. The system achieves a diversity of emergent grasps enabling it to manipulate a variety of object morphologies to 6-DoF target poses. See the website (\url{https://s2r2-ig.github.io}) for more videos of object manipulation.
+    }   \label{fig:different-objects}
+\end{figure*}
+
+\vspace{-6pt}
+\subsection{Experiment 3: Robustness of Policies in Simulation}
+\vspace{-5pt}
+
+\noindent \textbf{1. Impact of Varying Physics Parameters} In order to investigate the impact that Domain Randomization (see \secref{sec:environment}) has on the robustness of policies of a hand in this configuration, we ran experiments by varying parameters outside of the normal domain randomization ranges in simulation. \figref{fig:dr_experiments_obj} shows the results. We find that, despite only being randomized initially within a range of 0.97-1.03x nominal size, our policies with Domain Randomization achieve over an 80\% success rate even with a scale of 0.6 and 1.2x nominal size, while those without DR have a success rate that drops off much more quickly outside the normal range. We find similar results when scaling the object mass relative to the nominal range, however in this case we find that the policies using keypoints-based reward even without DR is much more robust at masses 3x nominal.
+
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=0.7\linewidth]{figure/appendix/mug-0-shot.png}
+% \caption{We experimented with seeing how our learned policy generalized to other objects.}
+% \label{fig:mug}
+% \end{figure}
+% \subsubsection{Zero-shot morphology transfer}
+
+% We experimented with our system to see what the 0-shot transfer performance to differing object morphologies was. 
+
+% We tested a sphere of diameter similar to the object side length, cuboids of different sizes, and a few objects from the YCB dataset \citep{YCB}. The results are listed in Table \ref{tab:zero-shot-objects}. Our our policy generalises surprisingly well on different object morphologies, for example by achieving nearly 70\% accuracy on a mug. However, it struggles with long and skinny objects. This is unsurprising given the difficulty in grasping the object at less than 0.5x  the original scale (or ~3cm).
+
+% \begin{table}[t]
+% \centering
+% \begin{tabular}{l|c} 
+%     \toprule
+%     % \rowcolor{Light}
+%     \rowcolor[HTML]{CBCEFB}
+%     Object & Success Rate \\
+%     \midrule
+%                             Cube 6.5cm$^3$ [Training Object]        & 92.1\% \\
+%     \rowcolor[HTML]{EFEFEF} Ball radius=3.75cm &  96.7\%  \\
+%                                 Cuboid 2x8x2cm        & 2.0\% \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 2x8x4cm &  42.9\%  \\
+%                             Cuboid 4x8x4cm        & 92.4\% \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 2x6.5x2cm &  2.44\%  \\
+%                             Cuboid 2x6.5x4cm &  48.9\%  \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 4x6.5x4cm & 94.6 \% \\
+%                             YCB Mug (\texttt{025\_mug}) & 68.8 \% \\
+%     \rowcolor[HTML]{EFEFEF} YCB Banana (\texttt{011\_banana}) & 28.0 \% \\               
+%                             YCB Potted Meat Can (\texttt{010\_potted\_meat\_can}) & 81.1 \% \\
+%     \rowcolor[HTML]{EFEFEF} YCB Foam Brick (\texttt{061\_foam\_brick}) & 91.7 \% \\
+%     \bottomrule
+% \end{tabular}
+% \caption{\textbf{0-shot object transfer performance.} Numbers calculated from N=1024 trials in simulation. For these, we disabled Environment and Observation \& Action Randomizations (though still only gave 10Hz observations to simualte camera tracking). Objects prefixed with YCB were used from the YCB dataset. \citep{YCB}}
+% \label{tab:zero-shot-objects}
+% \end{table}
+
+\noindent \textbf{2. Other objects \& Fine-Tuning} We tested the change in performance resulting from finetuning the policy (O-KP+R-KP trained with DR on the $6.5\text{cm}^3$ cube) on 100 randomly-selected objects from the EGAD dataset, and on a selecion of cuboids with random side lengths between 2-8 cm. We found an improvement in policy performance resulting from finetuning on 100 randomly selected EGAD objects, on both this same set of objects and test objects (see Table \ref{tab:finetuning-objects}). The gains were even bigger when fine-tuning on cuboids of different scales, suggesting that scale is a more important consideration than shape for generalisation.
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{figure/nodr.pdf}
+%   \caption{Success Ratio over the course of training without domain randomization.}
+%   \label{fig:experiment:nodr}
+% \end{figure}
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{figure/dr.pdf}
+%   \caption{Success Ratio over the course of training with domain randomization.}
+%   \label{fig:experiment:dr}
+% \end{figure}
+
+% \begin{figure*}[ht]
+% \begin{minipage}[c]{0.64\textwidth}
+%   \centering
+%   \includegraphics[width=\linewidth]{figure/exp4/rollout_qualitative.pdf}
+%   \caption{(a) Achieving a challenging goal at the edge of the workspace. (b) Recovery from dropping due to a bad grasp. }
+%   \label{fig:qualitative-rollout}
+% \end{minipage}
+% \, \hfill
+% \begin{minipage}[c]{0.35\textwidth}
+%   \centering
+%   \includegraphics[width=\linewidth]{figure/robot_farm.png}
+%   \caption{To test sim2real transfer, we ran our policies on a remote real robot farm hosted by \citep{real-robot-challenge}. The policy can be run on one of a suite of robots.}
+%   \label{fig:robot-farm}
+%   \end{minipage}
+% \end{figure*}
+
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=0.8\linewidth]{figure/robot_farm.png}
+%   \caption{To test sim-to-real transfer, we ran our policies on a remote real robot farm hosted by \citep{real-robot-challenge}. The policy can be run on one of a suite of robots.}
+%   \label{fig:robot-farm}
+% \end{figure}
+
+
+
+\begin{table}[t]
+\centering
+\resizebox{0.9\linewidth}{!}{%
+\begin{tabular}{l|c|c} 
+    \toprule
+    % \rowcolor{Light}
+    \rowcolor[HTML]{CBCEFB}
+    Object & Cube Policy & Finetuned  \\
+    \midrule
+                            Cube 6.5cm$^3$       & 92.1\% & - \\
+    \rowcolor[HTML]{EFEFEF} EGAD (train) & 84.9 \% & 87.2 \%  \\
+                                EGAD (test)  & 85.2 \% & 86.4 \% \\
+    \rowcolor[HTML]{EFEFEF} Different Sized Cuboids & 46.8 \% & 72.9 \%  \\
+
+    \bottomrule
+\end{tabular}
+}
+\caption{\textbf{Fine-tuning performance.}  We tested the zero-shot performance on the EGAD dataset and a number of differently sized cuboids to measure the robustness to differing object morphologies and scales, respectively. Numbers calculated from N=1024 trials in simulation. We disabled environment, observation \& action randomizations.}
+\label{tab:finetuning-objects}
+\end{table}
+
+
+\vspace{-3pt}
+\subsection{Experiment 4: Simulation to Remote Real Robot Transfer}
+\vspace{-3pt}
+
+% \vspace{-3pt}
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{figure/exp4/rr_boxplot.pdf}
+%   \caption{Success Rate on the real robot plotted for different trained agents. O-PQ and O-KP stand for position+quaternion and keypoints observations respectively, and R-PQ and R-KP stand for linear+angular and keypoints based displacements respectively, as discusesd in Sec \ref{sec:posereprexp}.}
+%   \label{fig:sim2real}
+% \end{figure}
+
+\noindent \textbf{1. Experimental Setup} We ran experiments on the real robot to determine the success rate of the policies trained with Domain Randomization under the metric defined in \secref{fig:exp1}. We performed $N=40$ trials for each policy on the task setup described in \secref{sec:environment}; the results for each of the four ablations on keypoints which we tested are shown in \figref{fig:sim2real}.
+
+\noindent \textbf{2. Results} Out of the four models discussed in \secref{sec:posereprexp}, the best policy achieved a success rate of 82.5\%. This was achieved with the use of keypoints used in observations of the policy as well as the reward function during training (O-KP+R-KP).    The policy using position+quaternion representations but with a reward calculated with keypoints (O-PQ+R-KP) achieved a 77.5\% success rate. These first two policies were well within each others' confidence intervals. This is likely due to the impact of the better representation of keypoints being mitigated somewhat after 4 Billion steps of training, as discussed in \secref{sec:posereprexp}. In contrast, neither of the policies trained using the position \& quaternion based reward achieved good success rates, with the policy using keypoints-based observations (O-KP+R-PQ) achieving only a 60\% success rate while the one with position and quaternion observations (O-PQ+R-PQ) only achieved a 55\% success rate. These results show the importance of having a reward function which effectively balances learning to achieve the goal in $\mathbb R^3$ and $SO(3)$ in order to have policies with a high success rate in simulation, and thus a high corresponding success rate after real robot transfer.
+
+%varun -now does it read better?
+
+% We also collected a larger sample of N=65 rollouts on this best policy and calculated the reward based on the metric used in phase 2 of the real robot challenge, described in \citep{trifinger-benchmarking}. 
+
+% Using our model-free policy learning algorithm, we achived a mean reward of $-11378\pm951$ (within 80\% Confidence Interval). This is better than the winning entry in the 2020 Real Robot Challenge on the same task ($-21428$ reward) \citep{real-robot-challenge}, but worse than the performance ($-5046.5\pm1664.7$) of a combination of special-purpose hand-coded policies and Bayesian hyper-parameter optimisation \citep{trifinger-benchmarking}.
+
+\begin{figure}[!t]
+\centering
+  \includegraphics[width=0.8\linewidth]{figure/exp4/rr_boxplot.pdf}  
+    \caption{
+       Success Rate on the real robot plotted for different trained agents. O-PQ and O-KP stand for position+quaternion and keypoints observations respectively, and R-PQ and R-KP stand for linear+angular and keypoints based rewards respectively, as discussed in \secref{sec:posereprexp}. Each mean made of N=40 trials and error bars calculated based on an 80\% confidence interval.
+    }   \label{fig:sim2real}
+\end{figure}
+
+
+\noindent \textbf{3. Qualitative Behaviour} We noticed a variety of emergent behaviours used to achieve sub-goals within the overall object-reposing task. We display some of these in the panel in Figures \ref{fig:teaser} and \ref{fig:qualitative-rollout}. The most prominent of these is "dropping and regrasping". In this maneuver, the robot learns to drop the cube when it is close to the correct position, re-grasp, and pick it back up. This enables the robot to get a stable grasp on the cube in the right position. The robot learns to use the motion of the object to the correct location in the arena as an opportunity to simultaneously rotate it on the ground to make achieving the correct grasp in challenging target locations far from the center of the fingers' workspace. Our policy is also robust to dropping - it can recover from a object falling out of the hand and retrieve it from the ground.
+
+We were only able to perform these experiments with the $6.5\text{cm}^3$ cube, as the Trifinger remote inference setup only provided a single size of cube to test on. However, using an off the shelf pose detector (for example \citep{tremblay2018deep, cosypose}), sim-to-real with these is a direction that we could pursue in the future.
+
+\vspace{-5pt}
+\section{Summary}
+\vspace{-5pt}
+% CONCLUSION -> We hope this study encourages future research labs to enable such platforms. 
+
+% Our work shows that sim-to-real for contact rich and dexterous manipulations is possible despite using simplistic contact models in simulators.
+% TAKEN FROM INTRO! CHASNGE THIS!!!! - ASAP.
+This paper emphasizes the empirical value of a systems approach to robot learning through a case study in dexterous manipulation. 
+We introduced a framework for learning in-hand manipulation tasks and transferring the resulting policies to the real world. We show how RL algorithms for in-hand manipulation can benefit from using keypoints as opposed to the more ordinary angular and linear displacement-based reward and observation computation. We show that our policies are able to generalise to unseen objects, and success rates can be further improved through finetuning. 
+In contrast to prior work, our system solves all of the challenges inherent in 6-DoF grasping and reposing in a single policy, simplifying the pipeline of using RL for dexterous manipulation. We provide a clear elucidation of our approach and open source checkpoints and code to allow reproducing our work.
+
+% Add this for Arxiv
+
+% \section{Acknowledgements}
+% We thank Jingzhou Liu, Ritvik Singh, and Gavriel State for support on this work.
+
+
+% Using these, we show that we are able to learn a challenging 6-DoF manipulation task. We deploy the resulting policy on a remote real-robot setup.
+% We release our software platform to run training and inference of policies. This is done to enable other researchers to build on-top of our training infrastructure and enable our results to be reproducible.
+
+% We introduced a framework for learning in-hand manipulation tasks with sim-to-real transfer using far fewer computational resources (1 GPU \& CPU) than prior work but that can also benefit from large scale training. 
+% We show the benefits of using keypoints as representations of object pose and in reward computation with RL algorithms for in-hand manipulation, especially when reposing in $SE(3)$.
+% We demonstrate the ability to learn a challenging 6-DoF manipulation task, learning a policy to re-pose a object with simulation data alone and deploying on a remote setup.
+% We open-source the software platform to run training in simulation and inference of the resulting policies for other researchers to build on top of.
+    
+% \begin{enumerate}
+%     \item Our work shows that sim-to-real for contact rich and dexterous manipulations is possible despite using simplistic contact models in simulators.  % didn't openai already?
+% \end{enumerate}
+
+% this is not needed at the time of submission. 
+% \clearpage
+% \subsubsection*{Acknowledgments}
+% Thank the Trifinger Organisers for the use of their robot! 
+
+
+% \clearpage
+{\small
+% \bibliography{trifinger}
+\bibliographystyle{IEEEtranN}
+\bibliography{trifinger}
+}
+% \clearpage
+
+% \appendix
+% \section{Appendix}
+
+% \subsection{Training}
+% \label{sec:detailed-training}
+
+% \subsubsection{Learning Algorithm Details}
+
+% \begin{table}[ht]
+% \centering
+% % \begin{tabular}{l|l|c} 
+% \begin{tabular}{l|c} 
+%     \toprule
+%     % \rowcolor{Light}
+%     \rowcolor[HTML]{CBCEFB}
+%     Hyperparameter & Value \\
+%     \midrule
+%                             Discount Factor & 0.99 \\
+%     \rowcolor[HTML]{EFEFEF} GAE Discount Factor ($\tau$)        & 0.95 \\
+%                             Learning Rate (start of training) & 5e-4 \\
+%     \rowcolor[HTML]{EFEFEF} Learning Rate (end of training, linear decay) & 1e-6  \\
+
+%                             Batch Size & 65356 \\
+%     \rowcolor[HTML]{EFEFEF} Mini-batch Size & 16384 \\
+%                             Number of Epochs & 8 \\
+%     \rowcolor[HTML]{EFEFEF} Clip Range ($\epsilon$) & 0.2 \\
+%                             Entropy Coefficient & 0 \\
+
+%     \bottomrule
+% \end{tabular}
+% \caption{\textbf{PPO Hyperparameters.}}
+% \label{tab:ppo-hp}
+% \end{table}
+
+% We used the open-source version of PPO from \citep{rl-games} which provides the ability to work with highly vectorised environments. The hyperparameters used are listed in Table \ref{tab:ppo-hp}.
+
+
+% \subsection{Success for rotation and position}
+
+% We break out position and rotation success rates individually in Figure \ref{fig:pos_quat_experiments}. They show that the keypoint-based reward formulation fixes the issues identified in \textit{Experiment 1} from the paper, namely that summing position and orientation components of reward leads to poor orientation success rate. Using keypoints improves orientation performance without sacrificing achieving the position goal. It is still apparent that progress can be made with reducing this gap as the orientation reward still continues improving until 4 Billion steps of experience, and this is a direction of ongoing work.
+
+% \begin{figure}[ht]
+% \includegraphics[width=\textwidth]{figure/legend_reward_curves.pdf}
+% \centerline{
+% \includegraphics[width=0.5\textwidth]{figure/exp2/dr_pos_32000.pdf}
+% \includegraphics[width=0.5\textwidth]{figure/exp2/dr_quat_32000.pdf}
+% }
+% \centerline{
+% \hfill
+% \makebox[0.5\linewidth][c] { \footnotesize{(a) Position Goal at End of Episode} }
+% \makebox[0.5\linewidth][c] { \footnotesize{(a) Orientation Goal at End of Episode} }
+% }
+% \caption{\small
+% End of episode success for keypoints and no keypoints.} \vspace{1mm}
+% \label{fig:pos_quat_experiments}
+% \end{figure}
+
+% \subsubsection{Reproducing results on a consumer GPU}
+
+% The reward curves and times stated in the main text were produced on a single NVIDIA V-100 GPU. We were able to reproduce these results on a desktop machine with a consumer-grade NVIDIA RTX3090 GPU. This produced the same reward curves but actually reduced the training times from around ~24 hours to ~20 hours, showing the ability of our system to train on a desktop.
+
+% \subsubsection{Throughput comparison between CPU and GPU}
+
+% We tested the throughput of the simulator on the same desktop computer with 3090 GPU and 12-core i9-7920X processor to compare the speed of end2end training (simulation, inference and training on CPU) to standard training with simulation on the CPU and neural network inference and training on the GPU. Using the Trifinger environment in Isaac Gym, we got 45,000 steps per second while training using the former while only 6200 using the latter, a speedup of more than 7x.
+
+% \subsection{Details of Sim2Real Transfer}
+
+% \subsubsection{Success Thresholds}
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=0.4\textwidth]{figure/appendix/heatmap.pdf}
+% \caption{We investigated the impact of varying the thresholds on success rate. The results are shown in the heatmap.}
+% \label{fig:success_threshold}
+% \end{figure}
+
+% The success rates on the real robot for different thresholds of position and orientation are shown in Figure \ref{fig:success_threshold}. We see a graceful degradation as the success thresholds are tightened. We note that these are necessarily based on noisy camera observations due to the remote nature of the setup; at 0.01m of position and 0.1rad of orientation error this becomes a particular problem. Note also that 'success' for us is based off a different metric than some other works (eg. \citep{openai-sh}): we define 'success' as being within the goal at the end of an episode instead of achiving it at any point during it. This is because part of the challenge of the \textit{Trifinger} orientation task is being able to grasp \textit{and hold} the object in position, as the upside-down orientation of \textit{Trifinger} making this challenging.
+
+% \subsubsection{Hardware setup}
+
+% As mentioned in the main text, we perform inference on the Trifinger platform remotely. The interface is described in the corresponding whitepaper \citep{trifinger-platform}.
+
+% Inference, including camera tracking and running the network, is performed on CPU on the same computer that hand-written solutions to last year's real robot challenge \citep{trifinger-benchmarking, rrc-submission-chen, rrc-submission-yoneda} were written on. An entire setup to run our system, including training, inference and physical robot hardware, could be purchased for less than US\$10,000.
+
+% \subsubsection{Software details}
+
+% Inference is done in the Python; the time from getting the observations to sending the actions to the hardware platform is on the order of 5-8ms, a delay consisting of generating keypoints observations and running the policy. Reducing this delay by moving our inference code to C++ is a direction for future improvements to our system.
+
+% \subsubsection{Pose Filtering}
+
+% Unlike some previous works using visual information to perform in-hand manipulation, our system uses the pose estimator provided in \citep{trifinger-object-tracking}. This performs iterative optimization without reference to the history, and thus can provide temporally inconsistent quaternion inputs to the policy, with the quaternion value flipping between $+q$ and $-q$. We found that this destabilised the policies which were provided position and quaternion inputs during inference, and so implemented a simple filter over the input: if the quaternion from the last camera measurement $q_{last}$ was within 0.2 of the negated quaternion from a new camera measurement $-q_{new}$, we used $-q_{new}$ in the policy input. While this had no impact on the keypoints model (it performs an analytic transformation prior to policy inference which is invariant to this issue) we found it important to perform this transformation to allow stable grasps in policies which took raw quaternions as input and thus to provide a fair comparison.
+
+% We tried using an Extended Kalman Filter using the formulation from \citep{monoslam} in order to account for the noise in camera observations. However, we did not find that the performance of our policies on the real-robot was noticeably improved as compared with policies, likely due to the high variance in the unknown acceleration in in-hand manipulation. 
+
+% \subsection{Other objects}
+% \label{sec:zero-shot-objects}
+
+% % TODO - do we actually want to include this section, or is it showing our hand too much?
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=0.5\textwidth]{figure/appendix/mug-0-shot.png}
+% \caption{We experimented with seeing how our learned policy generalized to other objects.}
+% \label{fig:mug}
+% \end{figure}
+
+% We experimented with our system to see what the 0-shot transfer performance to different object morphologies was. In order to do this, we swapped the objects in the simulator, ran inference the O-KP+R-KP policy (see Section~\ref{sec:experiments}) that produced the best sim2real transfer results, and measured the success rate. We do not change the keypoints representation, but rather keep the 8 keypoints as if they lie on the original 6.5cm\textsuperscript{3} object despite the changing object morphology. We were only able to perform these experiments in simulation, as in the remote Trifinger setup we did not have the capacity to swap out objects. However, using an off the shelf pose detector (eg. \citep{tremblay2018corl:dope}) we are confident that the same system would produce good sim2real transfer results.
+
+% We tested a sphere of diameter similar to the object side length, cuboids of different sizes, and a few objects from the YCB dataset \citep{YCB}. The results are listed in Table \ref{tab:zero-shot-objects}. Our our policy generalises surprisingly well on different object morphologies, for example by achieving nearly 70\% accuracy on a mug (depicted in figure 3 in Figure \ref{fig:mug}). However, it struggles with long and skinny objects. This is unsurprising given the difficulty in grasping the object at less than 0.5x  the original scale (or ~3cm).
+
+% \begin{table}
+% \centering
+% \begin{tabular}{l|c} 
+%     \toprule
+%     % \rowcolor{Light}
+%     \rowcolor[HTML]{CBCEFB}
+%     Object & Success Rate \\
+%     \midrule
+%                             Object 6.5cm$^3$ [Training Object]        & 92.1\% \\
+%     \rowcolor[HTML]{EFEFEF} Ball radius=3.75cm &  96.7\%  \\
+%                                 Cuboid 2x8x2cm        & 2.0\% \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 2x8x4cm &  42.9\%  \\
+%                             Cuboid 4x8x4cm        & 92.4\% \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 2x6.5x2cm &  2.44\%  \\
+%                             Cuboid 2x6.5x4cm &  48.9\%  \\
+%     \rowcolor[HTML]{EFEFEF} Cuboid 4x6.5x4cm & 94.6 \% \\
+%                             YCB Mug (\texttt{025\_mug}) & 68.8 \% \\
+%     \rowcolor[HTML]{EFEFEF} YCB Banana (\texttt{011\_banana}) & 28.0 \% \\               
+%                             YCB Potted Meat Can (\texttt{010\_potted\_meat\_can}) & 81.1 \% \\
+%     \rowcolor[HTML]{EFEFEF} YCB Foam Brick (\texttt{061\_foam\_brick}) & 91.7 \% \\
+%     \bottomrule
+% \end{tabular}
+% \caption{\textbf{0-shot object transfer performance.} Numbers calculated from N=1024 trials in simulation. For these, we disabled Environment and Observation \& Action Randomizations (though still only gave 10Hz observations to simualte camera tracking). Objects prefixed with YCB were used from the YCB dataset. \citep{YCB}}
+% \label{tab:zero-shot-objects}
+% \end{table}
+
+
+% \clearpage
+
+% \bibliography{trifinger}
+
+% \clearpage
+
+\end{document}

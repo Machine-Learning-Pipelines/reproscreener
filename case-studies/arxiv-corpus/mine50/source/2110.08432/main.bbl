@@ -1,0 +1,337 @@
+\begin{thebibliography}{53}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allen et~al.(2019)Allen, Shelhamer, Shin, and
+  Tenenbaum]{allen2019infinite}
+Kelsey Allen, Evan Shelhamer, Hanul Shin, and Joshua Tenenbaum.
+\newblock Infinite mixture prototypes for few-shot learning.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  232--241. PMLR, 2019.
+
+\bibitem[Andrychowicz et~al.(2016)Andrychowicz, Denil, Gomez, Hoffman, Pfau,
+  Schaul, Shillingford, and De~Freitas]{andrychowicz2016learning}
+Marcin Andrychowicz, Misha Denil, Sergio Gomez, Matthew~W Hoffman, David Pfau,
+  Tom Schaul, Brendan Shillingford, and Nando De~Freitas.
+\newblock Learning to learn by gradient descent by gradient descent.
+\newblock \emph{arXiv preprint arXiv:1606.04474}, 2016.
+
+\bibitem[Ascher and Petzold(1998)]{ascher1998computer}
+Uri~M Ascher and Linda~R Petzold.
+\newblock \emph{Computer methods for ordinary differential equations and
+  differential-algebraic equations}, volume~61.
+\newblock Siam, 1998.
+
+\bibitem[Baydin and Pearlmutter(2014)]{baydin2014automatic}
+Atilim~Gunes Baydin and Barak~A Pearlmutter.
+\newblock Automatic differentiation of algorithms for machine learning.
+\newblock \emph{arXiv preprint arXiv:1404.7456}, 2014.
+
+\bibitem[Bengio(2000)]{bengio2000gradient}
+Yoshua Bengio.
+\newblock Gradient-based optimization of hyperparameters.
+\newblock \emph{Neural computation}, 12\penalty0 (8):\penalty0 1889--1900,
+  2000.
+
+\bibitem[Bertinetto et~al.(2018)Bertinetto, Henriques, Torr, and
+  Vedaldi]{bertinetto2018meta}
+Luca Bertinetto, Joao~F Henriques, Philip~HS Torr, and Andrea Vedaldi.
+\newblock Meta-learning with differentiable closed-form solvers.
+\newblock \emph{arXiv preprint arXiv:1805.08136}, 2018.
+
+\bibitem[Chen et~al.(2018)Chen, Rubanova, Bettencourt, and
+  Duvenaud]{chen2018neural}
+Ricky~TQ Chen, Yulia Rubanova, Jesse Bettencourt, and David~K Duvenaud.
+\newblock Neural ordinary differential equations.
+\newblock \emph{Advances in neural information processing systems}, 31, 2018.
+
+\bibitem[Denevi et~al.(2020)Denevi, Pontil, and Ciliberto]{denevi2020advantage}
+Giulia Denevi, Massimiliano Pontil, and Carlo Ciliberto.
+\newblock The advantage of conditional meta-learning for biased regularization
+  and fine tuning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33, 2020.
+
+\bibitem[Denevi et~al.(2021)Denevi, Pontil, and
+  Ciliberto]{denevi2021conditional}
+Giulia Denevi, Massimiliano Pontil, and Carlo Ciliberto.
+\newblock Conditional meta-learning of linear representations.
+\newblock \emph{arXiv preprint arXiv:2103.16277}, 2021.
+
+\bibitem[Domke(2012)]{domke2012generic}
+Justin Domke.
+\newblock Generic methods for optimization-based modeling.
+\newblock In \emph{Artificial Intelligence and Statistics}, pages 318--326.
+  PMLR, 2012.
+
+\bibitem[Dormand and Prince(1980)]{dormand1980family}
+John~R Dormand and Peter~J Prince.
+\newblock A family of embedded runge-kutta formulae.
+\newblock \emph{Journal of computational and applied mathematics}, 6\penalty0
+  (1):\penalty0 19--26, 1980.
+
+\bibitem[Duan et~al.(2016)Duan, Schulman, Chen, Bartlett, Sutskever, and
+  Abbeel]{duan2016rl}
+Yan Duan, John Schulman, Xi~Chen, Peter~L Bartlett, Ilya Sutskever, and Pieter
+  Abbeel.
+\newblock Rl2: Fast reinforcement learning via slow reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1611.02779}, 2016.
+
+\bibitem[Eichmeir et~al.(2021)Eichmeir, Lau{\ss}, Oberpeilsteiner, Nachbagauer,
+  and Steiner]{eichmeir2021adjoint}
+Philipp Eichmeir, Thomas Lau{\ss}, Stefan Oberpeilsteiner, Karin Nachbagauer,
+  and Wolfgang Steiner.
+\newblock The adjoint method for time-optimal control problems.
+\newblock \emph{Journal of Computational and Nonlinear Dynamics}, 16\penalty0
+  (2), 2021.
+
+\bibitem[Finn(2018)]{finn2018learning}
+Chelsea Finn.
+\newblock \emph{Learning to learn with gradients}.
+\newblock PhD thesis, UC Berkeley, 2018.
+
+\bibitem[Finn et~al.(2017)Finn, Abbeel, and Levine]{finn2017model}
+Chelsea Finn, Pieter Abbeel, and Sergey Levine.
+\newblock Model-agnostic meta-learning for fast adaptation of deep networks.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1126--1135. PMLR, 2017.
+
+\bibitem[Finn et~al.(2018)Finn, Xu, and Levine]{finn2018probabilistic}
+Chelsea Finn, Kelvin Xu, and Sergey Levine.
+\newblock Probabilistic model-agnostic meta-learning.
+\newblock \emph{arXiv preprint arXiv:1806.02817}, 2018.
+
+\bibitem[Goldberg et~al.(2001)Goldberg, Roeder, Gupta, and
+  Perkins]{goldberg2001eigentaste}
+Ken Goldberg, Theresa Roeder, Dhruv Gupta, and Chris Perkins.
+\newblock Eigentaste: A constant time collaborative filtering algorithm.
+\newblock \emph{information retrieval}, 4\penalty0 (2):\penalty0 133--151,
+  2001.
+
+\bibitem[Grant et~al.(2018)Grant, Finn, Levine, Darrell, and
+  Griffiths]{grant2018recasting}
+Erin Grant, Chelsea Finn, Sergey Levine, Trevor Darrell, and Thomas Griffiths.
+\newblock Recasting gradient-based meta-learning as hierarchical {B}ayes.
+\newblock In \emph{6th International Conference on Learning Representations,
+  ICLR 2018}, 2018.
+
+\bibitem[Harrison et~al.(2018)Harrison, Sharma, and Pavone]{harrison2018meta}
+James Harrison, Apoorva Sharma, and Marco Pavone.
+\newblock Meta-learning priors for efficient online bayesian regression.
+\newblock In \emph{International Workshop on the Algorithmic Foundations of
+  Robotics}, pages 318--337. Springer, 2018.
+
+\bibitem[Hochreiter et~al.(2001)Hochreiter, Younger, and
+  Conwell]{hochreiter2001learning}
+Sepp Hochreiter, A~Steven Younger, and Peter~R Conwell.
+\newblock Learning to learn using gradient descent.
+\newblock In \emph{International Conference on Artificial Neural Networks},
+  pages 87--94. Springer, 2001.
+
+\bibitem[Hospedales et~al.(2020)Hospedales, Antoniou, Micaelli, and
+  Storkey]{hospedales2020meta}
+Timothy Hospedales, Antreas Antoniou, Paul Micaelli, and Amos Storkey.
+\newblock Meta-learning in neural networks: A survey.
+\newblock \emph{arXiv preprint arXiv:2004.05439}, 2020.
+
+\bibitem[Im et~al.(2019)Im, Jiang, and Verma]{im2019model}
+Daniel~Jiwoong Im, Yibo Jiang, and Nakul Verma.
+\newblock Model-agnostic meta-learning using runge-kutta methods.
+\newblock \emph{arXiv preprint arXiv:1910.07368}, 2019.
+
+\bibitem[Kingma and Ba(2014)]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{arXiv preprint arXiv:1412.6980}, 2014.
+
+\bibitem[Koch et~al.(2015)Koch, Zemel, and Salakhutdinov]{koch2015siamese}
+Gregory Koch, Richard Zemel, and Ruslan Salakhutdinov.
+\newblock Siamese neural networks for one-shot image recognition.
+\newblock In \emph{ICML deep learning workshop}, volume~2. Lille, 2015.
+
+\bibitem[Lake et~al.(2011)Lake, Salakhutdinov, Gross, and
+  Tenenbaum]{lake2011one}
+Brenden Lake, Ruslan Salakhutdinov, Jason Gross, and Joshua Tenenbaum.
+\newblock One shot learning of simple visual concepts.
+\newblock In \emph{Proceedings of the annual meeting of the cognitive science
+  society}, volume~33, 2011.
+
+\bibitem[Lee et~al.(2019)Lee, Maji, Ravichandran, and Soatto]{lee2019meta}
+Kwonjoon Lee, Subhransu Maji, Avinash Ravichandran, and Stefano Soatto.
+\newblock Meta-learning with differentiable convex optimization.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, pages 10657--10665, 2019.
+
+\bibitem[Li and Malik(2016)]{li2016learning}
+Ke~Li and Jitendra Malik.
+\newblock Learning to optimize.
+\newblock \emph{arXiv preprint arXiv:1606.01885}, 2016.
+
+\bibitem[Li et~al.(2017)Li, Zhou, Chen, and Li]{li2017meta}
+Zhenguo Li, Fengwei Zhou, Fei Chen, and Hang Li.
+\newblock Meta-sgd: Learning to learn quickly for few-shot learning.
+\newblock \emph{arXiv preprint arXiv:1707.09835}, 2017.
+
+\bibitem[Liu et~al.(2019)Liu, Socher, and Xiong]{liu2019taming}
+Hao Liu, Richard Socher, and Caiming Xiong.
+\newblock Taming maml: Efficient unbiased meta-reinforcement learning.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  4061--4071. PMLR, 2019.
+
+\bibitem[Mishra et~al.(2017)Mishra, Rohaninejad, Chen, and
+  Abbeel]{mishra2017simple}
+Nikhil Mishra, Mostafa Rohaninejad, Xi~Chen, and Pieter Abbeel.
+\newblock A simple neural attentive meta-learner.
+\newblock \emph{arXiv preprint arXiv:1707.03141}, 2017.
+
+\bibitem[Munkhdalai and Yu(2017)]{munkhdalai2017meta}
+Tsendsuren Munkhdalai and Hong Yu.
+\newblock Meta networks.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  2554--2563. PMLR, 2017.
+
+\bibitem[Naik and Mammone(1992)]{naik1992meta}
+Devang~K Naik and Richard~J Mammone.
+\newblock Meta-neural networks that learn by learning.
+\newblock In \emph{[Proceedings 1992] IJCNN International Joint Conference on
+  Neural Networks}, volume~1, pages 437--442. IEEE, 1992.
+
+\bibitem[Nichol et~al.(2018)Nichol, Achiam, and Schulman]{nichol2018first}
+Alex Nichol, Joshua Achiam, and John Schulman.
+\newblock On first-order meta-learning algorithms.
+\newblock \emph{arXiv preprint arXiv:1803.02999}, 2018.
+
+\bibitem[Oreshkin et~al.(2018)Oreshkin, Rodriguez, and
+  Lacoste]{oreshkin2018tadam}
+Boris~N Oreshkin, Pau Rodriguez, and Alexandre Lacoste.
+\newblock Tadam: Task dependent adaptive metric for improved few-shot learning.
+\newblock \emph{arXiv preprint arXiv:1805.10123}, 2018.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, et~al.]{paszke2019pytorch}
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory
+  Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, et~al.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock \emph{arXiv preprint arXiv:1912.01703}, 2019.
+
+\bibitem[Pontryagin(1987)]{pontryagin1987mathematical}
+Lev~Semenovich Pontryagin.
+\newblock \emph{Mathematical theory of optimal processes}.
+\newblock CRC press, 1987.
+
+\bibitem[Rajeswaran et~al.(2019)Rajeswaran, Finn, Kakade, and
+  Levine]{rajeswaran2019meta}
+Aravind Rajeswaran, Chelsea Finn, Sham Kakade, and Sergey Levine.
+\newblock Meta-learning with implicit gradients.
+\newblock \emph{Advances in neural information processing systems}, 2019.
+
+\bibitem[Ravi and Larochelle(2017)]{ravi2016optimization}
+Sachin Ravi and Hugo Larochelle.
+\newblock Optimization as a model for few-shot learning.
+\newblock In \emph{In International Conference on Learning Representations
+  (ICLR)}, 2017.
+
+\bibitem[Rusu et~al.(2018)Rusu, Rao, Sygnowski, Vinyals, Pascanu, Osindero, and
+  Hadsell]{rusu2018meta}
+Andrei~A Rusu, Dushyant Rao, Jakub Sygnowski, Oriol Vinyals, Razvan Pascanu,
+  Simon Osindero, and Raia Hadsell.
+\newblock Meta-learning with latent embedding optimization.
+\newblock \emph{arXiv preprint arXiv:1807.05960}, 2018.
+
+\bibitem[Santoro et~al.(2016)Santoro, Bartunov, Botvinick, Wierstra, and
+  Lillicrap]{santoro2016meta}
+Adam Santoro, Sergey Bartunov, Matthew Botvinick, Daan Wierstra, and Timothy
+  Lillicrap.
+\newblock Meta-learning with memory-augmented neural networks.
+\newblock In \emph{International conference on machine learning}, pages
+  1842--1850. PMLR, 2016.
+
+\bibitem[Schmidhuber(1987)]{schmidhuber1987evolutionary}
+J{\"u}rgen Schmidhuber.
+\newblock \emph{Evolutionary principles in self-referential learning, or on
+  learning how to learn: the meta-meta-... hook}.
+\newblock PhD thesis, Technische Universit{\"a}t M{\"u}nchen, 1987.
+
+\bibitem[Snell et~al.(2017)Snell, Swersky, and Zemel]{snell2017prototypical}
+Jake Snell, Kevin Swersky, and Richard Zemel.
+\newblock Prototypical networks for few-shot learning.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Song et~al.(2020)Song, Gao, Yang, Choromanski, Pacchiano, and
+  Tang]{song2020maml}
+Xingyou Song, Wenbo Gao, Yuxiang Yang, Krzysztof Choromanski, Aldo Pacchiano,
+  and Yunhao Tang.
+\newblock Es-maml: Simple hessian-free meta learning.
+\newblock In \emph{ICLR}, 2020.
+
+\bibitem[Sung et~al.(2018)Sung, Yang, Zhang, Xiang, Torr, and
+  Hospedales]{sung2018learning}
+Flood Sung, Yongxin Yang, Li~Zhang, Tao Xiang, Philip~HS Torr, and Timothy~M
+  Hospedales.
+\newblock Learning to compare: Relation network for few-shot learning.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 1199--1208, 2018.
+
+\bibitem[Thrun and Pratt(2012)]{thrun2012learning}
+Sebastian Thrun and Lorien Pratt.
+\newblock \emph{Learning to learn}.
+\newblock Springer Science \& Business Media, 2012.
+
+\bibitem[Triantafillou et~al.(2019)Triantafillou, Zhu, Dumoulin, Lamblin, Evci,
+  Xu, Goroshin, Gelada, Swersky, Manzagol, et~al.]{triantafillou2019meta}
+Eleni Triantafillou, Tyler Zhu, Vincent Dumoulin, Pascal Lamblin, Utku Evci,
+  Kelvin Xu, Ross Goroshin, Carles Gelada, Kevin Swersky, Pierre-Antoine
+  Manzagol, et~al.
+\newblock Meta-dataset: A dataset of datasets for learning to learn from few
+  examples.
+\newblock \emph{arXiv preprint arXiv:1903.03096}, 2019.
+
+\bibitem[Vinyals et~al.(2016)Vinyals, Blundell, Lillicrap, Kavukcuoglu, and
+  Wierstra]{vinyals2016matching}
+Oriol Vinyals, Charles Blundell, Timothy Lillicrap, Koray Kavukcuoglu, and Daan
+  Wierstra.
+\newblock Matching networks for one shot learning.
+\newblock \emph{arXiv preprint arXiv:1606.04080}, 2016.
+
+\bibitem[Wang et~al.(2016)Wang, Kurth-Nelson, Tirumala, Soyer, Leibo, Munos,
+  Blundell, Kumaran, and Botvinick]{wang2016learning}
+Jane~X Wang, Zeb Kurth-Nelson, Dhruva Tirumala, Hubert Soyer, Joel~Z Leibo,
+  Remi Munos, Charles Blundell, Dharshan Kumaran, and Matt Botvinick.
+\newblock Learning to reinforcement learn.
+\newblock \emph{arXiv preprint arXiv:1611.05763}, 2016.
+
+\bibitem[Wang et~al.(2020)Wang, Demiris, and Ciliberto]{wang2020structured}
+Ruohan Wang, Yiannis Demiris, and Carlo Ciliberto.
+\newblock Structured prediction for conditional meta-learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33, 2020.
+
+\bibitem[Xu et~al.(2021)Xu, Chen, and Karbasi]{xu2021meta}
+Ruitu Xu, Lin Chen, and Amin Karbasi.
+\newblock Meta learning in the continuous time limit.
+\newblock In \emph{International Conference on Artificial Intelligence and
+  Statistics}, pages 3052--3060. PMLR, 2021.
+
+\bibitem[Yoon et~al.(2018)Yoon, Kim, Dia, Kim, Bengio, and
+  Ahn]{yoon2018bayesian}
+Jaesik Yoon, Taesup Kim, Ousmane Dia, Sungwoong Kim, Yoshua Bengio, and Sungjin
+  Ahn.
+\newblock Bayesian model-agnostic meta-learning.
+\newblock In \emph{Proceedings of the 32nd International Conference on Neural
+  Information Processing Systems}, pages 7343--7353, 2018.
+
+\bibitem[Zhou et~al.(2018)Zhou, Wu, and Li]{zhou2018deep}
+Fengwei Zhou, Bin Wu, and Zhenguo Li.
+\newblock Deep meta-learning: Learning to learn in the concept space.
+\newblock \emph{arXiv preprint arXiv:1802.03596}, 2018.
+
+\bibitem[Zintgraf et~al.(2019)Zintgraf, Shiarli, Kurin, Hofmann, and
+  Whiteson]{zintgraf2019fast}
+Luisa Zintgraf, Kyriacos Shiarli, Vitaly Kurin, Katja Hofmann, and Shimon
+  Whiteson.
+\newblock Fast context adaptation via meta-learning.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  7693--7702. PMLR, 2019.
+
+\end{thebibliography}

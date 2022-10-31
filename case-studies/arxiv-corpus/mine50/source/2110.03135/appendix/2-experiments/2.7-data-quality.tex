@@ -1,0 +1,6 @@
+% \smallsection{Estimation of the data quality}
+\subsection{Estimation of the data quality}
+% \label{sect:data-quality-estimation}
+In this section we elaborate on the calculation of data quality for analyzing the dependence on label noise in adversarial training.
+
+We use the predicative probabilities of classifiers trained on CIFAR-10 to score its training data. Similar strategy is employed in previous works to select high-quality unlabeled data to improve adversarial robustness~\citep{Uesato2019AreLR, Carmon2019UnlabeledDI, Gowal2020UncoveringTL}. Slightly deviating from these works focusing on out-of-distribution data, we use adversarially trained instead of regularly trained models to measure the quality of in-distribution data, since under standard training almost all training examples will be overfitted and gain overwhelmingly high confidence. Specifically, we adversarially train a pre-activation ResNet-18 with PGD and select the model at the best checkpoint in terms of the robustness. The quality of an example is estimated by the model probability corresponding to the true label without adversarial perturbation and random data augmentation (flipping and clipping). We repeat this process $10$ times with random initialization to obtain a relatively accurate estimation.

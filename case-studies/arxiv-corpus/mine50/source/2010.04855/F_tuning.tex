@@ -1,0 +1,127 @@
+\section{Tuning}\label{sec:tuning}
+
+In the present work, we propose a family of novel estimators that are combinations of kernel ridge regressions. As such, the same two kinds of hyperparameters that arise in kernel ridge regressions arise in our estimators: ridge regression penalties and kernel hyperparameters. In this section, we describe practical tuning procedures for such hyperparameters. To simplify the discussion, we focus on the regression of $Y$ on $W$. Recall that the closed form solution of the regression estimator using all observations is
+$$
+\hat{f}(w)=K_{wW}(K_{WW}+n\lambda  I )^{-1}Y.
+$$
+
+\subsection{Ridge penalty}
+
+It is convenient to tune $\lambda$ by leave-one-out cross validation (LOOCV) or generalized cross validation (GCV), since the validation losses have closed form solutions.
+
+\begin{algorithm}[Ridge penalty tuning by LOOCV]
+Construct the matrices
+$$
+H_{\lambda}= I -K_{WW}(K_{WW}+n\lambda  I )^{-1}\in\mathbb{R}^{n\times n},\quad \tilde{H}_{\lambda}=diag(H_{\lambda})\in\mathbb{R}^{n\times n}
+$$
+where $\tilde{H}_{\lambda}$ has the same diagonal entries as $H_{\lambda}$ and off diagonal entries of zero. Then set
+$$
+\lambda^*=\argmin_{\lambda \in\Lambda} n^{-1}\|\tilde{H}_{\lambda}^{-1}H_{\lambda} Y\|_2^2,\quad \Lambda\subset\mathbb{R}.
+$$
+\end{algorithm}
+
+\begin{proof}
+We prove that $n^{-1}\|\tilde{H}_{\lambda}^{-1} H_{\lambda}Y\|_2^2$ is the LOOCV loss. By definition, the LOOCV loss is
+$
+\mathcal{E}(\lambda)=n^{-1}\sum_{i=1}^n \{Y_i-\hat{f}_{-i}(W_i)\}^2
+$
+where $\hat{f}_{-i}$ is the regression estimator using all observations except the $i$th observation.
+
+Let $\Phi$ be the matrix of features, with $i$th row $\phi(W_i)^{\top}$, and let $Q=\Phi^{\top}\Phi+n\lambda I$. By the regression first order condition,
+\begin{align*}
+    \hat{f}&=Q^{-1}\Phi^{\top}Y,\quad 
+    \hat{f}_{-i}=\{Q-\phi(W_i)\phi(W_i)^{\top}\}^{-1}\{\Phi^{\top}Y-\phi(W_i)Y_i\}.
+\end{align*}
+Recall the Sherman-Morrison formula for rank one updates:
+$$
+(A+uv^{\top})^{-1}=A^{-1}-\frac{A^{-1}uv^{\top} A^{-1}}{1+v^{\top}A^{-1}u}.
+$$
+Hence
+$$
+\{Q-\phi(W_i)\phi(W_i)^{\top}\}^{-1}=Q^{-1}+\frac{Q^{-1}\phi(W_i)\phi(W_i)^{\top}Q^{-1}}{1-\phi(W_i)^{\top}Q^{-1}\phi(W_i)}.
+$$
+Let $\beta_i=\phi(W_i)^{\top} Q^{-1} \phi(W_i)$. Then
+\begin{align*}
+    \hat{f}_{-i}(W_i)&=\phi(W_i)^{\top} \left\{Q^{-1}+\frac{Q^{-1}\phi(W_i)\phi(W_i)^{\top}Q^{-1}}{1-\beta_i}\right\}\{\Phi^{\top}Y-\phi(W_i)Y_i\} \\
+    &=\phi(W_i)^{\top} \left\{I+\frac{Q^{-1}\phi(W_i)\phi(W_i)^{\top}}{1-\beta_i}\right\}\{\hat{f}-Q^{-1}\phi(W_i)Y_i\} \\
+    &=\left(1 +\frac{\beta_i}{1-\beta_i}\right)\phi(W_i)^{\top}\{\hat{f}-Q^{-1}\phi(W_i)Y_i\}\\
+    &=\left(1 +\frac{\beta_i}{1-\beta_i}\right)\{\hat{f}(W_i)-\beta_iY_i\} \\
+    &=\frac{1}{1-\beta_i}\{\hat{f}(W_i)-\beta_iY_i\},
+\end{align*}
+i.e. $\hat{f}_{-i}$ can be expressed in terms of $\hat{f}$.
+Note that
+\begin{align*}
+    Y_i-\hat{f}_{-i}(W_i)&=Y_i-\frac{1}{1-\beta_i}\{\hat{f}(W_i)-\beta_iY_i\} \\
+    &=Y_i+\frac{1}{1-\beta_i}\{\beta_iY_i-\hat{f}(W_i)\} \\
+    &=\frac{1}{1-\beta_i}\{Y_i-\hat{f}(W_i)\}.
+\end{align*}
+Substituting back into the LOOCV loss
+\begin{align*}
+    n^{-1}\sum_{i=1}^n \left\{Y_i-\hat{f}_{-i}(W_i)\right\}^2 
+    &=n^{-1}\sum_{i=1}^n \left[\{Y_i-\hat{f}(W_i)\}\left(\frac{1}{1-\beta_i}\right)\right]^2 \\
+    &= n^{-1}\|\tilde{H}_{\lambda}^{-1} \{Y-K_{WW}(K_{WW}+n\lambda  I )^{-1}Y\}\|_2^2 \\
+    &=n^{-1}\|\tilde{H}_{\lambda}^{-1} H_{\lambda}Y\|_2^2,
+\end{align*}
+since
+$$
+(\tilde{H}_{\lambda}^{-1})_{ii}=\frac{1}{(\tilde{H}_{\lambda})_{ii}}=\frac{1}{(H_{\lambda})_{ii}}=\frac{1}{1-\{K_{WW}(K_{WW}+n\lambda  I )^{-1}\}_{ii}}
+$$
+and
+$$
+K_{WW}(K_{WW}+n\lambda  I )^{-1}=\Phi\Phi^{\top}(\Phi\Phi^{\top}+n\lambda  I )^{-1}=\Phi(\Phi^{\top}\Phi+n\lambda I)^{-1}\Phi^{\top}=\Phi Q^{-1}\Phi^{\top}.
+$$
+\end{proof}
+
+\begin{algorithm}[Ridge penalty tuning by GCV]
+Construct the matrix
+$$
+H_{\lambda}= I -K_{WW}(K_{WW}+n\lambda  I )^{-1}\in\mathbb{R}^{n\times n}.
+$$
+Then set
+$$
+\lambda^*=\argmin_{\lambda \in\Lambda} n^{-1}\|\{\text{\normalfont tr}(H_{\lambda})\}^{-1} H_{\lambda} Y\|_2^2,\quad \Lambda\subset\mathbb{R}.
+$$
+\end{algorithm}
+
+\begin{proof}
+We match symbols with the classic derivation of \cite{craven1978smoothing}. Observe that
+$$
+\begin{Bmatrix} \hat{f}(W_1) \\ \vdots \\ f(W_n) \end{Bmatrix}=K_{WW}(K_{WW}+n\lambda  I )^{-1}Y=A_{\lambda}Y,\quad A_{\lambda}=K_{WW}(K_{WW}+n\lambda  I )^{-1}.
+$$
+Therefore
+$$
+H_{\lambda}= I -K_{WW}(K_{WW}+n\lambda  I )^{-1}= I -A_{\lambda}.
+$$
+\end{proof}
+
+GCV can be viewed as a rotation invariant modification of LOOCV. In practice, we find that LOOCV and GCV provide almost identical hyperparameter values.
+
+\subsection{Kernel}
+
+The exponentiated quadratic kernel is the most popular kernel among machine learning researchers:
+$$
+k(w,w')=\exp\left\{-\frac{1}{2}\frac{(w-w')^2}{\iota^2}\right\}.
+$$
+Importantly, this kernel satisfies the required properties; it is continuous, bounded, and characteristic.
+
+\cite[Section 4.3]{williams2006gaussian} characterize the exponentiated quadratic RKHS as an attenuated series of the form
+$$
+\mathcal{H}=\left(f=\sum_{j=1}^{\infty}f_j\varphi_j:\;\sum_{j=1}^{\infty} \frac{f_j^2}{\eta_j}<\infty\right),\quad \langle f,f' \rangle_{\mathcal{H}}=\sum_{j=1}^{\infty} \frac{f_jf_j'}{\eta_j}.
+$$
+For simplicity, take $\mathcal{W}=\mathbb{R}$ and take the measure $\nu$ to be the standard Gaussian distribution (more generally, it can be the population distribution $\text{\normalfont pr}$). Recall that the generalization of Mercer's Theorem permits $\mathcal{W}$ to be separable. Then the induced RKHS is characterized by
+$$
+\eta_j=\left(\frac{2\bar{a}}{\bar{A}}\right)^{1/2}\bar{B}^j,\quad \varphi_j(w)=\exp\{-(\bar{c}-\bar{a})w^2\}H_j\{w(2\bar{c})^{1/2}\}.%,\quad H_j(w)=(-1)^k \exp(w^2)\frac{d^k}{dw^k}\exp(-w^2).
+$$
+$H_j$ is the $j$th Hermite polynomial, and the constants $(\bar{a},\bar{b},\bar{c},\bar{A},\bar{B})>0$ are
+$$
+\bar{a}=\frac{1}{4},\quad \bar{b}=\frac{1}{2\iota^2},\quad \bar{c}=(\bar{a}^2+2\bar{a}\bar{b})^{1/2},\quad \bar{A}=\bar{a}+\bar{b}+\bar{c},\quad \bar{B}=\frac{\bar{b}}{\bar{A}}<1.
+$$
+The eigenvalues $(\eta_j)$ geometrically decay, and the series $(\varphi_j)$ consists of weighted Hermite polynomials. For a function to belong to this RKHS, its coefficients on higher order weighted Hermite polynomials must be small.
+
+Observe that the exponentiated quadratic kernel has a hyperparameter: the lengthscale $\iota$. A convenient heuristic is to set the lengthscale equal to the median interpoint distance of $(W_i)$ $(i=1,...,n)$, where the interpoint distance between observations $i$ and $j$ is $\|W_i-W_j\|_{\mathcal{W}}$. When the input $W$ is multidimensional, we use the kernel obtained as the product of scalar kernels for each input dimension. For example, if $\mathcal{W}\subset \mathbb{R}^d$ then
+$$
+k(w,w')=\prod_{j=1}^d \exp\left\{-\frac{1}{2}\frac{(w_j-w_j')^2}{\iota_j^2}\right\}.
+$$
+Each lengthscale $\iota_j$ is set according to the median interpoint distance for that input dimension.
+
+In principle, we could instead use LOOCV or GCV to tune kernel hyperparameters in the same way that we use LOOCV or GCV to tune ridge penalties. However, given our choice of product kernel, this approach becomes impractical in high dimensions. For example, in the dose response curve design, $D\in\mathbb{R}$ and $X\in\mathbb{R}^{100}$ leading to a total of 101 lengthscales $(\iota_j)$. Even with a closed form solution for LOOCV and GCV, searching over this high dimensional grid becomes cumbersome.

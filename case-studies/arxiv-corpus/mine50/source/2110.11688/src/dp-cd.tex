@@ -1,0 +1,364 @@
+
+
+
+\section{Differentially Private Coordinate Descent}
+\label{sec:diff-priv-coord}
+
+In this section, we introduce the
+Differentially Private proximal Coordinate Descent (DP-CD) algorithm to
+solve problem~\eqref{eq:dp-erm} under $(\epsilon,\delta)$-DP constraints.
+We first describe our algorithm, show how to parameterize it to
+satisfy the desired privacy constraint, and prove corresponding utility
+results.
+Finally, we compare these utility guarantees with DP-SGD.
+
+\subsection{Private Proximal Coordinate Descent}
+
+Let $D = \{d_1, \dots, d_n\} \in \cX^n$ be a dataset.
+We denote by $f(w) = \frac{1}{n}\sum_{i=1}^n \ell(w; d_i)$ the $M$-component-smooth
+part of \eqref{eq:dp-erm},
+by $\psi(w) = \sum_{j=1}^p \psi_j(w_j)$ its separable part,
+and let $F(w) = f(w) + \psi(w)$.
+Proximal coordinate descent methods \cite{richtarik2014Iteration}
+solve problem~\eqref{eq:dp-erm} through iterative proximal gradient
+steps along each coordinate of~$F$.
+Formally, given $w \in \RR^p$ and $j \in [p]$, the $j$-th coordinate of
+$w$ is updated as follows:
+\begin{align}
+  \label{eq:proximal-update-nonoise}
+  w_j^+ = \prox_{\gamma_j\psi_j} \big(w_j - \gamma_j
+  \nabla_j f(w_t)\big)\enspace,
+\end{align}
+where $\gamma_j>0$ is the step size and $\prox_{\gamma_j\psi_j}
+(w)= \smash{\argmin_{v\in\RR^p} \big
+\{ \frac{1}{2} \norm{v - w}_2^2 + \gamma_j\psi_j(v) \big\}}$ is the proximal
+operator associated with $\psi_j$ \citep{parikh2014Proximal}.
+
+\begin{algorithm*}[t]
+  \caption{Differentially Private Proximal Coordinate Descent Algorithm
+    (DP-CD).}
+  \label{algo:dp-cd}
+  \textbf{Input}:
+  noise scales $\sigma = (\sigma_1, \dots, \sigma_p)$ for $\sigma_1,\dots,\sigma_p > 0$;
+  step sizes $\gamma_1,\dots,\gamma_p > 0$;
+  initial point $\bar w^0 \in \mathbb{R}^p$;
+  iteration budgets $T, K > 0$.
+  \begin{algorithmic}[1]
+    \For{$t = 0, \dots, T-1$}
+    \State Set $\theta^0 = \bar w^t$
+    \For{$k = 0, \dots, K-1$}
+    \State Pick $j$ from $\{1, \dots, p\}$ uniformly at random
+    \State Draw $\eta_j \sim \mathcal N(0, \sigma_j^2)$
+    \label{algo-line:noise-generation}
+    \State Set $\theta^{k+1} = \theta^k$
+    \State Set $\theta^{k+1}_{j} = \prox_{\gamma_{j}\psi_{j}} (\theta^{k}_{j} -
+      \gamma_{j} (\nabla_{j} f(\theta^k) + \eta_j))$
+    \label{algo-line:coordinate-minimization-update}
+    \vspace*{-.02cm}
+    \EndFor
+    \State Set $\bar w_{t+1} = \frac 1K \sum_{k=1}^K \theta^k$
+    \label{algo-line:periodic_avg}
+    \EndFor
+    \State \Return $ w_{priv} = \bar w_T$
+  \end{algorithmic}
+\end{algorithm*}
+Update \eqref{eq:proximal-update-nonoise} only requires the computation of the
+$j$-th entry of the gradient. To satisfy differential privacy, we perturb this
+gradient entry with additive Gaussian noise of variance $\sigma_j^2$.
+The complete DP-CD procedure is shown in \Cref{algo:dp-cd}.
+At each iteration, we pick a coordinate uniformly at random
+and update according to~\eqref{eq:proximal-update-nonoise}, albeit with noise
+addition (see line \ref{algo-line:coordinate-minimization-update}).
+For technical reasons related to our analysis, we use a
+periodic averaging scheme (line~\ref{algo-line:periodic_avg}).
+This scheme is similar to DP-SVRG \citep{johnson2013Accelerating}, although
+no variance reduction is required since DP-CD computes coordinate gradients
+over the whole dataset.
+
+
+
+\subsection{Privacy Guarantees}
+\label{sec:privacy-guarantees}
+
+For \Cref{algo:dp-cd} to satisfy $(\epsilon,\delta)$-DP, the noise scales
+$\sigma=(\sigma_1,\dots,\sigma_p)$ can be calibrated as given in \Cref
+{thm:dp-cd-privacy}. %
+
+\begin{theorem}
+  \label{thm:dp-cd-privacy}
+  Assume $\ell(\cdot;d)$ is $L$-component-Lipschitz $\forall d\in\cX$.
+  Let $\epsilon \leq 1$ and $\delta < 1/3$.
+  If $\sigma_j^2 = \frac{12L_j^2 TK \log(1/\delta)}{n^2\epsilon^2}$
+  for all $j \in [p]$,
+  then \Cref{algo:dp-cd} satisfies $(\epsilon, \delta)$-DP.
+\end{theorem}
+\begin{sketchproof}(Complete proof in \Cref{sec:proof-privacy}).
+  We track the privacy loss using Rényi differential privacy (RDP),
+  which gives better guarantees than $(\epsilon,\delta)$-DP for the
+  composition
+  of Gaussian mechanisms \citep{mironov2017Renyi}.  The
+  $j$\nobreakdash-th entry of $\nabla f$ has sensitivity
+  $\Delta(\nabla_j f) = {\Delta(\nabla_j \ell)}/{n} \le {2L_j}/{n}$.
+  By the Gaussian mechanism each iteration of DP-CD is
+  $(\alpha, \frac{2 L_j^2 \alpha}{n^2\sigma_j^2})$-RDP for all
+  $\alpha > 1$. The composition theorem for RDP gives a global RDP
+  guarantee for DP-CD, that we convert to $(\epsilon,\delta)$-DP using
+  Proposition~3 of \citet{mironov2017Renyi}. Choosing $\alpha$
+  carefully finally proves the result.
+\end{sketchproof}
+
+
+The dependence of the noise scales on $\epsilon$, $\delta$, $n$ and
+$TK$ (the number of updates) in \Cref{thm:dp-cd-privacy} is standard
+in DP-ERM. However, the noise is calibrated to the loss function's
+\emph{component}-Lipschitz constants. These can be much lower their
+global counterpart, the latter being used to calibrate the noise
+in DP-SGD algorithms. This will be crucial for DP-CD to achieve better utility
+than DP-SGD in some regimes.
+We also note that, unlike DP-SGD, DP-CD does not rely on privacy
+amplification by subsampling \citep{Balle_subsampling,mironov2019Enyi}, and
+thereby avoids the approximations required by these
+schemes to bound the privacy loss.
+
+\begin{remark}
+  Theorem~\ref{thm:dp-cd-privacy} assumes $\epsilon \in (0,1]$ to give
+  a simple closed form for the noise scales. In practice we compute
+  tighter values numerically using Rényi DP formulas directly (see
+  Eq.~\ref{eq:full_privacy_formula} in \Cref{sec:proof-privacy}),
+  removing the need for this assumption.
+\end{remark}
+
+
+
+\subsection{Utility Guarantees}
+\label{sec:utiltity-analysis-cd}
+
+We now state our central result on the utility of DP-CD
+for the composite DP-ERM problem.
+As done in previous work, we use the asymptotic notation $\widetilde O$ to hide
+non-significant logarithmic factors. Non-asymptotic utility bounds can be
+found in \Cref {sec-app:proof-utility}.
+\begin{theorem}
+  \label{thm:cd-utility}
+  Let $\ell(\cdot; d)$ be a convex and $L$-component-Lipschitz loss
+  function for all $d \in \cX$, and $f$ be convex and
+  $M$-component-smooth. Let
+  $\psi : \RR^p \rightarrow \RR$ be a convex and separable function.
+  Let $\epsilon \leq 1, \delta < 1/3$ be the privacy budget.  Let $w^*$
+  be a minimizer of $F$ and $F^* = F(w^*)$.
+  Let $w_{priv}\in\mathbb{R}^p$ be the output of \Cref{algo:dp-cd} with step
+  sizes $\gamma_j = {1}/{M_j}$, and noise
+  scales $\sigma_1,\dots,\sigma_p$ set as in Theorem~\ref{thm:dp-cd-privacy} (with $T$ and $K$ chosen below) to ensure
+  $(\epsilon,\delta)$-DP.
+  Then, the following holds:
+  \begin{enumerate}[leftmargin=12pt]
+    \item For $F$ convex, $K=O\left( \frac{R_M \sqrt{p} n \epsilon}{\norm{L}_{M^{-1}}} \right)$, and $T = 1$, then:
+          \begin{align*}
+            \expec{}{F(w_{priv}) - F^*}
+            = \widetilde O\bigg(\frac{\sqrt{p \log(1/\delta)}}{n\epsilon}
+            \norm{L}_{M^{-1}} R_M\bigg)\enspace,
+          \end{align*}
+          where $R_M = \max(\sqrt{F(w^0) - F(w^*)}, \norm{w^0 - w^*}_M)$
+          and more simply $R_M = \norm{w^0 - w^*}_M$ when $\psi = 0$.
+    \item For $F$ $\mu_M$-strongly convex w.r.t. $\smash{\norm{\cdot}_M}$,
+          $K = O\left(p/\mu_M\right)$, and
+          $T = O\left( \log(n\epsilon \mu_M/p \norm{L}_{M^{-1}}) \right)$, then:
+          \begin{align*}
+            \expec{}{F(w_{priv}) - F^*}
+            = \widetilde O\bigg(\frac{p\log(1/\delta)}{n^2 \epsilon^2}
+            \frac{\norm{L}_{M^{-1}}^2}{\mu_M}
+            \bigg)\enspace.
+          \end{align*}
+  \end{enumerate}%
+  Expectations are over the randomness of the algorithm.
+\end{theorem}
+\begin{sketchproof}(Complete proof in \Cref{sec-app:proof-utility}).
+  Existing analyses of CD fail to track the noise tightly
+  across coordinates when adapted to the private setting. Contrary to
+  these classical analyses, we prove a recursion on
+  $\mathbb{E}\norm{\theta^k - w^*}_M^2$, rather than on
+  $\expec{}{F(\theta^{k}) - F(w^*)}$. Our key technical result is a descent
+  lemma
+  (\Cref{lemma:descent-lemma}) allowing us to obtain
+  \begin{align}
+    \label{eq:sketch-proof:cd-utility:first-ineq}
+     & \expec{}{F(\theta^{k+1}) - F^*} - \frac{p - 1}{p} \expec{}{F(\theta^k) - F^*}
+       \le \mathbb{E}\norm{\theta^k - w^*}_M^2 - \mathbb{E}\norm{\theta^{k+1} - w^*}_M^2
+       + \frac{\norm{\sigma}_M^2}{p}
+       \enspace.
+  \end{align}
+  The above inequality shows that coordinate-wise updates leave a fraction
+  $\frac{p-1}{p}$ of the function ``unchanged'', while the remaining
+  part decreases (up to additive noise). Importantly, all quantities are
+  measured
+  in $M$-norm. When summing
+  \eqref{eq:sketch-proof:cd-utility:first-ineq} for $k=0,\dots,K-1$,
+  its left hand side simplifies and its right hand side is simplified
+  as a telescoping sum:
+  \begin{align}
+    \label{eq:sketch-proof:cd-utility:second-ineq}
+     & \frac{1}{p}\sum_{k=1}^{K} \expec{}{F(\theta^{k}) - F^*}
+      \le \expec{}{F(\bar w^t) - F^*} + \mathbb{E}\norm{\bar w^t - w^*}_M^2
+    + \frac{K}{p}\norm{\sigma}_{M^{-1}}^2\enspace,
+  \end{align}
+  where $\bar w^t$ comes from $\theta^0 = \bar w^t$. As
+  $\bar w^{t+1} = \sum_{k=1}^K \frac{\theta^k}{K}$ and $F$ is convex,
+  we have
+  $F(\bar w^{t+1}) - F^* \le \frac{1}{K} \sum_{k=1}^K F(\theta^k) -
+    F^*$. This proves the sub-linear convergence (up to an additive
+  noise term) of the inner loop. The result in the convex case follows
+  directly (since $T=1$, only one inner loop is run).  For strongly
+  convex $F$, it further holds that
+  $\mathbb{E}\norm{\bar w^t - w^*}_M^2 \le
+    \frac{2}{\mu_M}\expec{}{F(\bar w^t) - F(w^*)}$.  Replacing in
+  \eqref{eq:sketch-proof:cd-utility:second-ineq} with large enough $K$
+  gives
+  $\expec{}{F(\bar w^{t+1}) - F^*} \le \tfrac{1}{2} \expec{}{F(\bar
+      w^{t}) - F^*} + \norm{\sigma}_{M^{-1}}^2,$ and linear convergence
+  (up to an additive noise term) follows. Finally, $K$ and $T$ are chosen to
+  balance the ``optimization'' and the ``privacy'' errors.
+\end{sketchproof}
+
+\begin{remark}
+  \label{rmq:improvement-inexact-coordinate-descent}
+  Our novel convergence proof of CD is also useful in the non-private
+  setting. In particular, we improve upon known convergence rates for
+  inexact CD methods with additive error \citep{tappenden2016Inexact},
+  under the hypothesis that gradients are noisy and unbiased. In their
+  formalism, we have $\alpha = 0$ and
+  $\beta = \norm{\sigma}_{M^{-1}}^2/p$. With our analysis, the
+  algorithm requires $2pR_M^2 / (\xi - p\beta)$ (resp.
+  $4p/\mu_M \log((F(w^0) - F^*) / (\xi - p\beta))$) iterations to
+  achieve expected precision $\xi > p\beta$ when $F$ is convex
+  (resp. $\mu_M$-strongly-convex \wrt $\norm{\cdot}_M$), improving
+  upon \citet{tappenden2016Inexact}'s results by a factor
+  $\sqrt{p\beta / 2R_M^2}$ (resp. $\mu_M/2$). See \Cref
+  {sec:proof-remark-1} for details.  Moreover, unlike this prior work,
+  our analysis does not require the objective to decrease at each
+  iteration, which is essential to guarantee DP.
+\end{remark}
+
+Our utility guarantees stated in \Cref{thm:cd-utility} directly depend on
+precise coordinate-wise regularity measures of the objective function.
+In particular, the initial distance to optimal, the strong convexity parameter
+and the overall sensitivity of the loss function are measured in the norms
+$\smash{\norm{\cdot}_M}$ and $\smash{\norm{\cdot}_{M^{-1}}}$
+(\ie weighted by coordinate-wise smoothness constants or their inverse).
+In the remainder of this section, we thoroughly compare our utility results
+with existing ones for DP-SGD.
+We will show the optimality of our utility guarantees in
+Section~\ref{sec:utility-lower-bounds}.
+
+
+
+\begin{table*}[t]
+  \centering
+  \caption{
+    Utility guarantees for DP-CD, DP-SGD, and DP-SVRG for $L$-component-Lipschitz, $\Lambda$-Lipschitz loss.
+  } \label{table:utility-cd-sgd}
+    \begin{tabular*}{\textwidth}{c @{\extracolsep{\fill}} c c c}
+      \toprule
+      & Convex
+      & Strongly-convex \\
+      \midrule
+      DP-CD (this paper)
+      & $\displaystyle \widetilde O\left(\frac{\sqrt{p \log(1/\delta)}}{n\epsilon}\norm{L}_{M^{-1}} R_{ M}\right)$
+      & $\displaystyle \widetilde O\left(\frac{p \log(1/\delta) }{n^2 \epsilon^2}\frac{\norm{L}_{M^{-1}}^2}{\mu_{ M}} \right)$\\
+      \midrule
+      \makecell{DP-SGD \citep{bassily2014Private} \\ DP-SVRG \citep{wang2017Differentially}}
+      & $\displaystyle \widetilde O\left(\frac{\sqrt{p\log(1/\delta)}}{n\epsilon}\Lambda R_I\right)$
+      & $\displaystyle \widetilde O\left(\frac{p \log(1/\delta)}{n^2 \epsilon^2} \frac{ \Lambda^2}{\mu_I}\right)$ \\
+      \bottomrule
+    \end{tabular*}
+  \vskip -0.1in
+\end{table*}
+
+
+
+
+
+
+
+\subsection{Comparison with DP-SGD and DP-SVRG}
+\label{sec:comparison-with-dp-sgd}
+
+We now compare DP-CD with DP-SGD and DP-SVRG, for which
+\citet{bassily2014Private} and \citet{wang2017Differentially} proved utility
+guarantees.
+In this section, we assume that the loss function $\ell$ satisfies the hypotheses
+of \Cref{thm:cd-utility}, and is $\Lambda$-Lipschitz.
+We denote by $\mu_I$ the strong convexity parameter
+of $\ell(\cdot, d)$ \wrt $\norm{\cdot}_2$ and $R_I$ the equivalent of $R_M$ when
+$M$ is the identity matrix $I$.
+As can be seen from \Cref{table:utility-cd-sgd}, comparing
+DP-CD and DP-SGD boils down to comparing
+$\smash{\norm{L}_{M^{-1}} R_{M}}$ with $\Lambda R_I$ for
+convex functions and ${\norm{L}_{M^{-1}}^2 }/\mu_M$
+with ${\Lambda^2 }/{\mu_I}$ for strongly-convex functions.
+We compare these terms in two scenarios, depending on the distribution of
+coordinate-wise smoothness constants.
+To ease the comparison, we assume that $\smash{R_M = \norm{w^0 - w^*}_M}$ and $\smash{R_I = \norm{w^0 - w^*}_I}$ (which is notably the case when $\psi = 0$), and that $F$ has a unique minimizer $w^*$.
+
+\paragraph{Balanced.}
+When the smoothness constants $M$ are all equal,
+$\norm{L}_{M^{-1}} R_{ M} = \norm{L}_{2} R_I$ and
+${\norm{L}_{M^{-1}}^2 }/{\mu_M} = {\norm{L}_{2}^2 }/{\mu_I}$.  This
+boils down to comparing $\norm{L}_{2}$ to $\Lambda$. As
+$\Lambda \le \norm{L}_{2} \le \sqrt{p}\Lambda$, DP-CD can be up to $p$
+times worse than DP-SGD. This can only happen when features are extremely
+correlated, which is generally not the case in machine learning.  We
+show empirically in \Cref{sec:stand-datas} that, even in balanced regimes,
+DP-CD can still significantly outperform DP-SGD.
+\paul{is it really p times worse?}
+
+
+
+\paragraph{Unbalanced.}
+More favorable regimes exist when smoothness constants are imbalanced.
+To illustrate this, consider the case where the first
+coordinate of the loss function $\ell$ dominates others.
+There, $M_{\max} \!=\! M_1 \!\gg\! M_{\min} \!=\! M_j$ and
+$L_{\max} \!=\! L_1 \!\gg\! L_{\min}\!=\! L_j $ for all $j\neq 1$, so that
+$L_1^2/M_1$ dominates the other terms of $\norm{L}_{M^{-1}}^2$.  This
+yields
+$\norm{L}_{M^{-1}}^2 \approx L_1^2 / M_1 \approx \Lambda / M_{\max}$,
+and $\mu_M = \mu_I M_{\min}$.
+Moreover, if the first coordinate of $w^*$ is already well estimated
+by $w^0$ (which is common for sparse models), then
+$R_M \approx M_{\min}
+  R_I$. %
+We obtain that
+$\norm{L}_{M^{-1}} R_M \approx \sqrt{{M_{\min}}/{M_{\max}}} \Lambda
+  R_I$ for convex losses and
+$\frac{\norm{L}_{M^{-1}}}{\mu_M} \approx
+  \frac{M_{\min}}{M_{\max}}\frac{\Lambda^2}{\mu_I}$ for strongly-convex
+ones.
+In both cases, DP-CD can perform arbitrarily better than DP-SGD,
+depending on the ratio between the smallest and largest
+coordinate-wise smoothness constants of the loss function.  This is
+due to the inability of DP-SGD to adapt its step size to each coordinate.
+DP-CD thus converges quicker than DP-SGD on coordinates with
+smaller-scale gradients, requiring fewer accesses to the dataset, and
+in turn less noise addition. We give more details on this comparison
+in \Cref{sec-app:comparison-with-dp}, and complement it with an empirical
+evaluation on synthetic and real-world data in
+Section~\ref{sec:numerical-experiments}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

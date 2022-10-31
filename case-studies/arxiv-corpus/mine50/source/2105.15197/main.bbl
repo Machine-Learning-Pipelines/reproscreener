@@ -1,0 +1,267 @@
+\begin{thebibliography}{10}
+
+\bibitem{abrevaya2015estimating}
+Jason Abrevaya, Yu-Chin Hsu, and Robert~P Lieli.
+\newblock Estimating conditional average treatment effects.
+\newblock {\em Journal of Business \& Economic Statistics}, 33(4):485--505,
+  2015.
+
+\bibitem{ai2003efficient}
+Chunrong Ai and Xiaohong Chen.
+\newblock Efficient estimation of models with conditional moment restrictions
+  containing unknown functions.
+\newblock {\em Econometrica}, 71(6):1795--1843, 2003.
+
+\bibitem{andrews1994asymptotics}
+Donald~WK Andrews.
+\newblock Asymptotics for semiparametric econometric models via stochastic
+  equicontinuity.
+\newblock {\em Econometrica}, pages 43--72, 1994.
+
+\bibitem{avagyan2021high}
+Vahe Avagyan and Stijn Vansteelandt.
+\newblock High-dimensional inference for the average treatment effect under
+  model misspecification using penalized bias-reduced double-robust estimation.
+\newblock {\em Biostatistics \& Epidemiology}, pages 1--18, 2021.
+
+\bibitem{belloni2012sparse}
+Alexandre Belloni, Daniel Chen, Victor Chernozhukov, and Christian Hansen.
+\newblock Sparse models and methods for optimal instruments with an application
+  to eminent domain.
+\newblock {\em Econometrica}, 80(6):2369--2429, 2012.
+
+\bibitem{belloni2013inference}
+Alexandre Belloni, Victor Chernozhukov, and Christian Hansen.
+\newblock Inference for high-dimensional sparse econometric models.
+\newblock In {\em Advances in Economics and Econometrics}, page 245–295,
+  2013.
+
+\bibitem{belloni2014uniform}
+Alexandre Belloni, Victor Chernozhukov, and Kengo Kato.
+\newblock Uniform post-selection inference for least absolute deviation
+  regression and other {Z}-estimation problems.
+\newblock {\em Biometrika}, 102(1):77--94, 2014.
+
+\bibitem{bibaut2017data}
+Aurelien~F Bibaut and Mark~J van~der Laan.
+\newblock Data-adaptive smoothing for optimal-rate estimation of possibly
+  non-regular parameters.
+\newblock {\em arXiv:1706.07408}, 2017.
+
+\bibitem{bickel1993efficient}
+Peter~J Bickel, Chris~AJ Klaassen, Peter~J Bickel, Ya’acov Ritov, J~Klaassen,
+  Jon~A Wellner, and YA'Acov Ritov.
+\newblock {\em Efficient and Adaptive Estimation for Semiparametric Models},
+  volume~4.
+\newblock Johns Hopkins University Press Baltimore, 1993.
+
+\bibitem{blundell2007semi}
+Richard Blundell, Xiaohong Chen, and Dennis Kristensen.
+\newblock Semi-nonparametric {IV} estimation of shape-invariant {E}ngel curves.
+\newblock {\em Econometrica}, 75(6):1613--1669, 2007.
+
+\bibitem{cai2020nonparametric}
+Weixin Cai and Mark van~der Laan.
+\newblock Nonparametric bootstrap inference for the targeted highly adaptive
+  least absolute shrinkage and selection operator {(LASSO)} estimator.
+\newblock {\em The International Journal of Biostatistics}, 16(2), 2020.
+
+\bibitem{chen2018overidentification}
+Xiaohong Chen and Andres Santos.
+\newblock Overidentification in regular models.
+\newblock {\em Econometrica}, 86(5):1771--1817, 2018.
+
+\bibitem{chernozhukov2018original}
+Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian
+  Hansen, Whitney Newey, and James Robins.
+\newblock Double/debiased machine learning for treatment and structural
+  parameters.
+\newblock {\em The Econometrics Journal}, 21(1):C1--C68, 2018.
+
+\bibitem{chernozhukov2016locally}
+Victor Chernozhukov, Juan~Carlos Escanciano, Hidehiko Ichimura, Whitney~K
+  Newey, and James~M Robins.
+\newblock Locally robust semiparametric estimation.
+\newblock {\em arXiv:1608.00033, Econometrica (to appear)}, 2016.
+
+\bibitem{chernozhukov2019demand}
+Victor Chernozhukov, Jerry~A Hausman, and Whitney~K Newey.
+\newblock Demand analysis with many prices.
+\newblock Technical report, National Bureau of Economic Research, 2019.
+
+\bibitem{chernozhukov2018global}
+Victor Chernozhukov, Whitney Newey, and Rahul Singh.
+\newblock Debiased machine learning of global and local parameters using
+  regularized {R}iesz representers.
+\newblock {\em arXiv:1802.08667, Econometrics Journal (to appear)}, 2018.
+
+\bibitem{chernozhukov2020adversarial}
+Victor Chernozhukov, Whitney Newey, Rahul Singh, and Vasilis Syrgkanis.
+\newblock Adversarial estimation of {R}iesz representers.
+\newblock {\em arXiv:2101.00009}, 2020.
+
+\bibitem{chernozhukov2018learning}
+Victor Chernozhukov, Whitney~K Newey, and Rahul Singh.
+\newblock Automatic debiased machine learning of causal and structural effects.
+\newblock {\em arXiv:1809.05224, Econometrica, (to appear)}, 2018.
+
+\bibitem{colangelo2020double}
+Kyle Colangelo and Ying-Ying Lee.
+\newblock Double debiased machine learning nonparametric inference with
+  continuous treatments.
+\newblock {\em arXiv:2004.03036}, 2020.
+
+\bibitem{dikkala2020minimax}
+Nishanth Dikkala, Greg Lewis, Lester Mackey, and Vasilis Syrgkanis.
+\newblock Minimax estimation of conditional moment models.
+\newblock {\em arXiv:2006.07201}, 2020.
+
+\bibitem{foster2019orthogonal}
+Dylan~J Foster and Vasilis Syrgkanis.
+\newblock Orthogonal statistical learning.
+\newblock {\em arXiv:1901.09036}, 2019.
+
+\bibitem{hasminskii1979nonparametric}
+Rafail~Z Hasminskii and Ildar~A Ibragimov.
+\newblock On the nonparametric estimation of functionals.
+\newblock In {\em Proceedings of the Second Prague Symposium on Asymptotic
+  Statistics}, 1979.
+
+\bibitem{ichimura2021influence}
+Hidehiko Ichimura and Whitney~K Newey.
+\newblock The influence function of semiparametric estimators.
+\newblock {\em arXiv:1508.01378, Quantitative Economics (to appear)}, 2021.
+
+\bibitem{javanmard2014confidence}
+Adel Javanmard and Andrea Montanari.
+\newblock Confidence intervals and hypothesis testing for high-dimensional
+  regression.
+\newblock {\em The Journal of Machine Learning Research}, 15(1):2869--2909,
+  2014.
+
+\bibitem{kallus2021causal}
+Nathan Kallus, Xiaojie Mao, and Masatoshi Uehara.
+\newblock Causal inference under unmeasured confounding with negative controls:
+  A minimax learning approach.
+\newblock {\em arXiv:2103.14029}, 2021.
+
+\bibitem{klaassen1987consistent}
+Chris~AJ Klaassen.
+\newblock Consistent estimation of the influence function of locally
+  asymptotically linear estimators.
+\newblock {\em The Annals of Statistics}, pages 1548--1562, 1987.
+
+\bibitem{luedtke2016statistical}
+Alexander~R Luedtke and Mark~J van~der Laan.
+\newblock Statistical inference for the mean outcome under a possibly
+  non-unique optimal treatment strategy.
+\newblock {\em Annals of Statistics}, 44(2):713, 2016.
+
+\bibitem{newey1994asymptotic}
+Whitney~K Newey.
+\newblock The asymptotic variance of semiparametric estimators.
+\newblock {\em Econometrica}, pages 1349--1382, 1994.
+
+\bibitem{newey1994kernel}
+Whitney~K Newey.
+\newblock Kernel estimation of partial means and a general variance estimator.
+\newblock {\em Econometric Theory}, 10(2):1--21, 1994.
+
+\bibitem{newey2003instrumental}
+Whitney~K Newey and James~L Powell.
+\newblock Instrumental variable estimation of nonparametric models.
+\newblock {\em Econometrica}, 71(5):1565--1578, 2003.
+
+\bibitem{pfanzagl1982lecture}
+Johann Pfanzagl.
+\newblock Lecture notes in statistics.
+\newblock {\em Contributions to a General Asymptotic Statistical Theory}, 13,
+  1982.
+
+\bibitem{qiu2021universal}
+Hongxiang Qiu, Alex Luedtke, and Marco Carone.
+\newblock Universal sieve-based strategies for efficient estimation using
+  machine learning tools.
+\newblock {\em Bernoulli}, 27(4):2300--2336, 2021.
+
+\bibitem{robins1995semiparametric}
+James~M Robins and Andrea Rotnitzky.
+\newblock Semiparametric efficiency in multivariate regression models with
+  missing data.
+\newblock {\em Journal of the American Statistical Association},
+  90(429):122--129, 1995.
+
+\bibitem{robinson1988root}
+Peter~M Robinson.
+\newblock Root-n-consistent semiparametric regression.
+\newblock {\em Econometrica}, pages 931--954, 1988.
+
+\bibitem{rotnitzky2021characterization}
+Andrea Rotnitzky, Ezequiel Smucler, and James~M Robins.
+\newblock Characterization of parameters with a mixed bias property.
+\newblock {\em Biometrika}, 108(1):231--238, 2021.
+
+\bibitem{severini2012efficiency}
+Thomas~A Severini and Gautam Tripathi.
+\newblock Efficiency bounds for estimating linear functionals of nonparametric
+  regression models with endogenous regressors.
+\newblock {\em Journal of Econometrics}, 170(2):491--498, 2012.
+
+\bibitem{shevtsova2011absolute}
+Irina Shevtsova.
+\newblock On the absolute constants in the {B}erry-{E}sseen type inequalities
+  for identically distributed summands.
+\newblock {\em arXiv:1111.6554}, 2011.
+
+\bibitem{singh2021debiased}
+Rahul Singh.
+\newblock Debiased kernel methods.
+\newblock {\em arXiv:2102.11076}, 2021.
+
+\bibitem{singh2019kernel}
+Rahul Singh, Maneesh Sahani, and Arthur Gretton.
+\newblock Kernel instrumental variable regression.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  4595--4607, 2019.
+
+\bibitem{smucler2019unifying}
+Ezequiel Smucler, Andrea Rotnitzky, and James~M Robins.
+\newblock A unifying approach for doubly-robust $\ell_1$ regularized estimation
+  of causal contrasts.
+\newblock {\em arXiv:1904.03737}, 2019.
+
+\bibitem{vandegeer2014asymptotically}
+Sara Van~de Geer, Peter B{\"u}hlmann, Ya’acov Ritov, and Ruben Dezeure.
+\newblock On asymptotically optimal confidence regions and tests for
+  high-dimensional models.
+\newblock {\em The Annals of Statistics}, 42(3):1166--1202, 2014.
+
+\bibitem{van2017finite}
+Mark van~der Laan.
+\newblock Finite sample inference for targeted learning.
+\newblock {\em arXiv:1708.09502}, 2017.
+
+\bibitem{van2018targeted}
+Mark~J van~der Laan and Sherri Rose.
+\newblock {\em Targeted Learning in Data Science}.
+\newblock Springer, 2018.
+
+\bibitem{van2006targeted}
+Mark~J van~der Laan and Daniel Rubin.
+\newblock Targeted maximum likelihood learning.
+\newblock {\em The International Journal of Biostatistics}, 2(1), 2006.
+
+\bibitem{zhang2014confidence}
+Cun-Hui Zhang and Stephanie~S Zhang.
+\newblock Confidence intervals for low dimensional parameters in high
+  dimensional linear models.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 76(1):217--242, 2014.
+
+\bibitem{zheng2011cross}
+Wenjing Zheng and Mark~J van~der Laan.
+\newblock Cross-validated targeted minimum-loss-based estimation.
+\newblock In {\em Targeted Learning}, pages 459--474. Springer Science \&
+  Business Media, 2011.
+
+\end{thebibliography}

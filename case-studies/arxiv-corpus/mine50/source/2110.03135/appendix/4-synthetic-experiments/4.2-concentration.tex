@@ -1,0 +1,23 @@
+
+\smallsection{Concentration of optimal temperature and interpolation ratio of individual examples}
+\label{sect:optimal-temperature-mixup}
+In Section~\ref{sect:approximate-true-distribution} we have shown that in terms of individual examples, the rectified model probability can provably reduce the distribution mismatch between the assigned label distribution and true label distribution of the adversarial example. % provably better than the assigned label with temperature scaling and interpolation available. 
+However, since the true label distribution is unknown in realistic scenarios, it is not possible to directly follow Theorems~\ref{theorem: model-probability} and \ref{theorem: model-probability-coefficient} and calculate the optimal set of hyper-parameters for each example in the training set. The best we can do is to employ a validation set and determine a universal set of hyper-parameters based on the NLL loss, which expects all training examples to share similar optimal temperatures and interpolation ratios. 
+Here, based on the synthetic dataset where a true label distribution is known, we empirically verify this assumption is reasonable.
+
+\begin{figure*}[!ht]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/method-augment-optimal.pdf}
+  \caption{The histograms of optimal temperature (left) and interpolation ratio (right) of individual examples.
+  }
+\label{fig:method-augment-optimal}
+\end{figure*}
+
+
+In Figure~\ref{fig:method-augment-optimal} left, we solve the optimal temperature for each correctly classified training example based on Theorem~\ref{theorem: model-probability} with the interpolation ratio fixed as $1.0$. One can find that the individual optimal temperatures mostly concentrate between $0.5$ and $1.5$. In Figure~\ref{fig:method-augment-optimal} right, we solve the optimal interpolation ratio for each incorrectly classified training example based on Theorem~\ref{theorem: model-probability-coefficient} with the temperature fixed as $1.0$ . One can find that the individual optimal interpolation ratio mostly concentrate between $0.5$ and $0.7$.
+
+% Roughly speaking, need similar probability corresponding to the true label (exactly right for ratio, about right for temperature) if the true probability is close 
+
+% \note{empirical validation}
+
+% Follow the theorem, Calculate the optimal temperature for correctly classified examples (~25000)

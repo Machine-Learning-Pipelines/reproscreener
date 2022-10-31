@@ -1,0 +1,54 @@
+% \begin{table}[tb]
+% % \begin{wraptable}{r}{4.8cm}
+% \begin{center}
+
+% \begin{tabular}{|c|c|}
+% \hline
+% \textbf{2D backbone} & \textbf{MPJPE }\\
+% \hline
+% Ground-Truth &24.8\\
+% \hline
+% OpenPose~\cite{Cao:2018} &38.55\\
+% \hline
+% CPN~\cite{chen2018cascaded} &31.7\\
+% \hline
+% \makecell{Iskakov et al.~\cite{iskakov2019learnable} \\ (based on~\cite{xiao2018simple})} &30.18\\
+% \hline
+% \end{tabular}
+
+% \end{center}
+% \caption{Varying 2D pose backbones.}
+% \label{tab:2D_backbone}
+% % \end{wraptable}
+% \end{table}
+
+% \begin{wraptable}{r}{4.8cm}
+\begin{center}
+
+\begin{tabular}{|c|c|}
+\hline 
+\ifeccv \else \kern-3pt \fi
+\makecell{\textbf{2D} \\ 
+\textbf{backbone}} & 
+\ifeccv \else \kern-3pt \fi 
+\textbf{MPJPE }
+\ifeccv \else \kern-3pt \fi
+\\
+\hline
+% OpenPose~\cite{Cao:2018} &38.55\\
+\cite{Cao:2018} &38.6\\
+\hline
+% CPN~\cite{chen2018cascaded} &31.7\\
+\cite{chen2018cascaded} &31.7\\
+\hline
+% \makecell{Iskakov et al.~\cite{iskakov2019learnable} \\ (based on~\cite{xiao2018simple})} &30.18\\
+\cite{iskakov2019learnable} &30.2\\
+\hline
+GT &\textbf{22.9}\\
+\hline
+
+\end{tabular}
+%\label{tab:2D_backbone}
+\end{center}
+% \caption{Varying 2D pose backbones.}
+% \end{wraptable}

@@ -1,0 +1,172 @@
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+\usepackage[]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+
+
+\usepackage[pdftex]{graphicx}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath,amsfonts,bm}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KLD}{\text{KL}}
+\newcommand{\ENT}{\text{H}}
+\newcommand{\BENT}{\mathbb{H}}
+\newcommand{\BDist}{\mathbb{D}}
+\newcommand{\MLE}{\text{MLE}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\y}{\bm{y}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\s}{\bm{s}}
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\yspace}{\mathcal{Y}}
+\newcommand{\zspace}{\mathcal{Z}}
+\newcommand{\tspace}{\mathcal{T}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bphi}{\bm{\phi}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bw}{\bm{\w}}
+\newcommand{\dataset}{\mathcal{D}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\indicator}{\mathbb{I}}
+\newcommand{\pdata}{p_{d}}
+\newcommand{\pemp}{\tilde{p}_d}
+\newcommand{\lm}{\text{LM}}
+
+
+
+
+
+
+
+
+
+\title{
+Efficient (Soft) $Q$-Learning \\ for Text Generation
+with Limited Good Data
+}
+
+
+\author{
+Han Guo$^1$,~~
+Bowen Tan$^1$,~~
+Zhengzhong Liu$^{1,2}$,~~
+Eric P. Xing$^{1,2,4}$,~~
+Zhiting Hu$^{3}$\\
+$^1$Carnegie Mellon University,~~ $^2$Petuum Inc.,~~ $^3$UC San Diego,\\
+$^4$Mohamed bin Zayed University of Artificial Intelligence\\
+{\small 
+{\tt \{hanguo, btan2, epxing\}@cs.cmu.edu, hectorzliu@gmail.com, zhh019@ucsd.edu}
+}
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Maximum likelihood estimation (MLE) is the predominant algorithm for training text generation models. This paradigm relies on direct supervision examples, which is not applicable to many emerging applications, such as generating adversarial attacks or generating prompts to control language models. Reinforcement learning (RL) on the other hand offers a more flexible solution by allowing users to plug in arbitrary task metrics as reward. Yet previous RL algorithms for text generation, such as policy gradient (\emph{on-policy} RL) and $Q$-learning (\emph{off-policy} RL), are often notoriously inefficient or unstable to train due to the large sequence space and the sparse reward received only at the end of sequences. In this paper, we introduce a new RL formulation for text generation from the soft $Q$-learning (SQL) perspective. It enables us to draw from the latest RL advances, such as path consistency learning, to combine the best of on-/off-policy updates, and learn effectively from sparse reward. We apply the approach to a wide range of novel text generation tasks, including learning from noisy/negative examples, adversarial attacks, and prompt generation. Experiments show our approach consistently outperforms both task-specialized algorithms and the previous RL methods.%
+\footnote{Code at \url{https://github.com/HanGuo97/soft-Q-learning-for-text-generation}.}
+\end{abstract}
+
+
+\input{introduction}
+\input{methods}
+\input{experiments}
+\input{related-works}
+\input{conclusion}
+
+
+
+\section*{Limitations}
+
+
+
+A well-documented limitation of RL methods is the importance of the reward function. The proposed methods are no different in this aspect. This is especially relevant as our reward function could involve a learned model itself, which we proactively leveraged in Sec.~\ref{subsec:adversarial-attack}. We refer interested readers to~\citet{deng2022rlprompt} for more algorithmic considerations.
+We also noticed that adapting the pretraining-finetuning paradigm to the proposed methods requires careful designs. A hypothesis points to the discrepancy between MLE objectives (commonly used in pretraining context) and SQL objectives. As discussed in Sec.~\ref{sec:sql-formulation}, the SQL formulation re-interprets the ``logit'' as the $Q$-value, for many good reasons. However, our preliminary experiments suggest that, as a downside, this makes finetuning an MLE-trained model with SQL objectives more challenging.
+Future work to scale the proposed methods to tasks such as machine translation and language modeling, and with significantly larger and (MLE-)pretrained models would be exciting.
+
+
+\section*{Ethics Statement}
+This work develops a new RL formulation for text generation. While we demonstrate the framework in four applications, it could be adapted to other (emerging) applications. One major component in these applications is the design of the reward function, which influences the behavior of the trained agent. While we believe the MaxEnt RL framework is more robust against reward misspecification~\citep{eysenbach2021maximum}, the potential failures of sub-optimal reward functions are widely known and discussed.\footnote{\url{https://openai.com/blog/faulty-reward-functions/}} To this end, deploying this model to the wild requires careful and extensive examination, using tools such as~\citet{ribeiro2020beyond}. Further, we highlight the application for (black-box) adversarial attacks in the paper, with the intention of using adversarial attacks to understand the model's inner workings. That being said, this could potentially be misused to conduct malicious attacks against systems. Hence, users of this framework might want to conduct adversarial attacks against their own models to avoid being attacked by other people with bad intentions.
+
+\section*{Acknowledgement}
+We thank all reviewers for their invaluable comments and feedback. This research was supported by NSF IIS1563887, NSF CCF1629559, NSF IIS1617583, NGA HM04762010002, NSF IIS1955532, NSF CNS2008248, NSF IIS2123952, and NSF BCS2040381. The views in this article are those of the authors and not the funding agency.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliography{citations}
+
+\clearpage
+
+\appendix
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{algorithm}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\thealgorithm}{A.\arabic{algorithm}} 
+\input{appendix}
+
+\end{document}

@@ -1,0 +1,92 @@
+\documentclass[anon,12pt]{colt2022} % Anonymized submission
+%\documentclass[final,12pt]{colt2022} % Include author names
+
+% The following packages will be automatically loaded:
+% amsmath, amssymb, natbib, graphicx, url, algorithm2e
+
+\title[Dissecting Hessian]{Dissecting Hessian: Understanding Common Structure of Hessian in Neural Networks}
+\usepackage{times}
+\usepackage{mathcommands}
+\usepackage{thm-restate}
+\usepackage{booktabs}
+\usepackage{float}
+% \usepackage{subfigure}
+% \usepackage{subcaption}
+
+% Use \Name{Author Name} to specify the name.
+% If the surname contains spaces, enclose the surname
+% in braces, e.g. \Name{John {Smith Jones}} similarly
+% if the name has a "von" part, e.g \Name{Jane {de Winter}}.
+% If the first letter in the forenames is a diacritic
+% enclose the diacritic in braces, e.g. \Name{{\'E}louise Smith}
+
+% Two authors with the same address
+% \coltauthor{\Name{Author Name1} \Email{abc@sample.com}\and
+%  \Name{Author Name2} \Email{xyz@sample.com}\\
+%  \addr Address}
+
+% Three or more authors with the same address:
+% \coltauthor{\Name{Author Name1} \Email{an1@sample.com}\\
+%  \Name{Author Name2} \Email{an2@sample.com}\\
+%  \Name{Author Name3} \Email{an3@sample.com}\\
+%  \addr Address}
+
+% Authors with different addresses:
+\coltauthor{%
+ \Name{Author Name1} \Email{abc@sample.com}\\
+ \addr Address 1
+ \AND
+ \Name{Author Name2} \Email{xyz@sample.com}\\
+ \addr Address 2%
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}%
+\input{abs}
+\end{abstract}
+
+\begin{keywords}%
+  Hessian, eigenspace, neural network, nonconvex landscape%, theory%
+\end{keywords}
+
+
+\section{Introduction}
+\input{intro}
+
+\subsection{Related Works}
+\input{related}
+
+\section{Preliminaries and Notations}
+\input{preliminaries}
+
+\section{Decoupling Conjecture and Implications on the Structures of Layer-wise Hessian}
+\input{hessian_structure}
+
+\section{Decoupling Theorem for Infinite Width Two-Layer ReLU Neural Network}
+\label{sec:theoretical}
+\input{theoretical_analysis}
+
+\section{Empirical Observation and Verification}
+\input{hessian_empirical}
+
+\section{Tighter PAC-Bayes Bound with Hessian Information}
+\input{pac_bayes}
+
+\section{Conclusions}
+\input{conclusions}
+
+
+% Acknowledgments---Will not appear in anonymized version
+\acks{We thank a bunch of people and funding agency.}
+
+\bibliography{VOLDNN}
+
+\appendix
+
+
+\input{appendix_colt}
+
+\end{document}

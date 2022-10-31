@@ -1,0 +1,26 @@
+\begin{table}[t]
+\vspace{0.3 cm}
+\small
+\def\arraystretch{1.25}
+\setlength\tabcolsep{4pt}
+\begin{center}
+\fontsize{7}{7}\selectfont
+\caption{\label{tab:inversion_alexnet}AlexNet feature inversion on ImageNet. Under distinct training losses, inverting AR features via our proposed generator is consistently more accurate than inverting standard features.}
+\vspace{0.1cm}
+\begin{tabular}{c|c|c|c|c} 
+\specialrule{.15em}{.05em}{.05em} 
+Losses & Model & PSNR (dB)$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$\\
+\hline
+ \multirow{2}{*}{\makecell{Pixel}} & \makecell{Standard} & $17.562\pm 2.564$ & $0.454\pm 0.167$ & $0.624\pm 0.099$\\
+ & \makecell{AR (ours)} & $\mathbf{19.904\pm 2.892}$ & $\mathbf{0.505\pm 0.169}$ & $\mathbf{0.596\pm 0.104}$\\
+ \hline
+ \multirow{2}{*}{\makecell{Pixel, Feature}} & \makecell{Standard} & $14.462\pm 1.884$ & $0.103\pm 0.044$ & $0.713\pm 0.046$\\
+ & \makecell{AR (ours)} & $\mathbf{17.182\pm 2.661}$ & $\mathbf{0.284\pm 0.111}$ & $\mathbf{0.601\pm 0.034}$\\  
+ \hline
+ \multirow{2}{*}{\makecell{Pixel, Feature,\\GAN}} & \makecell{Standard} & $15.057\pm 2.392$ & $0.307 \pm 0.158$ & $\mathbf{0.547\pm 0.055}$\\
+ & \makecell{AR (ours)} & $\mathbf{17.227\pm 2.725}$ & $\mathbf{0.358\pm 0.163}$ & $0.567\pm 0.056$\\
+\specialrule{.15em}{.05em}{.05em} 
+\end{tabular}
+\end{center}
+\vspace{-0.4 cm}
+\end{table}
