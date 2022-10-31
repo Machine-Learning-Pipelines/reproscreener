@@ -18,6 +18,12 @@ ReproScreener aims to address challenges in robustness, transparency and interpr
 
 ## Case studies
 
+## Requirements
+
+conda install lxml
+pip install flashtext
+pip install exrex
+
 ## References
 
 `references.bib` contains references used in this project.

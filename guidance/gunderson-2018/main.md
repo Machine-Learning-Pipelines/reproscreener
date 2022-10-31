@@ -18,7 +18,7 @@
 	- Experiment setup: Is the setup including hyper-parameters described?
 	- Experiment source code: Is the experiment code open sourced?
 - Miscellaneous (4)
-	- Research type: Experimental (E) or theoretical (T)
+	- Research type: Experimental (E)(0) or theoretical (T)(1)
     	- (if data exists?)
 	- Research outcome: Is the paper reporting a positive or a negative result (positive=1 and negative=0)
 	- Affiliation: The affiliation of the authors 
