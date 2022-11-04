@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "repro-screener"
+version = "0.1.0"
+description = "Automated machine learning model verification"
+authors = ["Adhithya Bhaskar <adhithyabhaskar@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "3.9.13"
+arxivscraper = "^0.0.5"
+requests = "^2.28.1"
+pandas = "^1.5.1"
+pathlib = "^1.0.1"
+beautifulsoup4 = "^4.11.1"
+flashtext = "^2.7"
+exrex = "^0.10.5"
+grobid-client-python = {git = "https://github.com/kermitt2/grobid_client_python"}
+lxml = "^4.9.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
