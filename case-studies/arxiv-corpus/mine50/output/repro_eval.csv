@@ -1,0 +1,51 @@
+index,id,title,problem,objective,research_method,research_questions,pseudocode,training_data,validation_data,test_data,results,hypothesis,prediction,method_source_code,hardware_specifications,software_dependencies,experiment_setup,experiment_source_code,affiliation
+0,1606.04671,Progressive Neural Networks,1,1,1,1,0,1,0,0,0,1,1,0,0,0,1,0,1
+1,1903.09668,Data Augmentation for Bayesian Deep Learning,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0
+2,1904.10554,Deep Q-Learning for Nash Equilibria,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1
+3,1908.05659,DISTRIBUTIONALLY ROBUST OPTIMIZATION: A REVIEW,1,1,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0
+4,1909.00931,Transfer Fine-Tuning: A BERT Case Study,1,0,1,1,1,0,0,0,0,1,1,1,0,0,1,0,1
+5,1911.03867,A MODULAR DEEP LEARNING PIPELINE FOR GALAXY-SCALE STRONG GRAVITATIONAL LENS DETECTION AND MODELING,1,1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,1
+6,2002.05905,Generative Adversarial Networks for face generation: A survey,1,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,-1
+7,2004.05258,Exploring Optimal Deep Learning Models for Image-based Malware Variant Classification,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,1
+8,2005.02607,Towards Quantum Advantage via Topological Data Analysis,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1
+9,2007.09855,Wide Boosting,1,0,1,1,0,0,0,0,0,0,1,1,0,0,1,0,-1
+10,2009.01947,Practical and Parallelizable Algorithms for Non-Monotone Submodular Maximization with Size Constraint,1,1,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0
+11,2010.04261,Dissecting Hessian: Understanding Common Structure of Hessian in Neural Networks,1,1,1,0,1,0,0,0,0,1,1,1,0,0,1,0,0
+12,2010.04855,"Kernel Methods for Causal Functions: Dose, Heterogeneous, and Incremental Response Curves",1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,0,2
+13,2011.11576,Conjecturing-Based Discovery of Patterns in Data*,1,1,1,1,1,1,0,1,0,1,1,1,0,0,1,0,2
+14,2012.09302,"TrojanZoo: Towards Unified, Holistic, and Practical Evaluation of Neural Backdoors",0,1,1,1,1,1,0,1,0,0,1,1,0,0,0,0,-1
+15,2101.07354,Exact Recovery of Community Structures Using DeepWalk and Node2vec,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0
+16,2102.11887,Quantum Cross Entropy and Maximum Likelihood Principle,1,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,-1
+17,2104.11893,LGD-GCN: Local and Global Disentangled Graph Convolutional Networks,1,0,1,0,1,0,0,0,0,1,1,0,0,0,1,0,2
+18,2104.12546,The Effects of Air Quality on the Spread of the COVID-19 Pandemic in Italy: An Artificial Intelligence Approach,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,-1
+19,2105.01099,Reinforcement Learning for Ridesharing: An Extended Survey *,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,-1
+20,2105.01937,FLEX: Extrinsic Parameters-free Multi-view 3D Human Motion Reconstruction,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1
+21,2105.15197,A Simple and General Debiased Machine Learning Theorem with Finite Sample Guarantees,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0
+22,2106.01528,Normalizing Flows for Knockoff-free Controlled Feature Selection,1,1,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0
+23,2106.03157,Self-Supervision is All You Need for Solving Rubik's Cube,1,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,1
+24,2106.03725,Stability to Deformations of Manifold Filters and Manifold Neural Networks,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+25,2106.06610,"Scalars are universal: Equivariant machine learning, structured like classical physics",1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,-1
+26,2106.06927,Inverting Adversarially Robust Networks for Image Synthesis,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0
+27,2106.07704,Efficient (Soft) Q-Learning for Text Generation with Limited Good Data,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0
+28,2106.10898,BanditMF: Multi-Armed Bandit Based Matrix Factorization,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,-1
+29,2106.12177,"Imitation Learning: Progress, Taxonomies and Challenges",1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,-1
+30,2106.12936,Fundamental limits for learning hidden Markov model parameters,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,-1
+31,2106.13823,Quantum Data Compression and Quantum Cross Entropy,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+32,2107.01131,Tight Mutual Information Estimation With Contrastive Fenchel-Legendre Optimization,1,1,1,1,1,1,0,0,0,0,1,1,0,0,1,0,0
+33,2108.09779,Transferring Dexterous Manipulation from GPU Simulation to a Remote Real-World TriFinger,1,1,1,1,0,0,0,0,0,0,0,1,0,0,1,0,1
+34,2109.01372,Sample Noise Impact on Active Learning,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,1
+35,2109.12784,Learning from Few Samples: Transformation-Invariant SVMs with Composition and Locality at Multiple Scales,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+36,2109.14855,Sim2Real for Soft Robotic Fish via Differentiable Simulation,1,1,1,0,0,1,0,0,0,0,1,0,0,0,1,0,-1
+37,2110.02343,Quantum Semi-Supervised Learning with Quantum Supremacy,1,1,0,0,1,1,0,1,0,0,1,0,0,0,0,0,0
+38,2110.02474,Can an AI agent hit a moving target? *,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1
+39,2110.03135,Label Noise in Adversarial Training: A Novel Perspective to Study Robust Overfitting,1,1,1,1,0,1,0,0,0,0,1,0,0,0,1,0,2
+40,2110.05169,LEARNING A SUBSPACE OF POLICIES FOR ONLINE ADAPTATION IN REINFORCEMENT LEARNING,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,0,-1
+41,2110.08255,U-Net Inspired Transformer Architecture for Far Horizon Time Series Forecasting,1,0,1,1,1,0,0,0,0,0,1,0,0,0,1,0,1
+42,2110.08432,Meta-Learning with Adjoint Methods,1,1,1,0,1,1,0,0,0,0,1,1,0,0,1,0,0
+43,2110.09902,Toward Understanding Convolutional Neural Networks from Volterra Convolution Perspective,1,0,1,1,0,1,0,0,0,0,0,1,0,0,0,0,2
+44,2110.11688,Differentially Private Coordinate Descent for Composite Empirical Risk Minimization,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,-1
+45,2110.13624,TECHNOLOGY FITNESS LANDSCAPE FOR DESIGN INNOVATION: A DEEP NEURAL EMBEDDING APPROACH BASED ON PATENT DATA,1,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,2
+46,2110.14241,Dynamic population-based meta-learning for multi-agent communication with natural language,1,1,1,1,1,0,0,0,0,1,1,0,0,0,1,0,2
+47,2111.02997,Global Optimality and Finite Sample Analysis of Softmax Off-Policy Actor Critic under State Distribution Mismatch,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,0,2
+48,2111.03289,Improved Regret Analysis for Variance-Adaptive Linear Bandits and Horizon-Free Linear Mixture MDPs,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,2
+49,2111.03664,Oracle Teacher: Leveraging Target Information for Better Knowledge Distillation of CTC Models,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,1
