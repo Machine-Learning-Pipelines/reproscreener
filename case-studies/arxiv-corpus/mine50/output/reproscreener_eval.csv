@@ -1,5 +1,5 @@
 index,id,problem,objective,research_method,research_questions,pseudocode,training_data,validation_data,test_data,results,hypothesis,prediction,method_source_code,hardware_specifications,software_dependencies,experiment_setup,experiment_source_code,affiliation
-0,1606.04671,1.0,1.0,1.0,1.0,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0
+0,1606.04671,1.0,1.0,1.0,1.0,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,1.0
 1,1903.09668,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0
 2,1904.10554,,,,,,,,,,,,,,,,,
 3,1908.05659,,,,,,,,,,,,,,,,,
