@@ -51,7 +51,7 @@ def generate_gunderson_dict():
 
 def find_affiliation(soup):
     emails = [t.getText(separator=' ', strip=True) for t in soup.find_all('email')]
-    
+
     keys_affiliation = list(exrex.generate('edu'))
     keyword_dict = {"affiliation": keys_affiliation}
     keyword_processor = KeywordProcessor(case_sensitive=True)
@@ -65,13 +65,14 @@ def find_affiliation(soup):
             edu_ind_emails[0]+=1
         elif len(edu)==0:
             edu_ind_emails[1]+=1
-            
-        if edu_ind_emails[0]>0 and edu_ind_emails[1]>0: # both
-            affiliation = 2
-        elif edu_ind_emails[0]==0 and edu_ind_emails[1]>0: # industry
-            affiliation = 1
-        elif edu_ind_emails[0]>0 and edu_ind_emails[1]==0: # academia
-            affiliation = 0
+    
+    affiliation = -1
+    if edu_ind_emails[0]>0 and edu_ind_emails[1]>0: # both
+        affiliation = 2
+    elif edu_ind_emails[0]==0 and edu_ind_emails[1]>0: # industry
+        affiliation = 1
+    elif edu_ind_emails[0]>0 and edu_ind_emails[1]==0: # academia
+        affiliation = 0
     return affiliation
 
 def find_vars(soup):
