@@ -1,5 +1,5 @@
 from pathlib import Path
-from pandas import DataFrame, read_csv, concat
+from pandas import DataFrame, read_csv, concat, merge
 import keywords
 
 def init_environment(num_articles=50, folder_name_base='mine', base_dir='./case-studies/arxiv-corpus/', compare_manual=False):
@@ -15,16 +15,16 @@ def init_environment(num_articles=50, folder_name_base='mine', base_dir='./case-
     repro_eval_filled = set_repro_eval_scores(concat([repro_eval, found_vars],
                                                      axis=0,
                                                      join='inner'), gunderson_vars)
+    display_repro_eval = found_vars[['id', 'title']].join(repro_eval_filled)
+    print(found_vars[['id', 'title']])
     print(repro_eval_filled)
+    print(merge(found_vars[['id', 'title']], repro_eval_filled,
+                left_index=True, right_index=True).drop_duplicates(subset=['id']))
 
 def init_repro_eval(path_corpus, num_articles, variables):
-    # Create an empty repro_eval dataframe with provided @variables
-    # TODO Find where repro_eval's empty columns are getting removed before print/return
     repro_eval = read_csv(path_corpus + 'scrape_df_' + 
                           str(num_articles) + '.csv', dtype=object)
-    repro_eval = repro_eval[['id']]
-    repro_eval = repro_eval.reindex(['id', *variables], axis=1)
-    return repro_eval
+    return repro_eval[['id']]
 
 def calculate_repro_eval_scores(path_corpus, df):
     # TODO increase PYDEVD_WARN_EVALUATION_TIMEOUT to 15-30s
