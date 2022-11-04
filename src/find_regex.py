@@ -1,32 +1,20 @@
 from pathlib import Path
-from pandas import DataFrame, read_csv, concat, merge
+from pandas import DataFrame, read_csv
 import keywords
 
-def init_environment(num_articles=50, folder_name_base='mine', base_dir='./case-studies/arxiv-corpus/', compare_manual=False):
+def init_paths(num_articles=50, folder_name_base='mine', base_dir='./case-studies/arxiv-corpus/'):
     # Initialize paths
     folder_name = folder_name_base + str(num_articles) + '/'
     path_corpus = base_dir + folder_name
     Path(path_corpus + 'output/').mkdir(parents=True, exist_ok=True)
+    return path_corpus, num_articles
 
-    gunderson_vars = ["problem", "objective", "research_method", "research_questions", "pseudocode", "training_data", "validation_data", "test_data", "results", "hypothesis", "prediction", "method_source_code", "hardware_specifications", "software_dependencies", "experiment_setup", "experiment_source_code", "affiliation"]
-    
-    repro_eval = init_repro_eval(path_corpus, num_articles, gunderson_vars)
-    found_vars = calculate_repro_eval_scores(path_corpus, repro_eval)
-    repro_eval_filled = set_repro_eval_scores(concat([repro_eval, found_vars],
-                                                     axis=0,
-                                                     join='inner'), gunderson_vars)
-    display_repro_eval = found_vars[['id', 'title']].join(repro_eval_filled)
-    print(found_vars[['id', 'title']])
-    print(repro_eval_filled)
-    print(merge(found_vars[['id', 'title']], repro_eval_filled,
-                left_index=True, right_index=True).drop_duplicates(subset=['id']))
-
-def init_repro_eval(path_corpus, num_articles, variables):
+def init_repro_eval(path_corpus, num_articles):
     repro_eval = read_csv(path_corpus + 'scrape_df_' + 
                           str(num_articles) + '.csv', dtype=object)
     return repro_eval[['id']]
 
-def calculate_repro_eval_scores(path_corpus, df):
+def get_found_vars(path_corpus, df):
     # TODO increase PYDEVD_WARN_EVALUATION_TIMEOUT to 15-30s
     print("Reading files...")
     df['soup'] = df['id'].apply(lambda x: keywords.read_tei(path_corpus + 'parsed_xml/' + x + '.tei.xml'))
@@ -43,30 +31,22 @@ def calc_found_vars_array(found_vars, variables):
     return vars_array
 
 def set_repro_eval_scores(df, variables):
-    # for col in df.columns.drop(['id', 'affiliation', 'found_vars']):
     df['found_vars_array'] = df['found_vars'].apply(lambda x: calc_found_vars_array(x, variables))
     scores = DataFrame(df.found_vars_array.to_list(), index = df.index, columns=variables)
     scores['affiliation'] = df['affiliation_calc']
     return scores
 
+def get_manual_eval(path_corpus):
+    manual_eval =  read_csv(path_corpus + '../manual_eval.csv')
+    return (manual_eval.drop(columns='index'))
 
-# test1 = {'pseudocode', 'objective', 'research_questions'}
-# gunderson_vars = ["id", "problem", "objective", "research_method", "research_questions", "pseudocode", "training_data", "validation_data", "test_data", "results", "hypothesis", "prediction", "method_source_code", "hardware_specifications", "software_dependencies", "experiment_setup", "experiment_source_code", "affiliation"]
-
-init_environment()
-
-
-
-# calc_found_vars_array(test1, gunderson_vars.remove('id'))
-# init_environment()
-#     if compare_manual:
-#         manual_eval =  read_csv(path_corpus + '../manual_eval.csv')
-#         manual_eval = manual_eval.drop(columns='index')
-#         df_compare = DataFrame(
-#             [manual_eval.iloc[index][1:].values, repro_eval.iloc[index][1:].values],
-#             columns=gunderson_vars[1:],
-#             index=['manual_eval', 'reproscreener_eval'])
-#         print(df_compare.T)
-
-    # repro_eval.to_csv(path_corpus + 'output/repro_eval.csv', index_label="index")
-    # return(repro_eval)
+def compare_available_manual(repro_df, manual_df, variables):
+    avail_manual = manual_df[~manual_df.isnull()].drop(['id'])
+    repro_df = repro_df.drop(['id'])
+    for i in range(len(avail_manual)):
+        print(repro_df.title[i])
+        df_compare = DataFrame(
+            [avail_manual.iloc[i][:].values, repro_df.iloc[i][1:].values],
+            columns=variables,
+            index=['manual_eval', 'reproscreener_eval'])
+        print(df_compare.T)

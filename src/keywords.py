@@ -50,6 +50,7 @@ def generate_gunderson_dict():
     return keyword_dict
 
 def find_affiliation(soup):
+    ## ? Condsider merging into find_vars
     emails = [t.getText(separator=' ', strip=True) for t in soup.find_all('email')]
 
     keys_affiliation = list(exrex.generate('edu'))
