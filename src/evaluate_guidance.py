@@ -1,5 +1,6 @@
 from pathlib import Path
 from pandas import DataFrame, read_csv
+from tabulate import tabulate
 import keywords
 
 def init_paths(num_articles=50, folder_name_base='mine', base_dir='./case-studies/arxiv-corpus/'):
@@ -41,12 +42,12 @@ def get_manual_eval(path_corpus):
     return (manual_eval.drop(columns='index'))
 
 def compare_available_manual(repro_df, manual_df, variables):
-    avail_manual = manual_df[~manual_df.isnull()].drop(['id'])
-    repro_df = repro_df.drop(['id'])
+    avail_manual = manual_df.dropna().drop(columns=['id'])
+    repro_df = repro_df.drop(columns=['id'])
     for i in range(len(avail_manual)):
-        print(repro_df.title[i])
+        print('\n', repro_df.title[i])
         df_compare = DataFrame(
             [avail_manual.iloc[i][:].values, repro_df.iloc[i][1:].values],
             columns=variables,
             index=['manual_eval', 'reproscreener_eval'])
-        print(df_compare.T)
+        print(tabulate(df_compare.T, headers='keys', tablefmt='rounded_grid'))
