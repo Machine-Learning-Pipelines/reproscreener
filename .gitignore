@@ -3,6 +3,7 @@ arxiv-miner/
 grobid-installation/
 grobid_client_python/
 .vscode/
+src/repro-screener.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -133,5 +134,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.DS_Store
-src/repro-screener.code-workspace
