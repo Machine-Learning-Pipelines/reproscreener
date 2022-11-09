@@ -1,36 +1,3 @@
-% \subsection{Real-world Experiments}
-\subsection{Rectified model probability mitigates robust overfitting}
-\label{sect:exp-practical-adversarial-training}
-
-% \chengyu{This section validates the effectiveness of the confidence calibration. Therefore right after the analysis}
-
-
-
-
-
-
-
-We now work on a realistic dataset (CIFAR-10) to demonstrate the rectified model probability 
-% proposed in Equation~(\ref{eq:approximate-label-distribution})
-can effectively mitigate the robust overfitting, or equivalently the epoch-wise double descent in adversarial training. The outer minimization of adversarial training (Equation~(\ref{eq:outer-minimization})) now becomes 
-    % \begin{equation}
-    %     \theta^* = \argmin_\theta \mathbbm{E}_\mathcal{D_\delta}~ \ell\left(f_\theta(x_\delta), P_{\theta^{\text{Trad}}}^{T, \lambda}(Y_\delta | x_\delta)\right),
-    % \end{equation}
-    \begin{equation}
-        % \theta^* = \argmin_\theta \mathbbm{E}_\mathcal{D_\delta}~ \ell\left(f_\theta(x_\delta), P_{\theta^{\text{Trad}}}^{T, \lambda}(Y_\delta | x_\delta)\right),
-        \theta^* = \argmin_\theta \mathbbm{E}_\mathcal{D'}~ \ell\left(f_\theta(x'), f_{\hat{\theta}}(x'; T, \lambda)_{y'}\right),
-    \end{equation}
-    where $\hat{\theta}$ denotes the parameters of a classifier adversarially trained beforehand.
-    The details of the experimental setting are available in the Appendix. 
-    % ~\ref{sect: exp-practical}.
-
-% \todo{Rephrase our training framework: 1) get model probability by one training 2) find optimal $T$ and $\lambda$ 3) Adversarial training on the rectified model probability.}
-
-% \jingbo{move Figure~\ref{fig:method-grid-search} to this page? Simplify the caption a bit by moving some of the sentences to the paragraph here.} 
-As shown in Figure~\ref{fig:method-grid-search}, adversarial training on rectified model probability can mitigate the robust overfitting when the temperature $T$ and interpolation ratio $\lambda$ are optimal. Such optimal hyperparameters perfectly aligns with the ones automatically determined by Equation~(\ref{eq:calibration}).
-
-
-
-
-
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:8d5c41dc9086b855877de17136ceee40552d38dd2e6697de9ec78de32b4c4161
+size 2079

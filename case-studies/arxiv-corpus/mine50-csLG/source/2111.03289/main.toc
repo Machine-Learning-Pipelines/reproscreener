@@ -1,25 +1,3 @@
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Problem Definition}{2}{section.2}%
-\contentsline {section}{\numberline {3}Variance-Adaptive Linear Bandits}{3}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Proof of Theorem \ref {main-thm-bandit}}{5}{subsection.3.1}%
-\contentsline {section}{\numberline {4}Linear Mixture MDP}{6}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Proof of Theorem\nobreakspace {}\ref {main-rl}}{7}{subsection.4.1}%
-\contentsline {section}{\numberline {5}Conclusion}{10}{section.5}%
-\contentsline {part}{\hspace {1em}Appendix}{13}{part.1}%
-\contentsline {xpart}{Appendix}{13}{part.1}%
-\contentsline {section}{\numberline {A}Proofs for VOFUL2}{13}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Proof of Lemma \ref {lem:epc}}{13}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Proof of Lemma \ref {lem:confset}}{14}{subsection.A.2}%
-\contentsline {subsection}{\numberline {A.3}Proof of Lemma \ref {lem:concreg-emp}}{15}{subsection.A.3}%
-\contentsline {subsection}{\numberline {A.4}$d\sqrt {K}$ regret bound of VOFUL2}{16}{subsection.A.4}%
-\contentsline {subsection}{\numberline {A.5}Miscellaneous Lemmas}{17}{subsection.A.5}%
-\contentsline {section}{\numberline {B}Proofs for VARLin2}{18}{appendix.B}%
-\contentsline {subsection}{\numberline {B.1}Proof of Lemma \ref {lem:optimism}}{18}{subsection.B.1}%
-\contentsline {subsection}{\numberline {B.2}Proof of Lemma \ref {lem:confset-rl} }{18}{subsection.B.2}%
-\contentsline {subsection}{\numberline {B.3}Proof of Lemma \ref {lem:epc2}}{19}{subsection.B.3}%
-\contentsline {subsection}{\numberline {B.4}Proof of Lemma \ref {lem:concreg-emp-rl}}{20}{subsection.B.4}%
-\contentsline {subsection}{\numberline {B.5}The Exact Definition of $I_{k,h}$ and Proof of Lemma\nobreakspace {}\ref {lem-I}}{20}{subsection.B.5}%
-\contentsline {subsection}{\numberline {B.6}Proof of Proposition \nobreakspace {}\ref {prop:rl-bound}}{21}{subsection.B.6}%
-\contentsline {subsection}{\numberline {B.7}Proof of Theorem \ref {main-rl}}{23}{subsection.B.7}%
-\contentsline {subsection}{\numberline {B.8}Miscellaneous lemmas}{24}{subsection.B.8}%
-\contentsline {section}{\numberline {C}Comparison with\nobreakspace {}\citet {he2021logarithmic}}{24}{appendix.C}%
+version https://git-lfs.github.com/spec/v1
+oid sha256:f56103b8683c728f247f53f7991ae7ae8c906d481146b446dd36418e0aaaa8e3
+size 2310

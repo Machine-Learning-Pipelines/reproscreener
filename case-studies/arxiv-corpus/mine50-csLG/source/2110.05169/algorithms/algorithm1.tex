@@ -1,14 +1,3 @@
-%\DontPrintSemicolon
-\KwInput{$\bar\theta_1,\bar\theta_2$, $\phi$ (Critic), $n$ batch size} 
-\For{$k=0,1,2...$}{
-    Sample $z_1,...,z_n \sim \mathcal{U}_{[0,1]}$ \\
-    Define $\theta_{z_i} \leftarrow z_i \bar\theta_1 + (1-z_i)\bar\theta_2$ \\
-    Sample trajectories $\left \{\tau_i\right \}_1^n$ using $\{\pi_{\theta_{z_i}}\}$\\
-    Update $\bar\theta_1$ and $\bar\theta_2$ to maximize: $
-    \frac{1}{n}\sum_{i=1}^{n}\widehat{\mathcal{L}}_{PPO} \left ( \theta_{z_i} \right ) - \beta \: cosine^2\left ( \bar\theta_1,\bar \theta_2 \right )
-    $
-    %}    
-    \\
-    Up. $\phi$ to minimize:$\frac{1}{n}\sum_{i=1}^{n}\widehat{\mathcal{L}}_{MSE} \left ( \phi,z_i \right )$
-    %}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:24a5187f67207dd987782c3894721a32aa108f72ff3ada5f012e2c23e7b35757
+size 683
