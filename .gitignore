@@ -1,6 +1,6 @@
 .DS_Store
 arxiv-miner/
-case-studies/arxiv-corpus/mine50/
+case-studies/arxiv-corpus/
 grobid-installation/
 grobid_client_python/
 .vscode/
