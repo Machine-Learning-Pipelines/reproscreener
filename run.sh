@@ -1,10 +1,10 @@
-source /home/adb/anaconda3/etc/profile.d/conda.sh
+eval "$(conda shell.bash hook)"
 conda activate repro-screener
 if (( $(ps ax | grep [g]robid-service | wc -l) == 0 ))
 then
-    cd ./grobid-installation
+    cd ../grobid-installation
     ./grobid-service/bin/grobid-service &>/dev/null &
-    cd ..
+    cd -
 fi
-python ./src/scrape_arxiv.py
+poetry run python ./src/scrape_arxiv.py
 
