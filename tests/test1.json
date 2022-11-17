@@ -1,0 +1,94 @@
+{
+  "guidance_name": "Gunderson test",
+  "factors": [
+    {
+      "name": "Method",
+      "variables": [
+        {
+          "name": "Problem",
+          "description": "The problem the research seeks to solve"
+        },
+        {
+          "name": "Objective",
+          "description": "The objective of the research"
+        },
+        {
+          "name": "Research Method",
+          "description": "The research method used"
+        },
+        {
+          "name": "Research questions",
+          "description": "The research question(s) asked"
+        },
+        {
+          "name": "Pseudocode",
+          "description": "Method described using pseudo code"
+        }
+      ]
+    },
+    {
+      "name": "Data",
+      "variables": [
+        {
+          "name": "Training data",
+          "description": "The problem the research seeks to solve"
+        },
+        {
+          "name": "Validation data",
+          "description": "The objective of the research"
+        },
+        {
+          "name": "Test data",
+          "description": "The research method used"
+        },
+        {
+          "name": "Results",
+          "description": "The research question(s) asked"
+        }
+      ]
+    },
+    {
+      "name": "Experiment",
+      "variables": [
+        {
+          "name": "Hypothesis",
+          "description": "The hypothesis being investigated"
+        },
+        {
+          "name": "Prediction",
+          "description": "Predictions related to the hypotheses"
+        },
+        {
+          "name": "Method source code",
+          "description": "Is the method open sourced?"
+        },
+        {
+          "name": "Hardware specifications",
+          "description": "Hardware used"
+        },
+        {
+          "name": "Software dependencies",
+          "description": "For method or experiment"
+        },
+        {
+          "name": "Experiment setup",
+          "description": "Is the setup including hyper-parameters described?"
+        },
+        {
+          "name": "Experiment source code",
+          "description": "Is the experiment code open sourced?"
+        }
+      ]
+    },
+    {
+      "name": "Miscellaneous",
+      "variables": [
+        {
+          "name": "Affiliation",
+          "custom": true,
+          "description": "The affiliation of the authors - Academia: (0), industry (1), both (2)"
+        }
+      ]
+    }
+  ]
+}
