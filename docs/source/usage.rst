@@ -12,6 +12,16 @@ Installation
 
 2. Install the python package manager `poetry <https://python-poetry.org/docs/#installing-with-the-official-installer>`_.
 
+3. Install pyenv and pyenv-virtualenv: `<https://github.com/pyenv/pyenv>`_.
+
+4. Create a virtual environment with the correct python version (3.9.13):
+
+.. code-block:: console
+
+    (.venv) $ pyenv install 3.9.13
+    (.venv) $ pyenv virtualenv 3.9.13 repro-screener
+    (.venv) $ pyenv local repro-screener
+
 3. Install dependencies:
 
 .. code-block:: console
