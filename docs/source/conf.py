@@ -14,7 +14,11 @@ release = '0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinxcontrib.bibtex']
+extensions = [
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
+    'sphinxcontrib.bibtex'
+    ]
 bibtex_bibfiles = ['references.bib']
 
 templates_path = ['_templates']
@@ -25,5 +29,5 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
-html_static_path = ['_static']
+html_theme = "pydata_sphinx_theme"
+# html_static_path = ['_static']
