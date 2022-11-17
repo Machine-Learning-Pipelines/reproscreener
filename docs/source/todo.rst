@@ -10,3 +10,8 @@ Features
     - Checks for modularity, file structure, dependencies
     - Checks for steps/scripts to create figures & visualizations
     - Track model benchmarks and provenance
+
+Development
+------------
+
+- Non binary values in JSON guidance format would require custom keyword seach functions
