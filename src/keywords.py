@@ -3,11 +3,24 @@ from bs4 import BeautifulSoup
 from flashtext import KeywordProcessor
 
 def read_tei(tei_file):
+    """_summary_
+
+    Args:
+        tei_file (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     with open(tei_file, 'r') as tei:
         soup = BeautifulSoup(tei, features='xml')
         return soup
 
 def generate_gunderson_dict():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     keys_problem = list(exrex.generate('((((P|p)roblem) ((S|s)tatement)))|((((R|r)esearch) ((P|p)roblem)))|((P|p)roblems?)'))
     keys_objective = list(exrex.generate('((((O|o)bjective)))|((((G|g)oal)|((((R|r)esearch) ((O|o)bjective))))|((((R|r)esearch) ((G|g)oal))))'))
     keys_research_method = list(exrex.generate('((R|r)esearch (M|m)ethods?)|'\
@@ -50,6 +63,14 @@ def generate_gunderson_dict():
     return keyword_dict
 
 def find_affiliation(soup):
+    """_summary_
+
+    Args:
+        soup (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     ## ? Condsider merging into find_vars
     emails = [t.getText(separator=' ', strip=True) for t in soup.find_all('email')]
 
@@ -77,6 +98,14 @@ def find_affiliation(soup):
     return affiliation
 
 def find_vars(soup):
+    """_summary_
+
+    Args:
+        soup (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     paras = [t.getText(separator=' ', strip=True) for t in soup.find_all('p')]
     
     keyword_dict = generate_gunderson_dict()

@@ -3,9 +3,9 @@ from pandas import DataFrame, read_csv
 from tabulate import tabulate
 import keywords
 
-def init_paths(num_articles=50, folder_name_base='mine', base_dir='./case-studies/arxiv-corpus/'):
+def init_paths(num_articles=50, folder_name='mine50/', base_dir='./case-studies/arxiv-corpus/'):
     # Initialize paths
-    folder_name = folder_name_base + str(num_articles) + '/'
+    # folder_name = folder_name_base + str(num_articles) + '/'
     path_corpus = base_dir + folder_name
     Path(path_corpus + 'output/').mkdir(parents=True, exist_ok=True)
     return path_corpus, num_articles

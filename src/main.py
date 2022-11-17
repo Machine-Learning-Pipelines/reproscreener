@@ -2,9 +2,12 @@ import evaluate_guidance as eg
 from pandas import concat, merge
 
 def run_reproscreener():
+    """_summary_
+    fall subfunctions to run processing steps
+    """
     gunderson_vars = ["problem", "objective", "research_method", "research_questions", "pseudocode", "training_data", "validation_data", "test_data", "results", "hypothesis", "prediction", "method_source_code", "hardware_specifications", "software_dependencies", "experiment_setup", "experiment_source_code", "affiliation"]
     
-    path_corpus, num_articles = eg.init_paths()
+    path_corpus, num_articles = eg.init_paths(folder_name="mine50-csLG/")
     repro_eval = eg.init_repro_eval(path_corpus, num_articles)
     found_vars = eg.get_found_vars(path_corpus, repro_eval)
     repro_eval_filled = eg.set_repro_eval_scores(concat([repro_eval, found_vars],
