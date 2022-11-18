@@ -1,6 +1,8 @@
 from pathlib import Path
+
 from pandas import DataFrame, read_csv
 from tabulate import tabulate
+
 import keywords
 
 
