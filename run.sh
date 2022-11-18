@@ -1,5 +1,5 @@
-eval "$(conda shell.bash hook)"
-conda activate repro-screener
+# eval "$(conda shell.bash hook)"
+# conda activate repro-screener
 if (( $(ps ax | grep [g]robid-service | wc -l) == 0 ))
 then
     cd ../grobid-installation

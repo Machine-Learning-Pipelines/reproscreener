@@ -4,13 +4,13 @@ from flashtext import KeywordProcessor
 
 
 def read_tei(tei_file):
-    """_summary_
+    """Read a TEI file and return a beautiful soup object.
 
     Args:
-        tei_file (_type_): _description_
+        tei_file (_type_): Path to TEI file
 
     Returns:
-        _type_: _description_
+        _type_: Beautiful soup object
     """
     with open(tei_file, "r") as tei:
         soup = BeautifulSoup(tei, features="xml")
@@ -18,10 +18,10 @@ def read_tei(tei_file):
 
 
 def generate_gunderson_dict():
-    """_summary_
+    """Generate a dictionary of Gunderson variables with regex patterns.
 
     Returns:
-        _type_: _description_
+        _type_: A dictionary of keywords and regex patterns.
     """
     keys_problem = list(
         exrex.generate(
@@ -82,13 +82,17 @@ def generate_gunderson_dict():
 
 
 def find_affiliation(soup):
-    """_summary_
+    """Find the affiliation of the article using emails in the header (Gunderson et al. 2018).
 
     Args:
-        soup (_type_): _description_
+        soup (soup): Beautiful soup object of the TEI file
 
     Returns:
-        _type_: _description_
+        int: Affiliation value of the article
+        -1: If no affiliation is found
+        0: Academia
+        1: Industry
+        2: Both
     """
     ## ? Condsider merging into find_vars
     emails = [t.getText(separator=" ", strip=True) for t in soup.find_all("email")]
@@ -118,13 +122,13 @@ def find_affiliation(soup):
 
 
 def find_vars(soup):
-    """_summary_
+    """Find all variables per (Gunderson) metrics
 
     Args:
-        soup (_type_): _description_
+        soup (_type_): Beautiful soup object of the TEI file
 
     Returns:
-        _type_: _description_
+        _type_: Set of variables found in the article
     """
     paras = [t.getText(separator=" ", strip=True) for t in soup.find_all("p")]
 

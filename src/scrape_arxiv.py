@@ -1,9 +1,11 @@
-import arxivscraper
-import requests
 import tarfile
-import pandas as pd
-from time import sleep
 from pathlib import Path
+from time import sleep
+from rich.progress import track
+
+import arxivscraper
+import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 from grobid_client.grobid_client import GrobidClient
 
@@ -79,7 +81,7 @@ def scrape_arxiv(
 df = scrape_arxiv(path_corpus, max_articles, True)
 client = GrobidClient(config_path=path_grobid_python + "config.json")
 
-for index, row in df[:max_articles].iterrows():
+for index, row in track(df[:max_articles].iterrows()):
     response = requests.get(row["url_pdf"])
     path_pdf = path_corpus + "pdf/" + str(row["id"]) + ".pdf"
     with open(path_pdf, "wb") as f:

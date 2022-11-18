@@ -11,7 +11,13 @@ Features
     - Checks for steps/scripts to create figures & visualizations
     - Track model benchmarks and provenance
 
-Development
+- [] Progress bar (scrape): `<https://rich.readthedocs.io/en/latest/progress.html>`_
+
+
+Development notes
 ------------
 
 - Non binary values in JSON guidance format would require custom keyword seach functions
+- Include a way to add keywords to JSON and have it assigned to keywordparser
+- Refactor so keywords functions are independent of guidance type
+- MKDocs over Sphinx?
