@@ -22,7 +22,17 @@ Installation
     (.venv) $ pyenv virtualenv 3.9.13 repro-screener
     (.venv) $ pyenv local repro-screener
 
-3. Install dependencies:
+3. Install dependencies using poetry:
+
+.. code-block:: console
+
+    (.venv) $ poetry install
+
+4. Install grobid, grobid-service and grobid-python-client:
+
+    - `<https://grobid.readthedocs.io/en/latest/Install-Grobid/>`_
+    - `<https://grobid.readthedocs.io/en/latest/Grobid-service/>`_
+    - `<https://github.com/kermitt2/grobid_client_python>`_
 
 .. code-block:: console
 
