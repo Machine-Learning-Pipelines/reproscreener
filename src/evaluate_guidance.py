@@ -4,7 +4,7 @@ from pandas import DataFrame, read_csv
 from tabulate import tabulate
 
 import keywords
-
+import streamlit as st
 
 def init_paths(
     num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
@@ -53,7 +53,7 @@ def set_repro_eval_scores(df, variables):
 
 
 def get_manual_eval(path_corpus):
-    manual_eval = read_csv(path_corpus + "../manual_eval.csv")
+    manual_eval = read_csv(path_corpus + "../../manual_eval.csv")
     return manual_eval.drop(columns="index")
 
 
@@ -68,3 +68,4 @@ def compare_available_manual(repro_df, manual_df, variables):
             index=["manual_eval", "reproscreener_eval"],
         )
         print(tabulate(df_compare.T, headers="keys", tablefmt="rounded_grid"))
+        st.write(df_compare.T)

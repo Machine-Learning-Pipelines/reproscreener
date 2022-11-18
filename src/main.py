@@ -1,6 +1,7 @@
 import evaluate_guidance as eg
 from pandas import concat, merge
-
+import streamlit as st
+st.set_page_config(layout="wide")
 
 def run_reproscreener():
     """_summary_
@@ -42,10 +43,9 @@ def run_reproscreener():
     # print(output_repro_eval)
     # print(eg.get_manual_eval(path_corpus))
     output_repro_eval.to_csv(path_corpus + "output/repro_eval.csv", index_label="index")
-    manual_df = eg.get_manual_eval(path_corpus)
-    eg.compare_available_manual(output_repro_eval, manual_df, gunderson_vars)
+    eg.compare_available_manual(output_repro_eval, eg.get_manual_eval(path_corpus), gunderson_vars)
 
     return output_repro_eval
 
 
-run_reproscreener()
+st.dataframe(run_reproscreener(), use_container_width=True)

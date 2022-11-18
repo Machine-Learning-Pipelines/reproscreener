@@ -9,8 +9,11 @@ import requests
 from bs4 import BeautifulSoup
 from grobid_client.grobid_client import GrobidClient
 
-max_articles = 50
-folder_name = "mine" + str(max_articles) + "/"
+import streamlit as st
+
+max_articles = 5
+folder_name = "mine50test/"
+# folder_name = "mine" + str(max_articles) + "/"
 base_dir = "./case-studies/arxiv-corpus/"
 path_grobid_python = "../grobid_client_python/"
 
@@ -81,7 +84,12 @@ def scrape_arxiv(
 df = scrape_arxiv(path_corpus, max_articles, True)
 client = GrobidClient(config_path=path_grobid_python + "config.json")
 
-for index, row in track(df[:max_articles].iterrows()):
+article_download = st.empty()
+bar_download = st.progress(0)
+article_process = st.empty()
+bar_process = st.progress(0)
+
+for index, row in df[:max_articles].iterrows():
     response = requests.get(row["url_pdf"])
     path_pdf = path_corpus + "pdf/" + str(row["id"]) + ".pdf"
     with open(path_pdf, "wb") as f:
@@ -97,6 +105,9 @@ for index, row in track(df[:max_articles].iterrows()):
     file = tarfile.open(fileobj=response.raw, mode="r|gz")
     file.extractall(path_corpus + "source/" + str(row["id"]) + "/")
     file.close()
+    
+    article_download.text(f'Article {index} of {max_articles} downloaded')
+    bar_download.progress(index)
 
     print(row["url_html"])
     sleep(1)
@@ -107,3 +118,5 @@ for index, row in track(df[:max_articles].iterrows()):
         output=path_corpus + "parsed_xml/",
         n=20,
     )
+    article_process.text(f'Article {index} of {max_articles} processed')
+    bar_process.progress(index)
