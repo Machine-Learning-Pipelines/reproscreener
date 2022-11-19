@@ -15,7 +15,7 @@ Features
 
 
 Development notes
-------------
+-----------------
 
 - Non binary values in JSON guidance format would require custom keyword seach functions
 - Include a way to add keywords to JSON and have it assigned to keywordparser
