@@ -22,19 +22,13 @@ theme:
     - navigation.top
     - navigation.tracking
 
-
-
-
 plugins:
   - search
   - mkdocstrings:
-
   - bibtex:
       bib_file: "references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
       # cite_inline: True
-
-
 
 markdown_extensions:
   - pymdownx.highlight:
