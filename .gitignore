@@ -1,3 +1,5 @@
+site/
+sphinxdocs/
 .DS_Store
 arxiv-miner/
 case-studies/arxiv-corpus/
