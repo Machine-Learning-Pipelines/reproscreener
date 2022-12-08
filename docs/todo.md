@@ -16,3 +16,4 @@
 - Include a way to add keywords to JSON and have it assigned to keywordparser
 - Refactor so keywords functions are independent of guidance type
 - MKDocs over Sphinx?
+- Using shutil.copyfileobj to merge all tex files in an article's source folder into 1 file and *then* running keyword search on it. Would likely be more efficient than search over each file and combining the scores.
