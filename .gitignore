@@ -6,6 +6,8 @@ case-studies/arxiv-corpus/
 grobid-installation/
 grobid_client_python/
 .vscode/
+.idea/
+opendetex
 src/repro-screener.code-workspace
 
 # Byte-compiled / optimized / DLL files
