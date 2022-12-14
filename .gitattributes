@@ -1,2 +1,0 @@
-case-studies/arxiv-corpus/mine50-csLG/** filter=lfs diff=lfs merge=lfs -text
-case-studies/arxiv-corpus/mine50-csLG/**/* filter=lfs diff=lfs merge=lfs -text
