@@ -29,6 +29,8 @@ mkdocs-bibtex = "^2.8.5"
 mkdocs-material = "^8.5.10"
 pymdown-extensions = "^9.8"
 mkdocstrings-python = "^0.8.2"
+mkdocs-jupyter = "^0.22.0"
+jupyter-contrib-nbextensions = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 
