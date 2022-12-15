@@ -18,7 +18,7 @@
 ## Experiment (7)
 
 - Hypothesis: The hypothesis being investigated
-- Prediction*: Predictions related to the hypotheses
+- Prediction: Predictions related to the hypotheses
 - Method source code: Is the method open sourced
 - Hardware specifications: Hardware used
 - Software dependencies: For method or experiment
