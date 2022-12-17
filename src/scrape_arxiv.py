@@ -2,27 +2,23 @@ import tarfile
 from pathlib import Path
 from time import sleep
 from rich.progress import track
+from rich.console import Console
+from rich import inspect
+from rich.progress import (
+    Progress,
+    BarColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    MofNCompleteColumn,
+)
+
+from multiprocessing import Process
 
 import arxivscraper
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from grobid_client.grobid_client import GrobidClient
-
-import streamlit as st
-
-max_articles = 5
-folder_name = "mine50test/"
-# folder_name = "mine" + str(max_articles) + "/"
-base_dir = "./case-studies/arxiv-corpus/"
-path_grobid_python = "../grobid_client_python/"
-
-path_corpus = base_dir + folder_name
-Path(path_corpus).mkdir(parents=True, exist_ok=True)
-Path(path_corpus + "pdf/").mkdir(parents=True, exist_ok=True)
-Path(path_corpus + "html/").mkdir(parents=True, exist_ok=True)
-Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
-Path(path_corpus + "source/").mkdir(parents=True, exist_ok=True)
 
 
 def filter_category(df_full, cat1, cat2):
@@ -34,14 +30,25 @@ def filter_category(df_full, cat1, cat2):
     return df_filtered.reset_index()
 
 
-def scrape_arxiv(
+def init_paths(basedir, folder_name):
+    path_corpus = basedir + folder_name
+    Path(path_corpus).mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "pdf/").mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "html/").mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "source/").mkdir(parents=True, exist_ok=True)
+    return path_corpus
+
+
+def init_scrape_arxiv(
     path_corpus,
     max_articles,
-    initialize=True,
+    to_query=True,
     date_from="2022-10-24",
     date_until="2022-10-25",
 ):
-    if initialize:
+
+    if to_query:
         scraper = arxivscraper.Scraper(
             category="cs",
             date_from=date_from,
@@ -68,7 +75,7 @@ def scrape_arxiv(
             & df_full["categories"].str.contains("stat.ml")
         ]
         df_filt[:max_articles].to_csv(
-            path_corpus + "scrape_df_" + str(max_articles) + ".csv", index_label="index"
+            path_corpus + "scrape_df.csv", index_label="index"
         )
         df_filt.to_csv(path_corpus + "scrape_df_full.csv", index_label="index")
 
@@ -81,42 +88,93 @@ def scrape_arxiv(
     return df_filt
 
 
-df = scrape_arxiv(path_corpus, max_articles, True)
-client = GrobidClient(config_path=path_grobid_python + "config.json")
-
-article_download = st.empty()
-bar_download = st.progress(0)
-article_process = st.empty()
-bar_process = st.progress(0)
-
-for index, row in df[:max_articles].iterrows():
-    response = requests.get(row["url_pdf"])
-    path_pdf = path_corpus + "pdf/" + str(row["id"]) + ".pdf"
+def download_pdf(row, path_corpus, progress, task_download_pdf):
+    progress.update(task_download_pdf, advance=1, name=str(row[1]["id"]))
+    response = requests.get(row[1]["url_pdf"])
+    path_pdf = path_corpus + "pdf/" + str(row[1]["id"]) + ".pdf"
     with open(path_pdf, "wb") as f:
         f.write(response.content)
 
-    response = requests.get(row["url_html"])
+
+def download_html(row, path_corpus, progress, task_download_html):
+    progress.update(task_download_html, advance=1, name=str(row[1]["id"]))
+    response = requests.get(row[1]["url_html"])
     soup = BeautifulSoup(response.content, "html.parser")
-    filename = path_corpus + "html/" + str(row["id"]) + ".html"
+    filename = path_corpus + "html/" + str(row[1]["id"]) + ".html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(str(soup))
 
-    response = requests.get(row["url_source"], stream=True)
-    file = tarfile.open(fileobj=response.raw, mode="r|gz")
-    file.extractall(path_corpus + "source/" + str(row["id"]) + "/")
-    file.close()
-    
-    article_download.text(f'Article {index} of {max_articles} downloaded')
-    bar_download.progress(index)
 
-    print(row["url_html"])
-    sleep(1)
+def download_extract_source(row, path_corpus, progress, task_download_source):
+    progress.update(task_download_source, advance=1, name=str(row[1]["id"]))
+    response = requests.get(row[1]["url_source"], stream=True)
+    with tarfile.open(fileobj=response.raw, mode="r|gz") as tar:
+        tar.extractall(path_corpus + "source/" + str(row[1]["id"]) + "/")
 
-    client.process(
-        "processFulltextDocument",
-        path_corpus + "pdf/",
-        output=path_corpus + "parsed_xml/",
-        n=20,
+
+def scrape_arxiv(dff, path_corpus, grobid_parse=False):
+    progress = Progress(
+        TextColumn("{task.description}"),
+        TextColumn("{task.fields[name]}"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
     )
-    article_process.text(f'Article {index} of {max_articles} processed')
-    bar_process.progress(index)
+
+    with progress:
+        task_download_pdf = progress.add_task(
+            "[red]Downloading PDFs...", name="article_id", total=max_articles
+        )
+        task_download_html = progress.add_task(
+            "[magenta]Downloading HTML pages...", name="article_id", total=max_articles
+        )
+        task_download_source = progress.add_task(
+            "[green]Downloading and extracting source...",
+            name="article_id",
+            total=max_articles,
+        )
+        if grobid_parse:
+            task_grobid = progress.add_task(
+                "[cyan]Parsing PDFs with GROBID...", total=max_articles
+            )
+
+        while not progress.finished:
+            for row in dff[:max_articles].iterrows():
+                download_pdf(row, path_corpus, progress, task_download_pdf)
+                download_html(row, path_corpus, progress, task_download_html)
+                download_extract_source(
+                    row, path_corpus, progress, task_download_source
+                )
+
+                article_link = row[1]["url_html"]
+                progress.console.print(
+                    "Completed article:",
+                    row[1]["id"],
+                    style="link " + str(article_link),
+                )
+
+                sleep(1)
+
+                if grobid_parse:
+                    client = GrobidClient(
+                        config_path=path_grobid_python + "config.json"
+                    )
+                    client.process(
+                        "processFulltextDocument",
+                        path_corpus + "pdf/",
+                        output=path_corpus + "parsed_xml/",
+                        n=20,
+                    )
+                    progress.update(task_grobid, advance=1)
+
+
+if __name__ == "__main__":
+    max_articles = 5
+    folder_name = "mine5/"
+
+    base_dir = "./case-studies/arxiv-corpus/"
+    path_grobid_python = "../grobid_client_python/"
+
+    path_corpus = init_paths(base_dir, folder_name)
+    query_df = init_scrape_arxiv(path_corpus, max_articles, to_query=False)
+    scrape_arxiv(query_df, path_corpus, grobid_parse=False)

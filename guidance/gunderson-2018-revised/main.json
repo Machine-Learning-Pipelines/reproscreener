@@ -31,19 +31,19 @@
       "variables": [
         {
           "name": "Training data",
-          "description": "The problem the research seeks to solve"
+          "description": "Is the training set shared?"
         },
         {
           "name": "Validation data",
-          "description": "The objective of the research"
+          "description": "Is the validation set shared?"
         },
         {
           "name": "Test data",
-          "description": "The research method used"
+          "description": "Is the test set shared?"
         },
         {
           "name": "Results",
-          "description": "The research question(s) asked"
+          "description": "Are the results shared?"
         }
       ]
     },

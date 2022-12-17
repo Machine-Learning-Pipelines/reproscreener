@@ -7,7 +7,7 @@ nav:
   - Todo: todo.md
   - Docstrings: docstrings.md
   - References: z_references.md
-  - Guidances: guidance_parse.ipynb
+  # - Guidances: guidance_parse.ipynb
 
 theme:
   name: material
