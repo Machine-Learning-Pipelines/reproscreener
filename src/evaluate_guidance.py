@@ -6,6 +6,7 @@ from tabulate import tabulate
 import keywords
 import streamlit as st
 
+
 def init_paths(
     num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
 ):
@@ -66,9 +67,11 @@ def compare_available_manual(repro_df_pdf, repro_df_tex, manual_df, variables):
     for i in range(len(avail_manual)):
         print("\n", repro_df_pdf.title[i])
         df_compare = DataFrame(
-            [avail_manual.iloc[i][:].values,
-             repro_df_pdf.iloc[i][1:].values,
-             repro_df_tex.iloc[i][1:].values],
+            [
+                avail_manual.iloc[i][:].values,
+                repro_df_pdf.iloc[i][1:].values,
+                repro_df_tex.iloc[i][1:].values,
+            ],
             columns=variables,
             index=["manual_eval", "repro_pdf_eval", "repro_tex_eval"],
         )

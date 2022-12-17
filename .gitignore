@@ -1,14 +1,12 @@
-site/
-sphinxdocs/
 .DS_Store
-arxiv-miner/
-case-studies/arxiv-corpus/
-grobid-installation/
-grobid_client_python/
 .vscode/
 .idea/
-opendetex
-src/repro-screener.code-workspace
+
+site/
+sphinxdocs/
+
+case-studies/arxiv-corpus/*
+!case-studies/arxiv-corpus/*/manual_eval.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

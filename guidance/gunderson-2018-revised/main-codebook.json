@@ -1,109 +1,109 @@
 {
-  "guidance_name": "Gunderson 2018",
-  "variables":[
-      {
-          "name": "Problem",
-          "factor": "Method", 
-          "description": "The problem the research seeks to solve",
-          "explicit": true,
-          "explanation": "This variable case-insensitively matches 'problem statement', 'research problem' or 'problems'"
-      },
-      {
-          "name": "Objective",
-          "factor": "Method", 
-          "description": "The objective of the research",
-          "explicit": true
-      },
-      {
-          "name": "Research Method",
-          "factor": "Method", 
-          "description": "The research method used",
-          "explicit": true
-      },
-      {
-          "name": "Research questions",
-          "factor": "Method", 
-          "description": "The research question(s) asked",
-          "explicit": true
-      },
-      {
-          "name": "Pseudocode",
-          "factor": "Method", 
-          "description": "Method described using pseudo code",
-          "explicit": false
-      },
-      {
-          "name": "Training data",
-          "factor": "Data", 
-          "description": "The problem the research seeks to solve",
-          "explicit": false
-      },
-      {
-          "name": "Validation data",
-          "factor": "Data",
-          "description": "The objective of the research",
-          "explicit": false
-      },
-      {
-          "name": "Test data",
-          "factor": "Data",
-          "description": "The research method used",
-          "explicit": false
-      },
-      {
-          "name": "Results",
-          "factor": "Data",
-          "description": "The research question(s) asked",
-          "explicit": false
-      },
-      {
-          "name": "Hypothesis",
-          "factor": "Experiment",
-          "description": "The hypothesis being investigated",
-          "explicit": true
-      },
-      {
-          "name": "Prediction",
-          "factor": "Experiment",
-          "description": "Predictions related to the hypotheses",
-          "explicit": true
-      },
-      {
-          "name": "Method source code",
-          "factor": "Experiment",
-          "description": "Is the method open sourced?",
-          "explicit": false
-      },
-      {
-          "name": "Hardware specifications",
-          "factor": "Experiment",
-          "description": "Hardware used",
-          "explicit": false
-      },
-      {
-          "name": "Software dependencies",
-          "factor": "Experiment",
-          "description": "For method or experiment",
-          "explicit": false
-      },
-      {
-          "name": "Experiment setup",
-          "factor": "Experiment",
-          "description": "Is the setup including hyper-parameters described?",
-          "explicit": false
-      },
-      {
-          "name": "Experiment source code",
-          "factor": "Experiment",
-          "description": "Is the experiment code open sourced?",
-          "explicit": false
-      },
-      {
-          "name": "Affiliation",
-          "factor": "Miscellaneous",
-          "custom": true,
-          "description": "The affiliation of the authors - Academia: (0), industry (1), both (2)",
-          "explicit": true
-      }
-  ]
+    "guidance_name": "Gunderson 2018",
+    "variables":[
+        {
+            "name": "Problem",
+            "factor": "Method", 
+            "description": "The problem the research seeks to solve",
+            "explicit": true,
+            "explanation": "This variable case-insensitively matches 'problem statement', 'research problem' or 'problems'"
+        },
+        {
+            "name": "Objective",
+            "factor": "Method", 
+            "description": "The objective of the research",
+            "explicit": true
+        },
+        {
+            "name": "Research Method",
+            "factor": "Method", 
+            "description": "The research method used",
+            "explicit": true
+        },
+        {
+            "name": "Research questions",
+            "factor": "Method", 
+            "description": "The research question(s) asked",
+            "explicit": true
+        },
+        {
+            "name": "Pseudocode",
+            "factor": "Method", 
+            "description": "Method described using pseudo code",
+            "explicit": false
+        },
+        {
+            "name": "Training data",
+            "factor": "Data", 
+            "description": "Is the training set shared?",
+            "explicit": false
+        },
+        {
+            "name": "Validation data",
+            "factor": "Data",
+            "description": "Is the validation set shared?",
+            "explicit": false
+        },
+        {
+            "name": "Test data",
+            "factor": "Data",
+            "description": "Is the test set shared?",
+            "explicit": false
+        },
+        {
+            "name": "Results",
+            "factor": "Data",
+            "description": "Are the results shared?",
+            "explicit": false
+        },
+        {
+            "name": "Hypothesis",
+            "factor": "Experiment",
+            "description": "The hypothesis being investigated",
+            "explicit": true
+        },
+        {
+            "name": "Prediction",
+            "factor": "Experiment",
+            "description": "Predictions related to the hypotheses",
+            "explicit": true
+        },
+        {
+            "name": "Method source code",
+            "factor": "Experiment",
+            "description": "Is the method open sourced?",
+            "explicit": false
+        },
+        {
+            "name": "Hardware specifications",
+            "factor": "Experiment",
+            "description": "Hardware used",
+            "explicit": false
+        },
+        {
+            "name": "Software dependencies",
+            "factor": "Experiment",
+            "description": "For method or experiment",
+            "explicit": false
+        },
+        {
+            "name": "Experiment setup",
+            "factor": "Experiment",
+            "description": "Is the setup including hyper-parameters described?",
+            "explicit": false
+        },
+        {
+            "name": "Experiment source code",
+            "factor": "Experiment",
+            "description": "Is the experiment code open sourced?",
+            "explicit": false
+        },
+        {
+            "name": "Affiliation",
+            "factor": "Miscellaneous",
+            "custom": true,
+            "description": "The affiliation of the authors - Academia: (0), industry (1), both (2)",
+            "explicit": true
+        }
+    ]
 }
