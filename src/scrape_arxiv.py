@@ -25,7 +25,6 @@ import requests
 from bs4 import BeautifulSoup
 from grobid_client.grobid_client import GrobidClient
 
-logger.add("scrape1000.log")
 done_event = Event()
 
 
@@ -34,6 +33,7 @@ def handle_sigint(signum, frame):
 
 
 signal.signal(signal.SIGINT, handle_sigint)
+
 
 def filter_category(df_full, cat1, cat2):
     # ? Could add n catagories as input
@@ -47,6 +47,7 @@ def filter_category(df_full, cat1, cat2):
 def init_paths(basedir, folder_name):
     path_corpus = basedir + folder_name
     Path(path_corpus).mkdir(parents=True, exist_ok=True)
+    Path("logs/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "pdf/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "html/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
@@ -120,6 +121,7 @@ def download_pdf(task_id: TaskID, row, path_corpus, progress) -> None:
         if done_event.is_set():
             return
 
+
 def download_html(task_id: TaskID, row, path_corpus, progress) -> None:
     response = requests.get(row[1]["url_html"])
     soup = BeautifulSoup(response.content, "html.parser")
@@ -139,6 +141,7 @@ def download_html(task_id: TaskID, row, path_corpus, progress) -> None:
         if done_event.is_set():
             return
 
+
 def download_extract_source(task_id: TaskID, row, path_corpus, progress) -> None:
     response = requests.get(row[1]["url_source"], stream=True)
     with tarfile.open(fileobj=response.raw, mode="r|gz") as tar:
@@ -156,6 +159,7 @@ def download_extract_source(task_id: TaskID, row, path_corpus, progress) -> None
         if done_event.is_set():
             return
 
+
 # def download_extract_source(row, path_corpus, progress, task_download_source):
 #     progress.update(task_download_source, advance=1, name=str(row[1]["id"]))
 #     response = requests.get(row[1]["url_source"], stream=True)
@@ -168,21 +172,20 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
         TextColumn("{task.description}"),
         BarColumn(bar_width=None),
         "[progress.percentage]{task.percentage:>3.1f}%",
-        "•",
         MofNCompleteColumn(),
         TimeElapsedColumn(),
     )
 
     with progress:
         task_download_pdf = progress.add_task(
-        "[red]Downloading PDFs...", total=max_articles
+            "[red]Downloading PDFs...", total=max_articles
         )
         task_download_html = progress.add_task(
             "[magenta]Downloading HTML pages...", total=max_articles
         )
         task_download_source = progress.add_task(
-        "[green]Downloading and extracting source...",
-        total=max_articles,
+            "[green]Downloading and extracting source...",
+            total=max_articles,
         )
         with ThreadPoolExecutor() as pool:
 
@@ -191,47 +194,67 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
             #         "[cyan]Parsing PDFs with GROBID...",  name="article_id", total=max_articles, start=False
             #     )
 
-            [pool.submit(download_pdf, task_download_pdf, row, path_corpus, progress) for row in dff[:max_articles].iterrows()]
-            
-            [pool.submit(download_html, task_download_html, row, path_corpus, progress) for row in dff[:max_articles].iterrows()]
-            
-            [pool.submit(download_extract_source, task_download_source, row, path_corpus, progress) for row in dff[:max_articles].iterrows()]
-            
+            [
+                pool.submit(download_pdf, task_download_pdf, row, path_corpus, progress)
+                for row in dff[:max_articles].iterrows()
+            ]
+
+            [
+                pool.submit(
+                    download_html, task_download_html, row, path_corpus, progress
+                )
+                for row in dff[:max_articles].iterrows()
+            ]
+
+            [
+                pool.submit(
+                    download_extract_source,
+                    task_download_source,
+                    row,
+                    path_corpus,
+                    progress,
+                )
+                for row in dff[:max_articles].iterrows()
+            ]
+
             # for row in dff[:max_articles].iterrows():
             #     pool.submit(download_pdf, task_download_pdf, row, path_corpus, progress)
             #     pool.submit(download_html, task_download_html, row, path_corpus, progress)
             #     pool.submit(download_extract_source, task_download_source, row, path_corpus, progress)
 
-                # sleep(1)
+            # sleep(1)
 
-                # if grobid_parse:
-                #     client = GrobidClient(
-                #         config_path=path_grobid_python + "config.json"
-                #     )
-                #     client.process(
-                #         "processFulltextDocument",
-                #         path_corpus + "pdf/",
-                #         output=path_corpus + "parsed_xml/",
-                #         n=20,
-                #     )
-                #     progress.update(task_grobid, advance=1)
+            # if grobid_parse:
+            #     client = GrobidClient(
+            #         config_path=path_grobid_python + "config.json"
+            #     )
+            #     client.process(
+            #         "processFulltextDocument",
+            #         path_corpus + "pdf/",
+            #         output=path_corpus + "parsed_xml/",
+            #         n=20,
+            #     )
+            #     progress.update(task_grobid, advance=1)
     return True
+
 
 if __name__ == "__main__":
     tic = perf_counter()
     # main_console = Console()
-    
-    max_articles = 102
-    folder_name = "mine102/"
+
+    max_articles = 5
+    folder_name = "mine5/"
+
+    logger.add(f"logs/scrape{str(max_articles)}.log")
 
     base_dir = "./case-studies/arxiv-corpus/"
     path_grobid_python = "../grobid_client_python/"
 
     path_corpus = init_paths(base_dir, folder_name)
-    query_df = init_scrape_arxiv(path_corpus, max_articles, to_query=True)
-    
+    query_df = init_scrape_arxiv(path_corpus, max_articles, to_query=False)
+
     scrape_arxiv(query_df, path_corpus, grobid_parse=False)
-    
+
     toc = perf_counter()
     # main_console.print(f"Run in {toc - tic:0.4f} seconds")
     logger.info(f"Run in {toc - tic:0.4f} seconds")
