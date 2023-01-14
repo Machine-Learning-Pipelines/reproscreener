@@ -4,22 +4,22 @@ from pandas import DataFrame, read_csv
 from tabulate import tabulate
 
 import keywords
-import streamlit as st
+# import streamlit as st
 
 
-def init_paths(
-    num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
-):
-    # Initialize paths
-    # folder_name = folder_name_base + str(num_articles) + '/'
-    path_corpus = base_dir + folder_name
-    Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
-    return path_corpus
+# def init_paths(
+#     num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
+# ):
+#     # Initialize paths
+#     # folder_name = folder_name_base + str(num_articles) + '/'
+#     path_corpus = base_dir + folder_name
+#     Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
+#     return path_corpus
 
 
-def init_repro_eval(path_corpus, num_articles):
+def init_repro_eval(path_corpus):
     repro_eval = read_csv(
-        path_corpus + "scrape_df_" + str(num_articles) + ".csv", dtype=object
+        path_corpus + "scrape_df.csv", dtype=object
     )
     return repro_eval[["id"]]
 
