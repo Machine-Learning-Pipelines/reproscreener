@@ -25,7 +25,7 @@ import requests
 from bs4 import BeautifulSoup
 from grobid_client.grobid_client import GrobidClient
 
-logger.add("scrape.log")
+logger.add("scrape1000.log")
 done_event = Event()
 
 
@@ -115,7 +115,7 @@ def download_pdf(task_id: TaskID, row, path_corpus, progress) -> None:
             row[1]["id"],
             style="link " + str(article_link),
         )
-        logger.info(message="Downloaded PDF: " + str(row[1]["id"]) + " - " + str(article_link))
+        logger.info(f"Downloaded PDF: {str(row[1]['id'])} - {str(article_link)}")
 
         if done_event.is_set():
             return
@@ -134,7 +134,7 @@ def download_html(task_id: TaskID, row, path_corpus, progress) -> None:
             row[1]["id"],
             style="link " + str(article_link),
         )
-        logger.info(message="Downloaded HTML: " + str(row[1]["id"]) + " - " + str(article_link))
+        logger.info(f"Downloaded HTML: {str(row[1]['id'])} - {str(article_link)}")
 
         if done_event.is_set():
             return
@@ -151,7 +151,7 @@ def download_extract_source(task_id: TaskID, row, path_corpus, progress) -> None
             row[1]["id"],
             style="link " + str(article_link),
         )
-        logger.info(message="Downloaded source: " + str(row[1]["id"]) + " - " + str(article_link))
+        logger.info(f"Downloaded source: {str(row[1]['id'])} - {str(article_link)}")
 
         if done_event.is_set():
             return
@@ -174,18 +174,18 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
     )
 
     with progress:
+        task_download_pdf = progress.add_task(
+        "[red]Downloading PDFs...", total=max_articles
+        )
+        task_download_html = progress.add_task(
+            "[magenta]Downloading HTML pages...", total=max_articles
+        )
+        task_download_source = progress.add_task(
+        "[green]Downloading and extracting source...",
+        total=max_articles,
+        )
         with ThreadPoolExecutor() as pool:
-            task_download_pdf = progress.add_task(
-                "[red]Downloading PDFs...", total=max_articles
-                )
-            task_download_html = progress.add_task(
-                    "[magenta]Downloading HTML pages...", name="article_id", total=max_articles
-                )
-            task_download_source = progress.add_task(
-                "[green]Downloading and extracting source...",
-                name="article_id",
-                total=max_articles,
-            )
+
             # if grobid_parse:
             #     task_grobid = progress.add_task(
             #         "[cyan]Parsing PDFs with GROBID...",  name="article_id", total=max_articles, start=False
@@ -219,10 +219,10 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
 
 if __name__ == "__main__":
     tic = perf_counter()
-    main_console = Console()
+    # main_console = Console()
     
-    max_articles = 50
-    folder_name = "mine50/"
+    max_articles = 102
+    folder_name = "mine102/"
 
     base_dir = "./case-studies/arxiv-corpus/"
     path_grobid_python = "../grobid_client_python/"
@@ -233,5 +233,5 @@ if __name__ == "__main__":
     scrape_arxiv(query_df, path_corpus, grobid_parse=False)
     
     toc = perf_counter()
-    main_console.print(f"Run in {toc - tic:0.4f} seconds")
+    # main_console.print(f"Run in {toc - tic:0.4f} seconds")
     logger.info(f"Run in {toc - tic:0.4f} seconds")
