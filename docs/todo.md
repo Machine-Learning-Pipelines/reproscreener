@@ -8,7 +8,8 @@
   - Checks for modularity, file structure, dependencies
   - Checks for steps/scripts to create figures & visualizations
   - Track model benchmarks and provenance
-- [] Progress bar (scrape): (<https://rich.readthedocs.io/en/latest/progress.html>)
+- [x] Progress bar (scrape): (<https://rich.readthedocs.io/en/latest/progress.html>)
+
 
 ## Development notes
 
@@ -17,3 +18,4 @@
 - Refactor so keywords functions are independent of guidance type
 - MKDocs over Sphinx?
 - Using shutil.copyfileobj to merge all tex files in an article's source folder into 1 file and *then* running keyword search on it. Would likely be more efficient than search over each file and combining the scores.
+- [] Dynamic progress (tests/dynamic_progress.py)

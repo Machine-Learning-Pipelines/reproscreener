@@ -4,6 +4,7 @@ from pandas import DataFrame, read_csv
 from tabulate import tabulate
 
 import keywords
+
 # import streamlit as st
 
 
@@ -18,9 +19,7 @@ import keywords
 
 
 def init_repro_eval(path_corpus):
-    repro_eval = read_csv(
-        path_corpus + "scrape_df.csv", dtype=object
-    )
+    repro_eval = read_csv(path_corpus + "scrape_df.csv", dtype=object)
     return repro_eval[["id"]]
 
 
