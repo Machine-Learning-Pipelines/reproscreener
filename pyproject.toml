@@ -32,6 +32,11 @@ mkdocstrings-python = "^0.8.2"
 mkdocs-jupyter = "^0.22.0"
 jupyter-contrib-nbextensions = "^0.7.0"
 loguru = "^0.6.0"
+urlextract = "^1.8.0"
+uritools = "^4.0.1"
+idna = "^3.4"
+platformdirs = "^2.6.2"
+dnspython = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 
