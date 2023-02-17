@@ -1,4 +1,5 @@
 site_name: repro-screener
+repo_url: https://github.com/Machine-Learning-Pipelines/repro-screener/
 
 nav:
   - Home: index.md
@@ -7,6 +8,8 @@ nav:
   - Todo: todo.md
   - Docstrings: docstrings.md
   - References: z_references.md
+  - License: license.md
+  # - Guidances: guidance_parse.ipynb
 
 theme:
   name: material
@@ -26,7 +29,7 @@ plugins:
   - search
   - mkdocstrings:
   - bibtex:
-      bib_file: "references.bib"
+      bib_file: "docs/references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
       # cite_inline: True
 
