@@ -35,12 +35,33 @@ def handle_sigint(signum, frame):
 signal.signal(signal.SIGINT, handle_sigint)
 
 
-def filter_category(df_full, cat1, cat2):
-    # ? Could add n catagories as input
-    df_filtered = df_full[
-        df_full["categories"].str.contains(cat1)
-        & df_full["categories"].str.contains(cat2)
-    ]
+def filter_category(df_full, cat1, cat2, cond="cond1"):
+    """Filter condition for arxiv categories
+
+    Args:
+        df_full (_type_): _description_
+        cat1 (_type_): _description_
+        cat2 (_type_): _description_
+        cond (str, optional): "cond1" is cs.lg & stat.ml
+                            "cond2" is (cs.lg & stat.ml | cs.lg)
+                            Defaults to "cond1".
+
+    Returns:
+        _type_: _description_
+    """
+    if cond == "cond1":
+        df_filtered = df_full[
+            df_full["categories"].str.contains(cat1)
+            & df_full["categories"].str.contains(cat2)
+        ]
+    elif cond == "cond2":
+        df_filtered = df_full[
+            (
+                df_full["categories"].str.contains("cs.lg")
+                & df_full["categories"].str.contains("stat.ml")
+            )
+            | df_full["categories"].str.contains("cs.lg")
+        ]
     return df_filtered.reset_index()
 
 
@@ -52,6 +73,7 @@ def init_paths(basedir, folder_name):
     Path(path_corpus + "html/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "source/").mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
     return path_corpus
 
 
@@ -61,6 +83,7 @@ def init_scrape_arxiv(
     to_query=True,
     date_from="2022-10-24",
     date_until="2022-10-25",
+    filter_cond="cond1",
 ):
 
     if to_query:
@@ -83,12 +106,8 @@ def init_scrape_arxiv(
             "authors",
         )
         df_full = pd.DataFrame(df_full, columns=cols)
-        df_filt = filter_category(df_full, "cs.lg", "stat.ml")
+        df_filt = filter_category(df_full, "cs.lg", "stat.ml", cond=filter_cond)
 
-        df_full[
-            df_full["categories"].str.contains("cs.lg")
-            & df_full["categories"].str.contains("stat.ml")
-        ]
         df_filt[:max_articles].to_csv(
             path_corpus + "scrape_df.csv", index_label="index"
         )
@@ -242,8 +261,8 @@ if __name__ == "__main__":
     tic = perf_counter()
     # main_console = Console()
 
-    max_articles = 5
-    folder_name = "mine5/"
+    max_articles = 98
+    folder_name = "mine98-andor/"
 
     logger.add(f"logs/scrape{str(max_articles)}.log")
 
@@ -251,7 +270,9 @@ if __name__ == "__main__":
     path_grobid_python = "../grobid_client_python/"
 
     path_corpus = init_paths(base_dir, folder_name)
-    query_df = init_scrape_arxiv(path_corpus, max_articles, to_query=False)
+    query_df = init_scrape_arxiv(
+        path_corpus, max_articles, to_query=True, filter_cond="cond2"
+    )
 
     scrape_arxiv(query_df, path_corpus, grobid_parse=False)
 
