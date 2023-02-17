@@ -5,6 +5,9 @@ import scrape_arxiv as sa
 # import streamlit as st
 import read_tex
 
+# from console import console
+from r_logger import log
+
 # st.set_page_config(layout="wide")
 
 
@@ -53,9 +56,13 @@ def run_reproscreener(
             left_index=True,
             right_index=True,
         ).drop_duplicates(subset=["id"])
+        output_repro_eval_tex = read_tex.get_found_links_tex(
+            path_corpus, output_repro_eval_tex
+        )
         output_repro_eval_tex.to_csv(
             path_corpus + "output/repro_eval_tex.csv", index_label="index"
         )
+        log.info(output_repro_eval_tex)
 
     if eval_pdf:
         found_vars_pdf = eg.get_found_vars(path_corpus, repro_eval)
@@ -89,8 +96,8 @@ def run_reproscreener(
 
 
 if __name__ == "__main__":
-    max_articles = 102
-    folder_name = "mine102/"
+    max_articles = 98
+    folder_name = "mine98-andor/"
 
     base_dir = "./case-studies/arxiv-corpus/"
     path_corpus = sa.init_paths(base_dir, folder_name)
@@ -99,8 +106,8 @@ if __name__ == "__main__":
         max_articles,
         path_corpus,
         eval_tex=True,
-        eval_pdf=True,
-        eval_manual=True,
-        compare_manual=True,
+        eval_pdf=False,
+        eval_manual=False,
+        compare_manual=False,
     )
 # st.dataframe(run_reproscreener(), use_container_width=True)
