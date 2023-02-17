@@ -4,22 +4,22 @@ from pandas import DataFrame, read_csv
 from tabulate import tabulate
 
 import keywords
-import streamlit as st
 
-def init_paths(
-    num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
-):
-    # Initialize paths
-    # folder_name = folder_name_base + str(num_articles) + '/'
-    path_corpus = base_dir + folder_name
-    Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
-    return path_corpus
+# import streamlit as st
 
 
-def init_repro_eval(path_corpus, num_articles):
-    repro_eval = read_csv(
-        path_corpus + "scrape_df_" + str(num_articles) + ".csv", dtype=object
-    )
+# def init_paths(
+#     num_articles=50, folder_name="mine50/", base_dir="./case-studies/arxiv-corpus/"
+# ):
+#     # Initialize paths
+#     # folder_name = folder_name_base + str(num_articles) + '/'
+#     path_corpus = base_dir + folder_name
+#     Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
+#     return path_corpus
+
+
+def init_repro_eval(path_corpus):
+    repro_eval = read_csv(path_corpus + "scrape_df.csv", dtype=object)
     return repro_eval[["id"]]
 
 
@@ -66,9 +66,11 @@ def compare_available_manual(repro_df_pdf, repro_df_tex, manual_df, variables):
     for i in range(len(avail_manual)):
         print("\n", repro_df_pdf.title[i])
         df_compare = DataFrame(
-            [avail_manual.iloc[i][:].values,
-             repro_df_pdf.iloc[i][1:].values,
-             repro_df_tex.iloc[i][1:].values],
+            [
+                avail_manual.iloc[i][:].values,
+                repro_df_pdf.iloc[i][1:].values,
+                repro_df_tex.iloc[i][1:].values,
+            ],
             columns=variables,
             index=["manual_eval", "repro_pdf_eval", "repro_tex_eval"],
         )
