@@ -28,7 +28,6 @@ theme:
 
 plugins:
   - mkdocs-jupyter:
-      execute_notebooks: true
       kernel_name: repro-screener
       theme: dark
   - mkdocstrings:
