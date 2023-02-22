@@ -4,7 +4,8 @@ repo_url: https://github.com/Machine-Learning-Pipelines/repro-screener/
 nav:
   - Home: index.md
   - Usage: usage.md
-  - Case studies: case-studies.md
+  # - Case studies: generated/gallery
+  - Case studies: manual_eval_compare.ipynb
   - Todo: todo.md
   - Docstrings: docstrings.md
   - References: z_references.md
@@ -26,12 +27,15 @@ theme:
     - navigation.tracking
 
 plugins:
-  - search
+  - mkdocs-jupyter:
+      kernel_name: repro-screener
+      theme: dark
   - mkdocstrings:
   - bibtex:
       bib_file: "docs/references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
       # cite_inline: True
+  - search
 
 markdown_extensions:
   - pymdownx.highlight:
