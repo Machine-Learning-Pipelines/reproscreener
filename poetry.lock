@@ -1556,14 +1556,14 @@ traitlets = "*"
 
 [[package]]
 name = "mdit-py-plugins"
-version = "0.3.3"
+version = "0.3.4"
 description = "Collection of plugins for markdown-it-py"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "mdit-py-plugins-0.3.3.tar.gz", hash = "sha256:5cfd7e7ac582a594e23ba6546a2f406e94e42eb33ae596d0734781261c251260"},
-    {file = "mdit_py_plugins-0.3.3-py3-none-any.whl", hash = "sha256:36d08a29def19ec43acdcd8ba471d3ebab132e7879d442760d963f19913e04b9"},
+    {file = "mdit-py-plugins-0.3.4.tar.gz", hash = "sha256:3278aab2e2b692539082f05e1243f24742194ffd92481f48844f057b51971283"},
+    {file = "mdit_py_plugins-0.3.4-py3-none-any.whl", hash = "sha256:4f1441264ac5cb39fa40a5901921c2acf314ea098d75629750c138f80d552cdf"},
 ]
 
 [package.dependencies]
@@ -1657,13 +1657,13 @@ mkdocs = ">=1.1"
 
 [[package]]
 name = "mkdocs-bibtex"
-version = "2.8.12"
+version = "2.8.13"
 description = "An MkDocs plugin that enables managing citations with BibTex"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "mkdocs-bibtex-2.8.12.tar.gz", hash = "sha256:921cd25cbe2e3266e36f6bb6770f74057b138bd9ca88d4651ed8bbac9bfc5b14"},
+    {file = "mkdocs-bibtex-2.8.13.tar.gz", hash = "sha256:c0facffe448913223f0b5a69071bfa621c3cf25890f237b1c84d2c9fc6f56dd7"},
 ]
 
 [package.dependencies]
@@ -1830,14 +1830,14 @@ files = [
 
 [[package]]
 name = "nbclassic"
-version = "0.5.1"
+version = "0.5.2"
 description = "Jupyter Notebook as a Jupyter Server extension."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "nbclassic-0.5.1-py3-none-any.whl", hash = "sha256:32c235e1f22f4048f3b877d354c198202898797cf9c2085856827598cead001b"},
-    {file = "nbclassic-0.5.1.tar.gz", hash = "sha256:8e8ffce7582bb7a4baf11fa86a3d88b184e8e7df78eed4ead69f15aa4fc0e323"},
+    {file = "nbclassic-0.5.2-py3-none-any.whl", hash = "sha256:6403a996562dadefa7fee9c49e17b663b5fd508241de5df655b90011cf3342d9"},
+    {file = "nbclassic-0.5.2.tar.gz", hash = "sha256:40f11bbcc59e8956c3d5ef132dec8e5a853e893ecf831e791d54da0d8a50d79d"},
 ]
 
 [package.dependencies]
@@ -1847,7 +1847,7 @@ ipython-genutils = "*"
 jinja2 = "*"
 jupyter-client = ">=6.1.1"
 jupyter-core = ">=4.6.1"
-jupyter-server = ">=1.17.0"
+jupyter-server = ">=1.8"
 nbconvert = ">=5"
 nbformat = "*"
 nest-asyncio = ">=1.5"
@@ -2340,14 +2340,14 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.36"
+version = "3.0.37"
 description = "Library for building powerful interactive command lines in Python"
 category = "main"
 optional = false
-python-versions = ">=3.6.2"
+python-versions = ">=3.7.0"
 files = [
-    {file = "prompt_toolkit-3.0.36-py3-none-any.whl", hash = "sha256:aa64ad242a462c5ff0363a7b9cfe696c20d55d9fc60c11fd8e632d064804d305"},
-    {file = "prompt_toolkit-3.0.36.tar.gz", hash = "sha256:3e163f254bef5a03b146397d7c1963bd3e2812f0964bb9a24e6ec761fd28db63"},
+    {file = "prompt_toolkit-3.0.37-py3-none-any.whl", hash = "sha256:6a2948ec427dfcc7c983027b1044b355db6aaa8be374f54ad2015471f7d81c5b"},
+    {file = "prompt_toolkit-3.0.37.tar.gz", hash = "sha256:d5d73d4b5eb1a92ba884a88962b157f49b71e06c4348b417dd622b25cdd3800b"},
 ]
 
 [package.dependencies]
@@ -2637,14 +2637,14 @@ six = ">=1.5"
 
 [[package]]
 name = "python-json-logger"
-version = "2.0.6"
+version = "2.0.7"
 description = "A python library adding a json log formatter"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "python-json-logger-2.0.6.tar.gz", hash = "sha256:ed33182c2b438a366775c25c1219ebbd5bd7f71694c644d6b3b3861e19565ae3"},
-    {file = "python_json_logger-2.0.6-py3-none-any.whl", hash = "sha256:3af8e5b907b4a5b53cae249205ee3a3d3472bd7ad9ddfaec136eec2f2faf4995"},
+    {file = "python-json-logger-2.0.7.tar.gz", hash = "sha256:23e7ec02d34237c5aa1e29a070193a4ea87583bb4e7f8fd06d3de8264c4b2e1c"},
+    {file = "python_json_logger-2.0.7-py3-none-any.whl", hash = "sha256:f380b826a991ebbe3de4d897aeec42760035ac760345e57b812938dc8b35e2bd"},
 ]
 
 [[package]]
@@ -2968,14 +2968,14 @@ win32 = ["pywin32"]
 
 [[package]]
 name = "setuptools"
-version = "67.3.2"
+version = "67.4.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.3.2-py3-none-any.whl", hash = "sha256:bb6d8e508de562768f2027902929f8523932fcd1fb784e6d573d2cafac995a48"},
-    {file = "setuptools-67.3.2.tar.gz", hash = "sha256:95f00380ef2ffa41d9bba85d95b27689d923c93dfbafed4aecd7cf988a25e012"},
+    {file = "setuptools-67.4.0-py3-none-any.whl", hash = "sha256:f106dee1b506dee5102cc3f3e9e68137bbad6d47b616be7991714b0c62204251"},
+    {file = "setuptools-67.4.0.tar.gz", hash = "sha256:e5fd0a713141a4a105412233c63dc4e17ba0090c8e8334594ac790ec97792330"},
 ]
 
 [package.extras]
@@ -3246,14 +3246,14 @@ test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
 name = "types-tabulate"
-version = "0.9.0.0"
+version = "0.9.0.1"
 description = "Typing stubs for tabulate"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-tabulate-0.9.0.0.tar.gz", hash = "sha256:4a79474714cea156bcd2185bb9bddd8fb9d3d5227c8d0a7f21bf21caf5f60e67"},
-    {file = "types_tabulate-0.9.0.0-py3-none-any.whl", hash = "sha256:a1cc2aa52d2a9abfe0acbb361ccd49e3400794086a41626ce8784ed2e1ec0b0d"},
+    {file = "types-tabulate-0.9.0.1.tar.gz", hash = "sha256:e486292c279f19247865bdabe802419740a0e74b53444e7f7a8009e08129da5d"},
+    {file = "types_tabulate-0.9.0.1-py3-none-any.whl", hash = "sha256:be2ea0de05f615ccfcbadf6206aa720e265955eb1de23e343aec9d8bf3fa9aaa"},
 ]
 
 [[package]]
@@ -3490,14 +3490,14 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 
 [[package]]
 name = "zipp"
-version = "3.13.0"
+version = "3.14.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "zipp-3.13.0-py3-none-any.whl", hash = "sha256:e8b2a36ea17df80ffe9e2c4fda3f693c3dad6df1697d3cd3af232db680950b0b"},
-    {file = "zipp-3.13.0.tar.gz", hash = "sha256:23f70e964bc11a34cef175bc90ba2914e1e4545ea1e3e2f67c079671883f9cb6"},
+    {file = "zipp-3.14.0-py3-none-any.whl", hash = "sha256:188834565033387710d046e3fe96acfc9b5e86cbca7f39ff69cf21a4128198b7"},
+    {file = "zipp-3.14.0.tar.gz", hash = "sha256:9e5421e176ef5ab4c0ad896624e87a7b2f07aca746c9b2aa305952800cb8eecb"},
 ]
 
 [package.extras]
