@@ -6,7 +6,9 @@ site/
 sphinxdocs/
 
 case-studies/arxiv-corpus/*
-!case-studies/arxiv-corpus/*/manual_eval.csv
+!case-studies/arxiv-corpus/manual_eval.csv
+
+client_secrets.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -137,5 +139,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-tests/client_secrets.json
-src/client_secrets.json
