@@ -1,3 +1,5 @@
 from rich.console import Console
 
-console = Console(quiet=True)
+console = Console(
+    quiet=False,
+)

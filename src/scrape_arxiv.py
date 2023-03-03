@@ -13,7 +13,7 @@ from rich.progress import (
     MofNCompleteColumn,
 )
 
-from loguru import logger
+# from loguru import logger
 from concurrent.futures import ThreadPoolExecutor
 import signal
 from threading import Event
@@ -74,6 +74,7 @@ def init_paths(basedir, folder_name):
     Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "source/").mkdir(parents=True, exist_ok=True)
     Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
+    Path(path_corpus + "repo/").mkdir(parents=True, exist_ok=True)
     return path_corpus
 
 

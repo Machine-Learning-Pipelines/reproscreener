@@ -74,11 +74,11 @@ def extract_emails_tex(combined_path):
     return emails
 
 
-def find_data_repository_links_tex(url_list):
+def find_data_repository_links_from_list(url_list):
     found_list = []
     for url in url_list:
         parsed_url = urllib.parse.urlparse(url)
-        # print(parsed_url)
+        # print(found_list)
         if "github" in parsed_url.netloc:
             found_list.append(url)
             log.debug(f"Found github link: {url}")
@@ -94,7 +94,7 @@ def find_data_repository_links_tex(url_list):
 def get_found_links_tex(path_corpus, df):
     log.debug("Finding links in files...")
     df["found_links"] = df["id"].apply(
-        lambda x: find_data_repository_links_tex(
+        lambda x: find_data_repository_links_from_list(
             extract_urls_tex(combine_tex_in_folder(path_corpus + "source/" + x + "/"))
         )
     )
@@ -122,14 +122,14 @@ if __name__ == "__main__":
     #     "./case-studies/arxiv-corpus/mine50-csLG/source/2105.15197/",
     #     replace=True,
     # )
-
+    log.debug("__main__")
     # console.rule()
-    log.debug(f"Searching: 1909.00931/")
-    find_data_repository_links_tex(extract_urls_tex(comb))
-    extract_emails_tex(comb)
+    # log.debug(f"Searching: 1909.00931/")
+    # find_data_repository_links_from_list(extract_urls_tex(comb))
+    # extract_emails_tex(comb)
     # console.rule()
 
-    log.debug(f"Searching: 2009.01947/")
-    find_data_repository_links_tex(extract_urls_tex(comb2))
-    extract_emails_tex(comb2)
+    # log.debug(f"Searching: 2009.01947/")
+    # find_data_repository_links_from_list(extract_urls_tex(comb2))
+    # extract_emails_tex(comb2)
     # console.rule()
