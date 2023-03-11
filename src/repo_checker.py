@@ -13,7 +13,7 @@ def only_found_dict_vals(d, only_found):
         out = d
     if out:
         return out
-    return None
+    return dict()
 
 
 def check_exists_file_names(path_paper, file_names, only_found=False):
@@ -75,7 +75,7 @@ def parse_readme(path_corpus, paper, only_found=False):
                 for check in checks
             }
             return only_found_dict_vals(exists, only_found)
-    return None
+    return dict()
 
 
 def check_wrapper_script(path_corpus, paper, only_found=False):
@@ -93,23 +93,23 @@ def check_wrapper_script(path_corpus, paper, only_found=False):
     return check_exists_file_names(path_paper, file_names, only_found=only_found)
 
 
-def check_all_paper(path_corpus, paper, only_found=False):
+def all_checks_by_paper(path_corpus, paper, only_found=False):
     checks = {
         "wrapper_script": check_wrapper_script(
             path_corpus, paper, only_found=only_found
         ),
-        "dependencies": check_dependencies(path_corpus, paper, only_found=only_found),
-        "readme": parse_readme(path_corpus, paper, only_found=only_found),
+        "software_dependencies": check_dependencies(
+            path_corpus, paper, only_found=only_found
+        ),
+        "parsed_readme": parse_readme(path_corpus, paper, only_found=only_found),
     }
     return only_found_dict_vals(checks, only_found)
 
 
-def tally_checks(path_corpus, paper, only_found=False, verbose=False):
-    checks = check_all_paper(path_corpus, paper, only_found=only_found)
-    if verbose:
-        console.print(checks)
+def tally_checks_by_paper(path_corpus, paper, only_found=False):
+    checks = all_checks_by_paper(path_corpus, paper, only_found=only_found)
     if checks:
-        return {k: sum(v.values()) for k, v in checks.items()}
+        return checks, {k: sum(v.values()) for k, v in checks.items()}
     return None
 
 
@@ -119,5 +119,5 @@ if __name__ == "__main__":
 
     for paper in downloaded_repos:
         console.rule(f"Paper: {paper}", style="bold red")
-        console.print(tally_checks(path_corpus, paper, only_found=True, verbose=True))
+        console.print(tally_checks_by_paper(path_corpus, paper, only_found=False))
         console.print()

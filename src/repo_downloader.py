@@ -69,10 +69,14 @@ def gdrive_get_manual_eval(
         "software_dependencies": str,
         "will_it_reproduce": float,
     }
-    exists = Path(manual_path).is_file()
-    console.print("Manual eval file exists")
+    path_exists = Path(manual_path).is_file()
 
-    if (not exists) or (exists and overwrite):
+    if path_exists and not overwrite:
+        console.print(
+            "Manual eval file already exists, use the overwrite flag to download"
+        )
+
+    if (not path_exists) or (path_exists and overwrite):
         drive = gdrive_authenticate()
         manual_path = gdrive_download_manual_eval(drive, manual_path)
 
@@ -99,21 +103,33 @@ def get_manual_eval_urls(manual_df):
     return manual_df
 
 
-def download_repos(path_corpus, manual_eval: pd.DataFrame):
+def download_repos(path_corpus, manual_eval: pd.DataFrame, overwrite=False):
     for index, row in manual_eval.iterrows():
         path_paper = path_corpus / "repo" / row["paper"]
-        Path(path_paper).mkdir(parents=True, exist_ok=True)
+        path_exists = path_paper.is_dir()
 
-        try:
-            with console.status("Cloning repo...", spinner="dots"):
-                Repo.clone_from(
-                    row["found_repo_url"][0],
-                    path_paper,
-                )
-                console.status("Successfully cloned repo: %s" % row["found_repo_url"])
-                console.print("Successfully cloned repo: %s" % row["found_repo_url"])
-        except:
-            console.print("Failed to clone repo: %s" % row["found_repo_url"])
+        if path_exists and not overwrite:
+            console.print(
+                "Repo directory already exists: {path_paper}, use the overwrite flag to download"
+            )
+
+        if (not path_exists) or (path_exists and overwrite):
+            Path(path_paper).mkdir(parents=True, exist_ok=True)
+
+            try:
+                with console.status("Cloning repo...", spinner="dots"):
+                    Repo.clone_from(
+                        row["found_repo_url"][0],
+                        path_paper,
+                    )
+                    console.status(
+                        "Successfully cloned repo: %s" % row["found_repo_url"]
+                    )
+                    console.print(
+                        "Successfully cloned repo: %s" % row["found_repo_url"]
+                    )
+            except:
+                console.print("Failed to clone repo: %s" % row["found_repo_url"])
 
 
 if __name__ == "__main__":
