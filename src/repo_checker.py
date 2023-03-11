@@ -2,6 +2,7 @@ from pathlib import Path
 from console import console
 from markdown_it import MarkdownIt
 from bs4 import BeautifulSoup
+import numpy as np
 import re
 import glob
 
@@ -34,7 +35,7 @@ def check_exists_file_names(path_paper, file_names, only_found=False):
 def get_downloaded_repos(path_corpus):
     path_repos = path_corpus / "repo"
     downloaded_repos = [p.name for p in path_repos.iterdir() if p.is_dir()]
-    return downloaded_repos
+    return sorted(downloaded_repos)
 
 
 def check_dependencies(path_corpus, paper, only_found=False):
@@ -106,11 +107,18 @@ def all_checks_by_paper(path_corpus, paper, only_found=False):
     return only_found_dict_vals(checks, only_found)
 
 
-def tally_checks_by_paper(path_corpus, paper, only_found=False):
+def tally_checks_by_paper(path_corpus, paper, only_found=False, verbose=False):
     checks = all_checks_by_paper(path_corpus, paper, only_found=only_found)
+    if verbose:
+        console.rule(f"Paper: {paper}", style="bold red")
+        console.print(checks)
     if checks:
-        return checks, {k: sum(v.values()) for k, v in checks.items()}
-    return None
+        return {k: sum(v.values()) for k, v in checks.items()}, checks
+    return (None, None)
+
+
+def dict_files_to_list(cols):
+    return cols.apply(lambda d: list(d.keys()) if d is not np.nan else np.nan)
 
 
 if __name__ == "__main__":
