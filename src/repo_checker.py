@@ -127,5 +127,5 @@ if __name__ == "__main__":
 
     for paper in downloaded_repos:
         console.rule(f"Paper: {paper}", style="bold red")
-        console.print(tally_checks_by_paper(path_corpus, paper, only_found=False))
+        console.print(tally_checks_by_paper(path_corpus, paper, only_found=True))
         console.print()
