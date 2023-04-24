@@ -37,6 +37,11 @@ gitpython = "^3.1.31"
 pydrive2 = "^1.15.1"
 markdown-it-py = "^2.2.0"
 linkify-it-py = "^2.0.0"
+bandit = "^1.7.5"
+seaborn = "^0.12.2"
+plotly = "^5.14.1"
+graphviz = "^0.20.1"
+pygraphviz = "^1.10"
 
 [tool.poetry.dev-dependencies]
 
