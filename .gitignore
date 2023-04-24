@@ -8,6 +8,11 @@ sphinxdocs/
 case-studies/arxiv-corpus/*
 !case-studies/arxiv-corpus/manual_eval.csv
 
+!case-studies/arxiv-corpus/mine50-andor/
+case-studies/arxiv-corpus/mine50-andor/*
+!case-studies/arxiv-corpus/mine50-andor/output/
+
+
 client_secrets.json
 
 # Byte-compiled / optimized / DLL files
