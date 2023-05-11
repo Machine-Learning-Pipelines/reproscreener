@@ -66,15 +66,14 @@ def filter_category(df_full, cat1, cat2, cond="cond1"):
 
 
 def init_paths(basedir, folder_name):
-    path_corpus = basedir + folder_name
+    path_corpus = basedir / folder_name
     Path(path_corpus).mkdir(parents=True, exist_ok=True)
     Path("logs/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "pdf/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "html/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "parsed_xml/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "source/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "output/").mkdir(parents=True, exist_ok=True)
-    Path(path_corpus + "repo/").mkdir(parents=True, exist_ok=True)
+
+    subfolders = ["pdf", "html", "parsed_xml", "source", "output", "repo"]
+    for subfolder in subfolders:
+        Path(path_corpus / subfolder).mkdir(parents=True, exist_ok=True)
+
     return path_corpus
 
 
@@ -86,7 +85,6 @@ def init_scrape_arxiv(
     date_until="2022-10-25",
     filter_cond="cond1",
 ):
-
     if to_query:
         scraper = arxivscraper.Scraper(
             category="cs",
@@ -208,7 +206,6 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
             total=max_articles,
         )
         with ThreadPoolExecutor() as pool:
-
             # if grobid_parse:
             #     task_grobid = progress.add_task(
             #         "[cyan]Parsing PDFs with GROBID...",  name="article_id", total=max_articles, start=False

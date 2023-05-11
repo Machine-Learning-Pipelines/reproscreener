@@ -1,14 +1,10 @@
 import evaluate_guidance as eg
 from pandas import concat, merge
 import scrape_arxiv as sa
-
-# import streamlit as st
+from pathlib import Path
 import read_tex
 
-# from console import console
 from r_logger import log
-
-# st.set_page_config(layout="wide")
 
 
 def run_reproscreener(
@@ -19,9 +15,6 @@ def run_reproscreener(
     eval_manual=False,
     compare_manual=False,
 ):
-    """_summary_
-    fall subfunctions to run processing steps
-    """
     gunderson_vars = [
         "problem",
         "objective",
@@ -60,7 +53,7 @@ def run_reproscreener(
             path_corpus, output_repro_eval_tex
         )
         output_repro_eval_tex.to_csv(
-            path_corpus + "output/repro_eval_tex.csv", index_label="index"
+            path_corpus / "output" / "repro_eval_tex.csv", index_label="index"
         )
         log.info(output_repro_eval_tex)
 
@@ -77,11 +70,11 @@ def run_reproscreener(
         ).drop_duplicates(subset=["id"])
 
         output_repro_eval_pdf.to_csv(
-            path_corpus + "output/repro_eval.csv", index_label="index"
+            path_corpus / "output" / "repro_eval.csv", index_label="index"
         )
 
-    # print(output_repro_eval_tex)
-    # print(eg.get_manual_eval(path_corpus))
+    print(output_repro_eval_tex)
+    print(eg.get_manual_eval(path_corpus))
 
     if compare_manual:
         eg.compare_available_manual(
@@ -90,16 +83,18 @@ def run_reproscreener(
             eg.get_manual_eval(path_corpus),
             gunderson_vars,
         )
-    # eg.compare_available_manual(output_repro_eval_tex, eg.get_manual_eval(path_corpus), gunderson_vars)
+    eg.compare_available_manual(
+        output_repro_eval_tex, eg.get_manual_eval(path_corpus), gunderson_vars
+    )
 
     return output_repro_eval_tex
 
 
 if __name__ == "__main__":
-    max_articles = 98
-    folder_name = "mine98-andor/"
+    max_articles = 50
+    folder_name = "mine50-andor"
 
-    base_dir = "./case-studies/arxiv-corpus/"
+    base_dir = Path("./case-studies/arxiv-corpus/")
     path_corpus = sa.init_paths(base_dir, folder_name)
 
     run_reproscreener(
@@ -110,4 +105,3 @@ if __name__ == "__main__":
         eval_manual=False,
         compare_manual=False,
     )
-# st.dataframe(run_reproscreener(), use_container_width=True)
