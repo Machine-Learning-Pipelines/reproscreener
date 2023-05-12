@@ -1,14 +1,16 @@
 import re
 from pathlib import Path
+
+import matplotlib.pyplot as plt
 import pandas as pd
-from console import console
+import seaborn as sns
+from git import Repo
+from matplotlib.colors import ListedColormap
 from rich import print
 from rich.table import Table
-from git import Repo
-import seaborn as sns
-import matplotlib.pyplot as plt
-from repo_downloader import gdrive_get_manual_eval, get_manual_eval_urls
-from matplotlib.colors import ListedColormap
+
+from reproscreener.console import console
+from reproscreener.repo_downloader import gdrive_get_manual_eval, get_manual_eval_urls
 
 
 # List directories

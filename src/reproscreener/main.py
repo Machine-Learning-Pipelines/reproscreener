@@ -1,11 +1,12 @@
 import argparse
-import requests
 import tarfile
-import read_tex
-import repo_eval
-from rich.progress import Progress
-from rich import print as rprint
 from pathlib import Path
+
+import requests
+from rich import print as rprint
+from rich.progress import Progress
+
+from reproscreener import read_tex, repo_eval
 
 
 def download_extract_source(arxiv_url, path_download) -> None:
@@ -22,7 +23,8 @@ def download_extract_source(arxiv_url, path_download) -> None:
 
 
 def main(args):
-    path_download = "case-studies/individual"  # define your corpus path here
+    path_download = Path("case-studies/individual")
+    path_download.mkdir(parents=True, exist_ok=True)
 
     # Initialize rich Progress
     progress = Progress()
@@ -32,7 +34,7 @@ def main(args):
     progress.stop()
 
     # Download the repo
-    repo_url = "https://github.com/user/repo.git"  # Replace this with actual repo URL
+    repo_url = args.repo
     paper_id = args.arxiv.split("/")[-1]  # Extract paper id from the arxiv URL
     repo_eval.download_repo(repo_url, path_paper, paper_id)
 
@@ -54,6 +56,7 @@ if __name__ == "__main__":
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--arxiv", metavar="URL", help="Arxiv URL to download and parse")
     group.add_argument("--source", metavar="PATH", help="Path to the source folder")
+    parser.add_argument("--repo", metavar="URL", help="Git repo to evaluate")
     args = parser.parse_args()
 
     main(args)
