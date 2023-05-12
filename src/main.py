@@ -1,113 +1,59 @@
-import evaluate_guidance as eg
-from pandas import concat, merge
-import scrape_arxiv as sa
-
-# import streamlit as st
+import argparse
+import requests
+import tarfile
 import read_tex
+import repo_eval
+from rich.progress import Progress
+from rich import print as rprint
+from pathlib import Path
 
-# from console import console
-from r_logger import log
 
-# st.set_page_config(layout="wide")
+def download_extract_source(arxiv_url, path_download) -> None:
+    paper_id = arxiv_url.split("/")[-1]  # extract paper id from arxiv url
+    path_paper = Path(path_download) / paper_id
+    path_paper.mkdir(parents=True, exist_ok=True)
+
+    response = requests.get(arxiv_url, stream=True)
+    with tarfile.open(fileobj=response.raw, mode="r|gz") as tar:
+        tar.extractall(path_paper)
+
+        rprint("Downloaded source:", arxiv_url)
+    return path_paper
 
 
-def run_reproscreener(
-    max_articles,
-    path_corpus,
-    eval_tex=True,
-    eval_pdf=False,
-    eval_manual=False,
-    compare_manual=False,
-):
-    """_summary_
-    fall subfunctions to run processing steps
-    """
-    gunderson_vars = [
-        "problem",
-        "objective",
-        "research_method",
-        "research_questions",
-        "pseudocode",
-        "training_data",
-        "validation_data",
-        "test_data",
-        "results",
-        "hypothesis",
-        "prediction",
-        "method_source_code",
-        "hardware_specifications",
-        "software_dependencies",
-        "experiment_setup",
-        "experiment_source_code",
-        "affiliation",
-    ]
-    repro_eval = eg.init_repro_eval(path_corpus)
+def main(args):
+    path_download = "case-studies/individual"  # define your corpus path here
 
-    if eval_tex:
-        found_vars_tex = read_tex.get_found_vars_tex(path_corpus, repro_eval)
-        repro_eval_filled_tex = eg.set_repro_eval_scores(
-            concat([repro_eval, found_vars_tex], axis=0, join="inner"),
-            gunderson_vars,
-            skip_affiliation=True,
-        )
-        output_repro_eval_tex = merge(
-            found_vars_tex[["id", "title"]],
-            repro_eval_filled_tex,
-            left_index=True,
-            right_index=True,
-        ).drop_duplicates(subset=["id"])
-        output_repro_eval_tex = read_tex.get_found_links_tex(
-            path_corpus, output_repro_eval_tex
-        )
-        output_repro_eval_tex.to_csv(
-            path_corpus + "output/repro_eval_tex.csv", index_label="index"
-        )
-        log.info(output_repro_eval_tex)
+    # Initialize rich Progress
+    progress = Progress()
+    progress.start()
+    # Download and extract the source
+    path_paper = download_extract_source(args.arxiv, path_download)
+    progress.stop()
 
-    if eval_pdf:
-        found_vars_pdf = eg.get_found_vars(path_corpus, repro_eval)
-        repro_eval_filled_pdf = eg.set_repro_eval_scores(
-            concat([repro_eval, found_vars_pdf], axis=0, join="inner"), gunderson_vars
-        )
-        output_repro_eval_pdf = merge(
-            found_vars_pdf[["id", "title"]],
-            repro_eval_filled_pdf,
-            left_index=True,
-            right_index=True,
-        ).drop_duplicates(subset=["id"])
+    # Download the repo
+    repo_url = "https://github.com/user/repo.git"  # Replace this with actual repo URL
+    paper_id = args.arxiv.split("/")[-1]  # Extract paper id from the arxiv URL
+    repo_eval.download_repo(repo_url, path_paper, paper_id)
 
-        output_repro_eval_pdf.to_csv(
-            path_corpus + "output/repro_eval.csv", index_label="index"
-        )
+    # Perform evaluation
+    df = read_tex.get_found_vars_tex(path_paper)
+    paper_table = read_tex.init_repro_eval(path_paper, df)
+    rprint(paper_table)
 
-    # print(output_repro_eval_tex)
-    # print(eg.get_manual_eval(path_corpus))
-
-    if compare_manual:
-        eg.compare_available_manual(
-            output_repro_eval_pdf,
-            output_repro_eval_tex,
-            eg.get_manual_eval(path_corpus),
-            gunderson_vars,
-        )
-    # eg.compare_available_manual(output_repro_eval_tex, eg.get_manual_eval(path_corpus), gunderson_vars)
-
-    return output_repro_eval_tex
+    # Perform repo evaluation
+    repo_df, unique_matches_df = repo_eval.evaluate_repo(path_paper)
+    repo_eval.display_dataframe(repo_df, title="Repo Evaluation - Matches")
+    repo_eval.display_dataframe(
+        unique_matches_df, title="Repo Evaluation - All unique matches"
+    )
 
 
 if __name__ == "__main__":
-    max_articles = 98
-    folder_name = "mine98-andor/"
+    parser = argparse.ArgumentParser(description="ReproScreener")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--arxiv", metavar="URL", help="Arxiv URL to download and parse")
+    group.add_argument("--source", metavar="PATH", help="Path to the source folder")
+    args = parser.parse_args()
 
-    base_dir = "./case-studies/arxiv-corpus/"
-    path_corpus = sa.init_paths(base_dir, folder_name)
-
-    run_reproscreener(
-        max_articles,
-        path_corpus,
-        eval_tex=True,
-        eval_pdf=False,
-        eval_manual=False,
-        compare_manual=False,
-    )
-# st.dataframe(run_reproscreener(), use_container_width=True)
+    main(args)

@@ -42,6 +42,7 @@ seaborn = "^0.12.2"
 plotly = "^5.14.1"
 graphviz = "^0.20.1"
 pygraphviz = "^1.10"
+types-requests = "^2.30.0.0"
 
 [tool.poetry.dev-dependencies]
 
