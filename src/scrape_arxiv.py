@@ -86,7 +86,6 @@ def init_scrape_arxiv(
     date_until="2022-10-25",
     filter_cond="cond1",
 ):
-
     if to_query:
         scraper = arxivscraper.Scraper(
             category="cs",
@@ -208,7 +207,6 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
             total=max_articles,
         )
         with ThreadPoolExecutor() as pool:
-
             # if grobid_parse:
             #     task_grobid = progress.add_task(
             #         "[cyan]Parsing PDFs with GROBID...",  name="article_id", total=max_articles, start=False
@@ -236,25 +234,6 @@ def scrape_arxiv(dff, path_corpus, grobid_parse=False):
                 )
                 for row in dff[:max_articles].iterrows()
             ]
-
-            # for row in dff[:max_articles].iterrows():
-            #     pool.submit(download_pdf, task_download_pdf, row, path_corpus, progress)
-            #     pool.submit(download_html, task_download_html, row, path_corpus, progress)
-            #     pool.submit(download_extract_source, task_download_source, row, path_corpus, progress)
-
-            # sleep(1)
-
-            # if grobid_parse:
-            #     client = GrobidClient(
-            #         config_path=path_grobid_python + "config.json"
-            #     )
-            #     client.process(
-            #         "processFulltextDocument",
-            #         path_corpus + "pdf/",
-            #         output=path_corpus + "parsed_xml/",
-            #         n=20,
-            #     )
-            #     progress.update(task_grobid, advance=1)
     return True
 
 
@@ -268,7 +247,6 @@ if __name__ == "__main__":
     logger.add(f"logs/scrape{str(max_articles)}.log")
 
     base_dir = "./case-studies/arxiv-corpus/"
-    path_grobid_python = "../grobid_client_python/"
 
     path_corpus = init_paths(base_dir, folder_name)
     query_df = init_scrape_arxiv(

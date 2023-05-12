@@ -4,6 +4,7 @@ import pandas as pd
 from console import console
 from rich import print
 from rich.table import Table
+from git import Repo
 import seaborn as sns
 import matplotlib.pyplot as plt
 from repo_downloader import gdrive_get_manual_eval, get_manual_eval_urls
@@ -115,6 +116,71 @@ def display_dataframe(df: pd.DataFrame, title: str):
         table.add_row(str(idx), *row.map(str).tolist())
 
     console.print(table)
+
+
+def download_repo(repo_url: str, path_corpus: Path, paper_id: str, overwrite=False):
+    # console = Console()
+    path_paper = path_corpus / "repo" / paper_id
+    path_exists = path_paper.is_dir()
+
+    if path_exists and not overwrite:
+        console.print(
+            f"Repo directory already exists: {path_paper}, use the overwrite flag to download"
+        )
+        return
+
+    Path(path_paper).mkdir(parents=True, exist_ok=True)
+
+    try:
+        with console.status("Cloning repo...", spinner="dots"):
+            Repo.clone_from(repo_url, path_paper)
+        console.print(f"Successfully cloned repo: {repo_url}")
+    except Exception as e:
+        console.print(f"Failed to clone repo: {repo_url}. Error: {e}")
+
+
+def evaluate_repo(path_corpus):
+    path_corpus = Path(path_corpus)
+    repo_path = path_corpus / "repo"
+    directories = list_directories(repo_path)
+
+    data = []
+    unique_matches_data = []
+
+    for directory in directories:
+        dependencies = check_dependencies(directory)
+        parsed_readme = check_parsed_readme(directory)
+        wrapper_scripts = check_wrapper_scripts(directory)
+
+        data.append([dependencies, parsed_readme, wrapper_scripts])
+
+        # Combine matches from dependencies, parsed_readme, and wrapper_scripts, removing duplicates
+        unique_matches = list(set(dependencies + parsed_readme + wrapper_scripts))
+
+        # If unique_matches is empty, set it to "Code provided but no matches"
+        if not unique_matches:
+            unique_matches = ["Code provided but no matches"]
+
+        unique_matches_data.append((directory.name, ", ".join(unique_matches)))
+
+    df = pd.DataFrame(
+        data,
+        columns=["Dependencies", "Parsed Readme", "Wrapper Scripts"],
+        index=[d.name for d in directories],
+    )
+
+    # Convert unique_matches_data to a dictionary
+    unique_matches_dict = {
+        directory: matches for directory, matches in unique_matches_data
+    }
+
+    # Create a DataFrame from the dictionary
+    unique_matches_df = pd.DataFrame.from_dict(
+        unique_matches_dict, orient="index", columns=["Matches"]
+    )
+    Path(path_corpus / "output").mkdir(parents=True, exist_ok=True)
+    unique_matches_df.to_csv(path_corpus / "output/unique_matches.csv")
+    return df, unique_matches_df
 
 
 def create_binary_matrix(unique_matches_df: pd.DataFrame) -> pd.DataFrame:

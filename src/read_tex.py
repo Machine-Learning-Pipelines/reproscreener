@@ -1,31 +1,27 @@
 import glob
 import os
-from pathlib import Path
-import keywords
 import shutil
-import evaluate_guidance as eg
+import urllib.parse
+from pathlib import Path
+
 from flashtext import KeywordProcessor
 from urlextract import URLExtract
-import urllib.parse
 
-# from console import console
+import evaluate_guidance as eg
+import keywords
+
 from r_logger import log
+import pandas as pd
+from rich.table import Table
 
 
-def combine_tex_in_folder(folder_path, replace=False):
-    """_summary_
-    Combine all tex files in folder into one for searching
-    """
-    combined_path = folder_path + "combined.tex"
-    if replace == True:
-        Path.unlink(Path(combined_path))
-    if replace == True or Path.is_file(Path(combined_path)) == False:
-        tex_list = glob.glob(folder_path + "*.tex", recursive=True)
-        with open(combined_path, "wb") as outfile:
-            for tex in tex_list:
-                with open(tex, "rb") as infile:
-                    shutil.copyfileobj(infile, outfile)
-        log.debug("Combining tex files...")
+def combine_tex_in_folder(folder_path):
+    folder_path = Path(folder_path)
+    combined_path = folder_path / "combined.tex"
+    with open(combined_path, "w") as outfile:
+        for name in glob.glob(f"{folder_path}/*.tex"):
+            with open(name) as infile:
+                outfile.write(infile.read())
     return combined_path
 
 
@@ -102,19 +98,29 @@ def get_found_links_tex(path_corpus, df):
     return df
 
 
-def get_found_vars_tex(path_corpus, df):
-    log.debug("Finding variables in files...")
-    df["found_vars"] = df["id"].apply(
-        lambda x: find_vars_tex(
-            combine_tex_in_folder(path_corpus + "source/" + x + "/")
-        )
-    )
-    df["title"] = df["id"]
-    return df[["id", "title", "found_vars"]]
+def get_found_vars_tex(path_corpus):
+    combined_path = combine_tex_in_folder(path_corpus)
+    found_vars = find_vars_tex(combined_path)
+
+    df = pd.DataFrame([{"id": "1", "title": "title", "found_vars": found_vars}])
+
+    return df
+
+
+def init_repro_eval(path_corpus, df):
+    table = Table(title="Paper Evaluation")
+
+    table.add_column("ID", justify="right", style="cyan")
+    table.add_column("Title", style="magenta")
+    table.add_column("Found Variables", justify="right", style="green")
+
+    for _, row in df.iterrows():
+        table.add_row(row["id"], row["title"], ", ".join(row["found_vars"]))
+
+    return table
 
 
 if __name__ == "__main__":
-
     # comb = combine_tex_in_folder(
     #     "./case-studies/arxiv-corpus/mine50-csLG/source/1909.00931/", replace=True
     # )

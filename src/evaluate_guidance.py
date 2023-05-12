@@ -43,24 +43,21 @@ def set_repro_eval_scores(df, variables, skip_affiliation=False):
 
 
 def get_manual_eval(path_corpus):
-    manual_eval = read_csv(path_corpus + "../../manual_eval.csv")
-    return manual_eval.drop(columns="index")
+    return read_csv(path_corpus + "manual_eval.csv")
 
 
-def compare_available_manual(repro_df_pdf, repro_df_tex, manual_df, variables):
-    avail_manual = manual_df.dropna().drop(columns=["id"])
-    repro_df_pdf = repro_df_pdf.drop(columns=["id"])
+def compare_available_manual(repro_df_tex, manual_df, variables):
+    avail_manual = manual_df.dropna()
     repro_df_tex = repro_df_tex.drop(columns=["id"])
     for i in range(len(avail_manual)):
         print("\n", repro_df_pdf.title[i])
         df_compare = DataFrame(
             [
                 avail_manual.iloc[i][:].values,
-                repro_df_pdf.iloc[i][1:].values,
                 repro_df_tex.iloc[i][1:].values,
             ],
             columns=variables,
-            index=["manual_eval", "repro_pdf_eval", "repro_tex_eval"],
+            index=["manual_eval", "repro_tex_eval"],
         )
         print(tabulate(df_compare.T, headers="keys", tablefmt="rounded_grid"))
         st.write(df_compare.T)

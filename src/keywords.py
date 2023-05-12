@@ -3,20 +3,6 @@ from bs4 import BeautifulSoup
 from flashtext import KeywordProcessor
 
 
-def read_tei(tei_file):
-    """Read a TEI file and return a beautiful soup object.
-
-    Args:
-        tei_file (_type_): Path to TEI file
-
-    Returns:
-        _type_: Beautiful soup object
-    """
-    with open(tei_file, "r") as tei:
-        soup = BeautifulSoup(tei, features="xml")
-        return soup
-
-
 def generate_gunderson_dict():
     """Generate a dictionary of Gunderson variables with regex patterns.
 
@@ -79,73 +65,3 @@ def generate_gunderson_dict():
         "experiment_setup": keys_experiment_setup,
     }
     return keyword_dict
-
-
-def find_affiliation(soup):
-    """Find the affiliation of the article using emails in the header (Gunderson et al. 2018).
-
-    Args:
-        soup (soup): Beautiful soup object of the TEI file
-
-    Returns:
-        int: Affiliation value of the article
-        -1: If no affiliation is found
-        0: Academia
-        1: Industry
-        2: Both
-    """
-    ## ? Condsider merging into find_vars
-    emails = [t.getText(separator=" ", strip=True) for t in soup.find_all("email")]
-
-    keys_affiliation = list(exrex.generate("edu"))
-    keyword_dict = {"affiliation": keys_affiliation}
-    keyword_processor = KeywordProcessor(case_sensitive=True)
-    keyword_processor.add_keywords_from_dict(keyword_dict)
-
-    edu_ind_emails = [0, 0]  # edu count, industry count
-
-    for i in range(len(emails)):
-        edu = keyword_processor.extract_keywords(emails[i], span_info=True)
-        if len(edu) > 0:
-            edu_ind_emails[0] += 1
-        elif len(edu) == 0:
-            edu_ind_emails[1] += 1
-
-    affiliation = -1
-    if edu_ind_emails[0] > 0 and edu_ind_emails[1] > 0:  # both
-        affiliation = 2
-    elif edu_ind_emails[0] == 0 and edu_ind_emails[1] > 0:  # industry
-        affiliation = 1
-    elif edu_ind_emails[0] > 0 and edu_ind_emails[1] == 0:  # academia
-        affiliation = 0
-    return affiliation
-
-
-def find_vars(soup):
-    """Find all variables per (Gunderson) metrics
-
-    Args:
-        soup (_type_): Beautiful soup object of the TEI file
-
-    Returns:
-        _type_: Set of variables found in the article
-    """
-    paras = [t.getText(separator=" ", strip=True) for t in soup.find_all("p")]
-
-    keyword_dict = generate_gunderson_dict()
-    keyword_processor = KeywordProcessor(case_sensitive=True)
-    keyword_processor.add_keywords_from_dict(keyword_dict)
-
-    all_found_paras = []
-
-    for i in range(len(paras)):
-        all_found_paras.append(
-            keyword_processor.extract_keywords(paras[i], span_info=True)
-        )
-    non_empty_found_paras = [x for x in all_found_paras if x != []]
-
-    found_vars = set()
-    for i in non_empty_found_paras:
-        for j in i:
-            found_vars.add(j[0])
-    return found_vars
