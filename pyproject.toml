@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "repro-screener"
+name = "reproscreener"
 version = "0.1.0"
 description = "Automated machine learning model verification"
 authors = ["Adhithya Bhaskar <adhithyabhaskar@gmail.com>"]
 license = "MIT"
+packages = [{include = "reproscreener", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "3.9.13"

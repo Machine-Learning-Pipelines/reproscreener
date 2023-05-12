@@ -1,10 +1,12 @@
-from pathlib import Path
-from console import console
-from markdown_it import MarkdownIt
-from bs4 import BeautifulSoup
-import numpy as np
-import re
 import glob
+import re
+from pathlib import Path
+
+import numpy as np
+from bs4 import BeautifulSoup
+from markdown_it import MarkdownIt
+
+from reproscreener.console import console
 
 
 def only_found_dict_vals(d, only_found):

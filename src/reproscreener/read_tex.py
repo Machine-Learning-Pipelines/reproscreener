@@ -4,15 +4,14 @@ import shutil
 import urllib.parse
 from pathlib import Path
 
+import pandas as pd
 from flashtext import KeywordProcessor
+from r_logger import log
+from rich.table import Table
 from urlextract import URLExtract
 
-import evaluate_guidance as eg
-import keywords
-
-from r_logger import log
-import pandas as pd
-from rich.table import Table
+from reproscreener import evaluate_guidance as eg
+from reproscreener import keywords
 
 
 def combine_tex_in_folder(folder_path):

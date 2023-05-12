@@ -3,7 +3,7 @@ from pathlib import Path
 from pandas import DataFrame, read_csv
 from tabulate import tabulate
 
-import keywords
+from reproscreener import keywords
 
 
 def init_repro_eval(path_corpus):

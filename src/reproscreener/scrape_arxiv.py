@@ -23,7 +23,6 @@ import arxivscraper
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from grobid_client.grobid_client import GrobidClient
 
 done_event = Event()
 
