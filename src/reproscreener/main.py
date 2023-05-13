@@ -7,6 +7,7 @@ from rich import print as rprint
 from rich.progress import Progress
 
 from reproscreener import read_tex, repo_eval
+from reproscreener.utils import console
 
 
 def download_extract_source(arxiv_url, path_download) -> None:
@@ -14,11 +15,13 @@ def download_extract_source(arxiv_url, path_download) -> None:
     path_paper = Path(path_download) / paper_id
     path_paper.mkdir(parents=True, exist_ok=True)
 
-    response = requests.get(arxiv_url, stream=True)
-    with tarfile.open(fileobj=response.raw, mode="r|gz") as tar:
-        tar.extractall(path_paper)
+    with console.status("[bold green]Downloading and processing paper..."):
+        response = requests.get(arxiv_url, stream=True, timeout=5)
+        with tarfile.open(fileobj=response.raw, mode="r|gz") as tar:
+            tar.extractall(path_paper)
 
-        rprint("Downloaded source:", arxiv_url)
+    rprint("Downloaded source:", arxiv_url, "to", path_paper)
+    rprint("Paper ID:", paper_id)
     return path_paper
 
 
@@ -44,11 +47,8 @@ def main(args):
     rprint(paper_table)
 
     # Perform repo evaluation
-    repo_df, unique_matches_df = repo_eval.evaluate_repo(path_paper)
-    repo_eval.display_dataframe(repo_df, title="Repo Evaluation - Matches")
-    repo_eval.display_dataframe(
-        unique_matches_df, title="Repo Evaluation - All unique matches"
-    )
+    repo_df = repo_eval.evaluate_repo(path_paper)
+    repo_eval.display_dataframe(repo_df, title="Repository evaluation")
 
 
 if __name__ == "__main__":

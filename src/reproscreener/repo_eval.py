@@ -6,10 +6,12 @@ import pandas as pd
 import seaborn as sns
 from git import Repo
 from matplotlib.colors import ListedColormap
-from rich import print
+from rich import box, print
+from rich.console import Console
+from rich.style import Style
 from rich.table import Table
 
-from reproscreener.console import console
+from reproscreener.utils import console
 from reproscreener.repo_downloader import gdrive_get_manual_eval, get_manual_eval_urls
 
 
@@ -30,22 +32,31 @@ def check_dependencies(dir_path):
         "pip_reqs",
         "conda_reqs",
     ]
-    return [f.name for f in dir_path.glob("*") if f.name in dependency_files]
+    found_files = [f.name for f in dir_path.glob("*") if f.name in dependency_files]
+    not_found_files = list(set(dependency_files) - set(found_files))
+    return found_files, not_found_files
 
 
 # Check parsed readme
 def check_parsed_readme(dir_path):
     readme_path = dir_path / "README.md"
+    possible_headers = ["requirements", "dependencies", "setup", "install"]
     if readme_path.is_file():
         with open(readme_path, "r") as file:
             content = file.read()
-            headers = re.findall(
-                r"^\s*#{1,6}\s*(requirements|dependencies|setup|install)",
+            found_headers = re.findall(
+                r"^\s*#{1,6}\s*(" + "|".join(possible_headers) + ")",
                 content,
                 re.MULTILINE | re.IGNORECASE,
             )
-            return ["readme_" + header.lower() for header in headers]
-    return []
+            found_headers = [
+                header.lower() for header in found_headers
+            ]  # Convert to lowercase
+            not_found_headers = list(set(possible_headers) - set(found_headers))
+            return ["readme_" + header for header in found_headers], [
+                "readme_" + header for header in not_found_headers
+            ]
+    return [], possible_headers
 
 
 # Check wrapper scripts
@@ -59,7 +70,78 @@ def check_wrapper_scripts(dir_path):
         "Makefile",
         "Dockerfile",
     ]
-    return [f.name for f in dir_path.glob("*") if f.name in wrapper_files]
+    found_files = [f.name for f in dir_path.glob("*") if f.name in wrapper_files]
+    not_found_files = list(set(wrapper_files) - set(found_files))
+    return found_files, not_found_files
+
+
+def evaluate_repo(path_corpus):
+    path_corpus = Path(path_corpus)
+    repo_path = path_corpus / "repo"
+    directories = list_directories(repo_path)
+
+    data = []
+
+    for directory in directories:
+        dependencies_found, dependencies_not_found = check_dependencies(directory)
+        parsed_readme_found, parsed_readme_not_found = check_parsed_readme(directory)
+        wrapper_scripts_found, wrapper_scripts_not_found = check_wrapper_scripts(
+            directory
+        )
+
+        categories = ["Dependencies", "Parsed Readme", "Wrapper Scripts"]
+        found_lists = [dependencies_found, parsed_readme_found, wrapper_scripts_found]
+        not_found_lists = [
+            dependencies_not_found,
+            parsed_readme_not_found,
+            wrapper_scripts_not_found,
+        ]
+
+        for category, found_items, not_found_items in zip(
+            categories, found_lists, not_found_lists
+        ):
+            for item in found_items:
+                data.append([category, item, True])  # True indicates the item was found
+            for item in not_found_items:
+                data.append(
+                    [category, item, False]
+                )  # False indicates the item was not found
+
+    df = pd.DataFrame(
+        data,
+        columns=["Category", "Item", "Found"],
+    )
+    return df
+
+
+# def display_dataframe(df: pd.DataFrame, title: str):
+#     table = Table(
+#         show_header=True,
+#         header_style="bold magenta",
+#         title=title,
+#         box=box.SQUARE_DOUBLE_HEAD,
+#     )
+
+
+def display_dataframe(df, title=""):
+    for category, group in df.groupby("Category"):
+        table = Table(title=f"{title} - {category}")
+        table.add_column("Item")
+        table.add_column("Found")
+
+        for _, row in group.iterrows():
+            item = row["Item"]
+            found = row["Found"]
+
+            if found:
+                found_str = "[green]Found[/green]"
+            else:
+                found_str = "[red]Not Found[/red]"
+
+            table.add_row(item, found_str)
+
+        console.print(table)
+        console.print("\n")  # Print an empty line between tables
 
 
 def main():
@@ -105,21 +187,6 @@ def main():
     return df, unique_matches_df
 
 
-def display_dataframe(df: pd.DataFrame, title: str):
-    table = Table(show_header=True, header_style="bold magenta", title=title)
-
-    # Add index column
-    table.add_column("Paper")
-    for col_name in df.columns:
-        table.add_column(col_name)
-
-    # Add rows with index
-    for idx, row in df.iterrows():
-        table.add_row(str(idx), *row.map(str).tolist())
-
-    console.print(table)
-
-
 def download_repo(repo_url: str, path_corpus: Path, paper_id: str, overwrite=False):
     # console = Console()
     path_paper = path_corpus / "repo" / paper_id
@@ -139,50 +206,6 @@ def download_repo(repo_url: str, path_corpus: Path, paper_id: str, overwrite=Fal
         console.print(f"Successfully cloned repo: {repo_url}")
     except Exception as e:
         console.print(f"Failed to clone repo: {repo_url}. Error: {e}")
-
-
-def evaluate_repo(path_corpus):
-    path_corpus = Path(path_corpus)
-    repo_path = path_corpus / "repo"
-    directories = list_directories(repo_path)
-
-    data = []
-    unique_matches_data = []
-
-    for directory in directories:
-        dependencies = check_dependencies(directory)
-        parsed_readme = check_parsed_readme(directory)
-        wrapper_scripts = check_wrapper_scripts(directory)
-
-        data.append([dependencies, parsed_readme, wrapper_scripts])
-
-        # Combine matches from dependencies, parsed_readme, and wrapper_scripts, removing duplicates
-        unique_matches = list(set(dependencies + parsed_readme + wrapper_scripts))
-
-        # If unique_matches is empty, set it to "Code provided but no matches"
-        if not unique_matches:
-            unique_matches = ["Code provided but no matches"]
-
-        unique_matches_data.append((directory.name, ", ".join(unique_matches)))
-
-    df = pd.DataFrame(
-        data,
-        columns=["Dependencies", "Parsed Readme", "Wrapper Scripts"],
-        index=[d.name for d in directories],
-    )
-
-    # Convert unique_matches_data to a dictionary
-    unique_matches_dict = {
-        directory: matches for directory, matches in unique_matches_data
-    }
-
-    # Create a DataFrame from the dictionary
-    unique_matches_df = pd.DataFrame.from_dict(
-        unique_matches_dict, orient="index", columns=["Matches"]
-    )
-    Path(path_corpus / "output").mkdir(parents=True, exist_ok=True)
-    unique_matches_df.to_csv(path_corpus / "output/unique_matches.csv")
-    return df, unique_matches_df
 
 
 def create_binary_matrix(unique_matches_df: pd.DataFrame) -> pd.DataFrame:

@@ -6,7 +6,7 @@ import numpy as np
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 
-from reproscreener.console import console
+from reproscreener.utils import console
 from reproscreener.read_tex import find_data_repository_links_from_list
 
 from git import RemoteProgress
