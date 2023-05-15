@@ -7,7 +7,7 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 
 from reproscreener.utils import console
-from reproscreener.read_tex import find_data_repository_links_from_list
+from reproscreener.read_tex import RepoFinder
 
 from git import RemoteProgress
 
@@ -98,7 +98,7 @@ def get_manual_eval_urls(manual_df):
     ].copy()
     # convert string with new line chars to list and then call find_data_repository_links_from_list
     manual_df["found_repo_url"] = manual_df.code_avail_url.apply(
-        lambda x: find_data_repository_links_from_list([x])
+        lambda x: RepoFinder.find_data_repository_links_from_list([x])
     )
     return manual_df
 
