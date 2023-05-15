@@ -48,14 +48,6 @@ class TexProcessor:
         log.debug("All urls:\n %s \n", urls)
         return urls
 
-    def extract_emails_tex(self):
-        with open(self.combined_path, "r", errors="replace", encoding="utf-8") as f:
-            data = f.read()
-        extractor = URLExtract(extract_email=True)
-        emails = list(filter(lambda x: "@" in x, extractor.find_urls(data)))
-        log.debug("Found emails: %s", emails)
-        return emails
-
 
 class RepoFinder:
     @staticmethod
@@ -73,21 +65,6 @@ class RepoFinder:
                 found_list.append(url)
                 log.debug("Found zenodo link: %s", url)
         return found_list
-
-
-def count_links(links):
-    return len(links)
-
-
-def get_found_links_tex(path_corpus, df_table):
-    log.debug("Finding links in files...")
-    tex_processor = TexProcessor(path_corpus + "source/" + df_table["id"] + "/")
-    df_table["found_links"] = RepoFinder.find_data_repository_links_from_list(
-        tex_processor.extract_urls_tex()
-    )
-
-    df_table["link_count"] = df_table["found_links"].apply(count_links)
-    return df_table
 
 
 def get_found_vars_tex(path_corpus):
