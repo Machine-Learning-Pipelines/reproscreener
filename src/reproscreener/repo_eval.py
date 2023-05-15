@@ -1,19 +1,11 @@
 import re
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
-from git import Repo
-from matplotlib.colors import ListedColormap
-from rich import box, print
-from rich.console import Console
-from rich.style import Style
+import git
 from rich.table import Table
 
 from reproscreener.utils import console
-from reproscreener.repo_downloader import gdrive_get_manual_eval, get_manual_eval_urls
-
 
 ext_mapping = {
     "run": [".py", ".sh"],
@@ -35,10 +27,6 @@ ext_mapping = {
     "readme_setup": [],
     "readme_install": [],
 }
-
-
-def list_directories(path):
-    return [d for d in path.iterdir() if d.is_dir()]
 
 
 def check_files(dir_path, files):
@@ -85,7 +73,7 @@ def check_parsed_readme(dir_path):
     readme_path = dir_path / "README.md"
     possible_headers = ["requirements", "dependencies", "setup", "install"]
     if readme_path.is_file():
-        with open(readme_path, "r") as file:
+        with open(readme_path, "r", encoding="utf-8") as file:
             content = file.read()
             found_headers = re.findall(
                 r"^\s*#{1,6}\s*(" + "|".join(possible_headers) + ")",
@@ -102,55 +90,52 @@ def check_parsed_readme(dir_path):
 
 def evaluate_repo(path_corpus):
     path_corpus = Path(path_corpus)
-    repo_path = path_corpus / "repo"
-    directories = list_directories(repo_path)
+    if (path_corpus / "repo").is_dir():
+        repo_path = path_corpus / "repo"
+    else:
+        repo_path = path_corpus
+
+    dependencies_found, dependencies_not_found = check_dependencies(repo_path)
+    parsed_readme_found, parsed_readme_not_found = check_parsed_readme(repo_path)
+    wrapper_scripts_found, wrapper_scripts_not_found = check_wrapper_scripts(repo_path)
+
+    categories = ["Dependencies", "Parsed Readme", "Wrapper Scripts"]
+    found_lists = [dependencies_found, parsed_readme_found, wrapper_scripts_found]
+    not_found_lists = [
+        dependencies_not_found,
+        parsed_readme_not_found,
+        wrapper_scripts_not_found,
+    ]
 
     data = []
 
-    for directory in directories:
-        dependencies_found, dependencies_not_found = check_dependencies(directory)
-        parsed_readme_found, parsed_readme_not_found = check_parsed_readme(directory)
-        wrapper_scripts_found, wrapper_scripts_not_found = check_wrapper_scripts(
-            directory
-        )
+    for category, found_items, not_found_items in zip(
+        categories, found_lists, not_found_lists
+    ):
+        for item in found_items:
+            item_path = Path(item)
+            item_base_name = item_path.stem
+            found_extension = item_path.suffix
+            data.append(
+                [
+                    category,
+                    item_base_name,
+                    True,
+                    ext_mapping.get(item_base_name, []),
+                    found_extension,
+                ]
+            )
+        for item in not_found_items:
+            data.append([category, item, False, ext_mapping.get(item, []), ""])
 
-        categories = ["Dependencies", "Parsed Readme", "Wrapper Scripts"]
-        found_lists = [dependencies_found, parsed_readme_found, wrapper_scripts_found]
-        not_found_lists = [
-            dependencies_not_found,
-            parsed_readme_not_found,
-            wrapper_scripts_not_found,
-        ]
-
-        for category, found_items, not_found_items in zip(
-            categories, found_lists, not_found_lists
-        ):
-            for item in found_items:
-                item_path = Path(item)
-                item_base_name = item_path.stem
-                found_extension = item_path.suffix
-                data.append(
-                    [
-                        category,
-                        item_base_name,
-                        True,
-                        ext_mapping.get(item_base_name, []),
-                        found_extension,
-                    ]
-                )
-            for item in not_found_items:
-                data.append([category, item, False, ext_mapping.get(item, []), ""])
-
-    df = pd.DataFrame(
+    return pd.DataFrame(
         data,
         columns=["Category", "Item", "Found", "Extensions", "Found_Extension"],
     )
 
-    return df
 
-
-def display_dataframe(df, title=""):
-    for category, group in df.groupby("Category"):
+def display_dataframe(df_table, title=""):
+    for category, group in df_table.groupby("Category"):
         table = Table(title=f"{title} - {category}")
         table.add_column("Item")
         table.add_column("Found")
@@ -179,21 +164,24 @@ def display_dataframe(df, title=""):
         console.print("\n")
 
 
-def download_repo(repo_url: str, path_corpus: Path, paper_id: str, overwrite=False):
-    path_paper = path_corpus / "repo" / paper_id
-    path_exists = path_paper.is_dir()
+def clone_repo(repo_url: str, path_corpus: Path, overwrite=False):
+    path_exists = path_corpus.is_dir()
 
     if path_exists and not overwrite:
         console.print(
-            f"Repo directory already exists: {path_paper}, use the overwrite flag to download"
+            f"Repo directory already exists: {path_corpus}, use the overwrite flag to download"
         )
-        return
+        return path_corpus
 
-    Path(path_paper).mkdir(parents=True, exist_ok=True)
+    path_corpus.mkdir(parents=True, exist_ok=True)
+    repo_name = repo_url.split("/")[-1].split(".git")[0]
+    cloned_path = path_corpus / repo_name
 
     try:
         with console.status("Cloning repo...", spinner="dots"):
-            Repo.clone_from(repo_url, path_paper)
-        console.print(f"Successfully cloned repo: {repo_url}")
-    except Exception as e:
-        console.print(f"Failed to clone repo: {repo_url}. Error: {e}")
+            git.Repo.clone_from(repo_url, cloned_path)
+            console.print(f"Successfully cloned repo: {repo_url}")
+            return cloned_path
+    except git.exc.CommandError as error:
+        console.print(f"Failed to clone repo: {repo_url}. Error: {error}")
+        return False
