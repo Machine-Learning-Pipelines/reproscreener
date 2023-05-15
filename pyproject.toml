@@ -2,9 +2,12 @@
 name = "reproscreener"
 version = "0.1.0"
 description = "Automated machine learning model verification"
-authors = ["Adhithya Bhaskar <adhithyabhaskar@gmail.com>"]
+authors = ["Adhithya Bhaskar <adhi@adhi.dev>"]
 license = "MIT"
 packages = [{include = "reproscreener", from = "src"}]
+
+[tool.poetry.scripts]
+reproscreener = "reproscreener.main:app"
 
 [tool.poetry.dependencies]
 python = "3.9.13"
@@ -44,6 +47,7 @@ plotly = "^5.14.1"
 graphviz = "^0.20.1"
 pygraphviz = "^1.10"
 types-requests = "^2.30.0.0"
+typer = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
 

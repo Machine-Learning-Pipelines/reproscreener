@@ -3,6 +3,7 @@ repo_url: https://github.com/Machine-Learning-Pipelines/repro-screener/
 
 nav:
   - Home: index.md
+  - Installation: installation.md
   - Usage: usage.md
   # - Case studies: generated/gallery
   - Case studies: manual_eval_compare.ipynb

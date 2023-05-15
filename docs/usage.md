@@ -1,49 +1,35 @@
 # Usage
 
-## Installation
+The tool has two primary arguments:
 
-1. To use repro-screener, first clone the repository:
+- `--arxiv`: This is the Arxiv URL to download and evaluate.
+- `--repo`: This is the Git repository to evaluate.
 
-    ``` sh
-    (.venv) $ git clone git@github.com:Machine-Learning-Pipelines/repro-screener.git
-    ```
+You can also set the logging level using the `--log-level` argument.
 
-    [@bhaskaradhithyaReproScreenEnablingRobustness2022]
+## Examples
 
-2. Install the python package manager [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer).
+```bash
+# Paper 2111.12673 from the gold standard dataset 
+reproscreener --arxiv https://arxiv.org/e-print/2111.12673 --repo https://github.com/nicolinho/acc
 
-3. [Install pyenv and pyenv-virtualenv](https://github.com/pyenv/pyenv)
+# Paper 2106.07704 from the gold standard dataset
+reproscreener --arxiv https://arxiv.org/e-print/2106.07704 --repo https://github.com/HanGuo97/soft-Q-learning-for-text-generation
 
-4. Create a virtual environment with the correct python version (3.9.13):
+# Paper 2203.06735 from the gold standard dataset
+reproscreener --arxiv https://arxiv.org/e-print/2203.06735 --repo https://github.com/ghafeleb/Private-NonConvex-Federated-Learning-Without-a-Trusted-Server
 
-    ```  sh
-    (.venv) $ pyenv install 3.9.13
-    (.venv) $ pyenv virtualenv 3.9.13 repro-screener
-    (.venv) $ pyenv local repro-screener
-    ```
+# Run the tool with logging level set to debug
+reproscreener --arxiv https://arxiv.org/e-print/2111.12673 --repo https://github.com/nicolinho/acc --log-level debug
+```
 
-5. Install dependencies using poetry:
+By default, the logging level is set to `warning`. This means that only warnings, errors, and critical issues will be logged.
 
-    ``` sh
-    (.venv) $ poetry install
-    ```
-
-6. Install grobid, grobid-service and grobid-python-client:
-
-    - [https://grobid.readthedocs.io/en/latest/Install-Grobid/](https://grobid.readthedocs.io/en/latest/Install-Grobid/)
-    - [https://grobid.readthedocs.io/en/latest/Grobid-service/](https://grobid.readthedocs.io/en/latest/Grobid-service/)
-    - [https://github.com/kermitt2/grobid_client_python](https://github.com/kermitt2/grobid_client_python)
-
-7. Run the `run.sh` bash script:
-
-    ``` sh
-    (.venv) $ ./run.sh
-    ```
+If you want to see more detailed logs, you can set the logging level to `debug`.
 
 ## Project structure
 
-- `run.sh` is the script used to run ReproScreener
 - `case-studies` contains the papers that ReproScreener is developed and tested on
 - `guidance` contains the set of metrics that ReproScreener will check for
 - `tests` contains scripts and notebooks used during development
-- `src` contains the main python scripts
+- `src/reproscreener` contains the main python scripts

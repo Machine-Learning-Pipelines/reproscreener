@@ -1,5 +1,4 @@
 import exrex
-from bs4 import BeautifulSoup
 from flashtext import KeywordProcessor
 
 

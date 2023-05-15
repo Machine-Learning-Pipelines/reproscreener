@@ -6,109 +6,97 @@ from pathlib import Path
 
 import pandas as pd
 from flashtext import KeywordProcessor
-from r_logger import log
-from rich.table import Table
 from urlextract import URLExtract
+
+from rich import print as rprint
+from rich.table import Table
 
 from reproscreener import evaluate_guidance as eg
 from reproscreener import keywords
+from reproscreener.utils import log
 
 
-def combine_tex_in_folder(folder_path):
-    folder_path = Path(folder_path)
-    combined_path = folder_path / "combined.tex"
-    with open(combined_path, "w") as outfile:
-        for name in glob.glob(f"{folder_path}/*.tex"):
-            with open(name) as infile:
-                outfile.write(infile.read())
-    return combined_path
+class TexProcessor:
+    def __init__(self, folder_path):
+        self.folder_path = Path(folder_path)
+        self.combined_path = self.folder_path / "combined.tex"
+
+    def combine_tex_in_folder(self):
+        with open(self.combined_path, "w") as outfile:
+            for name in glob.glob(f"{self.folder_path}/*.tex"):
+                with open(name) as infile:
+                    outfile.write(infile.read())
+        return self.combined_path
+
+    def find_vars_tex(self):
+        keyword_dict = keywords.generate_gunderson_dict()
+        keyword_processor = KeywordProcessor(case_sensitive=True)
+        keyword_processor.add_keywords_from_dict(keyword_dict)
+        with open(self.combined_path, "r", errors="replace") as f:
+            data = f.readlines()
+            all_found = [
+                keyword_processor.extract_keywords(line, span_info=True)
+                for line in data
+            ]
+            non_empty_found = [x for x in all_found if x != []]
+            found_vars = {j[0] for i in non_empty_found for j in i}
+        return found_vars
+
+    def extract_urls_tex(self):
+        with open(self.combined_path, "r", errors="replace") as f:
+            data = f.read()
+        extractor = URLExtract()
+        urls = extractor.find_urls(data)
+        log.debug(f"All urls:\n {urls} \n")
+        return urls
+
+    def extract_emails_tex(self):
+        with open(self.combined_path, "r", errors="replace") as f:
+            data = f.read()
+        extractor = URLExtract(extract_email=True)
+        emails = list(filter(lambda x: "@" in x, extractor.find_urls(data)))
+        log.debug(f"Found emails: {emails}")
+        return emails
 
 
-def find_vars_tex(combined_path):
-    """Find all variables per (Gunderson) metrics by reading the source tex files
-
-    Args:
-        combined_path (str): Path to the combined tex file from combine_tex_in_folder()
-
-    Returns:
-        found_vars (set): Set of variables found in the article
-    """
-    keyword_dict = keywords.generate_gunderson_dict()
-    keyword_processor = KeywordProcessor(case_sensitive=True)
-    keyword_processor.add_keywords_from_dict(keyword_dict)
-    with open(combined_path, "r", errors="replace") as f:
-        data = f.readlines()
-        all_found = []
-        for line in data:
-            all_found.append(keyword_processor.extract_keywords(line, span_info=True))
-    non_empty_found = [x for x in all_found if x != []]
-    found_vars = set()
-    for i in non_empty_found:
-        for j in i:
-            found_vars.add(j[0])
-    return found_vars
-
-
-def extract_urls_tex(combined_path):
-    with open(combined_path, "r", errors="replace") as f:
-        data = f.read()
-
-    extractor = URLExtract()
-    urls = extractor.find_urls(data)
-    log.debug(f"All urls:\n {urls} \n")
-    return urls
-
-
-def extract_emails_tex(combined_path):
-    with open(combined_path, "r", errors="replace") as f:
-        data = f.read()
-
-    extractor = URLExtract(extract_email=True)
-    emails = list(filter(lambda x: "@" in x, extractor.find_urls(data)))
-    log.debug(f"Found emails: {emails}")
-    return emails
-
-
-def find_data_repository_links_from_list(url_list):
-    found_list = []
-    for url in url_list:
-        parsed_url = urllib.parse.urlparse(url)
-        # print(found_list)
-        if "github" in parsed_url.netloc:
-            found_list.append(url)
-            log.debug(f"Found github link: {url}")
-        if "gitlab" in parsed_url.netloc:
-            found_list.append(url)
-            log.debug(f"Found gitlab link: {url}")
-        if "zenodo" in parsed_url.netloc:
-            found_list.append(url)
-            log.debug(f"Found zenodo link: {url}")
-    return found_list
+class RepoFinder:
+    @staticmethod
+    def find_data_repository_links_from_list(url_list):
+        found_list = []
+        for url in url_list:
+            parsed_url = urllib.parse.urlparse(url)
+            if "github" in parsed_url.netloc:
+                found_list.append(url)
+                log.debug(f"Found github link: {url}")
+            elif "gitlab" in parsed_url.netloc:
+                found_list.append(url)
+                log.debug(f"Found gitlab link: {url}")
+            elif "zenodo" in parsed_url.netloc:
+                found_list.append(url)
+                log.debug(f"Found zenodo link: {url}")
+        return found_list
 
 
 def get_found_links_tex(path_corpus, df):
     log.debug("Finding links in files...")
-    df["found_links"] = df["id"].apply(
-        lambda x: find_data_repository_links_from_list(
-            extract_urls_tex(combine_tex_in_folder(path_corpus + "source/" + x + "/"))
-        )
+    tex_processor = TexProcessor(path_corpus + "source/" + df["id"] + "/")
+    df["found_links"] = RepoFinder.find_data_repository_links_from_list(
+        tex_processor.extract_urls_tex()
     )
+
     df["link_count"] = df["found_links"].apply(lambda x: len(x))
     return df
 
 
 def get_found_vars_tex(path_corpus):
-    combined_path = combine_tex_in_folder(path_corpus)
-    found_vars = find_vars_tex(combined_path)
-
+    tex_processor = TexProcessor(path_corpus)
+    found_vars = tex_processor.find_vars_tex()
     df = pd.DataFrame([{"id": "1", "title": "title", "found_vars": found_vars}])
-
     return df
 
 
 def init_repro_eval(path_corpus, df):
     table = Table(title="Paper Evaluation")
-
     table.add_column("ID", justify="right", style="cyan")
     table.add_column("Title", style="magenta")
     table.add_column("Found Variables", justify="right", style="green")
@@ -119,22 +107,29 @@ def init_repro_eval(path_corpus, df):
     return table
 
 
-if __name__ == "__main__":
-    # comb = combine_tex_in_folder(
-    #     "./case-studies/arxiv-corpus/mine50-csLG/source/1909.00931/", replace=True
-    # )
-    # comb2 = combine_tex_in_folder(
-    #     "./case-studies/arxiv-corpus/mine50-csLG/source/2105.15197/",
-    #     replace=True,
-    # )
-    log.debug("__main__")
-    # console.rule()
-    # log.debug(f"Searching: 1909.00931/")
-    # find_data_repository_links_from_list(extract_urls_tex(comb))
-    # extract_emails_tex(comb)
-    # console.rule()
+def main():
+    # Initialize classes
+    path_corpus = "./case-studies/arxiv-corpus/mine50-csLG/"
+    tex_processor = TexProcessor(
+        "./case-studies/arxiv-corpus/mine50-csLG/source/1909.00931/"
+    )
 
-    # log.debug(f"Searching: 2009.01947/")
-    # find_data_repository_links_from_list(extract_urls_tex(comb2))
-    # extract_emails_tex(comb2)
-    # console.rule()
+    # Process TeX and find repository links
+    found_vars = tex_processor.find_vars_tex()
+    df = pd.DataFrame([{"id": "1", "title": "title", "found_vars": found_vars}])
+
+    # Find repository links and count them
+    found_links = RepoFinder.find_data_repository_links_from_list(
+        tex_processor.extract_urls_tex()
+    )
+    df["found_links"] = None  # Create 'found_links' column
+    df.at[0, "found_links"] = [found_links]  # Assign found_links as a list
+    df["link_count"] = df["found_links"].apply(len)
+
+    # Display evaluation table
+    table = init_repro_eval(path_corpus, df)
+    rprint(table)
+
+
+if __name__ == "__main__":
+    main()
