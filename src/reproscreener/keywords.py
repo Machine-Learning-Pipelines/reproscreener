@@ -1,5 +1,4 @@
 import exrex
-from flashtext import KeywordProcessor
 
 
 def generate_gunderson_dict():
