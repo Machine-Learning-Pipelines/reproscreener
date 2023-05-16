@@ -1,0 +1,528 @@
+\begin{thebibliography}{73}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Atanasova et~al.(2020)Atanasova, Wright, and
+  Augenstein}]{atanasova2020generating}
+Pepa Atanasova, Dustin Wright, and Isabelle Augenstein. 2020.
+\newblock Generating label cohesive and well-formed adversarial claims.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 3168--3177.
+
+\bibitem[{Bahdanau et~al.(2016)Bahdanau, Brakel, Xu, Goyal, Lowe, Pineau,
+  Courville, and Bengio}]{bahdanau2016actor}
+Dzmitry Bahdanau, Philemon Brakel, Kelvin Xu, Anirudh Goyal, Ryan Lowe, Joelle
+  Pineau, Aaron Courville, and Yoshua Bengio. 2016.
+\newblock An actor-critic algorithm for sequence prediction.
+\newblock \emph{arXiv preprint arXiv:1607.07086}.
+
+\bibitem[{Bowman et~al.(2015)Bowman, Angeli, Potts, and
+  Manning}]{bowman2015large}
+Samuel Bowman, Gabor Angeli, Christopher Potts, and Christopher~D Manning.
+  2015.
+\newblock A large annotated corpus for learning natural language inference.
+\newblock In \emph{Proceedings of the 2015 Conference on Empirical Methods in
+  Natural Language Processing}, pages 632--642.
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell, Agarwal, Herbert-Voss, Krueger, Henighan,
+  Child, Ramesh, Ziegler, Wu, Winter, Hesse, Chen, Sigler, Litwin, Gray, Chess,
+  Clark, Berner, McCandlish, Radford, Sutskever, and
+  Amodei}]{NEURIPS2020_1457c0d6}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla
+  Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+  Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon
+  Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris
+  Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess,
+  Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever,
+  and Dario Amodei. 2020.
+\newblock \href
+  {https://proceedings.neurips.cc/paper/2020/file/1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf}
+  {Language models are few-shot learners}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, pages 1877--1901. Curran Associates, Inc.
+
+\bibitem[{Caccia et~al.(2019)Caccia, Caccia, Fedus, Larochelle, Pineau, and
+  Charlin}]{caccia2019language}
+Massimo Caccia, Lucas Caccia, William Fedus, Hugo Larochelle, Joelle Pineau,
+  and Laurent Charlin. 2019.
+\newblock Language {GAN}s falling short.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Chen and Bansal(2018)}]{chen2018fast}
+Yen-Chun Chen and Mohit Bansal. 2018.
+\newblock Fast abstractive summarization with reinforce-selected sentence
+  rewriting.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 675--686.
+
+\bibitem[{Choshen et~al.(2020)Choshen, Fox, Aizenbud, and
+  Abend}]{Choshen2020On}
+Leshem Choshen, Lior Fox, Zohar Aizenbud, and Omri Abend. 2020.
+\newblock \href {https://openreview.net/forum?id=H1eCw3EKvH} {On the weaknesses
+  of reinforcement learning for neural machine translation}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Dathathri et~al.(2019)Dathathri, Madotto, Lan, Hung, Frank, Molino,
+  Yosinski, and Liu}]{dathathri2019plug}
+Sumanth Dathathri, Andrea Madotto, Janice Lan, Jane Hung, Eric Frank, Piero
+  Molino, Jason Yosinski, and Rosanne Liu. 2019.
+\newblock Plug and play language models: A simple approach to controlled text
+  generation.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Dathathri et~al.(2020)Dathathri, Madotto, Lan, Hung, Frank, Molino,
+  Yosinski, and Liu}]{Dathathri2020Plug}
+Sumanth Dathathri, Andrea Madotto, Janice Lan, Jane Hung, Eric Frank, Piero
+  Molino, Jason Yosinski, and Rosanne Liu. 2020.
+\newblock \href {https://openreview.net/forum?id=H1edEyBKDS} {Plug and play
+  language models: A simple approach to controlled text generation}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Deng et~al.(2022)Deng, Wang, Hsieh, Wang, Guo, Shu, Song, Xing, and
+  Hu}]{deng2022rlprompt}
+Mingkai Deng, Jianyu Wang, Cheng-Ping Hsieh, Yihan Wang, Han Guo, Tianmin Shu,
+  Meng Song, Eric~P Xing, and Zhiting Hu. 2022.
+\newblock {RLPrompt}: Optimizing discrete text prompts with reinforcement
+  learning.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}.
+
+\bibitem[{Ebrahimi et~al.(2017)Ebrahimi, Rao, Lowd, and
+  Dou}]{ebrahimi2017hotflip}
+Javid Ebrahimi, Anyi Rao, Daniel Lowd, and Dejing Dou. 2017.
+\newblock Hotflip: White-box adversarial examples for text classification.
+\newblock \emph{arXiv preprint arXiv:1712.06751}.
+
+\bibitem[{Eysenbach and Levine(2021)}]{eysenbach2021maximum}
+Benjamin Eysenbach and Sergey Levine. 2021.
+\newblock Maximum entropy rl (provably) solves some robust rl problems.
+\newblock \emph{arXiv preprint arXiv:2103.06257}.
+
+\bibitem[{Fox et~al.(2016)Fox, Pakman, and Tishby}]{fox2016taming}
+Roy Fox, Ari Pakman, and Naftali Tishby. 2016.
+\newblock Taming the noise in reinforcement learning via soft updates.
+\newblock In \emph{Proceedings of the Thirty-Second Conference on Uncertainty
+  in Artificial Intelligence}, pages 202--211.
+
+\bibitem[{Gehrmann et~al.(2021)Gehrmann, Adewumi, Aggarwal, Ammanamanchi,
+  Anuoluwapo, Bosselut, Chandu, Clinciu, Das, Dhole et~al.}]{gehrmann2021gem}
+Sebastian Gehrmann, Tosin Adewumi, Karmanya Aggarwal, Pawan~Sasanka
+  Ammanamanchi, Aremu Anuoluwapo, Antoine Bosselut, Khyathi~Raghavi Chandu,
+  Miruna Clinciu, Dipanjan Das, Kaustubh~D Dhole, et~al. 2021.
+\newblock The gem benchmark: Natural language generation, its evaluation and
+  metrics.
+\newblock \emph{arXiv preprint arXiv:2102.01672}.
+
+\bibitem[{Guo(2015)}]{guo2015generating}
+Hongyu Guo. 2015.
+\newblock Generating text with deep reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1510.09202}.
+
+\bibitem[{Guo et~al.(2018)Guo, Lu, Cai, Zhang, Yu, and Wang}]{guo2018long}
+Jiaxian Guo, Sidi Lu, Han Cai, Weinan Zhang, Yong Yu, and Jun Wang. 2018.
+\newblock Long text generation via adversarial training with leaked
+  information.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}.
+
+\bibitem[{Haarnoja et~al.(2017)Haarnoja, Tang, Abbeel, and
+  Levine}]{haarnoja2017reinforcement}
+Tuomas Haarnoja, Haoran Tang, Pieter Abbeel, and Sergey Levine. 2017.
+\newblock Reinforcement learning with deep energy-based policies.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1352--1361. PMLR.
+
+\bibitem[{Hashimoto et~al.(2019)Hashimoto, Zhang, and
+  Liang}]{hashimoto2019unifying}
+Tatsunori Hashimoto, Hugh Zhang, and Percy Liang. 2019.
+\newblock Unifying human and statistical evaluation for natural language
+  generation.
+\newblock In \emph{Proceedings of the 2019 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long and Short Papers)}, pages 1689--1701.
+
+\bibitem[{Holtzman et~al.(2019)Holtzman, Buys, Du, Forbes, and
+  Choi}]{holtzman2019curious}
+Ari Holtzman, Jan Buys, Li~Du, Maxwell Forbes, and Yejin Choi. 2019.
+\newblock The curious case of neural text degeneration.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Hu et~al.(2019)Hu, Shi, Tan, Wang, Yang, Zhao, He, Qin, Wang, Ma
+  et~al.}]{hu2019texar}
+Zhiting Hu, Haoran Shi, Bowen Tan, Wentao Wang, Zichao Yang, Tiancheng Zhao,
+  Junxian He, Lianhui Qin, Di~Wang, Xuezhe Ma, et~al. 2019.
+\newblock Texar: A modularized, versatile, and extensible toolkit for text
+  generation.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics: System Demonstrations}, pages 159--164.
+
+\bibitem[{Hu and Xing(2022)}]{hu2022standard}
+Zhiting Hu and Eric~P Xing. 2022.
+\newblock Towards a ``standard model'' of machine learning.
+\newblock \emph{Harvard Data Science Review}.
+
+\bibitem[{Hu et~al.(2017)Hu, Yang, Liang, Salakhutdinov, and
+  Xing}]{Hu2017TowardCG}
+Zhiting Hu, Zichao Yang, Xiaodan Liang, R.~Salakhutdinov, and E.~Xing. 2017.
+\newblock Toward controlled generation of text.
+\newblock In \emph{International Conference on Machine Learning (ICML)}.
+
+\bibitem[{Jaques et~al.(2017)Jaques, Gu, Bahdanau, Hern{\'a}ndez-Lobato,
+  Turner, and Eck}]{jaques2017sequence}
+Natasha Jaques, Shixiang Gu, Dzmitry Bahdanau, Jos{\'e}~Miguel
+  Hern{\'a}ndez-Lobato, Richard~E Turner, and Douglas Eck. 2017.
+\newblock Sequence tutor: Conservative fine-tuning of sequence generation
+  models with kl-control.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1645--1654. PMLR.
+
+\bibitem[{Jaques et~al.(2020)Jaques, Shen, Ghandeharioun, Ferguson, Lapedriza,
+  Jones, Gu, and Picard}]{jaques2020human}
+Natasha Jaques, Judy~Hanwen Shen, Asma Ghandeharioun, Craig Ferguson, Agata
+  Lapedriza, Noah Jones, Shixiang Gu, and Rosalind Picard. 2020.
+\newblock Human-centric dialog training via offline reinforcement learning.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 3985--4003.
+
+\bibitem[{Jin et~al.(2020)Jin, Jin, Zhou, and Szolovits}]{jin2020bert}
+Di~Jin, Zhijing Jin, Joey~Tianyi Zhou, and Peter Szolovits. 2020.
+\newblock Is bert really robust? a strong baseline for natural language attack
+  on text classification and entailment.
+\newblock In \emph{Proceedings of the AAAI conference on artificial
+  intelligence}.
+
+\bibitem[{Kandasamy et~al.(2017)Kandasamy, Bachrach, Tomioka, Tarlow, and
+  Carter}]{kandasamy2016batch}
+Kirthevasan Kandasamy, Yoram Bachrach, Ryota Tomioka, Daniel Tarlow, and David
+  Carter. 2017.
+\newblock Batch policy gradient methods for improving neural conversation
+  models.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Krause et~al.(2020)Krause, Gotmare, McCann, Keskar, Joty, Socher, and
+  Rajani}]{krause2020gedi}
+Ben Krause, Akhilesh~Deepak Gotmare, Bryan McCann, Nitish~Shirish Keskar,
+  Shafiq Joty, Richard Socher, and Nazneen~Fatema Rajani. 2020.
+\newblock Gedi: Generative discriminator guided sequence generation.
+\newblock \emph{arXiv preprint arXiv:2009.06367}.
+
+\bibitem[{Kumar et~al.(2019)Kumar, Fu, Tucker, and
+  Levine}]{kumar2019stabilizing}
+Aviral Kumar, Justin Fu, George Tucker, and Sergey Levine. 2019.
+\newblock Stabilizing off-policy q-learning via bootstrapping error reduction.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[{Lester et~al.(2021)Lester, Al-Rfou, and Constant}]{lester2021power}
+Brian Lester, Rami Al-Rfou, and Noah Constant. 2021.
+\newblock The power of scale for parameter-efficient prompt tuning.
+\newblock \emph{arXiv preprint arXiv:2104.08691}.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Liu, Goyal, Ghazvininejad, Mohamed, Levy,
+  Stoyanov, and Zettlemoyer}]{lewis2020bart}
+Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed,
+  Omer Levy, Veselin Stoyanov, and Luke Zettlemoyer. 2020.
+\newblock Bart: Denoising sequence-to-sequence pre-training for natural
+  language generation, translation, and comprehension.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 7871--7880.
+
+\bibitem[{Li et~al.(2016)Li, Monroe, Ritter, Jurafsky, Galley, and
+  Gao}]{li2016deep}
+Jiwei Li, Will Monroe, Alan Ritter, Dan Jurafsky, Michel Galley, and Jianfeng
+  Gao. 2016.
+\newblock Deep reinforcement learning for dialogue generation.
+\newblock In \emph{Proceedings of the 2016 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1192--1202.
+
+\bibitem[{Li and Liang(2021)}]{li2021prefix}
+Xiang~Lisa Li and Percy Liang. 2021.
+\newblock Prefix-tuning: Optimizing continuous prompts for generation.
+\newblock \emph{arXiv preprint arXiv:2101.00190}.
+
+\bibitem[{Lin et~al.(2020)Lin, Zhou, Shen, Zhou, Bhagavatula, Choi, and
+  Ren}]{lin-etal-2020-commongen}
+Bill~Yuchen Lin, Wangchunshu Zhou, Ming Shen, Pei Zhou, Chandra Bhagavatula,
+  Yejin Choi, and Xiang Ren. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.165}
+  {{C}ommon{G}en: A constrained text generation challenge for generative
+  commonsense reasoning}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 1823--1840, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Liu et~al.(2021)Liu, Yuan, Fu, Jiang, Hayashi, and
+  Neubig}]{liu2021pre}
+Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and
+  Graham Neubig. 2021.
+\newblock Pre-train, prompt, and predict: A systematic survey of prompting
+  methods in natural language processing.
+\newblock \emph{arXiv preprint arXiv:2107.13586}.
+
+\bibitem[{Liu et~al.(2020)Liu, Xu, Jia, Ma, Wang, and Vosoughi}]{liu2020data}
+Ruibo Liu, Guangxuan Xu, Chenyan Jia, Weicheng Ma, Lili Wang, and Soroush
+  Vosoughi. 2020.
+\newblock Data boost: Text data augmentation through reinforcement learning
+  guided conditional generation.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 9031--9041.
+
+\bibitem[{Mnih et~al.(2013)Mnih, Kavukcuoglu, Silver, Graves, Antonoglou,
+  Wierstra, and Riedmiller}]{mnih2013playing}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
+  Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013.
+\newblock Playing atari with deep reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1312.5602}.
+
+\bibitem[{Mnih et~al.(2015)Mnih, Kavukcuoglu, Silver, Rusu, Veness, Bellemare,
+  Graves, Riedmiller, Fidjeland, Ostrovski et~al.}]{mnih2015human}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei~A Rusu, Joel Veness,
+  Marc~G Bellemare, Alex Graves, Martin Riedmiller, Andreas~K Fidjeland, Georg
+  Ostrovski, et~al. 2015.
+\newblock Human-level control through deep reinforcement learning.
+\newblock \emph{nature}, 518(7540):529--533.
+
+\bibitem[{Morris et~al.(2020)Morris, Lifland, Yoo, Grigsby, Jin, and
+  Qi}]{morris2020textattack}
+John Morris, Eli Lifland, Jin~Yong Yoo, Jake Grigsby, Di~Jin, and Yanjun Qi.
+  2020.
+\newblock Textattack: A framework for adversarial attacks, data augmentation,
+  and adversarial training in nlp.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing: System Demonstrations}, pages 119--126.
+
+\bibitem[{Nachum et~al.(2017)Nachum, Norouzi, Xu, and
+  Schuurmans}]{nachum2017bridging}
+Ofir Nachum, Mohammad Norouzi, Kelvin Xu, and Dale Schuurmans. 2017.
+\newblock Bridging the gap between value and policy based reinforcement
+  learning.
+\newblock In \emph{NIPS}.
+
+\bibitem[{Nachum et~al.(2018)Nachum, Norouzi, Xu, and
+  Schuurmans}]{nachum2018trustpcl}
+Ofir Nachum, Mohammad Norouzi, Kelvin Xu, and Dale Schuurmans. 2018.
+\newblock \href {https://openreview.net/forum?id=HyrCWeWCb} {Trust-{PCL}: An
+  off-policy trust region method for continuous control}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Narasimhan et~al.(2015)Narasimhan, Kulkarni, and
+  Barzilay}]{narasimhan2015language}
+Karthik Narasimhan, Tejas Kulkarni, and Regina Barzilay. 2015.
+\newblock Language understanding for text-based games using deep reinforcement
+  learning.
+\newblock In \emph{Proceedings of the 2015 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1--11.
+
+\bibitem[{Nie et~al.(2020)Nie, Williams, Dinan, Bansal, Weston, and
+  Kiela}]{nie2020adversarial}
+Yixin Nie, Adina Williams, Emily Dinan, Mohit Bansal, Jason Weston, and Douwe
+  Kiela. 2020.
+\newblock Adversarial nli: A new benchmark for natural language understanding.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4885--4901.
+
+\bibitem[{Norouzi et~al.(2016)Norouzi, Bengio, Jaitly, Schuster, Wu, Schuurmans
+  et~al.}]{norouzi2016reward}
+Mohammad Norouzi, Samy Bengio, Navdeep Jaitly, Mike Schuster, Yonghui Wu, Dale
+  Schuurmans, et~al. 2016.
+\newblock Reward augmented maximum likelihood for neural structured prediction.
+\newblock \emph{NeurIPS}, 29:1723--1731.
+
+\bibitem[{Novikova et~al.(2017)Novikova, Du{\v{s}}ek, and
+  Rieser}]{novikova2017e2e}
+Jekaterina Novikova, Ond{\v{r}}ej Du{\v{s}}ek, and Verena Rieser. 2017.
+\newblock The e2e dataset: New challenges for end-to-end generation.
+\newblock In \emph{Proceedings of the 18th Annual SIGdial Meeting on Discourse
+  and Dialogue}, pages 201--206.
+
+\bibitem[{O'Donoghue et~al.(2017)O'Donoghue, Munos, Kavukcuoglu, and
+  Mnih}]{ODonoghue2017CombiningPG}
+Brendan O'Donoghue, R.~Munos, K.~Kavukcuoglu, and V.~Mnih. 2017.
+\newblock Combining policy gradient and q-learning.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Pang and He(2021)}]{pang2021text}
+Richard~Yuanzhe Pang and He~He. 2021.
+\newblock \href {https://openreview.net/forum?id=RovX-uQ1Hua} {Text generation
+  by learning from demonstrations}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Pang et~al.(2021)Pang, He, and Cho}]{pang2021amortized}
+Richard~Yuanzhe Pang, He~He, and Kyunghyun Cho. 2021.
+\newblock Amortized noisy channel neural machine translation.
+\newblock \emph{arXiv preprint arXiv:2112.08670}.
+
+\bibitem[{Pasunuru and Bansal(2017)}]{pasunuru2017multi}
+Ramakanth Pasunuru and Mohit Bansal. 2017.
+\newblock Multi-task video captioning with video and entailment generation.
+\newblock In \emph{Proceedings of the 55th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 1273--1283.
+
+\bibitem[{Pasunuru and Bansal(2018)}]{pasunuru2018multi}
+Ramakanth Pasunuru and Mohit Bansal. 2018.
+\newblock Multi-reward reinforced summarization with saliency and entailment.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 2 (Short Papers)}, pages 646--653.
+
+\bibitem[{Paulus et~al.(2018)Paulus, Xiong, and Socher}]{paulus2018a}
+Romain Paulus, Caiming Xiong, and Richard Socher. 2018.
+\newblock \href {https://openreview.net/forum?id=HkAClQgA-} {A deep reinforced
+  model for abstractive summarization}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Qin et~al.(2020)Qin, Shwartz, West, Bhagavatula, Hwang, Le~Bras,
+  Bosselut, and Choi}]{qin2020backpropagation}
+Lianhui Qin, Vered Shwartz, Peter West, Chandra Bhagavatula, Jena~D Hwang,
+  Ronan Le~Bras, Antoine Bosselut, and Yejin Choi. 2020.
+\newblock Backpropagation-based decoding for unsupervised counterfactual and
+  abductive reasoning.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 794--805.
+
+\bibitem[{Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and
+  Sutskever}]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya
+  Sutskever. 2019.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1(8):9.
+
+\bibitem[{Ranzato et~al.(2016)Ranzato, Chopra, Auli, and
+  Zaremba}]{ranzato2015sequence}
+Marc'Aurelio Ranzato, Sumit Chopra, Michael Auli, and Wojciech Zaremba. 2016.
+\newblock Sequence level training with recurrent neural networks.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Rennie et~al.(2017)Rennie, Marcheret, Mroueh, Ross, and
+  Goel}]{rennie2017self}
+Steven~J Rennie, Etienne Marcheret, Youssef Mroueh, Jerret Ross, and Vaibhava
+  Goel. 2017.
+\newblock Self-critical sequence training for image captioning.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 7008--7024.
+
+\bibitem[{Ribeiro et~al.(2020)Ribeiro, Wu, Guestrin, and
+  Singh}]{ribeiro2020beyond}
+Marco~Tulio Ribeiro, Tongshuang Wu, Carlos Guestrin, and Sameer Singh. 2020.
+\newblock Beyond accuracy: Behavioral testing of nlp models with checklist.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4902--4912.
+
+\bibitem[{Schulman et~al.(2017)Schulman, Chen, and
+  Abbeel}]{schulman2017equivalence}
+John Schulman, Xi~Chen, and Pieter Abbeel. 2017.
+\newblock Equivalence between policy gradients and soft {Q}-learning.
+\newblock \emph{arXiv preprint arXiv:1704.06440}.
+
+\bibitem[{Sheng et~al.(2020)Sheng, Chang, Natarajan, and
+  Peng}]{sheng2020towards}
+Emily Sheng, Kai-Wei Chang, Prem Natarajan, and Nanyun Peng. 2020.
+\newblock Towards controllable biases in language generation.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 3239--3254.
+
+\bibitem[{Shi et~al.(2018)Shi, Chen, Qiu, and Huang}]{shi2018toward}
+Zhan Shi, Xinchi Chen, Xipeng Qiu, and Xuanjing Huang. 2018.
+\newblock Toward diverse text generation with inverse reinforcement learning.
+\newblock In \emph{Proceedings of the 27th International Joint Conference on
+  Artificial Intelligence}, pages 4361--4367.
+
+\bibitem[{Shin et~al.(2020)Shin, Razeghi, Logan~IV, Wallace, and
+  Singh}]{shin2020autoprompt}
+Taylor Shin, Yasaman Razeghi, Robert~L Logan~IV, Eric Wallace, and Sameer
+  Singh. 2020.
+\newblock Autoprompt: Eliciting knowledge from language models with
+  automatically generated prompts.
+\newblock \emph{arXiv preprint arXiv:2010.15980}.
+
+\bibitem[{Sutton and Barto(2018)}]{sutton2018reinforcement}
+Richard~S Sutton and Andrew~G Barto. 2018.
+\newblock \emph{Reinforcement learning: An introduction}.
+\newblock MIT press.
+
+\bibitem[{Tan et~al.(2018)Tan, Hu, Yang, Salakhutdinov, and
+  Xing}]{tan2018connecting}
+Bowen Tan, Zhiting Hu, Zichao Yang, Ruslan Salakhutdinov, and Eric Xing. 2018.
+\newblock Connecting the dots between mle and rl for sequence prediction.
+\newblock \emph{arXiv preprint arXiv:1811.09740}.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock Attention is all you need.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  30:5998--6008.
+
+\bibitem[{Wallace et~al.(2019)Wallace, Feng, Kandpal, Gardner, and
+  Singh}]{wallace2019universal}
+Eric Wallace, Shi Feng, Nikhil Kandpal, Matt Gardner, and Sameer Singh. 2019.
+\newblock Universal adversarial triggers for attacking and analyzing nlp.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 2153--2162.
+
+\bibitem[{Williams et~al.(2018)Williams, Nangia, and
+  Bowman}]{williams2018broad}
+Adina Williams, Nikita Nangia, and Samuel Bowman. 2018.
+\newblock A broad-coverage challenge corpus for sentence understanding through
+  inference.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1112--1122.
+
+\bibitem[{Williams(1992)}]{williams1992simple}
+Ronald~J Williams. 1992.
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock \emph{Machine learning}, 8(3-4):229--256.
+
+\bibitem[{Wu et~al.(2018)Wu, Tian, Qin, Lai, and Liu}]{wu2018study}
+Lijun Wu, Fei Tian, Tao Qin, Jianhuang Lai, and Tie-Yan Liu. 2018.
+\newblock A study of reinforcement learning for neural machine translation.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3612--3621.
+
+\bibitem[{Wu et~al.(2016)Wu, Schuster, Chen, Le, Norouzi, Macherey, Krikun,
+  Cao, Gao, Macherey et~al.}]{wu2016google}
+Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc~V Le, Mohammad Norouzi, Wolfgang
+  Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey, et~al. 2016.
+\newblock Google's neural machine translation system: Bridging the gap between
+  human and machine translation.
+\newblock \emph{arXiv preprint arXiv:1609.08144}.
+
+\bibitem[{Yin et~al.(2019)Yin, Hay, and Roth}]{yin2019benchmarking}
+Wenpeng Yin, Jamaal Hay, and Dan Roth. 2019.
+\newblock Benchmarking zero-shot text classification: Datasets, evaluation and
+  entailment approach.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3905--3914.
+
+\bibitem[{Zhang et~al.(2019)Zhang, Zhao, Saleh, and Liu}]{zhang2019pegasus}
+Jingqing Zhang, Yao Zhao, Mohammad Saleh, and Peter~J. Liu. 2019.
+\newblock \href {http://arxiv.org/abs/1912.08777} {Pegasus: Pre-training with
+  extracted gap-sentences for abstractive summarization}.
+
+\bibitem[{Zhong et~al.(2021)Zhong, Lee, Zhang, and Klein}]{zhong2021meta}
+Ruiqi Zhong, Kristy Lee, Zheng Zhang, and Dan Klein. 2021.
+\newblock Meta-tuning language models to answer prompts better.
+\newblock \emph{arXiv preprint arXiv:2104.04670}.
+
+\bibitem[{Zhou et~al.(2017)Zhou, Small, Rokhlenko, and Elkan}]{zhou2017end}
+Li~Zhou, Kevin Small, Oleg Rokhlenko, and Charles Elkan. 2017.
+\newblock End-to-end offline goal-oriented dialog policy learning via policy
+  gradient.
+\newblock \emph{arXiv preprint arXiv:1712.02838}.
+
+\bibitem[{Ziebart(2010)}]{ziebart2010modeling}
+Brian~D Ziebart. 2010.
+\newblock Modeling purposeful adaptive behavior with the principle of maximum
+  causal entropy.
+
+\bibitem[{Ziebart et~al.(2008)Ziebart, Maas, Bagnell, and
+  Dey}]{ziebart2008maximum}
+Brian~D Ziebart, Andrew~L Maas, J~Andrew Bagnell, and Anind~K Dey. 2008.
+\newblock Maximum entropy inverse reinforcement learning.
+\newblock In \emph{Aaai}, volume~8, pages 1433--1438. Chicago, IL, USA.
+
+\end{thebibliography}

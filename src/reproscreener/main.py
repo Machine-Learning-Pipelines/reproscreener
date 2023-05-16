@@ -4,8 +4,8 @@ import logging
 import typer
 from rich import print as rprint
 
-from reproscreener import read_tex, repo_eval
-from reproscreener.utils import log
+from reproscreener import tex_eval, repo_eval
+from reproscreener.utils import log, console
 from reproscreener.download_arxiv import download_extract_source
 
 app = typer.Typer()
@@ -39,23 +39,30 @@ def main(
 
     if arxiv:
         paper_id = arxiv.split("/")[-1]
+        console.rule(f"\nPaper evaluation: {paper_id}")
         path_base = path_download / paper_id
         path_paper = download_extract_source(arxiv, path_base / "paper")
     elif local_arxiv:
         path_paper = Path(local_arxiv)
         paper_id = path_paper.name
+        console.rule(f"Paper evaluation: {paper_id}")
     else:
         path_paper = None
 
     if path_paper is not None:
-        df_vars = read_tex.get_found_vars_tex(path_paper)
-        paper_table = read_tex.init_repro_eval(df_vars)
-        rprint(paper_table)
+        combined_tex = tex_eval.combine_tex_in_folder(path_paper)
+        found_vars = tex_eval.find_tex_variables(combined_tex)
+        urls = tex_eval.extract_tex_urls(combined_tex)
+        found_links = tex_eval.find_data_repository_links(urls)
+        paper_table = tex_eval.initialize_repo_evaluation_table(paper_id, "title", found_vars, found_links)
+        console.print(paper_table, overflow="fold")
+        console.print("\n")
 
     if repo:
+        console.rule("Repository evaluation")
         repo_name = repo.split("/")[-1].split(".git")[0]
         cloned_path = repo_eval.clone_repo(
-            repo, (path_base / "repo") if path_base else (path_download / "repos")
+            repo, (path_base / "repo" / repo_name) if path_base else (path_download / "repos")
         )
 
     elif local_repo:
@@ -65,12 +72,10 @@ def main(
 
     if cloned_path is not None:
         repo_df = repo_eval.evaluate_repo(cloned_path)
-        repo_eval.display_dataframe(repo_df, title="Repository evaluation")
+        repo_eval.display_dataframe(repo_df)
 
     if not (arxiv or local_arxiv or repo or local_repo):
-        raise ValueError(
-            "Must specify either an arXiv paper, a local paper, a repo, or a local repo."
-        )
+        raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")
 
 
 if __name__ == "__main__":

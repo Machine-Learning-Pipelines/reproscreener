@@ -1,0 +1,19 @@
+\begin{algorithm*}[!h]
+\caption{Efficient Soft $Q$-Learning for Text Generation}
+\label{alg:sql}
+\begin{algorithmic}[1]
+\REQUIRE $Q_\theta$ (i.e., generation model logit function $f_\theta$ in Eq.\ref{eq:softmax-logit}) \\
+\quad\ \  Reward function $r(\s, t)$ \\
+\quad\ \  Training examples $\mathcal{D}$ (for off-policy updates; {\it optional}) \\
+\STATE Initialize ${\bm{\theta}}$ and target model parameters ${\bar{\bm{\theta}}}$
+\REPEAT
+    \STATE Draw a batch of off-policy samples $\{\tau_{\text{off}}\} \sim \mathcal{D}$
+    \STATE Draw a batch of on-policy samples $\{\tau_{\text{on}}\}$ by decoding with policy $\pi_\theta(a_t\mid\s_t)$ (Eq.\ref{eq:pi-and-q-theta})
+    \STATE Compute $Q_{\theta} (\bm{s}_t, a_t)$ values (the model logits) and target $Q_{\bar{\theta}} (\bm{s}_t, a_t)$ for $(\bm{s}_t, a_t) \in \{\tau_{\text{off}}\} \cup \{\tau_{\text{on}}\}$
+    \STATE Compute the objectives in Eqs.\eqref{eq:pcl-loss} and \eqref{eq:multi-loss}
+    \STATE Update the model parameters $\bm{\theta}$ via gradient descent
+    \STATE Update the target model parameters $\bar{\bm{\theta}}$ by $\bar{\bm{\theta}} \leftarrow \rho \bar{\bm{\theta}} + ( 1 - \rho) \bm{\theta}$ with update rate $\rho$
+\UNTIL{convergence}
+\ENSURE The trained $Q_{\theta^*}$ and the induced generator $\pi_{\theta^*}$
+\end{algorithmic}
+\end{algorithm*}

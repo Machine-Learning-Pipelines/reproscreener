@@ -1,0 +1,10 @@
+\section{Related Work}
+
+Standard RL algorithms
+can sometimes be over-sensitive to the randomness in the environment. Recent works have considered maximum-entropy RL extensions, such as the soft $Q$-learning (SQL)~\citep{haarnoja2017reinforcement,nachum2017bridging,schulman2017equivalence}, that maximize the entropy of policy besides the rewards, and demonstrated substantial improvement in  robotic and game control~\citep{ziebart2008maximum,ODonoghue2017CombiningPG,nachum2018trustpcl,eysenbach2021maximum}.
+Our work is the first to adapt SQL and its advanced variants (in particular the path consistency learning~\citep{nachum2017bridging}) to the challenging text generation problem and show significant results on diverse applications.
+
+Applying RL for text generation has been discussed in alleviating the exposure bias problem and optimizing task metrics~\citep{guo2015generating,li2016deep,wu2016google,rennie2017self,paulus2018a,chen2018fast,liu2020data,pang2021amortized}. For example,~\citet{ranzato2015sequence} used the REINFORCE algorithm~\citep{williams1992simple}, and~\citet{bahdanau2016actor} used the actor-critic algorithm; \citet{guo2018long} and~\citet{shi2018toward} tried to relieve the sparsity problem via hierarchical and inverse RL methods, resp. They are all on-policy RL algorithms with the need of pretraining their models using MLE. RAML~\cite{norouzi2016reward} implicitly relies on the quality of off-policy data; this does not necessarily apply in our experiments with limited good data.%
+~\citet{tan2018connecting} and~\citet{hu2022standard} offer a unified view of RAML, RL, and other training methods.
+Another line of work focused mostly on using only off-policy data, often for offline training of chatbots~\citep{kandasamy2016batch,zhou2017end,jaques2020human,pang2021text}. As a result, the opportunity of directly improving the reward (as in on-policy updates) for other rich tasks is missed. Our proposed framework combines on- and off-policy training, and further offers solutions for efficient training from scratch in the presence of large action space and sparse sequence-level reward in text generation.
+

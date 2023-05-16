@@ -1,0 +1,18 @@
+
+\begin{table}
+\centering
+\small
+\begin{tabular}{@{}p{0.09\textwidth}|p{0.31\textwidth}lc@{}}
+\toprule
+Model & Generation                                                            & Rate \\
+\midrule
+MLE+PG    & it 's .                                                              & 90.48 \\
+SQL (ours)  & the person saint-pierre-et-saint-paul is saint-pierre-et-saint-paul . & 97.40 \\
+\bottomrule
+\end{tabular}
+\vspace{-5pt}
+\caption{
+Entailment attack samples and respective entailment rates across all test premises. For example, the adversarial sample by \texttt{SQL} is considered to entail 97.40\% test premises by the entailment classifier.
+}
+\label{table:entailment-attack-examples}
+\end{table}
