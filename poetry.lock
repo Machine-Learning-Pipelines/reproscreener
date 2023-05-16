@@ -16,7 +16,7 @@ files = [
 name = "arxivscraper"
 version = "0.0.5"
 description = "Get arXiv.org metadate within a date range and category"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -170,7 +170,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "cachetools"
 version = "5.3.0"
 description = "Extensible memoizing collections and decorators"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "~=3.7"
 files = [
@@ -194,7 +194,7 @@ files = [
 name = "cffi"
 version = "1.15.1"
 description = "Foreign Function Interface for Python calling C code."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -525,7 +525,7 @@ toml = ["tomli"]
 name = "cryptography"
 version = "40.0.2"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -748,7 +748,7 @@ gitdb = ">=4.0.1,<5"
 name = "google-api-core"
 version = "2.11.0"
 description = "Google API client core library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -771,7 +771,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 name = "google-api-python-client"
 version = "2.86.0"
 description = "Google API Client Library for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -790,7 +790,7 @@ uritemplate = ">=3.0.1,<5"
 name = "google-auth"
 version = "2.17.3"
 description = "Google Authentication Library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 files = [
@@ -815,7 +815,7 @@ requests = ["requests (>=2.20.0,<3.0.0dev)"]
 name = "google-auth-httplib2"
 version = "0.1.0"
 description = "Google Authentication Library: httplib2 transport"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -832,7 +832,7 @@ six = "*"
 name = "googleapis-common-protos"
 version = "1.59.0"
 description = "Common protobufs used in Google APIs"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -850,7 +850,7 @@ grpc = ["grpcio (>=1.44.0,<2.0.0dev)"]
 name = "httplib2"
 version = "0.22.0"
 description = "A comprehensive HTTP client library."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -1129,7 +1129,7 @@ dev = ["Sphinx (==5.3.0)", "colorama (==0.4.5)", "colorama (==0.4.6)", "freezegu
 name = "lxml"
 version = "4.9.2"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 files = [
@@ -1446,7 +1446,7 @@ files = [
 name = "oauth2client"
 version = "4.1.3"
 description = "OAuth 2.0 client library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -1747,7 +1747,7 @@ wcwidth = "*"
 name = "protobuf"
 version = "4.23.0"
 description = ""
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1797,7 +1797,7 @@ tests = ["pytest"]
 name = "pyasn1"
 version = "0.5.0"
 description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
@@ -1809,7 +1809,7 @@ files = [
 name = "pyasn1-modules"
 version = "0.3.0"
 description = "A collection of ASN.1-based protocols modules"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
@@ -1836,7 +1836,7 @@ files = [
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -1848,7 +1848,7 @@ files = [
 name = "pydrive2"
 version = "1.15.3"
 description = "Google Drive API made easy. Maintained fork of PyDrive."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1924,7 +1924,7 @@ testutils = ["gitpython (>3)"]
 name = "pyopenssl"
 version = "23.1.1"
 description = "Python wrapper module around the OpenSSL library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1943,7 +1943,7 @@ test = ["flaky", "pretend", "pytest (>=3.0.1)"]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6.8"
 files = [
@@ -2045,7 +2045,7 @@ files = [
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2136,7 +2136,7 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6,<4"
 files = [
@@ -2381,7 +2381,7 @@ files = [
 name = "uritemplate"
 version = "4.1.1"
 description = "Implementation of RFC 6570 URI Templates"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2583,4 +2583,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "=3.9.13"
-content-hash = "97c8e9089ea50b27c2783aee42769e74806ed9ca131fecdaa3141bea59ab82d6"
+content-hash = "486cd95b36fbbca32497f2ad14d27bc30d27a3e97b7d468fbfd68c9289a5d3a5"
