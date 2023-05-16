@@ -1,13 +1,10 @@
 # Docstrings
 
-## Documentation of `keywords.py`
+## Documentation of `tex_eval.py`
 
-::: src.keywords
+::: reproscreener.tex_eval
 
-## Documentation of `evaluate_guidance.py`
+## Documentation of `repo_eval.py`
 
-::: src.evaluate_guidance
+::: reproscreener.repo_eval
 
-## Documentation of `main.py`
-
-::: src.main
