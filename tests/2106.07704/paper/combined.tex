@@ -1,0 +1,2198 @@
+\section{Related Work}
+
+Standard RL algorithms
+can sometimes be over-sensitive to the randomness in the environment. Recent works have considered maximum-entropy RL extensions, such as the soft $Q$-learning (SQL)~\citep{haarnoja2017reinforcement,nachum2017bridging,schulman2017equivalence}, that maximize the entropy of policy besides the rewards, and demonstrated substantial improvement in  robotic and game control~\citep{ziebart2008maximum,ODonoghue2017CombiningPG,nachum2018trustpcl,eysenbach2021maximum}.
+Our work is the first to adapt SQL and its advanced variants (in particular the path consistency learning~\citep{nachum2017bridging}) to the challenging text generation problem and show significant results on diverse applications.
+
+Applying RL for text generation has been discussed in alleviating the exposure bias problem and optimizing task metrics~\citep{guo2015generating,li2016deep,wu2016google,rennie2017self,paulus2018a,chen2018fast,liu2020data,pang2021amortized}. For example,~\citet{ranzato2015sequence} used the REINFORCE algorithm~\citep{williams1992simple}, and~\citet{bahdanau2016actor} used the actor-critic algorithm; \citet{guo2018long} and~\citet{shi2018toward} tried to relieve the sparsity problem via hierarchical and inverse RL methods, resp. They are all on-policy RL algorithms with the need of pretraining their models using MLE. RAML~\cite{norouzi2016reward} implicitly relies on the quality of off-policy data; this does not necessarily apply in our experiments with limited good data.%
+~\citet{tan2018connecting} and~\citet{hu2022standard} offer a unified view of RAML, RL, and other training methods.
+Another line of work focused mostly on using only off-policy data, often for offline training of chatbots~\citep{kandasamy2016batch,zhou2017end,jaques2020human,pang2021text}. As a result, the opportunity of directly improving the reward (as in on-policy updates) for other rich tasks is missed. Our proposed framework combines on- and off-policy training, and further offers solutions for efficient training from scratch in the presence of large action space and sparse sequence-level reward in text generation.
+
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+\usepackage[]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+
+
+\usepackage[pdftex]{graphicx}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath,amsfonts,bm}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KLD}{\text{KL}}
+\newcommand{\ENT}{\text{H}}
+\newcommand{\BENT}{\mathbb{H}}
+\newcommand{\BDist}{\mathbb{D}}
+\newcommand{\MLE}{\text{MLE}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\y}{\bm{y}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\s}{\bm{s}}
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\yspace}{\mathcal{Y}}
+\newcommand{\zspace}{\mathcal{Z}}
+\newcommand{\tspace}{\mathcal{T}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bphi}{\bm{\phi}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bw}{\bm{\w}}
+\newcommand{\dataset}{\mathcal{D}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\indicator}{\mathbb{I}}
+\newcommand{\pdata}{p_{d}}
+\newcommand{\pemp}{\tilde{p}_d}
+\newcommand{\lm}{\text{LM}}
+
+
+
+
+
+
+
+
+
+\title{
+Efficient (Soft) $Q$-Learning \\ for Text Generation
+with Limited Good Data
+}
+
+
+\author{
+Han Guo$^1$,~~
+Bowen Tan$^1$,~~
+Zhengzhong Liu$^{1,2}$,~~
+Eric P. Xing$^{1,2,4}$,~~
+Zhiting Hu$^{3}$\\
+$^1$Carnegie Mellon University,~~ $^2$Petuum Inc.,~~ $^3$UC San Diego,\\
+$^4$Mohamed bin Zayed University of Artificial Intelligence\\
+{\small 
+{\tt \{hanguo, btan2, epxing\}@cs.cmu.edu, hectorzliu@gmail.com, zhh019@ucsd.edu}
+}
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Maximum likelihood estimation (MLE) is the predominant algorithm for training text generation models. This paradigm relies on direct supervision examples, which is not applicable to many emerging applications, such as generating adversarial attacks or generating prompts to control language models. Reinforcement learning (RL) on the other hand offers a more flexible solution by allowing users to plug in arbitrary task metrics as reward. Yet previous RL algorithms for text generation, such as policy gradient (\emph{on-policy} RL) and $Q$-learning (\emph{off-policy} RL), are often notoriously inefficient or unstable to train due to the large sequence space and the sparse reward received only at the end of sequences. In this paper, we introduce a new RL formulation for text generation from the soft $Q$-learning (SQL) perspective. It enables us to draw from the latest RL advances, such as path consistency learning, to combine the best of on-/off-policy updates, and learn effectively from sparse reward. We apply the approach to a wide range of novel text generation tasks, including learning from noisy/negative examples, adversarial attacks, and prompt generation. Experiments show our approach consistently outperforms both task-specialized algorithms and the previous RL methods.%
+\footnote{Code at \url{https://github.com/HanGuo97/soft-Q-learning-for-text-generation}.}
+\end{abstract}
+
+
+\input{introduction}
+\input{methods}
+\input{experiments}
+\input{related-works}
+\input{conclusion}
+
+
+
+\section*{Limitations}
+
+
+
+A well-documented limitation of RL methods is the importance of the reward function. The proposed methods are no different in this aspect. This is especially relevant as our reward function could involve a learned model itself, which we proactively leveraged in Sec.~\ref{subsec:adversarial-attack}. We refer interested readers to~\citet{deng2022rlprompt} for more algorithmic considerations.
+We also noticed that adapting the pretraining-finetuning paradigm to the proposed methods requires careful designs. A hypothesis points to the discrepancy between MLE objectives (commonly used in pretraining context) and SQL objectives. As discussed in Sec.~\ref{sec:sql-formulation}, the SQL formulation re-interprets the ``logit'' as the $Q$-value, for many good reasons. However, our preliminary experiments suggest that, as a downside, this makes finetuning an MLE-trained model with SQL objectives more challenging.
+Future work to scale the proposed methods to tasks such as machine translation and language modeling, and with significantly larger and (MLE-)pretrained models would be exciting.
+
+
+\section*{Ethics Statement}
+This work develops a new RL formulation for text generation. While we demonstrate the framework in four applications, it could be adapted to other (emerging) applications. One major component in these applications is the design of the reward function, which influences the behavior of the trained agent. While we believe the MaxEnt RL framework is more robust against reward misspecification~\citep{eysenbach2021maximum}, the potential failures of sub-optimal reward functions are widely known and discussed.\footnote{\url{https://openai.com/blog/faulty-reward-functions/}} To this end, deploying this model to the wild requires careful and extensive examination, using tools such as~\citet{ribeiro2020beyond}. Further, we highlight the application for (black-box) adversarial attacks in the paper, with the intention of using adversarial attacks to understand the model's inner workings. That being said, this could potentially be misused to conduct malicious attacks against systems. Hence, users of this framework might want to conduct adversarial attacks against their own models to avoid being attacked by other people with bad intentions.
+
+\section*{Acknowledgement}
+We thank all reviewers for their invaluable comments and feedback. This research was supported by NSF IIS1563887, NSF CCF1629559, NSF IIS1617583, NGA HM04762010002, NSF IIS1955532, NSF CNS2008248, NSF IIS2123952, and NSF BCS2040381. The views in this article are those of the authors and not the funding agency.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliography{citations}
+
+\clearpage
+
+\appendix
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{algorithm}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\thealgorithm}{A.\arabic{algorithm}} 
+\input{appendix}
+
+\end{document}
+
+\usepackage{amsmath,amsfonts,bm}
+
+\newcommand{\figleft}{{\em (Left)}}
+\newcommand{\figcenter}{{\em (Center)}}
+\newcommand{\figright}{{\em (Right)}}
+\newcommand{\figtop}{{\em (Top)}}
+\newcommand{\figbottom}{{\em (Bottom)}}
+\newcommand{\captiona}{{\em (a)}}
+\newcommand{\captionb}{{\em (b)}}
+\newcommand{\captionc}{{\em (c)}}
+\newcommand{\captiond}{{\em (d)}}
+
+\newcommand{\newterm}[1]{{\bf #1}}
+
+
+\def\figref#1{figure~\ref{#1}}
+\def\Figref#1{Figure~\ref{#1}}
+\def\twofigref#1#2{figures \ref{#1} and \ref{#2}}
+\def\quadfigref#1#2#3#4{figures \ref{#1}, \ref{#2}, \ref{#3} and \ref{#4}}
+\def\secref#1{section~\ref{#1}}
+\def\Secref#1{Section~\ref{#1}}
+\def\twosecrefs#1#2{sections \ref{#1} and \ref{#2}}
+\def\secrefs#1#2#3{sections \ref{#1}, \ref{#2} and \ref{#3}}
+\def\eqref#1{equation~\ref{#1}}
+\def\Eqref#1{Equation~\ref{#1}}
+\def\plaineqref#1{\ref{#1}}
+\def\chapref#1{chapter~\ref{#1}}
+\def\Chapref#1{Chapter~\ref{#1}}
+\def\rangechapref#1#2{chapters\ref{#1}--\ref{#2}}
+\def\algref#1{algorithm~\ref{#1}}
+\def\Algref#1{Algorithm~\ref{#1}}
+\def\twoalgref#1#2{algorithms \ref{#1} and \ref{#2}}
+\def\Twoalgref#1#2{Algorithms \ref{#1} and \ref{#2}}
+\def\partref#1{part~\ref{#1}}
+\def\Partref#1{Part~\ref{#1}}
+\def\twopartref#1#2{parts \ref{#1} and \ref{#2}}
+
+\def\ceil#1{\lceil #1 \rceil}
+\def\floor#1{\lfloor #1 \rfloor}
+\def\1{\bm{1}}
+\newcommand{\train}{\mathcal{D}}
+\newcommand{\valid}{\mathcal{D_{\mathrm{valid}}}}
+\newcommand{\test}{\mathcal{D_{\mathrm{test}}}}
+
+\def\eps{{\epsilon}}
+
+
+\def\reta{{\textnormal{$\eta$}}}
+\def\ra{{\textnormal{a}}}
+\def\rb{{\textnormal{b}}}
+\def\rc{{\textnormal{c}}}
+\def\rd{{\textnormal{d}}}
+\def\re{{\textnormal{e}}}
+\def\rf{{\textnormal{f}}}
+\def\rg{{\textnormal{g}}}
+\def\rh{{\textnormal{h}}}
+\def\ri{{\textnormal{i}}}
+\def\rj{{\textnormal{j}}}
+\def\rk{{\textnormal{k}}}
+\def\rl{{\textnormal{l}}}
+\def\rn{{\textnormal{n}}}
+\def\ro{{\textnormal{o}}}
+\def\rp{{\textnormal{p}}}
+\def\rq{{\textnormal{q}}}
+\def\rr{{\textnormal{r}}}
+\def\rs{{\textnormal{s}}}
+\def\rt{{\textnormal{t}}}
+\def\ru{{\textnormal{u}}}
+\def\rv{{\textnormal{v}}}
+\def\rw{{\textnormal{w}}}
+\def\rx{{\textnormal{x}}}
+\def\ry{{\textnormal{y}}}
+\def\rz{{\textnormal{z}}}
+
+\def\rvepsilon{{\mathbf{\epsilon}}}
+\def\rvtheta{{\mathbf{\theta}}}
+\def\rva{{\mathbf{a}}}
+\def\rvb{{\mathbf{b}}}
+\def\rvc{{\mathbf{c}}}
+\def\rvd{{\mathbf{d}}}
+\def\rve{{\mathbf{e}}}
+\def\rvf{{\mathbf{f}}}
+\def\rvg{{\mathbf{g}}}
+\def\rvh{{\mathbf{h}}}
+\def\rvu{{\mathbf{i}}}
+\def\rvj{{\mathbf{j}}}
+\def\rvk{{\mathbf{k}}}
+\def\rvl{{\mathbf{l}}}
+\def\rvm{{\mathbf{m}}}
+\def\rvn{{\mathbf{n}}}
+\def\rvo{{\mathbf{o}}}
+\def\rvp{{\mathbf{p}}}
+\def\rvq{{\mathbf{q}}}
+\def\rvr{{\mathbf{r}}}
+\def\rvs{{\mathbf{s}}}
+\def\rvt{{\mathbf{t}}}
+\def\rvu{{\mathbf{u}}}
+\def\rvv{{\mathbf{v}}}
+\def\rvw{{\mathbf{w}}}
+\def\rvx{{\mathbf{x}}}
+\def\rvy{{\mathbf{y}}}
+\def\rvz{{\mathbf{z}}}
+
+\def\erva{{\textnormal{a}}}
+\def\ervb{{\textnormal{b}}}
+\def\ervc{{\textnormal{c}}}
+\def\ervd{{\textnormal{d}}}
+\def\erve{{\textnormal{e}}}
+\def\ervf{{\textnormal{f}}}
+\def\ervg{{\textnormal{g}}}
+\def\ervh{{\textnormal{h}}}
+\def\ervi{{\textnormal{i}}}
+\def\ervj{{\textnormal{j}}}
+\def\ervk{{\textnormal{k}}}
+\def\ervl{{\textnormal{l}}}
+\def\ervm{{\textnormal{m}}}
+\def\ervn{{\textnormal{n}}}
+\def\ervo{{\textnormal{o}}}
+\def\ervp{{\textnormal{p}}}
+\def\ervq{{\textnormal{q}}}
+\def\ervr{{\textnormal{r}}}
+\def\ervs{{\textnormal{s}}}
+\def\ervt{{\textnormal{t}}}
+\def\ervu{{\textnormal{u}}}
+\def\ervv{{\textnormal{v}}}
+\def\ervw{{\textnormal{w}}}
+\def\ervx{{\textnormal{x}}}
+\def\ervy{{\textnormal{y}}}
+\def\ervz{{\textnormal{z}}}
+
+\def\rmA{{\mathbf{A}}}
+\def\rmB{{\mathbf{B}}}
+\def\rmC{{\mathbf{C}}}
+\def\rmD{{\mathbf{D}}}
+\def\rmE{{\mathbf{E}}}
+\def\rmF{{\mathbf{F}}}
+\def\rmG{{\mathbf{G}}}
+\def\rmH{{\mathbf{H}}}
+\def\rmI{{\mathbf{I}}}
+\def\rmJ{{\mathbf{J}}}
+\def\rmK{{\mathbf{K}}}
+\def\rmL{{\mathbf{L}}}
+\def\rmM{{\mathbf{M}}}
+\def\rmN{{\mathbf{N}}}
+\def\rmO{{\mathbf{O}}}
+\def\rmP{{\mathbf{P}}}
+\def\rmQ{{\mathbf{Q}}}
+\def\rmR{{\mathbf{R}}}
+\def\rmS{{\mathbf{S}}}
+\def\rmT{{\mathbf{T}}}
+\def\rmU{{\mathbf{U}}}
+\def\rmV{{\mathbf{V}}}
+\def\rmW{{\mathbf{W}}}
+\def\rmX{{\mathbf{X}}}
+\def\rmY{{\mathbf{Y}}}
+\def\rmZ{{\mathbf{Z}}}
+
+\def\ermA{{\textnormal{A}}}
+\def\ermB{{\textnormal{B}}}
+\def\ermC{{\textnormal{C}}}
+\def\ermD{{\textnormal{D}}}
+\def\ermE{{\textnormal{E}}}
+\def\ermF{{\textnormal{F}}}
+\def\ermG{{\textnormal{G}}}
+\def\ermH{{\textnormal{H}}}
+\def\ermI{{\textnormal{I}}}
+\def\ermJ{{\textnormal{J}}}
+\def\ermK{{\textnormal{K}}}
+\def\ermL{{\textnormal{L}}}
+\def\ermM{{\textnormal{M}}}
+\def\ermN{{\textnormal{N}}}
+\def\ermO{{\textnormal{O}}}
+\def\ermP{{\textnormal{P}}}
+\def\ermQ{{\textnormal{Q}}}
+\def\ermR{{\textnormal{R}}}
+\def\ermS{{\textnormal{S}}}
+\def\ermT{{\textnormal{T}}}
+\def\ermU{{\textnormal{U}}}
+\def\ermV{{\textnormal{V}}}
+\def\ermW{{\textnormal{W}}}
+\def\ermX{{\textnormal{X}}}
+\def\ermY{{\textnormal{Y}}}
+\def\ermZ{{\textnormal{Z}}}
+
+\def\vzero{{\bm{0}}}
+\def\vone{{\bm{1}}}
+\def\vmu{{\bm{\mu}}}
+\def\vtheta{{\bm{\theta}}}
+\def\va{{\bm{a}}}
+\def\vb{{\bm{b}}}
+\def\vc{{\bm{c}}}
+\def\vd{{\bm{d}}}
+\def\ve{{\bm{e}}}
+\def\vf{{\bm{f}}}
+\def\vg{{\bm{g}}}
+\def\vh{{\bm{h}}}
+\def\vi{{\bm{i}}}
+\def\vj{{\bm{j}}}
+\def\vk{{\bm{k}}}
+\def\vl{{\bm{l}}}
+\def\vm{{\bm{m}}}
+\def\vn{{\bm{n}}}
+\def\vo{{\bm{o}}}
+\def\vp{{\bm{p}}}
+\def\vq{{\bm{q}}}
+\def\vr{{\bm{r}}}
+\def\vs{{\bm{s}}}
+\def\vt{{\bm{t}}}
+\def\vu{{\bm{u}}}
+\def\vv{{\bm{v}}}
+\def\vw{{\bm{w}}}
+\def\vx{{\bm{x}}}
+\def\vy{{\bm{y}}}
+\def\vz{{\bm{z}}}
+
+\def\evalpha{{\alpha}}
+\def\evbeta{{\beta}}
+\def\evepsilon{{\epsilon}}
+\def\evlambda{{\lambda}}
+\def\evomega{{\omega}}
+\def\evmu{{\mu}}
+\def\evpsi{{\psi}}
+\def\evsigma{{\sigma}}
+\def\evtheta{{\theta}}
+\def\eva{{a}}
+\def\evb{{b}}
+\def\evc{{c}}
+\def\evd{{d}}
+\def\eve{{e}}
+\def\evf{{f}}
+\def\evg{{g}}
+\def\evh{{h}}
+\def\evi{{i}}
+\def\evj{{j}}
+\def\evk{{k}}
+\def\evl{{l}}
+\def\evm{{m}}
+\def\evn{{n}}
+\def\evo{{o}}
+\def\evp{{p}}
+\def\evq{{q}}
+\def\evr{{r}}
+\def\evs{{s}}
+\def\evt{{t}}
+\def\evu{{u}}
+\def\evv{{v}}
+\def\evw{{w}}
+\def\evx{{x}}
+\def\evy{{y}}
+\def\evz{{z}}
+
+\def\mA{{\bm{A}}}
+\def\mB{{\bm{B}}}
+\def\mC{{\bm{C}}}
+\def\mD{{\bm{D}}}
+\def\mE{{\bm{E}}}
+\def\mF{{\bm{F}}}
+\def\mG{{\bm{G}}}
+\def\mH{{\bm{H}}}
+\def\mI{{\bm{I}}}
+\def\mJ{{\bm{J}}}
+\def\mK{{\bm{K}}}
+\def\mL{{\bm{L}}}
+\def\mM{{\bm{M}}}
+\def\mN{{\bm{N}}}
+\def\mO{{\bm{O}}}
+\def\mP{{\bm{P}}}
+\def\mQ{{\bm{Q}}}
+\def\mR{{\bm{R}}}
+\def\mS{{\bm{S}}}
+\def\mT{{\bm{T}}}
+\def\mU{{\bm{U}}}
+\def\mV{{\bm{V}}}
+\def\mW{{\bm{W}}}
+\def\mX{{\bm{X}}}
+\def\mY{{\bm{Y}}}
+\def\mZ{{\bm{Z}}}
+\def\mBeta{{\bm{\beta}}}
+\def\mPhi{{\bm{\Phi}}}
+\def\mLambda{{\bm{\Lambda}}}
+\def\mSigma{{\bm{\Sigma}}}
+
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+\newcommand{\tens}[1]{\bm{\mathsfit{#1}}}
+\def\tA{{\tens{A}}}
+\def\tB{{\tens{B}}}
+\def\tC{{\tens{C}}}
+\def\tD{{\tens{D}}}
+\def\tE{{\tens{E}}}
+\def\tF{{\tens{F}}}
+\def\tG{{\tens{G}}}
+\def\tH{{\tens{H}}}
+\def\tI{{\tens{I}}}
+\def\tJ{{\tens{J}}}
+\def\tK{{\tens{K}}}
+\def\tL{{\tens{L}}}
+\def\tM{{\tens{M}}}
+\def\tN{{\tens{N}}}
+\def\tO{{\tens{O}}}
+\def\tP{{\tens{P}}}
+\def\tQ{{\tens{Q}}}
+\def\tR{{\tens{R}}}
+\def\tS{{\tens{S}}}
+\def\tT{{\tens{T}}}
+\def\tU{{\tens{U}}}
+\def\tV{{\tens{V}}}
+\def\tW{{\tens{W}}}
+\def\tX{{\tens{X}}}
+\def\tY{{\tens{Y}}}
+\def\tZ{{\tens{Z}}}
+
+
+\def\gA{{\mathcal{A}}}
+\def\gB{{\mathcal{B}}}
+\def\gC{{\mathcal{C}}}
+\def\gD{{\mathcal{D}}}
+\def\gE{{\mathcal{E}}}
+\def\gF{{\mathcal{F}}}
+\def\gG{{\mathcal{G}}}
+\def\gH{{\mathcal{H}}}
+\def\gI{{\mathcal{I}}}
+\def\gJ{{\mathcal{J}}}
+\def\gK{{\mathcal{K}}}
+\def\gL{{\mathcal{L}}}
+\def\gM{{\mathcal{M}}}
+\def\gN{{\mathcal{N}}}
+\def\gO{{\mathcal{O}}}
+\def\gP{{\mathcal{P}}}
+\def\gQ{{\mathcal{Q}}}
+\def\gR{{\mathcal{R}}}
+\def\gS{{\mathcal{S}}}
+\def\gT{{\mathcal{T}}}
+\def\gU{{\mathcal{U}}}
+\def\gV{{\mathcal{V}}}
+\def\gW{{\mathcal{W}}}
+\def\gX{{\mathcal{X}}}
+\def\gY{{\mathcal{Y}}}
+\def\gZ{{\mathcal{Z}}}
+
+\def\sA{{\mathbb{A}}}
+\def\sB{{\mathbb{B}}}
+\def\sC{{\mathbb{C}}}
+\def\sD{{\mathbb{D}}}
+\def\sF{{\mathbb{F}}}
+\def\sG{{\mathbb{G}}}
+\def\sH{{\mathbb{H}}}
+\def\sI{{\mathbb{I}}}
+\def\sJ{{\mathbb{J}}}
+\def\sK{{\mathbb{K}}}
+\def\sL{{\mathbb{L}}}
+\def\sM{{\mathbb{M}}}
+\def\sN{{\mathbb{N}}}
+\def\sO{{\mathbb{O}}}
+\def\sP{{\mathbb{P}}}
+\def\sQ{{\mathbb{Q}}}
+\def\sR{{\mathbb{R}}}
+\def\sS{{\mathbb{S}}}
+\def\sT{{\mathbb{T}}}
+\def\sU{{\mathbb{U}}}
+\def\sV{{\mathbb{V}}}
+\def\sW{{\mathbb{W}}}
+\def\sX{{\mathbb{X}}}
+\def\sY{{\mathbb{Y}}}
+\def\sZ{{\mathbb{Z}}}
+
+\def\emLambda{{\Lambda}}
+\def\emA{{A}}
+\def\emB{{B}}
+\def\emC{{C}}
+\def\emD{{D}}
+\def\emE{{E}}
+\def\emF{{F}}
+\def\emG{{G}}
+\def\emH{{H}}
+\def\emI{{I}}
+\def\emJ{{J}}
+\def\emK{{K}}
+\def\emL{{L}}
+\def\emM{{M}}
+\def\emN{{N}}
+\def\emO{{O}}
+\def\emP{{P}}
+\def\emQ{{Q}}
+\def\emR{{R}}
+\def\emS{{S}}
+\def\emT{{T}}
+\def\emU{{U}}
+\def\emV{{V}}
+\def\emW{{W}}
+\def\emX{{X}}
+\def\emY{{Y}}
+\def\emZ{{Z}}
+\def\emSigma{{\Sigma}}
+
+\newcommand{\etens}[1]{\mathsfit{#1}}
+\def\etLambda{{\etens{\Lambda}}}
+\def\etA{{\etens{A}}}
+\def\etB{{\etens{B}}}
+\def\etC{{\etens{C}}}
+\def\etD{{\etens{D}}}
+\def\etE{{\etens{E}}}
+\def\etF{{\etens{F}}}
+\def\etG{{\etens{G}}}
+\def\etH{{\etens{H}}}
+\def\etI{{\etens{I}}}
+\def\etJ{{\etens{J}}}
+\def\etK{{\etens{K}}}
+\def\etL{{\etens{L}}}
+\def\etM{{\etens{M}}}
+\def\etN{{\etens{N}}}
+\def\etO{{\etens{O}}}
+\def\etP{{\etens{P}}}
+\def\etQ{{\etens{Q}}}
+\def\etR{{\etens{R}}}
+\def\etS{{\etens{S}}}
+\def\etT{{\etens{T}}}
+\def\etU{{\etens{U}}}
+\def\etV{{\etens{V}}}
+\def\etW{{\etens{W}}}
+\def\etX{{\etens{X}}}
+\def\etY{{\etens{Y}}}
+\def\etZ{{\etens{Z}}}
+
+\newcommand{\pdata}{p_{\rm{data}}}
+\newcommand{\ptrain}{\hat{p}_{\rm{data}}}
+\newcommand{\Ptrain}{\hat{P}_{\rm{data}}}
+\newcommand{\pmodel}{p_{\rm{model}}}
+\newcommand{\Pmodel}{P_{\rm{model}}}
+\newcommand{\ptildemodel}{\tilde{p}_{\rm{model}}}
+\newcommand{\pencode}{p_{\rm{encoder}}}
+\newcommand{\pdecode}{p_{\rm{decoder}}}
+\newcommand{\precons}{p_{\rm{reconstruct}}}
+
+\newcommand{\laplace}{\mathrm{Laplace}} %
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\emp}{\tilde{p}}
+\newcommand{\lr}{\alpha}
+\newcommand{\reg}{\lambda}
+\newcommand{\rect}{\mathrm{rectifier}}
+\newcommand{\softmax}{\mathrm{softmax}}
+\newcommand{\sigmoid}{\sigma}
+\newcommand{\softplus}{\zeta}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\standarderror}{\mathrm{SE}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\normlzero}{L^0}
+\newcommand{\normlone}{L^1}
+\newcommand{\normltwo}{L^2}
+\newcommand{\normlp}{L^p}
+\newcommand{\normmax}{L^\infty}
+
+\newcommand{\parents}{Pa} %
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Tr}{Tr}
+\let\ab\allowbreak
+
+\section{Applications and Experiments}
+
+
+We show broad applications of the proposed RL text generation framework to a variety of problems where no clean supervision data is available. These include learning with noisy or even negative data (\S\ref{subsec:noisy-data}), generating adversarial text attacks (\S\ref{subsec:adversarial-attack}), and generating prompts to steer pretrained LMs (\S\ref{subsec:prompt-generation}).
+We also study the performance on standard supervised generation tasks (\S\ref{appendix-subsec:standard-tasks}) and show that our approach is competitive to train text generation models \emph{from scratch}. We provide detailed configurations in the appendix (\S\ref{appendix-subsec:setup-details}).
+
+\subsection{Learning from Noisy (Negative) Text}
+\label{subsec:noisy-data}
+
+The popular MLE algorithm learns by (blindly) imitating training data.
+However,
+it is often expensive to curate clean quality data. It is thus highly desirable to be able to learn from data with noises, or even \emph{negative} examples.
+With the guidance of task metrics (rewards), the model can even learn to ``outperform'' the training data and achieve desired generation behaviors.
+To this end, we consider the task of \emph{entailment generation}~\citep{pasunuru2017multi}. Given a sentence (premise), the goal is to generate a new sentence (hypothesis) that logically follows the premise. 
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/202101005-entailment-combined.pdf}
+    \vspace{-7pt}
+    \caption{
+    \textbf{Left:} entailment generation performance plotted against diversity (average of $H_1$ and $H_2$). 
+    Circles represent results of top-$p$ sample outputs,
+    and triangles represent results of beam-search outputs.
+    Please see Table~\ref{table:entailment-generation} for additional results.
+    \textbf{Right:} entailment attack performance against diversity. 
+    Only a few \texttt{MLE+PG} dots are visible because the model is not able to generate more diverse samples even with increasing $p$ value in top-$p$ decoding, i.e., the model collapses.
+    }
+    \label{fig:entailment-generation}
+    \label{fig:entailment-attack}
+    \vspace{-5pt}
+\end{figure*}
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-noisy-data}).}
+We sub-sampled $50k$ training examples from the SNLI dataset~\citep{bowman2015large}, a commonly used entailment classification dataset. The hypotheses have an average entailment probability of only $50\%$, and over $2/5$ of them less than $20\%$ (negative/contradictive examples) -- a significant challenge for the models to learn from the noises. 
+The rewards include (1) the entailment score of the generation measured by a robust entailment classifier~\citep{nie2020adversarial}, (2) the log-likelihood of the generation as an indicator of language quality measured by a GPT-2 language model~\citep{radford2019language}, and (3) BLEU score w.r.t the input premises as another language quality reward that avoids trivial outputs. We sum together all rewards with weights $1.0$.
+
+We compare our approach with a broad range of baselines, including 
+(1) the standard MLE training (\texttt{MLE}); 
+(2) \texttt{MLE+reward}, where we use the reward function to filter examples;
+(3) joint MLE and PG training with MLE initialization (\texttt{MLE+PG}), where we initialize the model with MLE training, then train it with combined MLE and PG losses;
+previous text-generation RL algorithms including (4) \texttt{MIXER}~\citep{ranzato2015sequence}, 
+(5) \texttt{Self-critic}~\citep{rennie2017self}, 
+and 
+(6) one of the latest methods \texttt{GOLD-$s$}~\citep{pang2021text} which is a pure off-policy method based on importance-sampling PG. 
+To ablate the effect of multi-step training (\S\ref{subsec:method:pcl}), we additionally compare with a simplified variant of our approach that uses only vanilla single-step PCL training (\texttt{SQL(single)}). We include more baselines such as MLE weighted by rewards in \S\ref{appendix-subsubsec:experiments-noisy-data}.
+
+
+
+
+We evaluate generation results in terms of entailment rate, language quality (perplexity), and diversity which is measured by the Shannon entropy over unigrams and bigrams ($H_1$, $H_2$) \citep{gehrmann2021gem}. Since text generation models intrinsically
+trade off diversity and quality \citep{caccia2019language,hashimoto2019unifying}, we vary the generation diversity by generating samples via top-$p$ sampling \citep{holtzman2019curious} with different $p$ values, and plot the entailment rate and perplexity against diversity, resp. We also evaluate the samples produced by beam-search decoding.
+
+\paragraph{Results.}
+Figure~\ref{fig:entailment-generation} (left) shows the results, and Table~\ref{table:entailment-generation-examples-sql} shows samples.
+First, notice that \texttt{MLE} performs poorly, while \texttt{MLE+reward} improves upon it. This is not surprising as the training data contain noisy/negative examples. Similarly, since the pure off-policy algorithm \texttt{GOLD-$s$} relies heavily on the data distribution, we observed that it achieves sub-optimal performance. The on-policy \texttt{MLE+PG} with MLE initialization gives better entailment rate.
+In comparison, our full \texttt{SQL} framework achieves the best entailment-diversity trade-off. 
+The comparison between \texttt{SQL} and \texttt{SQL(single)} highlights the importance of having the multi-step objective which directly uses the end reward rather than bootstrapping intermediate $Q$-values for supervision.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{\textit{Universal} Adversarial Attacks}
+\label{subsec:adversarial-attack}
+
+We next study the application
+in text adversarial attacks, where again no supervised data is available. 
+Adversarial attacks is an increasingly important research topic as they reveal models' vulnerabilities and flaws. This is especially true for universal attacks~\citep{wallace2019universal,atanasova2020generating}, where we want to generate universal examples that trick the model on \emph{all} possible inputs. 
+For instance, consider the context of entailment classification.
+Our goal is to find universal human-readable hypotheses that are going to be classified as ``entailment'' with as high probability as possible, regardless of the input premises. This is a more challenging setting compared to previous instance-specific attack \citep{morris2020textattack,jin2020bert,ebrahimi2017hotflip} where the attack model conditions on a premise and generates an adversarial hypothesis specific to the premise. 
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-adversarial-attack}).}
+We aim to attack one of the most popular MultiNLI~\citep{williams2018broad} entailment classifiers on HuggingFaceHub.\footnote{\url{https://github.com/pytorch/fairseq/tree/master/examples/roberta}
+} The attack generation model generates adversarial text without conditioning on any inputs so that the generated attacks are universal to all premises.  
+We compare our \texttt{SQL} with \texttt{MLE+PG}. We use all hypotheses in the MultiNLI dataset as the training data for the MLE training in \texttt{MLE+PG} and the off-policy updates for our \texttt{SQL}.
+We do not compare with previous specialized adversarial text attack methods, because they either are not applicable to the challenging universal attack setting \citep{morris2020textattack,jin2020bert,ebrahimi2017hotflip}, or were not designed to generate human-readable sentences \citep{wallace2019universal}. 
+We use similar settings as in \S\ref{subsec:noisy-data} to explore the diversity-quality trade-off 
+by plotting the entailment rate and perplexity against diversity, respectively. 
+The entailment classifier to be attacked is used as entailment score reward functions. We also include a token-level repetition penalty reward for readability.
+
+
+\paragraph{Results.}
+
+Figure~\ref{fig:entailment-attack} (right) shows the results, and Table~\ref{table:entailment-attack-examples} shows samples.
+We can see that \texttt{SQL} outperforms \texttt{MLE+PG} consistently across different diversity values. The outputs from \texttt{MLE+PG} are not diverse even with high $p$'s, indicating the model collapses and can only generate a small set of unique adversarial examples. 
+The model by \texttt{SQL} discovers the pattern ``saint-pierre-et-saint-paul'' (an entity name), and exploits this to generate samples with high universal entailment rate.
+
+
+\begin{figure}[t]
+    \centering
+    \begin{minipage}{.49\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{figures/20210527.prompt-generation.pdf}
+        \vspace{-7pt}
+        \caption{Average topic accuracy. Please see Table~\ref{table:prompt-generation-full} for more details.}
+        \label{fig:prompt-generation-topic}
+\end{minipage}%
+\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{PPLM} & \textbf{GeDi} & \textbf{MLE (5)} & \textbf{SQL (off, 5)} \\
+\midrule
+$13.07$ & $123.88$ & $25.70$ & $25.77$ \\
+\midrule
+\multicolumn{2}{l}{\textbf{MLE+PG (5/10/15)}} & \multicolumn{2}{l}{\textbf{SQL (5/10/15, ours)}} \\
+\midrule
+\multicolumn{2}{l}{$25.52$/$28.16$/$28.71$} & \multicolumn{2}{l}{$25.94$/$26.95$/$29.10$} \\
+\bottomrule
+\end{tabular}
+\vspace{-7pt}
+\captionof{table}{
+Average perplexity across topics. The lower, the more fluent the generated continuation sentences.
+}
+\vspace{-5pt}
+\label{table:prompt-generation}
+
+\vspace{9pt}
+
+\centering
+\small
+\begin{tabular}{p{0.79cm}p{0.6cm}p{0.6cm}p{0.6cm}}
+\toprule
+\textbf{Model} & PPLM & GeDi & SQL \\
+\midrule
+\textbf{Seconds} & $5.58$ & $1.05$ & $0.07$ \\
+\bottomrule
+\end{tabular}
+\vspace{-7pt}
+\caption{Average sentence generation time cost.}
+\vspace{-7pt}
+\label{table:prompt-generation-speed}
+\end{minipage}
+\vspace{-7pt}
+\end{figure}
+
+
+\subsection{Prompt Generation for Controlling Pretrained Language Models}
+\label{subsec:prompt-generation}
+
+
+
+
+
+A reward function does not just have to be a metric like the BLEU score, but also a complicated pipeline that eventually returns a score.
+To demonstrate this, we consider the emerging task of prompting a large pretrained LM for controllable generation \citep{Hu2017TowardCG,radford2019language,NEURIPS2020_1457c0d6}.
+The goal is to learn to generate text prompts that steer the LM to generate sentences of certain desired attributes (e.g., topics). 
+The problem of controlling the generation of pretrained LMs was previously approached through specialized algorithms such as modifying the LM hidden states during decoding~\citep{Dathathri2020Plug,krause2020gedi,qin2020backpropagation}. Here we show that prompts offer an easier, faster, more effective way for controlled generation.
+
+Learning to generate/tune prompts is gaining increasing attention recently.
+It side-steps the needs for expensive LM fine-tuning, and adapts LMs to new scenarios with prompt as the (compute-friendly) interface.
+Most existing approaches~\citep{wallace2019universal,li2021prefix,lester2021power} rely on gradient backpropagation and are applicable only when the whole training pipeline is differentiable.
+This does not hold for the text generation setting, as illustrated in Figure~\ref{fig:prompt-generation-flow}. In contrast, the RL framework is generally applicable to any differentiable or discrete pipelines.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.99\linewidth]{figures/prompt-generation-task-new.pdf}
+\vspace{-12pt}
+\caption{
+The scheme of prompt generation for controlling the outputs of pretraind LMs.
+}
+\vspace{-7pt}
+\label{fig:prompt-generation-flow}
+\end{figure}
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-prompt-generation}).}
+Following \citep{dathathri2019plug}, we aim to control the generation to have one of 7 topics (e.g., ``science''); the generated prompt is prepended to one of 20 input sentences for the pretrained LM to generate continuation sentences. Figure~\ref{fig:prompt-generation-flow} shows the architecture of prompt-based controllable generation. We compare our \texttt{SQL} method with \texttt{MLE+PG} as before. Since the prompt length could impact the generated sentences, we conducted experiments with maximum prompt length $5$, $10$, and $15$. As ablation study, we also evaluate the SQL algorithm with only off-policy updates (i.e., without on-policy exploration), denoted as \texttt{SQL(off)}, and compare it with vanilla \texttt{MLE} training. Finally, we also compare with two specialized controllable generation techniques based on pretrained LMs, namely \texttt{PPLM}~\citep{dathathri2019plug} and \texttt{GeDi}~\citep{krause2020gedi}, following similar procedures using their open-sourced code. We use a distilled GPT-2 model\footnote{\url{https://huggingface.co/distilgpt2}} as the pretrained LM to be controlled. %
+For rewards, we use the topic accuracy of the continuation sentences measured by a \emph{zero-shot} classifier, plus the the log-likelihood of continuation sentences as the language quality reward measured by a distilled GPT-2.\footnote{Note that the language quality emphasis is on the generated sentences. Prompts themselves do not necessarily have to be human-readable~\cite{wallace2019universal,sheng2020towards}.}
+
+
+\paragraph{Results.}
+
+Figure~\ref{fig:prompt-generation-topic} shows the topic accuracy of the controlled LM outputs averaged across the 7 topics, and Table~\ref{table:prompt-generation} shows the respective language quality results. More detailed topic accuracy results and samples are provided in the appendix (\S\ref{appendix-subsubsec:experiments-prompt-generation}) (where \texttt{GeDi} obtained low accuracy on 2 of the 7 topics, possibly because the topic tokens are tokenized into two subwords for which the model released by the authors was not specifically trained). 
+We can see that the prompts generated by our \texttt{SQL} cause the LM to generate sentences with high topic accuracy while maintaining low perplexity in most settings.
+Increasing the prompt length positively impacts the topic accuracy, which makes sense because longer prompts give more flexible for steering the LM.
+The comparison between \texttt{MLE} and \texttt{SQL(off)}
+shows that the off-policy component of SQL is better than standard MLE training, as it incorporates reward signals instead of just blindly following the (noisy) data. 
+
+Next, comparing with the previous steered decoding such as \texttt{PPLM} and \texttt{GeDi},
+we can see the prompt-based control trained with RL achieves better trade-off between topic accuracy and language quality. Moreover, once a prompt is produced, we can use the pretrained LM to generate text of desired topics efficiently, with the same time cost as standard non-controlled decoding. In comparison, the dedicated steered decoding is often orders-of-magnitude slower, as shown in Table~\ref{table:prompt-generation-speed}.
+
+
+
+
+
+
+
+\section{Background and Challenges}
+\label{subsec:preliminaries}
+
+We aim to learn a generation model
+$p_{\theta} (\y) = \prod_{t=0}^T p_{\theta}(y_t | \y_{<t})$, where
+$y_t$ is a token from a vocabulary $\mathcal{V}$. The distribution at each step $t$ is obtained by applying softmax on the logits $f_\theta(y | \y_{<t})$:
+\begin{equation}
+\small
+\begin{split}
+    p_\theta(y_t | \y_{<t}) = \frac{\exp f_\theta(y_t | \y_{<t}) }{ \sum_{y'\in\mathcal{V}} \exp f_\theta(y' | \y_{<t} ) }.
+\end{split}
+\label{eq:softmax-logit}
+\end{equation}
+Despite its popularity, MLE-based training only applies when clean supervised data $\bm{y}^*$ is available, and cannot be used to optimize arbitrary task metrics (e.g., BLEU, entailment score) which are typically the goal in many text generation tasks. 
+\label{sec:background:rl}
+Previous research has formulated text generation as an RL problem by considering the following finite-time Markov Decision Process (MDP). 
+At each time step $t$, let the ``state'' be $\bm{s}_t = \bm{y}_{< t}$, namely the partial sequence generated so far. The model (``agent'') takes as input the current state $\bm{s}_t$ and outputs a token (``action'') $a_t \in \mathcal{V}$ according to a policy $\pi(a_t | \bm{s}_t)$. 
+The agent then receives a reward $r_t = r(\bm{s}_t, a_t)$ and deterministically transitions to next state $\bm{s}_{t+1}$ (i.e., the concatenation of the tokens in $\s_t$ and the new token $a_t$). 
+
+Following the notation convention in RL, let $\tau$ be the trajectory (i.e., text sample) generated by the policy. The agent's objective is to maximize the accumulative reward,
+$J(\pi) = \mathbb{E}_{\tau \sim \pi}\left[ \sum^T_{t=0} \gamma^t r_t \right]$,
+where $\gamma$ is the discount factor.
+A central concept in RL is the $Q$-function of policy $\pi$, $Q^\pi(\s_t, a_t)=\E_{\pi}\left[ \sum_{t'=t}^T \gamma^{t'} r_{t'} \mid \s_t, a_t \right]$, the expected future reward of taking action $a_t$ (i.e., generating token $a_t$) in state $\s_t$ and continuing with the policy $\pi$. 
+
+\noindent\textbf{Challenges. } Text generation poses significant challenges to RL, particularly because (1) the reward signal is usually sparse, i.e., $r_t = 0,\ \forall t<T$ and the agent receives a non-zero reward $r_{T}$ only after it generates the full sequence, (2) the action space (i.e., the vocabulary $\mathcal{V}$) is extremely large.
+The challenges have led to difficulties of the two major families of RL approaches applied to text generation problems, as detailed below.
+
+\noindent\textbf{Policy-based RL}
+techniques directly parameterize the policy $\pi_{\theta}$ with parameters $\btheta$. Thus the policy $\pi_{\theta}(a_t | \s_t)$ exactly corresponds to the above generation model $p_{\theta}(y_t | \y_{<t})$. 
+\emph{Policy gradient (PG)} is one of the most widely used algorithms for text generation \citep{ranzato2015sequence}.
+It optimizes the cumulative reward with the policy gradient using the estimated $Q^{\pi_\theta}$ value based on sample $\tau$. PG is an \textit{on-policy} algorithm, meaning that the sample $\tau$ needs to come from the the current policy $\pi_\theta$ itself.
+In practice, however, optimizing this objective alone from scratch is unlikely going to work because most samples $\tau\sim\pi_\theta$ are just gibberish with zero reward, failing to provide meaningful training signals for updating the policy. 
+Previous literature either initializes the policy $\pi_{{\theta}}$ with MLE training, and/or use a combination of MLE and PG updates, which often leads to marginal gains in practice~\citep{wu2018study,Choshen2020On}. 
+
+
+
+\noindent\textbf{Value-based RL}
+techniques, such as \emph{$Q$-learning}, implicitly learn the policy $\pi$ by approximating the value $Q^{\pi}(\bm{s}, a)$ directly.
+Deep $Q$-learning~\citep{mnih2013playing} parameterizes the $Q$-function as $Q_\theta(\x,a)$, and train the parameters by minimizing the following regression objective $\loss(\btheta)$ based on the Bellman temporal consistency:
+\begin{equation}
+\small
+    {\E}_{\pi'}\left[ \frac{1}{2} \left( r_t {+} \gamma \max_{a_{t+1}} Q_{\bar{\theta}}(\s_{t+1}, a_{t+1}) {-} Q_{\theta}(\s_t, a_t) \right)^2 \right]%
+\label{eq:q-regression}
+\end{equation}
+where $\bar{\btheta}$ is the parameters of the \emph{target} $Q$-network, which is a slow copy of $\btheta$ and considered as constant for gradient computation of $\btheta$. 
+Here $\pi'$ is an \emph{behavior policy} which can be an arbitrary distribution over text, such as the data distribution or replay buffer \citep{mnih2013playing}. 
+This makes $Q$-learning an \textit{off-policy} algorithm because of its ability to use samples coming from other policies. After learning $Q_\theta$, one can induce a policy $\pi$ from it that takes $\arg\max_{a} Q_\theta(\s, a)$ at each state $\s$.
+\citet{jaques2017sequence} instead sample tokens from the softmax function applied to $Q_\theta$.
+
+However, the training can be unstable and inefficient due to several challenges: 
+{\bf (1)} The bootstrapping nature of the above regression problem can make the training unstable. That is, the regression target $r_t + \gamma \max_{a_{t+1}} Q_{\bar{\theta}}(\s_{t+1}, a_{t+1})$ itself is derived from the $Q$-function to be learned \citep{kumar2019stabilizing}. The problem is exacerbated in the presence of sparse reward in text generation, where the real observed signal $r_t$ is zero for all intermediate $t<T$; 
+{\bf (2)} The large action space (e.g., $10^4$) in text generation results in slow updates. In particular, notice that Eq.\eqref{eq:q-regression} applies the gradient update to the $Q_{{\theta}}$-value of the \emph{only one} particular token $a_t$ (out of, say, the $10^4$ candidate tokens in the vocabulary), making the training inefficient;
+{\bf (3)} Besides, pure off-policy updates could be highly sensitive to the quality of training data, and miss the opportunity of on-policy exploration that maximizes the reward of interest in a more direct way.
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/soft-q-learning.pdf}
+    \vspace{-4pt}
+    \caption{
+    Soft $Q$-Learning with path consistency learning (PCL) objectives.
+    {\bf Left:} Single-step objective (Eq.\ref{eq:pcl-loss}), where for each $(\s_t, a_t)$, the computation involves step $t$ and $t+1$. Dashed boxes in \textcolor[HTML]{3A6B73}{\textbf{dark green}} and \textcolor[HTML]{808285}{\textbf{gray}} indicate the regression target, where the intermediate reward $r_t$ is often 0 due to sparsity. The gradient is applied to parameters $\btheta$ at step $t$ (indicated by {\textcolor{orange}{\textbf{orange}}} color). {\bf Right:} Multi-step objective (Eq.\ref{eq:multi-loss}) which aggregates from step $t$ all the way to $T$. In this way, the final-step non-zero reward $r_T$ is used as the regression target.
+    }
+    \vspace{-4pt}
+    \label{fig:soft-q-learning-pcl}
+\end{figure*}
+
+
+
+\section{The Soft $Q$-Learning Framework}
+
+
+We introduce the soft $Q$-learning (SQL) formulation of text generation. It is seamlessly compatible with the common architecture of text generation model (Eq.\ref{eq:softmax-logit}), permits easy implementation (\S\ref{sec:sql-formulation}),
+and enables efficient and stable RL training in practice (\S\ref{subsec:method:pcl}).
+Figure~\ref{fig:soft-q-learning-pcl} and Algorithm~\ref{alg:sql} summarizes the resulting SQL framework.
+
+
+
+
+\subsection{SQL Formulation for Text Generation}\label{sec:sql-formulation}
+
+Soft $Q$-learning \citep{haarnoja2017reinforcement,schulman2017equivalence,nachum2017bridging} is an maximum-entropy (MaxEnt) extension to the standard (hard) $Q$-learning~\citep{mnih2015human,sutton2018reinforcement}. Under this framework, the agent is encouraged to optimize the reward while staying as stochastic as possible, with the objective
+$J_{\text{MaxEnt}}(\pi)=\mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^T \gamma^t r_t + \alpha \mathcal{H}\left(\pi\left(\cdot \mid \bm{s}_{t}\right)\right)\right]$,
+which augments the vanilla $J(\pi)$
+with the additional Shannon entropy term $\mathcal{H}$ with coefficient $\alpha$.\footnote{WLOG, we can assume $\alpha{=}1$, as it can be folded into the reward function by scaling the latter with $1/\alpha$.}
+This is appealing because it seamlessly connects the $Q$-values to the familiar output \textit{logits} of a text generation model, which enables straightforward implementation of the SQL formulation.
+
+\noindent\textbf{$Q$-values as Generation Model Logits.}
+We show the connection of the $Q$-values with the logits, i.e., outputs right before the $\operatorname{softmax}$ layer.
+Concretely, with the SQL objective,
+the following relationship between optimal policy $\pi^*$ and action-value $Q^*$ holds~\citep{haarnoja2017reinforcement,schulman2017equivalence}:
+\begin{equation}
+\small
+    \pi^{*}(a | \bm{s})=\frac{\exp Q^{*}(\bm{s}, a)}{\sum_{a^{\prime}} \exp Q^{*}\left(\bm{s}, a^{\prime}\right)}.
+    \label{eq:optimal-pi-and-q}
+\end{equation}
+This form is highly reminiscent of the $\operatorname{softmax}$ layer of the generation model in Eq.\eqref{eq:softmax-logit}. The connection suggests that we can naturally parameterize the $Q$-function in SQL as the generation model logit function, i.e., $Q_\theta(\s, a) \equiv f_\theta(a|\s)$. In other words, \emph{the model output $f_\theta(a|\s)$, originally interpretted as the ``logit'' of token $a$ given the preceding tokens $\s$, is now re-interpretted as the $Q$-value of action $a$ in state $\s$.} When achieving optimality, $f_{\theta^*}(a|\s)$, namely $Q^{*}(\bm{s}, a)$, represents the best possible future reward achievable by generating token $a$ in state $\bm{s}$. Similarly, the full generation model $p_\theta(a|\s)$ in Eq.\eqref{eq:softmax-logit} that applies $\operatorname{softmax}$ to $f_\theta$ now precisely corresponds to the policy $\pi_\theta$ induced from $Q_\theta(\s, a)$. That is,
+\begin{equation}
+\small
+\begin{aligned}
+    \pi_\theta(a | \bm{s})
+    &= \frac{\exp Q_\theta(\bm{s}, a)}{\sum_{a^{\prime}} \exp Q_\theta\left(\bm{s}, a^{\prime}\right)} \\
+    &\equiv \frac{\exp f_\theta(a | \bm{s})}{\sum_{a^{\prime}} \exp f_\theta\left(a^{\prime} | \bm{s} \right)} 
+    = p_\theta(a | \s).
+    \label{eq:pi-and-q-theta}
+\end{aligned}
+\end{equation}
+We could further gain even more intuitive interpretation of the above generation policy $\pi^*$ from the lens of \emph{advantage} function  \citep{sutton2018reinforcement}. Specifically, in SQL, the optimal \emph{state-value} function is the log-normalizer of the optimal $Q$-values \citep{haarnoja2017reinforcement,schulman2017equivalence}.
+This allows a more concise form of Eq.\eqref{eq:optimal-pi-and-q}:
+\begin{equation}
+\small
+\begin{aligned}
+    V^{*}\left(\bm{s}\right) &= \log \sum\nolimits_{a'} \exp Q^{*}\left(\bm{s}, a'\right) \\ %
+    \pi^{*}(a | \bm{s}) &= \exp \big(Q^*(\bm{s}, a) - V^*(\bm{s})\big) = \exp A^*(\bm{s}, a),
+    \label{eq:sql-state-value}
+\end{aligned}
+\end{equation}
+where $A^*$ is the optimal advantage function. The equation says that, in the proposed text generation SQL formulation, the optimal policy generates token $a$ in state $\s$ according to the token's advantage.
+
+
+
+
+
+
+
+\subsection{Efficient Training with Path Consistency}
+\label{subsec:method:pcl}
+
+Vanilla training based on the Bellman temporal consistency can suffer from the instability and inefficiency issues similar to the conventional $Q$-learning (\S\ref{sec:background:rl}), as we discuss more in the appendix (\S\ref{appendix-subsubsec:vanilla-training-with-temporal-consistency}). Fortunately, our SQL formulation allows us to import latest advances of RL techniques to overcome the difficulties.
+Specifically, we adapt the \emph{unified path consistency learning (PCL)} that has excelled in game control~\citep{nachum2017bridging}.
+The PCL-based training updates $Q$-values of \emph{all} tokens at once through a connection between the value function and the induced policy.
+More specifically,~\citet{nachum2017bridging} showed that the optimal policy $\pi^*$ (Eq.\ref{eq:optimal-pi-and-q}) and the optimal state value function $V^*$ (Eq.\ref{eq:sql-state-value}) in SQL must satisfy the following consistency property for 
+all states and actions:
+\begin{equation}
+\small
+    V^*\left(\bm{s}_{t}\right)-\gamma V^*\left(\bm{s}_{t+1}\right) = r_t - \log \pi^*\left(a_{t} | \bm{s}_{t}\right), \forall \bm{s}_t,\  a_t.
+    \label{eq:pcl}
+\end{equation}
+Accordingly, the PCL-based training attempts to encourage the satisfaction of the consistency with the following regression objective $\loss_{\text{SQL, PCL}} (\bm{\theta})$:
+\begin{equation}
+\small
+\begin{aligned}
+    {\mathbb{E}}_{\pi'}\left[\frac{1}{2}\bigg({-}V_{\bar{{\theta}}}\left(\bm{s}_{t}\right){+}\gamma V_{\bar{{\theta}}}\left(\bm{s}_{t+1}\right) {+} 
+    r_t {-} \log \pi_{{\theta}}\left(a_{t} | \bm{s}_{t}\right)\bigg)^{2}\right],
+    \label{eq:pcl-loss}
+\end{aligned}
+\end{equation}
+where $\pi_\theta$ is the induced policy defined in Eq.\eqref{eq:pi-and-q-theta}; $V_{\bar{{\theta}}}$ is defined similarly as in Eq.\eqref{eq:sql-state-value} but depends on the target $Q_{\bar{\theta}}$ network (i.e., a slow copy of the $Q_\theta$ to be learned), and recall that $\pi'$ is an arbitrary behavior policy (e.g., data distribution). 
+Please see Figure~\ref{fig:soft-q-learning-pcl} (left) for an illustration. 
+Crucially, notice that the gradient update is applied to $\btheta$ through the $\log \pi_\theta$ term which explicitly involves the $Q_\theta$-values of \emph{all} tokens $a$ in the vocabulary. This shows an important difference from the above vanilla training in conventional $Q$-learning (\S\ref{sec:background:rl}) where $Q_\theta$ is updated only through the particular $a_t$ token. The PCL training thus offers more efficient updates for the $Q_\theta$ function.
+In the appendix (\S\ref{comparison-with-mle-objective}), we also discuss the difference from the MLE objective. Intuitively, MLE trains the model to (blindly) increase the probability of the observed tokens, while PCL encourages the (log) probability of the tokens to match the approximate advantage values.
+
+
+
+\paragraph{Multi-step PCL for Sparse Reward.} 
+The above PCL objective Eq.\eqref{eq:pcl-loss} alone does not resolve the potential instability issue due to the bootstrapped $V_{\bar{{\theta}}}(\s_{t+1})$ value and the sparse reward (i.e., $r(\s_t, a_t)=0$ for $t<T$). 
+Our SQL formulation allows us to additionally incorporate the \emph{multi-step} variant of the PCL training \citep{nachum2017bridging} to resolve the issue. Specifically, by applying a telescoping sum on the consistency equation (Eq.\ref{eq:pcl}) starting from $t$ up to $T$, we arrive at the multi-step temporal consistency:
+\begin{equation}
+\small
+\begin{aligned}
+    &V^{*}\left(\bm{s}_{t}\right){-}\gamma^{T-t} V^{*}\left(\bm{s}_{T+1}\right)
+    {=} \sum_{l=t}^{T} \gamma^{l-t}\big(r_{l}{-}\log \pi^{*}\left(a_{l} | \bm{s}_{l}\right)\big),
+\end{aligned}
+\end{equation}
+where the value of past-terminal state is zero, $V^*\left(\bm{s}_{T+1}\right) = 0$; and the rewards are only available at the end, $\sum_{l=t}^{T} \gamma^{l-t} r_{l} = \gamma^{T-t} r_{T}$. We can then come to the following multi-step objective function $\loss_{\textrm{SQL, PCL-ms}}(\btheta)$, 
+\begin{equation}
+\small
+    \mathbb{E}_{\pi'} \left[\frac{1}{2}\left({-}V_{\bar{{\theta}}}\left(\bm{s}_{t}\right){+}\gamma^{T-t} r_{T}{-}\sum_{l=t}^{T} \gamma^{l-t} \log \pi_{{\theta}}\left(a_{l} | \bm{s}_{l}\right)\right)^{2}\right].
+    \label{eq:multi-loss}
+\end{equation}
+We can see the objective side-steps the need to bootstrap intermediate value functions $V_{\bar{{\theta}}}(\bm{s}_{t'})$ for $t' > t$. Instead, it directly uses the non-zero end reward $r_T$ to derive the update for $\btheta$. Please see Figure~\ref{fig:soft-q-learning-pcl} (right) for an illustration. 
+In practice, we combine the single- and multi-step objectives (Eqs.\ref{eq:pcl-loss} and \ref{eq:multi-loss}) together for training.
+
+\paragraph{Joint On- and Off-policy Training.} 
+Finally, we highlight that the behavior policy $\pi'$ involved in the objectives Eqs.\eqref{eq:pcl-loss} and \eqref{eq:multi-loss} can be an arbitrary policy.
+For example, $\pi'$ can be a (possibly noisy) text dataset, or a set of text samples produced by other generation models, resulting in off-policy training. We can also set $\pi'$ to be the current generation model $\pi_\theta$ to be learned, resulting in on-policy training. In practice, we could first train the model with only off-policy data for warming up, and then continue with joint on- and off-policy training to further maximize the reward.
+
+\input{tables/algorithm}
+
+\section{Conclusion}
+We develop a new RL formulation for text generation based on soft $Q$-learning and path consistency learning.
+We conduct experiments on learning with noisy and negative data, black box adversarial attack, prompting a pretrained language model for controllable generation, and  standard supervised tasks. This formulation opens up new opportunities to integrate more advances made in the fertile RL literature to improve text
+generation problems. 
+
+\section{Related Work}
+
+Standard RL algorithms
+can sometimes be over-sensitive to the randomness in the environment. Recent works have considered maximum-entropy RL extensions, such as the soft $Q$-learning (SQL)~\citep{haarnoja2017reinforcement,nachum2017bridging,schulman2017equivalence}, that maximize the entropy of policy besides the rewards, and demonstrated substantial improvement in  robotic and game control~\citep{ziebart2008maximum,ODonoghue2017CombiningPG,nachum2018trustpcl,eysenbach2021maximum}.
+Our work is the first to adapt SQL and its advanced variants (in particular the path consistency learning~\citep{nachum2017bridging}) to the challenging text generation problem and show significant results on diverse applications.
+
+Applying RL for text generation has been discussed in alleviating the exposure bias problem and optimizing task metrics~\citep{guo2015generating,li2016deep,wu2016google,rennie2017self,paulus2018a,chen2018fast,liu2020data,pang2021amortized}. For example,~\citet{ranzato2015sequence} used the REINFORCE algorithm~\citep{williams1992simple}, and~\citet{bahdanau2016actor} used the actor-critic algorithm; \citet{guo2018long} and~\citet{shi2018toward} tried to relieve the sparsity problem via hierarchical and inverse RL methods, resp. They are all on-policy RL algorithms with the need of pretraining their models using MLE. RAML~\cite{norouzi2016reward} implicitly relies on the quality of off-policy data; this does not necessarily apply in our experiments with limited good data.%
+~\citet{tan2018connecting} and~\citet{hu2022standard} offer a unified view of RAML, RL, and other training methods.
+Another line of work focused mostly on using only off-policy data, often for offline training of chatbots~\citep{kandasamy2016batch,zhou2017end,jaques2020human,pang2021text}. As a result, the opportunity of directly improving the reward (as in on-policy updates) for other rich tasks is missed. Our proposed framework combines on- and off-policy training, and further offers solutions for efficient training from scratch in the presence of large action space and sparse sequence-level reward in text generation.
+
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+\usepackage[]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+
+
+\usepackage[pdftex]{graphicx}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath,amsfonts,bm}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KLD}{\text{KL}}
+\newcommand{\ENT}{\text{H}}
+\newcommand{\BENT}{\mathbb{H}}
+\newcommand{\BDist}{\mathbb{D}}
+\newcommand{\MLE}{\text{MLE}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\y}{\bm{y}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\s}{\bm{s}}
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\yspace}{\mathcal{Y}}
+\newcommand{\zspace}{\mathcal{Z}}
+\newcommand{\tspace}{\mathcal{T}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bphi}{\bm{\phi}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bw}{\bm{\w}}
+\newcommand{\dataset}{\mathcal{D}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\indicator}{\mathbb{I}}
+\newcommand{\pdata}{p_{d}}
+\newcommand{\pemp}{\tilde{p}_d}
+\newcommand{\lm}{\text{LM}}
+
+
+
+
+
+
+
+
+
+\title{
+Efficient (Soft) $Q$-Learning \\ for Text Generation
+with Limited Good Data
+}
+
+
+\author{
+Han Guo$^1$,~~
+Bowen Tan$^1$,~~
+Zhengzhong Liu$^{1,2}$,~~
+Eric P. Xing$^{1,2,4}$,~~
+Zhiting Hu$^{3}$\\
+$^1$Carnegie Mellon University,~~ $^2$Petuum Inc.,~~ $^3$UC San Diego,\\
+$^4$Mohamed bin Zayed University of Artificial Intelligence\\
+{\small 
+{\tt \{hanguo, btan2, epxing\}@cs.cmu.edu, hectorzliu@gmail.com, zhh019@ucsd.edu}
+}
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Maximum likelihood estimation (MLE) is the predominant algorithm for training text generation models. This paradigm relies on direct supervision examples, which is not applicable to many emerging applications, such as generating adversarial attacks or generating prompts to control language models. Reinforcement learning (RL) on the other hand offers a more flexible solution by allowing users to plug in arbitrary task metrics as reward. Yet previous RL algorithms for text generation, such as policy gradient (\emph{on-policy} RL) and $Q$-learning (\emph{off-policy} RL), are often notoriously inefficient or unstable to train due to the large sequence space and the sparse reward received only at the end of sequences. In this paper, we introduce a new RL formulation for text generation from the soft $Q$-learning (SQL) perspective. It enables us to draw from the latest RL advances, such as path consistency learning, to combine the best of on-/off-policy updates, and learn effectively from sparse reward. We apply the approach to a wide range of novel text generation tasks, including learning from noisy/negative examples, adversarial attacks, and prompt generation. Experiments show our approach consistently outperforms both task-specialized algorithms and the previous RL methods.%
+\footnote{Code at \url{https://github.com/HanGuo97/soft-Q-learning-for-text-generation}.}
+\end{abstract}
+
+
+\input{introduction}
+\input{methods}
+\input{experiments}
+\input{related-works}
+\input{conclusion}
+
+
+
+\section*{Limitations}
+
+
+
+A well-documented limitation of RL methods is the importance of the reward function. The proposed methods are no different in this aspect. This is especially relevant as our reward function could involve a learned model itself, which we proactively leveraged in Sec.~\ref{subsec:adversarial-attack}. We refer interested readers to~\citet{deng2022rlprompt} for more algorithmic considerations.
+We also noticed that adapting the pretraining-finetuning paradigm to the proposed methods requires careful designs. A hypothesis points to the discrepancy between MLE objectives (commonly used in pretraining context) and SQL objectives. As discussed in Sec.~\ref{sec:sql-formulation}, the SQL formulation re-interprets the ``logit'' as the $Q$-value, for many good reasons. However, our preliminary experiments suggest that, as a downside, this makes finetuning an MLE-trained model with SQL objectives more challenging.
+Future work to scale the proposed methods to tasks such as machine translation and language modeling, and with significantly larger and (MLE-)pretrained models would be exciting.
+
+
+\section*{Ethics Statement}
+This work develops a new RL formulation for text generation. While we demonstrate the framework in four applications, it could be adapted to other (emerging) applications. One major component in these applications is the design of the reward function, which influences the behavior of the trained agent. While we believe the MaxEnt RL framework is more robust against reward misspecification~\citep{eysenbach2021maximum}, the potential failures of sub-optimal reward functions are widely known and discussed.\footnote{\url{https://openai.com/blog/faulty-reward-functions/}} To this end, deploying this model to the wild requires careful and extensive examination, using tools such as~\citet{ribeiro2020beyond}. Further, we highlight the application for (black-box) adversarial attacks in the paper, with the intention of using adversarial attacks to understand the model's inner workings. That being said, this could potentially be misused to conduct malicious attacks against systems. Hence, users of this framework might want to conduct adversarial attacks against their own models to avoid being attacked by other people with bad intentions.
+
+\section*{Acknowledgement}
+We thank all reviewers for their invaluable comments and feedback. This research was supported by NSF IIS1563887, NSF CCF1629559, NSF IIS1617583, NGA HM04762010002, NSF IIS1955532, NSF CNS2008248, NSF IIS2123952, and NSF BCS2040381. The views in this article are those of the authors and not the funding agency.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliography{citations}
+
+\clearpage
+
+\appendix
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{algorithm}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\thealgorithm}{A.\arabic{algorithm}} 
+\input{appendix}
+
+\end{document}
+
+\usepackage{amsmath,amsfonts,bm}
+
+\newcommand{\figleft}{{\em (Left)}}
+\newcommand{\figcenter}{{\em (Center)}}
+\newcommand{\figright}{{\em (Right)}}
+\newcommand{\figtop}{{\em (Top)}}
+\newcommand{\figbottom}{{\em (Bottom)}}
+\newcommand{\captiona}{{\em (a)}}
+\newcommand{\captionb}{{\em (b)}}
+\newcommand{\captionc}{{\em (c)}}
+\newcommand{\captiond}{{\em (d)}}
+
+\newcommand{\newterm}[1]{{\bf #1}}
+
+
+\def\figref#1{figure~\ref{#1}}
+\def\Figref#1{Figure~\ref{#1}}
+\def\twofigref#1#2{figures \ref{#1} and \ref{#2}}
+\def\quadfigref#1#2#3#4{figures \ref{#1}, \ref{#2}, \ref{#3} and \ref{#4}}
+\def\secref#1{section~\ref{#1}}
+\def\Secref#1{Section~\ref{#1}}
+\def\twosecrefs#1#2{sections \ref{#1} and \ref{#2}}
+\def\secrefs#1#2#3{sections \ref{#1}, \ref{#2} and \ref{#3}}
+\def\eqref#1{equation~\ref{#1}}
+\def\Eqref#1{Equation~\ref{#1}}
+\def\plaineqref#1{\ref{#1}}
+\def\chapref#1{chapter~\ref{#1}}
+\def\Chapref#1{Chapter~\ref{#1}}
+\def\rangechapref#1#2{chapters\ref{#1}--\ref{#2}}
+\def\algref#1{algorithm~\ref{#1}}
+\def\Algref#1{Algorithm~\ref{#1}}
+\def\twoalgref#1#2{algorithms \ref{#1} and \ref{#2}}
+\def\Twoalgref#1#2{Algorithms \ref{#1} and \ref{#2}}
+\def\partref#1{part~\ref{#1}}
+\def\Partref#1{Part~\ref{#1}}
+\def\twopartref#1#2{parts \ref{#1} and \ref{#2}}
+
+\def\ceil#1{\lceil #1 \rceil}
+\def\floor#1{\lfloor #1 \rfloor}
+\def\1{\bm{1}}
+\newcommand{\train}{\mathcal{D}}
+\newcommand{\valid}{\mathcal{D_{\mathrm{valid}}}}
+\newcommand{\test}{\mathcal{D_{\mathrm{test}}}}
+
+\def\eps{{\epsilon}}
+
+
+\def\reta{{\textnormal{$\eta$}}}
+\def\ra{{\textnormal{a}}}
+\def\rb{{\textnormal{b}}}
+\def\rc{{\textnormal{c}}}
+\def\rd{{\textnormal{d}}}
+\def\re{{\textnormal{e}}}
+\def\rf{{\textnormal{f}}}
+\def\rg{{\textnormal{g}}}
+\def\rh{{\textnormal{h}}}
+\def\ri{{\textnormal{i}}}
+\def\rj{{\textnormal{j}}}
+\def\rk{{\textnormal{k}}}
+\def\rl{{\textnormal{l}}}
+\def\rn{{\textnormal{n}}}
+\def\ro{{\textnormal{o}}}
+\def\rp{{\textnormal{p}}}
+\def\rq{{\textnormal{q}}}
+\def\rr{{\textnormal{r}}}
+\def\rs{{\textnormal{s}}}
+\def\rt{{\textnormal{t}}}
+\def\ru{{\textnormal{u}}}
+\def\rv{{\textnormal{v}}}
+\def\rw{{\textnormal{w}}}
+\def\rx{{\textnormal{x}}}
+\def\ry{{\textnormal{y}}}
+\def\rz{{\textnormal{z}}}
+
+\def\rvepsilon{{\mathbf{\epsilon}}}
+\def\rvtheta{{\mathbf{\theta}}}
+\def\rva{{\mathbf{a}}}
+\def\rvb{{\mathbf{b}}}
+\def\rvc{{\mathbf{c}}}
+\def\rvd{{\mathbf{d}}}
+\def\rve{{\mathbf{e}}}
+\def\rvf{{\mathbf{f}}}
+\def\rvg{{\mathbf{g}}}
+\def\rvh{{\mathbf{h}}}
+\def\rvu{{\mathbf{i}}}
+\def\rvj{{\mathbf{j}}}
+\def\rvk{{\mathbf{k}}}
+\def\rvl{{\mathbf{l}}}
+\def\rvm{{\mathbf{m}}}
+\def\rvn{{\mathbf{n}}}
+\def\rvo{{\mathbf{o}}}
+\def\rvp{{\mathbf{p}}}
+\def\rvq{{\mathbf{q}}}
+\def\rvr{{\mathbf{r}}}
+\def\rvs{{\mathbf{s}}}
+\def\rvt{{\mathbf{t}}}
+\def\rvu{{\mathbf{u}}}
+\def\rvv{{\mathbf{v}}}
+\def\rvw{{\mathbf{w}}}
+\def\rvx{{\mathbf{x}}}
+\def\rvy{{\mathbf{y}}}
+\def\rvz{{\mathbf{z}}}
+
+\def\erva{{\textnormal{a}}}
+\def\ervb{{\textnormal{b}}}
+\def\ervc{{\textnormal{c}}}
+\def\ervd{{\textnormal{d}}}
+\def\erve{{\textnormal{e}}}
+\def\ervf{{\textnormal{f}}}
+\def\ervg{{\textnormal{g}}}
+\def\ervh{{\textnormal{h}}}
+\def\ervi{{\textnormal{i}}}
+\def\ervj{{\textnormal{j}}}
+\def\ervk{{\textnormal{k}}}
+\def\ervl{{\textnormal{l}}}
+\def\ervm{{\textnormal{m}}}
+\def\ervn{{\textnormal{n}}}
+\def\ervo{{\textnormal{o}}}
+\def\ervp{{\textnormal{p}}}
+\def\ervq{{\textnormal{q}}}
+\def\ervr{{\textnormal{r}}}
+\def\ervs{{\textnormal{s}}}
+\def\ervt{{\textnormal{t}}}
+\def\ervu{{\textnormal{u}}}
+\def\ervv{{\textnormal{v}}}
+\def\ervw{{\textnormal{w}}}
+\def\ervx{{\textnormal{x}}}
+\def\ervy{{\textnormal{y}}}
+\def\ervz{{\textnormal{z}}}
+
+\def\rmA{{\mathbf{A}}}
+\def\rmB{{\mathbf{B}}}
+\def\rmC{{\mathbf{C}}}
+\def\rmD{{\mathbf{D}}}
+\def\rmE{{\mathbf{E}}}
+\def\rmF{{\mathbf{F}}}
+\def\rmG{{\mathbf{G}}}
+\def\rmH{{\mathbf{H}}}
+\def\rmI{{\mathbf{I}}}
+\def\rmJ{{\mathbf{J}}}
+\def\rmK{{\mathbf{K}}}
+\def\rmL{{\mathbf{L}}}
+\def\rmM{{\mathbf{M}}}
+\def\rmN{{\mathbf{N}}}
+\def\rmO{{\mathbf{O}}}
+\def\rmP{{\mathbf{P}}}
+\def\rmQ{{\mathbf{Q}}}
+\def\rmR{{\mathbf{R}}}
+\def\rmS{{\mathbf{S}}}
+\def\rmT{{\mathbf{T}}}
+\def\rmU{{\mathbf{U}}}
+\def\rmV{{\mathbf{V}}}
+\def\rmW{{\mathbf{W}}}
+\def\rmX{{\mathbf{X}}}
+\def\rmY{{\mathbf{Y}}}
+\def\rmZ{{\mathbf{Z}}}
+
+\def\ermA{{\textnormal{A}}}
+\def\ermB{{\textnormal{B}}}
+\def\ermC{{\textnormal{C}}}
+\def\ermD{{\textnormal{D}}}
+\def\ermE{{\textnormal{E}}}
+\def\ermF{{\textnormal{F}}}
+\def\ermG{{\textnormal{G}}}
+\def\ermH{{\textnormal{H}}}
+\def\ermI{{\textnormal{I}}}
+\def\ermJ{{\textnormal{J}}}
+\def\ermK{{\textnormal{K}}}
+\def\ermL{{\textnormal{L}}}
+\def\ermM{{\textnormal{M}}}
+\def\ermN{{\textnormal{N}}}
+\def\ermO{{\textnormal{O}}}
+\def\ermP{{\textnormal{P}}}
+\def\ermQ{{\textnormal{Q}}}
+\def\ermR{{\textnormal{R}}}
+\def\ermS{{\textnormal{S}}}
+\def\ermT{{\textnormal{T}}}
+\def\ermU{{\textnormal{U}}}
+\def\ermV{{\textnormal{V}}}
+\def\ermW{{\textnormal{W}}}
+\def\ermX{{\textnormal{X}}}
+\def\ermY{{\textnormal{Y}}}
+\def\ermZ{{\textnormal{Z}}}
+
+\def\vzero{{\bm{0}}}
+\def\vone{{\bm{1}}}
+\def\vmu{{\bm{\mu}}}
+\def\vtheta{{\bm{\theta}}}
+\def\va{{\bm{a}}}
+\def\vb{{\bm{b}}}
+\def\vc{{\bm{c}}}
+\def\vd{{\bm{d}}}
+\def\ve{{\bm{e}}}
+\def\vf{{\bm{f}}}
+\def\vg{{\bm{g}}}
+\def\vh{{\bm{h}}}
+\def\vi{{\bm{i}}}
+\def\vj{{\bm{j}}}
+\def\vk{{\bm{k}}}
+\def\vl{{\bm{l}}}
+\def\vm{{\bm{m}}}
+\def\vn{{\bm{n}}}
+\def\vo{{\bm{o}}}
+\def\vp{{\bm{p}}}
+\def\vq{{\bm{q}}}
+\def\vr{{\bm{r}}}
+\def\vs{{\bm{s}}}
+\def\vt{{\bm{t}}}
+\def\vu{{\bm{u}}}
+\def\vv{{\bm{v}}}
+\def\vw{{\bm{w}}}
+\def\vx{{\bm{x}}}
+\def\vy{{\bm{y}}}
+\def\vz{{\bm{z}}}
+
+\def\evalpha{{\alpha}}
+\def\evbeta{{\beta}}
+\def\evepsilon{{\epsilon}}
+\def\evlambda{{\lambda}}
+\def\evomega{{\omega}}
+\def\evmu{{\mu}}
+\def\evpsi{{\psi}}
+\def\evsigma{{\sigma}}
+\def\evtheta{{\theta}}
+\def\eva{{a}}
+\def\evb{{b}}
+\def\evc{{c}}
+\def\evd{{d}}
+\def\eve{{e}}
+\def\evf{{f}}
+\def\evg{{g}}
+\def\evh{{h}}
+\def\evi{{i}}
+\def\evj{{j}}
+\def\evk{{k}}
+\def\evl{{l}}
+\def\evm{{m}}
+\def\evn{{n}}
+\def\evo{{o}}
+\def\evp{{p}}
+\def\evq{{q}}
+\def\evr{{r}}
+\def\evs{{s}}
+\def\evt{{t}}
+\def\evu{{u}}
+\def\evv{{v}}
+\def\evw{{w}}
+\def\evx{{x}}
+\def\evy{{y}}
+\def\evz{{z}}
+
+\def\mA{{\bm{A}}}
+\def\mB{{\bm{B}}}
+\def\mC{{\bm{C}}}
+\def\mD{{\bm{D}}}
+\def\mE{{\bm{E}}}
+\def\mF{{\bm{F}}}
+\def\mG{{\bm{G}}}
+\def\mH{{\bm{H}}}
+\def\mI{{\bm{I}}}
+\def\mJ{{\bm{J}}}
+\def\mK{{\bm{K}}}
+\def\mL{{\bm{L}}}
+\def\mM{{\bm{M}}}
+\def\mN{{\bm{N}}}
+\def\mO{{\bm{O}}}
+\def\mP{{\bm{P}}}
+\def\mQ{{\bm{Q}}}
+\def\mR{{\bm{R}}}
+\def\mS{{\bm{S}}}
+\def\mT{{\bm{T}}}
+\def\mU{{\bm{U}}}
+\def\mV{{\bm{V}}}
+\def\mW{{\bm{W}}}
+\def\mX{{\bm{X}}}
+\def\mY{{\bm{Y}}}
+\def\mZ{{\bm{Z}}}
+\def\mBeta{{\bm{\beta}}}
+\def\mPhi{{\bm{\Phi}}}
+\def\mLambda{{\bm{\Lambda}}}
+\def\mSigma{{\bm{\Sigma}}}
+
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+\newcommand{\tens}[1]{\bm{\mathsfit{#1}}}
+\def\tA{{\tens{A}}}
+\def\tB{{\tens{B}}}
+\def\tC{{\tens{C}}}
+\def\tD{{\tens{D}}}
+\def\tE{{\tens{E}}}
+\def\tF{{\tens{F}}}
+\def\tG{{\tens{G}}}
+\def\tH{{\tens{H}}}
+\def\tI{{\tens{I}}}
+\def\tJ{{\tens{J}}}
+\def\tK{{\tens{K}}}
+\def\tL{{\tens{L}}}
+\def\tM{{\tens{M}}}
+\def\tN{{\tens{N}}}
+\def\tO{{\tens{O}}}
+\def\tP{{\tens{P}}}
+\def\tQ{{\tens{Q}}}
+\def\tR{{\tens{R}}}
+\def\tS{{\tens{S}}}
+\def\tT{{\tens{T}}}
+\def\tU{{\tens{U}}}
+\def\tV{{\tens{V}}}
+\def\tW{{\tens{W}}}
+\def\tX{{\tens{X}}}
+\def\tY{{\tens{Y}}}
+\def\tZ{{\tens{Z}}}
+
+
+\def\gA{{\mathcal{A}}}
+\def\gB{{\mathcal{B}}}
+\def\gC{{\mathcal{C}}}
+\def\gD{{\mathcal{D}}}
+\def\gE{{\mathcal{E}}}
+\def\gF{{\mathcal{F}}}
+\def\gG{{\mathcal{G}}}
+\def\gH{{\mathcal{H}}}
+\def\gI{{\mathcal{I}}}
+\def\gJ{{\mathcal{J}}}
+\def\gK{{\mathcal{K}}}
+\def\gL{{\mathcal{L}}}
+\def\gM{{\mathcal{M}}}
+\def\gN{{\mathcal{N}}}
+\def\gO{{\mathcal{O}}}
+\def\gP{{\mathcal{P}}}
+\def\gQ{{\mathcal{Q}}}
+\def\gR{{\mathcal{R}}}
+\def\gS{{\mathcal{S}}}
+\def\gT{{\mathcal{T}}}
+\def\gU{{\mathcal{U}}}
+\def\gV{{\mathcal{V}}}
+\def\gW{{\mathcal{W}}}
+\def\gX{{\mathcal{X}}}
+\def\gY{{\mathcal{Y}}}
+\def\gZ{{\mathcal{Z}}}
+
+\def\sA{{\mathbb{A}}}
+\def\sB{{\mathbb{B}}}
+\def\sC{{\mathbb{C}}}
+\def\sD{{\mathbb{D}}}
+\def\sF{{\mathbb{F}}}
+\def\sG{{\mathbb{G}}}
+\def\sH{{\mathbb{H}}}
+\def\sI{{\mathbb{I}}}
+\def\sJ{{\mathbb{J}}}
+\def\sK{{\mathbb{K}}}
+\def\sL{{\mathbb{L}}}
+\def\sM{{\mathbb{M}}}
+\def\sN{{\mathbb{N}}}
+\def\sO{{\mathbb{O}}}
+\def\sP{{\mathbb{P}}}
+\def\sQ{{\mathbb{Q}}}
+\def\sR{{\mathbb{R}}}
+\def\sS{{\mathbb{S}}}
+\def\sT{{\mathbb{T}}}
+\def\sU{{\mathbb{U}}}
+\def\sV{{\mathbb{V}}}
+\def\sW{{\mathbb{W}}}
+\def\sX{{\mathbb{X}}}
+\def\sY{{\mathbb{Y}}}
+\def\sZ{{\mathbb{Z}}}
+
+\def\emLambda{{\Lambda}}
+\def\emA{{A}}
+\def\emB{{B}}
+\def\emC{{C}}
+\def\emD{{D}}
+\def\emE{{E}}
+\def\emF{{F}}
+\def\emG{{G}}
+\def\emH{{H}}
+\def\emI{{I}}
+\def\emJ{{J}}
+\def\emK{{K}}
+\def\emL{{L}}
+\def\emM{{M}}
+\def\emN{{N}}
+\def\emO{{O}}
+\def\emP{{P}}
+\def\emQ{{Q}}
+\def\emR{{R}}
+\def\emS{{S}}
+\def\emT{{T}}
+\def\emU{{U}}
+\def\emV{{V}}
+\def\emW{{W}}
+\def\emX{{X}}
+\def\emY{{Y}}
+\def\emZ{{Z}}
+\def\emSigma{{\Sigma}}
+
+\newcommand{\etens}[1]{\mathsfit{#1}}
+\def\etLambda{{\etens{\Lambda}}}
+\def\etA{{\etens{A}}}
+\def\etB{{\etens{B}}}
+\def\etC{{\etens{C}}}
+\def\etD{{\etens{D}}}
+\def\etE{{\etens{E}}}
+\def\etF{{\etens{F}}}
+\def\etG{{\etens{G}}}
+\def\etH{{\etens{H}}}
+\def\etI{{\etens{I}}}
+\def\etJ{{\etens{J}}}
+\def\etK{{\etens{K}}}
+\def\etL{{\etens{L}}}
+\def\etM{{\etens{M}}}
+\def\etN{{\etens{N}}}
+\def\etO{{\etens{O}}}
+\def\etP{{\etens{P}}}
+\def\etQ{{\etens{Q}}}
+\def\etR{{\etens{R}}}
+\def\etS{{\etens{S}}}
+\def\etT{{\etens{T}}}
+\def\etU{{\etens{U}}}
+\def\etV{{\etens{V}}}
+\def\etW{{\etens{W}}}
+\def\etX{{\etens{X}}}
+\def\etY{{\etens{Y}}}
+\def\etZ{{\etens{Z}}}
+
+\newcommand{\pdata}{p_{\rm{data}}}
+\newcommand{\ptrain}{\hat{p}_{\rm{data}}}
+\newcommand{\Ptrain}{\hat{P}_{\rm{data}}}
+\newcommand{\pmodel}{p_{\rm{model}}}
+\newcommand{\Pmodel}{P_{\rm{model}}}
+\newcommand{\ptildemodel}{\tilde{p}_{\rm{model}}}
+\newcommand{\pencode}{p_{\rm{encoder}}}
+\newcommand{\pdecode}{p_{\rm{decoder}}}
+\newcommand{\precons}{p_{\rm{reconstruct}}}
+
+\newcommand{\laplace}{\mathrm{Laplace}} %
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\emp}{\tilde{p}}
+\newcommand{\lr}{\alpha}
+\newcommand{\reg}{\lambda}
+\newcommand{\rect}{\mathrm{rectifier}}
+\newcommand{\softmax}{\mathrm{softmax}}
+\newcommand{\sigmoid}{\sigma}
+\newcommand{\softplus}{\zeta}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\standarderror}{\mathrm{SE}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\normlzero}{L^0}
+\newcommand{\normlone}{L^1}
+\newcommand{\normltwo}{L^2}
+\newcommand{\normlp}{L^p}
+\newcommand{\normmax}{L^\infty}
+
+\newcommand{\parents}{Pa} %
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Tr}{Tr}
+\let\ab\allowbreak
+
+\section{Applications and Experiments}
+
+
+We show broad applications of the proposed RL text generation framework to a variety of problems where no clean supervision data is available. These include learning with noisy or even negative data (\S\ref{subsec:noisy-data}), generating adversarial text attacks (\S\ref{subsec:adversarial-attack}), and generating prompts to steer pretrained LMs (\S\ref{subsec:prompt-generation}).
+We also study the performance on standard supervised generation tasks (\S\ref{appendix-subsec:standard-tasks}) and show that our approach is competitive to train text generation models \emph{from scratch}. We provide detailed configurations in the appendix (\S\ref{appendix-subsec:setup-details}).
+
+\subsection{Learning from Noisy (Negative) Text}
+\label{subsec:noisy-data}
+
+The popular MLE algorithm learns by (blindly) imitating training data.
+However,
+it is often expensive to curate clean quality data. It is thus highly desirable to be able to learn from data with noises, or even \emph{negative} examples.
+With the guidance of task metrics (rewards), the model can even learn to ``outperform'' the training data and achieve desired generation behaviors.
+To this end, we consider the task of \emph{entailment generation}~\citep{pasunuru2017multi}. Given a sentence (premise), the goal is to generate a new sentence (hypothesis) that logically follows the premise. 
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/202101005-entailment-combined.pdf}
+    \vspace{-7pt}
+    \caption{
+    \textbf{Left:} entailment generation performance plotted against diversity (average of $H_1$ and $H_2$). 
+    Circles represent results of top-$p$ sample outputs,
+    and triangles represent results of beam-search outputs.
+    Please see Table~\ref{table:entailment-generation} for additional results.
+    \textbf{Right:} entailment attack performance against diversity. 
+    Only a few \texttt{MLE+PG} dots are visible because the model is not able to generate more diverse samples even with increasing $p$ value in top-$p$ decoding, i.e., the model collapses.
+    }
+    \label{fig:entailment-generation}
+    \label{fig:entailment-attack}
+    \vspace{-5pt}
+\end{figure*}
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-noisy-data}).}
+We sub-sampled $50k$ training examples from the SNLI dataset~\citep{bowman2015large}, a commonly used entailment classification dataset. The hypotheses have an average entailment probability of only $50\%$, and over $2/5$ of them less than $20\%$ (negative/contradictive examples) -- a significant challenge for the models to learn from the noises. 
+The rewards include (1) the entailment score of the generation measured by a robust entailment classifier~\citep{nie2020adversarial}, (2) the log-likelihood of the generation as an indicator of language quality measured by a GPT-2 language model~\citep{radford2019language}, and (3) BLEU score w.r.t the input premises as another language quality reward that avoids trivial outputs. We sum together all rewards with weights $1.0$.
+
+We compare our approach with a broad range of baselines, including 
+(1) the standard MLE training (\texttt{MLE}); 
+(2) \texttt{MLE+reward}, where we use the reward function to filter examples;
+(3) joint MLE and PG training with MLE initialization (\texttt{MLE+PG}), where we initialize the model with MLE training, then train it with combined MLE and PG losses;
+previous text-generation RL algorithms including (4) \texttt{MIXER}~\citep{ranzato2015sequence}, 
+(5) \texttt{Self-critic}~\citep{rennie2017self}, 
+and 
+(6) one of the latest methods \texttt{GOLD-$s$}~\citep{pang2021text} which is a pure off-policy method based on importance-sampling PG. 
+To ablate the effect of multi-step training (\S\ref{subsec:method:pcl}), we additionally compare with a simplified variant of our approach that uses only vanilla single-step PCL training (\texttt{SQL(single)}). We include more baselines such as MLE weighted by rewards in \S\ref{appendix-subsubsec:experiments-noisy-data}.
+
+
+
+
+We evaluate generation results in terms of entailment rate, language quality (perplexity), and diversity which is measured by the Shannon entropy over unigrams and bigrams ($H_1$, $H_2$) \citep{gehrmann2021gem}. Since text generation models intrinsically
+trade off diversity and quality \citep{caccia2019language,hashimoto2019unifying}, we vary the generation diversity by generating samples via top-$p$ sampling \citep{holtzman2019curious} with different $p$ values, and plot the entailment rate and perplexity against diversity, resp. We also evaluate the samples produced by beam-search decoding.
+
+\paragraph{Results.}
+Figure~\ref{fig:entailment-generation} (left) shows the results, and Table~\ref{table:entailment-generation-examples-sql} shows samples.
+First, notice that \texttt{MLE} performs poorly, while \texttt{MLE+reward} improves upon it. This is not surprising as the training data contain noisy/negative examples. Similarly, since the pure off-policy algorithm \texttt{GOLD-$s$} relies heavily on the data distribution, we observed that it achieves sub-optimal performance. The on-policy \texttt{MLE+PG} with MLE initialization gives better entailment rate.
+In comparison, our full \texttt{SQL} framework achieves the best entailment-diversity trade-off. 
+The comparison between \texttt{SQL} and \texttt{SQL(single)} highlights the importance of having the multi-step objective which directly uses the end reward rather than bootstrapping intermediate $Q$-values for supervision.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{\textit{Universal} Adversarial Attacks}
+\label{subsec:adversarial-attack}
+
+We next study the application
+in text adversarial attacks, where again no supervised data is available. 
+Adversarial attacks is an increasingly important research topic as they reveal models' vulnerabilities and flaws. This is especially true for universal attacks~\citep{wallace2019universal,atanasova2020generating}, where we want to generate universal examples that trick the model on \emph{all} possible inputs. 
+For instance, consider the context of entailment classification.
+Our goal is to find universal human-readable hypotheses that are going to be classified as ``entailment'' with as high probability as possible, regardless of the input premises. This is a more challenging setting compared to previous instance-specific attack \citep{morris2020textattack,jin2020bert,ebrahimi2017hotflip} where the attack model conditions on a premise and generates an adversarial hypothesis specific to the premise. 
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-adversarial-attack}).}
+We aim to attack one of the most popular MultiNLI~\citep{williams2018broad} entailment classifiers on HuggingFaceHub.\footnote{\url{https://github.com/pytorch/fairseq/tree/master/examples/roberta}
+} The attack generation model generates adversarial text without conditioning on any inputs so that the generated attacks are universal to all premises.  
+We compare our \texttt{SQL} with \texttt{MLE+PG}. We use all hypotheses in the MultiNLI dataset as the training data for the MLE training in \texttt{MLE+PG} and the off-policy updates for our \texttt{SQL}.
+We do not compare with previous specialized adversarial text attack methods, because they either are not applicable to the challenging universal attack setting \citep{morris2020textattack,jin2020bert,ebrahimi2017hotflip}, or were not designed to generate human-readable sentences \citep{wallace2019universal}. 
+We use similar settings as in \S\ref{subsec:noisy-data} to explore the diversity-quality trade-off 
+by plotting the entailment rate and perplexity against diversity, respectively. 
+The entailment classifier to be attacked is used as entailment score reward functions. We also include a token-level repetition penalty reward for readability.
+
+
+\paragraph{Results.}
+
+Figure~\ref{fig:entailment-attack} (right) shows the results, and Table~\ref{table:entailment-attack-examples} shows samples.
+We can see that \texttt{SQL} outperforms \texttt{MLE+PG} consistently across different diversity values. The outputs from \texttt{MLE+PG} are not diverse even with high $p$'s, indicating the model collapses and can only generate a small set of unique adversarial examples. 
+The model by \texttt{SQL} discovers the pattern ``saint-pierre-et-saint-paul'' (an entity name), and exploits this to generate samples with high universal entailment rate.
+
+
+\begin{figure}[t]
+    \centering
+    \begin{minipage}{.49\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{figures/20210527.prompt-generation.pdf}
+        \vspace{-7pt}
+        \caption{Average topic accuracy. Please see Table~\ref{table:prompt-generation-full} for more details.}
+        \label{fig:prompt-generation-topic}
+\end{minipage}%
+\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{PPLM} & \textbf{GeDi} & \textbf{MLE (5)} & \textbf{SQL (off, 5)} \\
+\midrule
+$13.07$ & $123.88$ & $25.70$ & $25.77$ \\
+\midrule
+\multicolumn{2}{l}{\textbf{MLE+PG (5/10/15)}} & \multicolumn{2}{l}{\textbf{SQL (5/10/15, ours)}} \\
+\midrule
+\multicolumn{2}{l}{$25.52$/$28.16$/$28.71$} & \multicolumn{2}{l}{$25.94$/$26.95$/$29.10$} \\
+\bottomrule
+\end{tabular}
+\vspace{-7pt}
+\captionof{table}{
+Average perplexity across topics. The lower, the more fluent the generated continuation sentences.
+}
+\vspace{-5pt}
+\label{table:prompt-generation}
+
+\vspace{9pt}
+
+\centering
+\small
+\begin{tabular}{p{0.79cm}p{0.6cm}p{0.6cm}p{0.6cm}}
+\toprule
+\textbf{Model} & PPLM & GeDi & SQL \\
+\midrule
+\textbf{Seconds} & $5.58$ & $1.05$ & $0.07$ \\
+\bottomrule
+\end{tabular}
+\vspace{-7pt}
+\caption{Average sentence generation time cost.}
+\vspace{-7pt}
+\label{table:prompt-generation-speed}
+\end{minipage}
+\vspace{-7pt}
+\end{figure}
+
+
+\subsection{Prompt Generation for Controlling Pretrained Language Models}
+\label{subsec:prompt-generation}
+
+
+
+
+
+A reward function does not just have to be a metric like the BLEU score, but also a complicated pipeline that eventually returns a score.
+To demonstrate this, we consider the emerging task of prompting a large pretrained LM for controllable generation \citep{Hu2017TowardCG,radford2019language,NEURIPS2020_1457c0d6}.
+The goal is to learn to generate text prompts that steer the LM to generate sentences of certain desired attributes (e.g., topics). 
+The problem of controlling the generation of pretrained LMs was previously approached through specialized algorithms such as modifying the LM hidden states during decoding~\citep{Dathathri2020Plug,krause2020gedi,qin2020backpropagation}. Here we show that prompts offer an easier, faster, more effective way for controlled generation.
+
+Learning to generate/tune prompts is gaining increasing attention recently.
+It side-steps the needs for expensive LM fine-tuning, and adapts LMs to new scenarios with prompt as the (compute-friendly) interface.
+Most existing approaches~\citep{wallace2019universal,li2021prefix,lester2021power} rely on gradient backpropagation and are applicable only when the whole training pipeline is differentiable.
+This does not hold for the text generation setting, as illustrated in Figure~\ref{fig:prompt-generation-flow}. In contrast, the RL framework is generally applicable to any differentiable or discrete pipelines.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.99\linewidth]{figures/prompt-generation-task-new.pdf}
+\vspace{-12pt}
+\caption{
+The scheme of prompt generation for controlling the outputs of pretraind LMs.
+}
+\vspace{-7pt}
+\label{fig:prompt-generation-flow}
+\end{figure}
+
+
+\paragraph{Setup (more in~\S\ref{appendix-subsubsec:setup-prompt-generation}).}
+Following \citep{dathathri2019plug}, we aim to control the generation to have one of 7 topics (e.g., ``science''); the generated prompt is prepended to one of 20 input sentences for the pretrained LM to generate continuation sentences. Figure~\ref{fig:prompt-generation-flow} shows the architecture of prompt-based controllable generation. We compare our \texttt{SQL} method with \texttt{MLE+PG} as before. Since the prompt length could impact the generated sentences, we conducted experiments with maximum prompt length $5$, $10$, and $15$. As ablation study, we also evaluate the SQL algorithm with only off-policy updates (i.e., without on-policy exploration), denoted as \texttt{SQL(off)}, and compare it with vanilla \texttt{MLE} training. Finally, we also compare with two specialized controllable generation techniques based on pretrained LMs, namely \texttt{PPLM}~\citep{dathathri2019plug} and \texttt{GeDi}~\citep{krause2020gedi}, following similar procedures using their open-sourced code. We use a distilled GPT-2 model\footnote{\url{https://huggingface.co/distilgpt2}} as the pretrained LM to be controlled. %
+For rewards, we use the topic accuracy of the continuation sentences measured by a \emph{zero-shot} classifier, plus the the log-likelihood of continuation sentences as the language quality reward measured by a distilled GPT-2.\footnote{Note that the language quality emphasis is on the generated sentences. Prompts themselves do not necessarily have to be human-readable~\cite{wallace2019universal,sheng2020towards}.}
+
+
+\paragraph{Results.}
+
+Figure~\ref{fig:prompt-generation-topic} shows the topic accuracy of the controlled LM outputs averaged across the 7 topics, and Table~\ref{table:prompt-generation} shows the respective language quality results. More detailed topic accuracy results and samples are provided in the appendix (\S\ref{appendix-subsubsec:experiments-prompt-generation}) (where \texttt{GeDi} obtained low accuracy on 2 of the 7 topics, possibly because the topic tokens are tokenized into two subwords for which the model released by the authors was not specifically trained). 
+We can see that the prompts generated by our \texttt{SQL} cause the LM to generate sentences with high topic accuracy while maintaining low perplexity in most settings.
+Increasing the prompt length positively impacts the topic accuracy, which makes sense because longer prompts give more flexible for steering the LM.
+The comparison between \texttt{MLE} and \texttt{SQL(off)}
+shows that the off-policy component of SQL is better than standard MLE training, as it incorporates reward signals instead of just blindly following the (noisy) data. 
+
+Next, comparing with the previous steered decoding such as \texttt{PPLM} and \texttt{GeDi},
+we can see the prompt-based control trained with RL achieves better trade-off between topic accuracy and language quality. Moreover, once a prompt is produced, we can use the pretrained LM to generate text of desired topics efficiently, with the same time cost as standard non-controlled decoding. In comparison, the dedicated steered decoding is often orders-of-magnitude slower, as shown in Table~\ref{table:prompt-generation-speed}.
+
+
+
+
+
+
+
+\section{Background and Challenges}
+\label{subsec:preliminaries}
+
+We aim to learn a generation model
+$p_{\theta} (\y) = \prod_{t=0}^T p_{\theta}(y_t | \y_{<t})$, where
+$y_t$ is a token from a vocabulary $\mathcal{V}$. The distribution at each step $t$ is obtained by applying softmax on the logits $f_\theta(y | \y_{<t})$:
+\begin{equation}
+\small
+\begin{split}
+    p_\theta(y_t | \y_{<t}) = \frac{\exp f_\theta(y_t | \y_{<t}) }{ \sum_{y'\in\mathcal{V}} \exp f_\theta(y' | \y_{<t} ) }.
+\end{split}
+\label{eq:softmax-logit}
+\end{equation}
+Despite its popularity, MLE-based training only applies when clean supervised data $\bm{y}^*$ is available, and cannot be used to optimize arbitrary task metrics (e.g., BLEU, entailment score) which are typically the goal in many text generation tasks. 
+\label{sec:background:rl}
+Previous research has formulated text generation as an RL problem by considering the following finite-time Markov Decision Process (MDP). 
+At each time step $t$, let the ``state'' be $\bm{s}_t = \bm{y}_{< t}$, namely the partial sequence generated so far. The model (``agent'') takes as input the current state $\bm{s}_t$ and outputs a token (``action'') $a_t \in \mathcal{V}$ according to a policy $\pi(a_t | \bm{s}_t)$. 
+The agent then receives a reward $r_t = r(\bm{s}_t, a_t)$ and deterministically transitions to next state $\bm{s}_{t+1}$ (i.e., the concatenation of the tokens in $\s_t$ and the new token $a_t$). 
+
+Following the notation convention in RL, let $\tau$ be the trajectory (i.e., text sample) generated by the policy. The agent's objective is to maximize the accumulative reward,
+$J(\pi) = \mathbb{E}_{\tau \sim \pi}\left[ \sum^T_{t=0} \gamma^t r_t \right]$,
+where $\gamma$ is the discount factor.
+A central concept in RL is the $Q$-function of policy $\pi$, $Q^\pi(\s_t, a_t)=\E_{\pi}\left[ \sum_{t'=t}^T \gamma^{t'} r_{t'} \mid \s_t, a_t \right]$, the expected future reward of taking action $a_t$ (i.e., generating token $a_t$) in state $\s_t$ and continuing with the policy $\pi$. 
+
+\noindent\textbf{Challenges. } Text generation poses significant challenges to RL, particularly because (1) the reward signal is usually sparse, i.e., $r_t = 0,\ \forall t<T$ and the agent receives a non-zero reward $r_{T}$ only after it generates the full sequence, (2) the action space (i.e., the vocabulary $\mathcal{V}$) is extremely large.
+The challenges have led to difficulties of the two major families of RL approaches applied to text generation problems, as detailed below.
+
+\noindent\textbf{Policy-based RL}
+techniques directly parameterize the policy $\pi_{\theta}$ with parameters $\btheta$. Thus the policy $\pi_{\theta}(a_t | \s_t)$ exactly corresponds to the above generation model $p_{\theta}(y_t | \y_{<t})$. 
+\emph{Policy gradient (PG)} is one of the most widely used algorithms for text generation \citep{ranzato2015sequence}.
+It optimizes the cumulative reward with the policy gradient using the estimated $Q^{\pi_\theta}$ value based on sample $\tau$. PG is an \textit{on-policy} algorithm, meaning that the sample $\tau$ needs to come from the the current policy $\pi_\theta$ itself.
+In practice, however, optimizing this objective alone from scratch is unlikely going to work because most samples $\tau\sim\pi_\theta$ are just gibberish with zero reward, failing to provide meaningful training signals for updating the policy. 
+Previous literature either initializes the policy $\pi_{{\theta}}$ with MLE training, and/or use a combination of MLE and PG updates, which often leads to marginal gains in practice~\citep{wu2018study,Choshen2020On}. 
+
+
+
+\noindent\textbf{Value-based RL}
+techniques, such as \emph{$Q$-learning}, implicitly learn the policy $\pi$ by approximating the value $Q^{\pi}(\bm{s}, a)$ directly.
+Deep $Q$-learning~\citep{mnih2013playing} parameterizes the $Q$-function as $Q_\theta(\x,a)$, and train the parameters by minimizing the following regression objective $\loss(\btheta)$ based on the Bellman temporal consistency:
+\begin{equation}
+\small
+    {\E}_{\pi'}\left[ \frac{1}{2} \left( r_t {+} \gamma \max_{a_{t+1}} Q_{\bar{\theta}}(\s_{t+1}, a_{t+1}) {-} Q_{\theta}(\s_t, a_t) \right)^2 \right]%
+\label{eq:q-regression}
+\end{equation}
+where $\bar{\btheta}$ is the parameters of the \emph{target} $Q$-network, which is a slow copy of $\btheta$ and considered as constant for gradient computation of $\btheta$. 
+Here $\pi'$ is an \emph{behavior policy} which can be an arbitrary distribution over text, such as the data distribution or replay buffer \citep{mnih2013playing}. 
+This makes $Q$-learning an \textit{off-policy} algorithm because of its ability to use samples coming from other policies. After learning $Q_\theta$, one can induce a policy $\pi$ from it that takes $\arg\max_{a} Q_\theta(\s, a)$ at each state $\s$.
+\citet{jaques2017sequence} instead sample tokens from the softmax function applied to $Q_\theta$.
+
+However, the training can be unstable and inefficient due to several challenges: 
+{\bf (1)} The bootstrapping nature of the above regression problem can make the training unstable. That is, the regression target $r_t + \gamma \max_{a_{t+1}} Q_{\bar{\theta}}(\s_{t+1}, a_{t+1})$ itself is derived from the $Q$-function to be learned \citep{kumar2019stabilizing}. The problem is exacerbated in the presence of sparse reward in text generation, where the real observed signal $r_t$ is zero for all intermediate $t<T$; 
+{\bf (2)} The large action space (e.g., $10^4$) in text generation results in slow updates. In particular, notice that Eq.\eqref{eq:q-regression} applies the gradient update to the $Q_{{\theta}}$-value of the \emph{only one} particular token $a_t$ (out of, say, the $10^4$ candidate tokens in the vocabulary), making the training inefficient;
+{\bf (3)} Besides, pure off-policy updates could be highly sensitive to the quality of training data, and miss the opportunity of on-policy exploration that maximizes the reward of interest in a more direct way.
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/soft-q-learning.pdf}
+    \vspace{-4pt}
+    \caption{
+    Soft $Q$-Learning with path consistency learning (PCL) objectives.
+    {\bf Left:} Single-step objective (Eq.\ref{eq:pcl-loss}), where for each $(\s_t, a_t)$, the computation involves step $t$ and $t+1$. Dashed boxes in \textcolor[HTML]{3A6B73}{\textbf{dark green}} and \textcolor[HTML]{808285}{\textbf{gray}} indicate the regression target, where the intermediate reward $r_t$ is often 0 due to sparsity. The gradient is applied to parameters $\btheta$ at step $t$ (indicated by {\textcolor{orange}{\textbf{orange}}} color). {\bf Right:} Multi-step objective (Eq.\ref{eq:multi-loss}) which aggregates from step $t$ all the way to $T$. In this way, the final-step non-zero reward $r_T$ is used as the regression target.
+    }
+    \vspace{-4pt}
+    \label{fig:soft-q-learning-pcl}
+\end{figure*}
+
+
+
+\section{The Soft $Q$-Learning Framework}
+
+
+We introduce the soft $Q$-learning (SQL) formulation of text generation. It is seamlessly compatible with the common architecture of text generation model (Eq.\ref{eq:softmax-logit}), permits easy implementation (\S\ref{sec:sql-formulation}),
+and enables efficient and stable RL training in practice (\S\ref{subsec:method:pcl}).
+Figure~\ref{fig:soft-q-learning-pcl} and Algorithm~\ref{alg:sql} summarizes the resulting SQL framework.
+
+
+
+
+\subsection{SQL Formulation for Text Generation}\label{sec:sql-formulation}
+
+Soft $Q$-learning \citep{haarnoja2017reinforcement,schulman2017equivalence,nachum2017bridging} is an maximum-entropy (MaxEnt) extension to the standard (hard) $Q$-learning~\citep{mnih2015human,sutton2018reinforcement}. Under this framework, the agent is encouraged to optimize the reward while staying as stochastic as possible, with the objective
+$J_{\text{MaxEnt}}(\pi)=\mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^T \gamma^t r_t + \alpha \mathcal{H}\left(\pi\left(\cdot \mid \bm{s}_{t}\right)\right)\right]$,
+which augments the vanilla $J(\pi)$
+with the additional Shannon entropy term $\mathcal{H}$ with coefficient $\alpha$.\footnote{WLOG, we can assume $\alpha{=}1$, as it can be folded into the reward function by scaling the latter with $1/\alpha$.}
+This is appealing because it seamlessly connects the $Q$-values to the familiar output \textit{logits} of a text generation model, which enables straightforward implementation of the SQL formulation.
+
+\noindent\textbf{$Q$-values as Generation Model Logits.}
+We show the connection of the $Q$-values with the logits, i.e., outputs right before the $\operatorname{softmax}$ layer.
+Concretely, with the SQL objective,
+the following relationship between optimal policy $\pi^*$ and action-value $Q^*$ holds~\citep{haarnoja2017reinforcement,schulman2017equivalence}:
+\begin{equation}
+\small
+    \pi^{*}(a | \bm{s})=\frac{\exp Q^{*}(\bm{s}, a)}{\sum_{a^{\prime}} \exp Q^{*}\left(\bm{s}, a^{\prime}\right)}.
+    \label{eq:optimal-pi-and-q}
+\end{equation}
+This form is highly reminiscent of the $\operatorname{softmax}$ layer of the generation model in Eq.\eqref{eq:softmax-logit}. The connection suggests that we can naturally parameterize the $Q$-function in SQL as the generation model logit function, i.e., $Q_\theta(\s, a) \equiv f_\theta(a|\s)$. In other words, \emph{the model output $f_\theta(a|\s)$, originally interpretted as the ``logit'' of token $a$ given the preceding tokens $\s$, is now re-interpretted as the $Q$-value of action $a$ in state $\s$.} When achieving optimality, $f_{\theta^*}(a|\s)$, namely $Q^{*}(\bm{s}, a)$, represents the best possible future reward achievable by generating token $a$ in state $\bm{s}$. Similarly, the full generation model $p_\theta(a|\s)$ in Eq.\eqref{eq:softmax-logit} that applies $\operatorname{softmax}$ to $f_\theta$ now precisely corresponds to the policy $\pi_\theta$ induced from $Q_\theta(\s, a)$. That is,
+\begin{equation}
+\small
+\begin{aligned}
+    \pi_\theta(a | \bm{s})
+    &= \frac{\exp Q_\theta(\bm{s}, a)}{\sum_{a^{\prime}} \exp Q_\theta\left(\bm{s}, a^{\prime}\right)} \\
+    &\equiv \frac{\exp f_\theta(a | \bm{s})}{\sum_{a^{\prime}} \exp f_\theta\left(a^{\prime} | \bm{s} \right)} 
+    = p_\theta(a | \s).
+    \label{eq:pi-and-q-theta}
+\end{aligned}
+\end{equation}
+We could further gain even more intuitive interpretation of the above generation policy $\pi^*$ from the lens of \emph{advantage} function  \citep{sutton2018reinforcement}. Specifically, in SQL, the optimal \emph{state-value} function is the log-normalizer of the optimal $Q$-values \citep{haarnoja2017reinforcement,schulman2017equivalence}.
+This allows a more concise form of Eq.\eqref{eq:optimal-pi-and-q}:
+\begin{equation}
+\small
+\begin{aligned}
+    V^{*}\left(\bm{s}\right) &= \log \sum\nolimits_{a'} \exp Q^{*}\left(\bm{s}, a'\right) \\ %
+    \pi^{*}(a | \bm{s}) &= \exp \big(Q^*(\bm{s}, a) - V^*(\bm{s})\big) = \exp A^*(\bm{s}, a),
+    \label{eq:sql-state-value}
+\end{aligned}
+\end{equation}
+where $A^*$ is the optimal advantage function. The equation says that, in the proposed text generation SQL formulation, the optimal policy generates token $a$ in state $\s$ according to the token's advantage.
+
+
+
+
+
+
+
+\subsection{Efficient Training with Path Consistency}
+\label{subsec:method:pcl}
+
+Vanilla training based on the Bellman temporal consistency can suffer from the instability and inefficiency issues similar to the conventional $Q$-learning (\S\ref{sec:background:rl}), as we discuss more in the appendix (\S\ref{appendix-subsubsec:vanilla-training-with-temporal-consistency}). Fortunately, our SQL formulation allows us to import latest advances of RL techniques to overcome the difficulties.
+Specifically, we adapt the \emph{unified path consistency learning (PCL)} that has excelled in game control~\citep{nachum2017bridging}.
+The PCL-based training updates $Q$-values of \emph{all} tokens at once through a connection between the value function and the induced policy.
+More specifically,~\citet{nachum2017bridging} showed that the optimal policy $\pi^*$ (Eq.\ref{eq:optimal-pi-and-q}) and the optimal state value function $V^*$ (Eq.\ref{eq:sql-state-value}) in SQL must satisfy the following consistency property for 
+all states and actions:
+\begin{equation}
+\small
+    V^*\left(\bm{s}_{t}\right)-\gamma V^*\left(\bm{s}_{t+1}\right) = r_t - \log \pi^*\left(a_{t} | \bm{s}_{t}\right), \forall \bm{s}_t,\  a_t.
+    \label{eq:pcl}
+\end{equation}
+Accordingly, the PCL-based training attempts to encourage the satisfaction of the consistency with the following regression objective $\loss_{\text{SQL, PCL}} (\bm{\theta})$:
+\begin{equation}
+\small
+\begin{aligned}
+    {\mathbb{E}}_{\pi'}\left[\frac{1}{2}\bigg({-}V_{\bar{{\theta}}}\left(\bm{s}_{t}\right){+}\gamma V_{\bar{{\theta}}}\left(\bm{s}_{t+1}\right) {+} 
+    r_t {-} \log \pi_{{\theta}}\left(a_{t} | \bm{s}_{t}\right)\bigg)^{2}\right],
+    \label{eq:pcl-loss}
+\end{aligned}
+\end{equation}
+where $\pi_\theta$ is the induced policy defined in Eq.\eqref{eq:pi-and-q-theta}; $V_{\bar{{\theta}}}$ is defined similarly as in Eq.\eqref{eq:sql-state-value} but depends on the target $Q_{\bar{\theta}}$ network (i.e., a slow copy of the $Q_\theta$ to be learned), and recall that $\pi'$ is an arbitrary behavior policy (e.g., data distribution). 
+Please see Figure~\ref{fig:soft-q-learning-pcl} (left) for an illustration. 
+Crucially, notice that the gradient update is applied to $\btheta$ through the $\log \pi_\theta$ term which explicitly involves the $Q_\theta$-values of \emph{all} tokens $a$ in the vocabulary. This shows an important difference from the above vanilla training in conventional $Q$-learning (\S\ref{sec:background:rl}) where $Q_\theta$ is updated only through the particular $a_t$ token. The PCL training thus offers more efficient updates for the $Q_\theta$ function.
+In the appendix (\S\ref{comparison-with-mle-objective}), we also discuss the difference from the MLE objective. Intuitively, MLE trains the model to (blindly) increase the probability of the observed tokens, while PCL encourages the (log) probability of the tokens to match the approximate advantage values.
+
+
+
+\paragraph{Multi-step PCL for Sparse Reward.} 
+The above PCL objective Eq.\eqref{eq:pcl-loss} alone does not resolve the potential instability issue due to the bootstrapped $V_{\bar{{\theta}}}(\s_{t+1})$ value and the sparse reward (i.e., $r(\s_t, a_t)=0$ for $t<T$). 
+Our SQL formulation allows us to additionally incorporate the \emph{multi-step} variant of the PCL training \citep{nachum2017bridging} to resolve the issue. Specifically, by applying a telescoping sum on the consistency equation (Eq.\ref{eq:pcl}) starting from $t$ up to $T$, we arrive at the multi-step temporal consistency:
+\begin{equation}
+\small
+\begin{aligned}
+    &V^{*}\left(\bm{s}_{t}\right){-}\gamma^{T-t} V^{*}\left(\bm{s}_{T+1}\right)
+    {=} \sum_{l=t}^{T} \gamma^{l-t}\big(r_{l}{-}\log \pi^{*}\left(a_{l} | \bm{s}_{l}\right)\big),
+\end{aligned}
+\end{equation}
+where the value of past-terminal state is zero, $V^*\left(\bm{s}_{T+1}\right) = 0$; and the rewards are only available at the end, $\sum_{l=t}^{T} \gamma^{l-t} r_{l} = \gamma^{T-t} r_{T}$. We can then come to the following multi-step objective function $\loss_{\textrm{SQL, PCL-ms}}(\btheta)$, 
+\begin{equation}
+\small
+    \mathbb{E}_{\pi'} \left[\frac{1}{2}\left({-}V_{\bar{{\theta}}}\left(\bm{s}_{t}\right){+}\gamma^{T-t} r_{T}{-}\sum_{l=t}^{T} \gamma^{l-t} \log \pi_{{\theta}}\left(a_{l} | \bm{s}_{l}\right)\right)^{2}\right].
+    \label{eq:multi-loss}
+\end{equation}
+We can see the objective side-steps the need to bootstrap intermediate value functions $V_{\bar{{\theta}}}(\bm{s}_{t'})$ for $t' > t$. Instead, it directly uses the non-zero end reward $r_T$ to derive the update for $\btheta$. Please see Figure~\ref{fig:soft-q-learning-pcl} (right) for an illustration. 
+In practice, we combine the single- and multi-step objectives (Eqs.\ref{eq:pcl-loss} and \ref{eq:multi-loss}) together for training.
+
+\paragraph{Joint On- and Off-policy Training.} 
+Finally, we highlight that the behavior policy $\pi'$ involved in the objectives Eqs.\eqref{eq:pcl-loss} and \eqref{eq:multi-loss} can be an arbitrary policy.
+For example, $\pi'$ can be a (possibly noisy) text dataset, or a set of text samples produced by other generation models, resulting in off-policy training. We can also set $\pi'$ to be the current generation model $\pi_\theta$ to be learned, resulting in on-policy training. In practice, we could first train the model with only off-policy data for warming up, and then continue with joint on- and off-policy training to further maximize the reward.
+
+\input{tables/algorithm}
+\section{Introduction}
+
+
+Recent natural language generation systems have made remarkable progress in producing well-formed text, especially with massive pretrained language models.
+Those models are typically trained using maximum likelihood estimation (MLE) with a large amount of data supervisions. 
+Despite its successes, the standard training method suffers from limited applicability to many emerging text generation problems, where little or no supervised data is available. Prominent examples of such low-data problems include generating prompts to control the massive LMs~\citep{yin2019benchmarking,shin2020autoprompt,zhong2021meta,liu2021pre}, learning text generation from noisy or even negative data, generating adversarial text attacks for robustness study~\citep{wallace2019universal,atanasova2020generating}, and others (Figure~\ref{fig:first-figure}, right). Due to the failure of standard MLE, people have had to devise specialized algorithms for those problems respectively.
+
+Reinforcement learning (RL)~\citep{sutton2018reinforcement} offers an alternative principled framework for learning from arbitrary reward functions.
+However, RL by far has made limited success for training text generation, primarily due to the key challenges of \emph{sparse reward} (i.e., a single reward signal is received only after the whole text sequence is generated) and \emph{large action space} (i.e., a vocabulary of millions of words).
+For instance, a popular family of RL algorithms studied extensively for text generation is the policy-based~\citep{williams1992simple} or actor-critic based~\citep{bahdanau2016actor,rennie2017self} algorithms, with policy gradient (PG) being the most prevalent example \citep{ranzato2015sequence,li2016deep,rennie2017self,tan2018connecting,pasunuru2018multi,paulus2018a}. Those algorithms train the model with \emph{on-policy} updates, i.e., the text samples used for estimating policy gradients are from the target model itself. Due to the exponentially large space of sequences, on-policy updates often suffer from extremely high variance and low data efficiency (e.g., most model samples are not useful for learning). Thus directly training with PG from scratch is usually impossible. In practice, the model has to be initialized by MLE training, followed by PG as finetuning, which often leads to limited improvement~\citep{Choshen2020On,wu2018study}.
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/20211003-figure1.pdf}
+    \vspace{-4pt}
+    \caption{
+    \textbf{Left:} An overview of the proposed SQL algorithm. Text generation is challenging due to sparse reward (i.e., the rewards of all intermediate steps are $0$) and large action space (i.e., large vocabulary).
+    Our SQL formulation enables several key algorithmic features as highlighted with \textcolor[HTML]{D0A28F}{\textbf{yellow}} color, including (1) the combined on- and off-policy updates for the best of both, (2) bridging the final non-zero reward to directly supervise the $Q$-value estimation at intermediate steps for learning stability, and (3) simultaneously updating the $Q$-values of all candidate actions for efficiency. 
+    \textbf{Right:} We explore diverse applications of the text-generation RL algorithm.
+    }
+    \label{fig:first-figure}
+    \vspace{-7pt}
+\end{figure*}
+
+
+Another set of work has resorted to \emph{off-policy} RL. The key advantage is that samples from other sources, e.g., human-written text, can be used, making them more data efficient than on-policy methods. Previous work has used either importance weighted PG~\citep{pang2021text,zhou2017end,kandasamy2016batch} or $Q$-learning based algorithms~\citep{guo2015generating,jaques2020human,narasimhan2015language}. However, off-policy methods have been considered to be less stable. For example, the $Q$-learning performance relies heavily on how accurate the learned $Q$-function assesses the quality of intermediate subsequences -- a challenging task due to the sparse reward signals.
+
+In this paper, we develop a new RL formulation for text generation that tackles the above issues (Figure~\ref{fig:first-figure}, left). We reframe the text generation problem from the \emph{soft $Q$-learning} perspective originally developed in robotics \citep{haarnoja2017reinforcement,schulman2017equivalence}. The resulting connection allows us to seamlessly take advantage of the latest successful techniques from the RL literature. 
+In particular, we introduce and adapt the principled \emph{path consistency learning} \citep{nachum2017bridging} to text generation, that (1) offers a natural way to train the model with both on- and off-policy updates, hence combining the best of the two strategies, (2) bridges the sparse reward signal to directly supervise the $Q$ function learning, leading to more accurate $Q$ estimation and credit assignment, and (3) makes efficient updates to $Q$-values by considering all candidate actions together. 
+
+The generality and efficiency of the proposed method allows us to train text generation in a wide range of applications: (1) With \emph{noisy and negative training examples}, our approach learns to generate accurate entailment text that greatly improves upon the data itself as well as other various training methods; (2) Our approach also manages to train an effective \emph{adversarial text generator} for robustness test for classifiers; (3) We train a \emph{prompt generator} with our algorithm to achieve {controllable generation} of pretrained LMs in terms of topics.\footnote{More recently,~\citet{deng2022rlprompt} extend this line of work to optimize discrete text prompts with reinforcement learning.} On all the three tasks, our approach consistently improves over not only previous RL algorithms for text generation, but also diverse task-specialized methods designed specifically for each of the problems, respectively.
+In the appendix (\S\ref{appendix-subsec:standard-tasks}), we also show that on standard supervised tasks where MLE prevails, our approach is competitive to train text generation models \emph{from scratch}, which was usually impossible for previous RL algorithms.
+
+
+
+
+
+
+
+The contributions can be summarized as follows. On the technical side, we propose a new RL formulation for text generation based on soft $Q$-Learning. This new formulation allows us to seamlessly take advantage of the RL literature's latest successful techniques (notably the path consistency algorithm) to overcome the longstanding challenges (e.g., sparse reward and large action space) in text generation.
+On the empirical side, we conduct studies on a wide variety of text generation tasks with limited data (i.e., generating from noisy/negative data, adversarial text generation, prompt generation). We propose their RL formulations, and show that our general approach consistently improves over not only previous text RL algorithms, but also diverse task-specialized methods.
+
+
+\section{Appendix}
+
+
+
+
+\subsection{Applications and Experiments}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.86\linewidth]{figures/202101004-entailment-generation.all.pdf}
+    \vspace{-4pt}
+    \caption{Entailment generation performance plotted against diversity (average of $H_1$ and $H_2$).}
+    \label{appendix-fig:entailment-generation}
+    \vspace{-5pt}
+\end{figure*}
+
+\subsubsection{Learning from Noisy (Negative) Text}
+\label{appendix-subsubsec:experiments-noisy-data}
+Please see Table~\ref{table:entailment-generation} for beam search results, Figure~\ref{appendix-fig:entailment-generation} for additional results for \texttt{MLE+reward}, and Table~\ref{table:entailment-generation-examples-sql} for examples.
+
+
+\subsubsection{\textit{Universal} Adversarial Attacks}
+Please see Table~\ref{table:entailment-attack-examples} for examples.
+
+\subsubsection{Prompt Generation for Controlling Pretrained Language Models}
+\label{appendix-subsubsec:experiments-prompt-generation}
+Please see Table~\ref{table:prompt-generation-full} for detailed results breakdown, and Table~\ref{table:prompt-examples-sql}-\ref{table:prompt-examples-pplm} for examples. Examples are in the format: \textcolor{red}{topic}: \textcolor{blue}{[prompt]} \textcolor{brown}{input sentence} generated text.
+
+\input{tables/experiments-standard-tasks}
+
+
+
+
+\subsection{Setup Details}
+\label{appendix-subsec:setup-details}
+
+Our evaluation follows the GEM Benchmark~\citep{gehrmann2021gem} when applicable,\footnote{\url{https://github.com/GEM-benchmark/GEM-metrics}} and otherwise same with the reward function used in training. 
+We use a transformer model~\citep{vaswani2017attention} based on Texar-Pytorch~\citep{hu2019texar} by default, with $64$ hidden dimension, $3$ blocks, and $4$ heads. 
+For experiments that involve policy gradient training, we initialize the model with maximum likelihood training by default unless specified otherwise. We train soft $Q$-learning model from scratch with both off-policy (using data) and on-policy (using samples) by default except in \S\ref{subsec:noisy-data} and \S\ref{subsec:prompt-generation}, in which we find it beneficial to warm-up the model with just off-policy training. We apply similar tuning budgets to both soft $Q$-learning model, and policy-gradient (mostly the reward scale and top-$k$), based on performance on the validation dataset and sample qualities. Most of the experiments are conducted using Nvidia 1080 or 2080 series GPUs with around $12$GB memory. Most of the datasets are based in English.
+
+
+
+
+
+
+
+
+
+
+
+\paragraph{Reward Functions}
+We use the robust entailment classifier~\citep{nie2020adversarial} in \S\ref{subsec:noisy-data},\footnote{\url{https://huggingface.co/ynie/roberta-large-snli_mnli_fever_anli_R1_R2_R3-nli}. $355$M parameters.} one of the most used entailment classifiers on HuggingFaceHub in \S\ref{subsec:adversarial-attack},\footnote{\url{https://github.com/pytorch/fairseq/tree/master/examples/roberta}. This classifier is \textbf{ranked \#1} (as of May 20, 2021) based on \url{https://huggingface.co/models?search=nli}. $355$M parameters.} and a zero-shot classifier based on BART~\citep{lewis2020bart} to compute the topic score in \S\ref{subsec:prompt-generation}.\footnote{\url{https://huggingface.co/facebook/bart-large-mnli}. $407$M parameters.} To compute perplexities, we use a GPT-2 model ($124$M parameters)~\citep{radford2019language} fine-tuned on the corresponding datasets for computing perplexity in \S\ref{subsec:noisy-data} and~\ref{subsec:adversarial-attack}, and a distilled GPT-2 model in \S\ref{subsec:prompt-generation} without fine-tuning.\footnote{\url{https://huggingface.co/distilgpt2}. $82$M parameters.} We simply set reward weights to $1.0$, except in \S\ref{subsec:adversarial-attack}, where we changed the entailment weight to $0.5$, log-likelihood and repetition penalty weight to $5.0$. 
+
+
+
+
+\input{tables/noisy-data-appendix}
+
+\input{tables/entailment-attack-samples}
+\input{tables/attack-appendix}
+
+For top-$p$ sampling results, we sample a hypothesis for each premise and measure the average attack rate across the dataset. This is because sampling multiple hypotheses, each for all premises, and measure performance are expensive. Since the hypotheses are sampled input-independently, this should be a good approximation.
+
+\input{tables/prompt-generation-appendix}
+We use the paraphrase generation model based on~\citet{zhang2019pegasus}.\footnote{\url{https://huggingface.co/tuner007/pegasus_paraphrase}} During decoding, we include \texttt{no\_repeat\_ngram\_size}$=2$, which improves readability.\footnote{\url{https://huggingface.co/blog/how-to-generate}}
+
+
+
+
+\subsection{The Soft $Q$-Learning Framework}
+\input{tables/methods-appendix}
+
+\input{tables/entailment-generation}
+\input{tables/prompt-generation}
+\input{tables/entailment-generation-samples}
+\input{tables/prompt-samples}

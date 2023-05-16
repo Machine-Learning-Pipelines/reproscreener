@@ -1,0 +1,13 @@
+\subsubsection{Setup Details: \S\ref{subsec:adversarial-attack}}
+\label{appendix-subsubsec:setup-adversarial-attack}
+We study the task of attacking an entailment classifier. 
+In particular, we aim to attack one of the most popular entailment classifiers on HuggingFaceHub.\footnote{\url{https://github.com/pytorch/fairseq/tree/master/examples/roberta}, which is ranked \#1 as of May 20, 2021 based on \url{https://huggingface.co/models?search=nli}.} 
+The attack generation model generates adversarial text without conditioning on any inputs so that the generated attacks are universal to all premises.  
+The generation model is trained with mostly the same setting as in \S\ref{subsec:noisy-data}, where the entailment classifier to be attacked is used as entailment score reward functions. Besides, we additionally include a token-level repetition penalty reward, which empirically benefits readability.
+Finally, we use the MultiNLI dataset~\citep{williams2018broad} which includes more diverse examples than the SNLI used above. 
+
+We compare our \texttt{SQL} with \texttt{MLE+PG}. We use all hypotheses in the MultiNLI dataset as the training data for the MLE training in \texttt{MLE+PG} and the off-policy updates for our \texttt{SQL}.
+We do not compare with previous specialized adversarial text attack methods, because they either are not applicable to the universal attack setting \citep{morris2020textattack,jin2020bert,ebrahimi2017hotflip}, or were not designed to generate human-readable sentences \citep{wallace2019universal}. Besides, it is worth noting that the general RL algorithms have an additional advantage of doing \textit{black-box} attacks. That is, the algorithms only require the ability to query the entailment classifier for entailment probability, without need of knowing the internal structure of the classifier (e.g., for computing gradients) as in previous attack algorithms \citep{ebrahimi2017hotflip,wallace2019universal}.
+
+
+

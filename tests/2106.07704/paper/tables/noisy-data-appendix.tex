@@ -1,0 +1,8 @@
+\subsubsection{Setup Details: \S\ref{subsec:noisy-data}}
+\label{appendix-subsubsec:setup-noisy-data}
+We study using the SNLI dataset~\citep{bowman2015large}, a dataset commonly used in training an entailment classifier. 
+The original dataset contains \emph{(premise, hypothesis)} sentence pairs, where the hypothesis may or may not entail the premise. 
+We sub-sampled $50,000$ training examples from the corpus such that the hypotheses have an average entailment probability of only $50\%$ in terms of the premises, and over $2/5$ examples have entailment probabilities less than $20\%$, which can be seen as negative (contradictive) examples. The resulting training set poses a significant challenge for the models to learn from the noises.
+
+
+The RL algorithms (including PG and ours) permit us to plug in arbitrary reward functions to drive learning. Based on the goal of the task, we use the following intuitive rewards to ensure entailment accuracy and language quality: (1) a robust entailment classifier~\citep{nie2020adversarial} that measures the entailment score of a generation in terms of the input premise, (2) a GPT-2 language model~\citep{radford2019language} that measures the log-likelihood of the generation as an indicator of language quality, and (3) BLEU score w.r.t the input premises as another language quality reward that avoids trivial outputs. We sum together all rewards with weights $1.0$.

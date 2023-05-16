@@ -1,8 +1,8 @@
 import re
 from pathlib import Path
 
-import pandas as pd
 import git
+import pandas as pd
 from rich.table import Table
 
 from reproscreener.utils import console
@@ -109,9 +109,7 @@ def evaluate_repo(path_corpus):
 
     data = []
 
-    for category, found_items, not_found_items in zip(
-        categories, found_lists, not_found_lists
-    ):
+    for category, found_items, not_found_items in zip(categories, found_lists, not_found_lists):
         for item in found_items:
             item_path = Path(item)
             item_base_name = item_path.stem
@@ -136,7 +134,7 @@ def evaluate_repo(path_corpus):
 
 def display_dataframe(df_table, title=""):
     for category, group in df_table.groupby("Category"):
-        table = Table(title=f"{title} - {category}")
+        table = Table(title=f"{category}")
         table.add_column("Item")
         table.add_column("Found")
         table.add_column("Extensions")
@@ -151,10 +149,7 @@ def display_dataframe(df_table, title=""):
                 ext_color_str = ""
             else:
                 ext_color_str = ", ".join(
-                    f"[green]{ext}[/green]"
-                    if ext == found_extension
-                    else f"[red]{ext}[/red]"
-                    for ext in extensions
+                    f"[green]{ext}[/green]" if ext == found_extension else f"[red]{ext}[/red]" for ext in extensions
                 )
 
             found_str = "[green]Found[/green]" if found else "[red]Not Found[/red]"
@@ -168,9 +163,7 @@ def clone_repo(repo_url: str, path_corpus: Path, overwrite=False):
     path_exists = path_corpus.is_dir()
 
     if path_exists and not overwrite:
-        console.print(
-            f"Repo directory already exists: {path_corpus}, use the overwrite flag to download"
-        )
+        console.print(f"Repo directory already exists: {path_corpus}, use the overwrite flag to download\n")
         return path_corpus
 
     path_corpus.mkdir(parents=True, exist_ok=True)
@@ -180,8 +173,8 @@ def clone_repo(repo_url: str, path_corpus: Path, overwrite=False):
     try:
         with console.status("Cloning repo...", spinner="dots"):
             git.Repo.clone_from(repo_url, cloned_path)
-            console.print(f"Successfully cloned repo: {repo_url}")
+            console.print(f"Successfully cloned repo: {repo_url}\n")
             return cloned_path
     except git.exc.CommandError as error:
-        console.print(f"Failed to clone repo: {repo_url}. Error: {error}")
+        console.print(f"Failed to clone repo: {repo_url}. Error: {error}\n")
         return False
