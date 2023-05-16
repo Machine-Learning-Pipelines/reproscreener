@@ -2,8 +2,6 @@ import tarfile
 from pathlib import Path
 from unittest.mock import Mock
 
-import requests
-
 from reproscreener.download_arxiv import download_extract_source
 
 
