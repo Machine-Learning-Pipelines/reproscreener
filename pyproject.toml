@@ -1,10 +1,13 @@
 [tool.poetry]
 name = "reproscreener"
-version = "0.1.1"
-description = "Automated machine learning model verification"
+version = "0.1.2"
+description = "Automated verification of machine learning research"
 authors = ["Adhithya Bhaskar <adhi@adhi.dev>"]
 license = "MIT"
 packages = [{include = "reproscreener", from = "src"}]
+readme = "README.md"
+homepage = "https://reproscreener.com/"
+keywords = ["reproducibility", "machine-learning", "transparency", "verification"]
 
 [tool.poetry.scripts]
 reproscreener = "reproscreener.main:app"
@@ -39,6 +42,7 @@ pytest-cov = "^4.0.0"
 pylint = "^2.17.4"
 vulture = "^2.7"
 pytest-mock = "^3.10.0"
+mkdocs-macros-plugin = {extras = ["test"], version = "^0.7.0"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

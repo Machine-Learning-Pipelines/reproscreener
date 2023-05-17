@@ -1,17 +1,20 @@
 site_name: reproscreener
 repo_url: https://github.com/Machine-Learning-Pipelines/reproscreener/
 
+extra:
+  versions:
+    python: 3.9.13
+    reproscreener: 0.1.2
+
 nav:
   - Home: index.md
   - Installation: installation.md
   - Usage: usage.md
-  # - Case studies: generated/gallery
-  - Case studies: manual_eval_compare.ipynb
-  - Todo: todo.md
+  # - Case studies: manual_eval_compare.ipynb
+  # - Todo: todo.md
   - Docstrings: docstrings.md
   - References: z_references.md
   - License: license.md
-  # - Guidances: guidance_parse.ipynb
 
 theme:
   name: material
@@ -26,24 +29,36 @@ theme:
     - toc.integrate
     - navigation.top
     - navigation.tracking
+    - content.code.copy
 
 plugins:
-  - mkdocs-jupyter:
-      kernel_name: reproscreener
-      theme: dark
+  # - mkdocs-jupyter:
+  #     kernel_name: reproscreener
+  #     theme: dark
+  #     execute: false
   - mkdocstrings:
+      handlers:
+      python:
+        paths: [src]
   - bibtex:
       bib_file: "docs/references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
       # cite_inline: True
   - search
+  - macros
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.details
   - footnotes
   - admonition
-  - pymdownx.details
+
+

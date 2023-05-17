@@ -1,21 +1,32 @@
 # Installation
 
-1. To use reproscreener [@bhaskaradhithyaReproScreenEnablingRobustness2022], first create a virtual environment and activate it:
+To install `reproscreener`, we recommend using a virtual environment such as [pyenv](https://github.com/pyenv/pyenv) or [conda](https://docs.conda.io/en/latest/), or installing it using [pipx](https://pypa.github.io/pipx/). We recommend using python version {{ versions.python }}.
 
-   1. Install the python package manager [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer).
+All you need is to pip install `reproscreener`! 
 
-   2. [Install pyenv and pyenv-virtualenv](https://github.com/pyenv/pyenv)
+``` sh
+pip install reproscreener
+```
 
-   3. Create a virtual environment with the correct python version (3.9.13):
+=== "pyenv"
 
-    ```  sh
-    (.venv) $ pyenv install 3.9.13
-    (.venv) $ pyenv virtualenv 3.9.13 reproscreener
-    (.venv) $ pyenv local reproscreener
+    ``` bash
+    pyenv install {{ versions.python }}
+    pyenv virtualenv {{ versions.python }} reproscreener
+    pyenv local reproscreener
+    pip install reproscreener
     ```
 
-2. Install `reproscreener` from pip
+=== "conda"
 
-    ``` sh
-    (.venv) $ pip install reproscreener
+    ``` bash
+    conda create -n reproscreener python={{ versions.python }}
+    conda activate reproscreener
+    pip install reproscreener
+    ```
+
+=== "pipx"
+
+    ``` bash
+    pipx install reproscreener
     ```

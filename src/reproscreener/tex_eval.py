@@ -1,11 +1,9 @@
 import glob
 import urllib.parse
 from pathlib import Path
-from typing import Set
+from typing import List, Set
 
-import pandas as pd
 from flashtext import KeywordProcessor
-from rich import print as rprint
 from rich.table import Table
 from urlextract import URLExtract
 
@@ -14,6 +12,15 @@ from reproscreener.utils import log
 
 
 def combine_tex_in_folder(folder_path: Path) -> Path:
+    """
+    Combine all .tex files in a given directory into a single file.
+
+    Args:
+        folder_path (Path): Path to the directory containing .tex files.
+
+    Returns:
+        Path: Path to the combined .tex file.
+    """
     # Create a combined file of all .tex files in folder_path directory
     combined_path = folder_path / "combined.tex"
     with open(combined_path, "w", encoding="utf-8") as outfile:
@@ -23,10 +30,16 @@ def combine_tex_in_folder(folder_path: Path) -> Path:
     return combined_path
 
 
-def find_tex_variables(combined_path: Path) -> Set:
+def find_tex_variables(combined_path: Path) -> Set[str]:
     """
     Find variables in the combined tex file.
     Uses the `KeywordProcessor` from `flashtext` package to extract variables.
+
+    Args:
+        combined_path (Path): Path to the combined .tex file.
+
+    Returns:
+        Set[str]: Set of found variables.
     """
     keyword_dict = keywords.generate_gunderson_dict()
     keyword_processor = KeywordProcessor(case_sensitive=True)
@@ -40,9 +53,15 @@ def find_tex_variables(combined_path: Path) -> Set:
     return found_vars
 
 
-def extract_tex_urls(combined_path: Path) -> Set:
+def extract_tex_urls(combined_path: Path) -> Set[str]:
     """
     Extract URLs from the combined tex file.
+
+    Args:
+        combined_path (Path): Path to the combined .tex file.
+
+    Returns:
+        Set[str]: Set of found URLs.
     """
     with open(combined_path, "r", errors="replace", encoding="utf-8") as f:
         data = f.read()
@@ -52,9 +71,18 @@ def extract_tex_urls(combined_path: Path) -> Set:
     return set(urls)
 
 
-def find_data_repository_links(url_list: Set[str], allowed_domains: list = ["github", "gitlab", "zenodo"]) -> list:
+def find_data_repository_links(
+    url_list: Set[str], allowed_domains: List[str] = ["github", "gitlab", "zenodo"]
+) -> List[str]:
     """
     Find URLs belonging to allowed domains (default - github, gitlab, zenodo).
+
+    Args:
+        url_list (Set[str]): Set of URLs to process.
+        allowed_domains (List[str], optional): List of allowed domain names. Defaults to ["github", "gitlab", "zenodo"].
+
+    Returns:
+        List[str]: List of found URLs belonging to allowed domains.
     """
     found_list = [
         url for url in url_list if any(domain in urllib.parse.urlparse(url).netloc for domain in allowed_domains)
@@ -64,8 +92,19 @@ def find_data_repository_links(url_list: Set[str], allowed_domains: list = ["git
     return found_list
 
 
-def initialize_repo_evaluation_table(paper_id: str, title: str, found_vars: Set, found_links: list) -> Table:
-    # Create a rich Table object with specified columns and add a row
+def initialize_repo_evaluation_table(paper_id: str, title: str, found_vars: Set[str], found_links: List[str]) -> Table:
+    """
+    Initialize a rich Table object with specified columns and add a row.
+
+    Args:
+        paper_id (str): ID of the paper.
+        title (str): Title of the paper.
+        found_vars (Set[str]): Set of found variables.
+        found_links (List[str]): List of found URLs.
+
+    Returns:
+        Table: Initialized Table object.
+    """
     table = Table()
     table.add_column("ID", justify="right", style="cyan")
     table.add_column("Title", style="magenta")
