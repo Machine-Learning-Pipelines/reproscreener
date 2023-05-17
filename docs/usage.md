@@ -29,7 +29,7 @@ If you want to see more detailed logs, you can set the logging level to `debug`.
 
 ## Project structure
 
-- `case-studies` contains the papers that ReproScreener is developed and tested on
-- `guidance` contains the set of metrics that ReproScreener will check for
-- `tests` contains scripts and notebooks used during development
+- `case-studies` contains the papers that `reproscreener` is developed and tested on
+- `guidance` contains the set of metrics that `reproscreener` will check for
+- `tests` contains the unit tests for `reproscreener`
 - `src/reproscreener` contains the main python scripts

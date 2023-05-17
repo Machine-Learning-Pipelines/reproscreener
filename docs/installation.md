@@ -1,27 +1,32 @@
 # Installation
 
-1. To use repro-screener, first clone the repository:
+To install `reproscreener`, we recommend using a virtual environment such as [pyenv](https://github.com/pyenv/pyenv) or [conda](https://docs.conda.io/en/latest/), or installing it using [pipx](https://pypa.github.io/pipx/). We recommend using python version {{ versions.python }}.
 
-    ``` sh
-    (.venv) $ git clone git@github.com:Machine-Learning-Pipelines/repro-screener.git
+All you need is to pip install `reproscreener`! 
+
+``` sh
+pip install reproscreener
+```
+
+=== "pyenv"
+
+    ``` bash
+    pyenv install {{ versions.python }}
+    pyenv virtualenv {{ versions.python }} reproscreener
+    pyenv local reproscreener
+    pip install reproscreener
     ```
 
-    [@bhaskaradhithyaReproScreenEnablingRobustness2022]
+=== "conda"
 
-2. Install the python package manager [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer).
-
-3. [Install pyenv and pyenv-virtualenv](https://github.com/pyenv/pyenv)
-
-4. Create a virtual environment with the correct python version (3.9.13):
-
-    ```  sh
-    (.venv) $ pyenv install 3.9.13
-    (.venv) $ pyenv virtualenv 3.9.13 repro-screener
-    (.venv) $ pyenv local repro-screener
+    ``` bash
+    conda create -n reproscreener python={{ versions.python }}
+    conda activate reproscreener
+    pip install reproscreener
     ```
 
-5. Install dependencies using poetry:
+=== "pipx"
 
-    ``` sh
-    (.venv) $ poetry install
+    ``` bash
+    pipx install reproscreener
     ```
