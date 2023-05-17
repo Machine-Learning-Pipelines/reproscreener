@@ -16,5 +16,5 @@ jobs:
         with:
           python-version: 3.x
       - run: sudo apt-get install pandoc pandoc-citeproc
-      - run: pip install mkdocs-material mkdocstrings-python mkdocs-bibtex mkdocs-jupyter
+      - run: pip install mkdocs-material mkdocstrings-python mkdocs-bibtex mkdocs-jupyter mkdocs-macros-plugin[test]
       - run: mkdocs gh-deploy --force
