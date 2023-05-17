@@ -126,17 +126,16 @@ def check_parsed_readme(dir_path: Path) -> Tuple[List[str], List[str]]:
     return [], possible_headers
 
 
-def evaluate_repo(path_corpus: str) -> pd.DataFrame:
+def evaluate_repo(path_corpus: Path) -> pd.DataFrame:
     """
     Evaluate a repository by checking the existence of certain files and sections in README.
 
     Args:
-        path_corpus (str): Path to the repository.
+        path_corpus (Path): Path to the repository.
 
     Returns:
         pd.DataFrame: A DataFrame with the evaluation results.
     """
-    path_corpus = Path(path_corpus)
     if (path_corpus / "repo").is_dir():
         repo_path = path_corpus / "repo"
     else:
