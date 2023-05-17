@@ -59,6 +59,8 @@ def main(
         console.print("\n")
 
     if repo:
+        if path_paper is None:
+            path_base = path_download
         console.rule("Repository evaluation")
         repo_name = repo.split("/")[-1].split(".git")[0]
         cloned_path = repo_eval.clone_repo(
