@@ -38,8 +38,8 @@ plugins:
   #     execute: false
   - mkdocstrings:
       handlers:
-      python:
-        paths: [src]
+        python:
+          paths: [src]
   - bibtex:
       bib_file: "docs/references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
