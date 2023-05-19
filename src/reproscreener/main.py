@@ -3,6 +3,7 @@ import logging
 
 import typer
 from rich import print as rprint
+from rich.text import Text
 
 from reproscreener import tex_eval, repo_eval
 from reproscreener.utils import log, console
@@ -41,11 +42,11 @@ def main(
         paper_id = arxiv.split("/")[-1]
         console.rule(f"\nPaper evaluation: {paper_id}")
         path_base = path_download / paper_id
-        path_paper = download_extract_source(arxiv, path_base / "paper")
+        paper_title, path_paper = download_extract_source(arxiv, path_base / "paper")
     elif local_arxiv:
         path_paper = Path(local_arxiv)
         paper_id = path_paper.name
-        console.rule(f"Paper evaluation: {paper_id}")
+        console.rule("")
     else:
         path_paper = None
 
@@ -54,14 +55,16 @@ def main(
         found_vars = tex_eval.find_tex_variables(combined_tex)
         urls = tex_eval.extract_tex_urls(combined_tex)
         found_links = tex_eval.find_data_repository_links(urls)
-        paper_table = tex_eval.initialize_repo_evaluation_table(paper_id, "title", found_vars, found_links)
-        console.print(paper_table, overflow="fold")
+        paper_results = tex_eval.paper_evaluation_results(paper_id, paper_title, found_vars, found_links)
+        rprint(paper_results)
         console.print("\n")
 
     if repo:
         if path_paper is None:
             path_base = path_download
-        console.rule("Repository evaluation")
+        console.rule(
+            Text.assemble(("Repository evaluation", "bold magenta")),
+        )
         repo_name = repo.split("/")[-1].split(".git")[0]
         cloned_path = repo_eval.clone_repo(
             repo, (path_base / "repo" / repo_name) if path_base else (path_download / "repos")
@@ -74,7 +77,8 @@ def main(
 
     if cloned_path is not None:
         repo_df = repo_eval.evaluate_repo(cloned_path)
-        repo_eval.display_dataframe(repo_df)
+        repo_eval_results = repo_eval.repo_eval_table(repo_df)
+        console.print(repo_eval_results)
 
     if not (arxiv or local_arxiv or repo or local_repo):
         raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")

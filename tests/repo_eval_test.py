@@ -1,8 +1,9 @@
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import patch
 
 import pandas as pd
 import pytest
+from rich.table import Table
 
 from reproscreener.repo_eval import (
     check_dependencies,
@@ -10,12 +11,20 @@ from reproscreener.repo_eval import (
     check_parsed_readme,
     check_wrapper_scripts,
     clone_repo,
-    display_dataframe,
     evaluate_repo,
+    repo_eval_table,
 )
 
 mock_folder_path = Path("tests/2106.07704")
 mock_repo_url = "https://github.com/HanGuo97/soft-Q-learning-for-text-generation"
+mock_data = pd.DataFrame(
+    {
+        "Category": ["Dependencies", "Parsed Readme", "Wrapper Scripts"],
+        "Variable": ["pandas", "README.md", "app.py"],
+        "Found?": [True, False, True],
+        "Extensions": [[".py"], [], [".yaml", ".yml"]],
+    }
+)
 
 
 def test_check_files():
@@ -44,16 +53,38 @@ def test_check_parsed_readme():
 
 
 def test_evaluate_repo():
-    df = evaluate_repo(mock_folder_path)
-    assert isinstance(df, pd.DataFrame)  # The result should be a DataFrame
+    with patch("builtins.input", side_effect=[".txt"]):
+        df = evaluate_repo(mock_folder_path)
+    assert isinstance(df, pd.DataFrame)
 
 
-def test_display_dataframe():
-    mock_df = pd.DataFrame(
-        [["Category", "Item", True, [".txt"], ".txt"]],
-        columns=["Category", "Item", "Found", "Extensions", "Found_Extension"],
+def test_repo_eval_table_input_type():
+    with pytest.raises(TypeError):
+        repo_eval_table("not a dataframe")
+
+
+def test_repo_eval_table_correct_input():
+    df = pd.DataFrame(
+        {
+            "Category": ["Dependencies", "Dependencies", "Parsed Readme", "Wrapper Scripts", "Wrapper Scripts"],
+            "Variable": ["var1", "var2", "var3", "var4", "var5"],
+            "Found?": [True, False, True, False, True],
+            "Extensions": [[".txt", ".sh"], [".py"], [".toml", ".csv"], [".xls"], [".txt", ".md"]],
+            "Found_Extension": [".txt", "", ".py", "", ".md"],
+        }
     )
-    display_dataframe(mock_df, "Test Title")
+
+    table = repo_eval_table(df)
+
+    assert isinstance(table, Table), "The function should return a Table object"
+    assert len(table.columns) == 4, "The table should have 4 columns"
+
+    num_category_changes = df["Category"].ne(df["Category"].shift()).sum() - 1
+    expected_num_rows = len(df) + num_category_changes
+
+    assert (
+        len(table.rows) == expected_num_rows
+    ), "The table should have a row for each data frame entry plus additional rows for category changes"
 
 
 def test_clone_repo(mocker):
