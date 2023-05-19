@@ -4,7 +4,11 @@ from typing import List, Tuple
 
 import git
 import pandas as pd
+from rich.style import Style
 from rich.table import Table
+from rich.text import Text
+
+path_style = Style(underline=True)
 
 from reproscreener.utils import console
 
@@ -160,56 +164,87 @@ def evaluate_repo(path_corpus: Path) -> pd.DataFrame:
             item_path = Path(item)
             item_base_name = item_path.stem
             found_extension = item_path.suffix
-            data.append(
-                [
-                    category,
-                    item_base_name,
-                    True,
-                    ext_mapping.get(item_base_name, []),
-                    found_extension,
-                ]
-            )
+            if category != "Parsed Readme":
+                data.append(
+                    [
+                        category,
+                        item_base_name,
+                        True,
+                        ext_mapping.get(item_base_name, []),
+                        found_extension,
+                    ]
+                )
+            else:
+                data.append(
+                    [
+                        category,
+                        item_base_name,
+                        True,
+                        [],
+                        "",
+                    ]
+                )
+
         for item in not_found_items:
             data.append([category, item, False, ext_mapping.get(item, []), ""])
 
     return pd.DataFrame(
         data,
-        columns=["Category", "Item", "Found", "Extensions", "Found_Extension"],
+        columns=["Category", "Variable", "Found?", "Extensions", "Found_Extension"],
     )
 
 
-def display_dataframe(df_table: pd.DataFrame, title: str = ""):
+def repo_eval_table(df_table: pd.DataFrame, title: str = "") -> Table:
     """
-    Display a DataFrame as a rich table in console.
+    Prepare a DataFrame for display as a rich table.
 
     Args:
         df_table (pd.DataFrame): DataFrame to display.
         title (str, optional): Title of the table. Defaults to "".
+
+    Returns:
+        Table: a rich Table object ready to be printed.
     """
-    for category, group in df_table.groupby("Category"):
-        table = Table(title=f"{category}")
-        table.add_column("Item")
-        table.add_column("Found")
-        table.add_column("Extensions")
+    if not isinstance(df_table, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
 
-        for _, row in group.iterrows():
-            item = row["Item"]
-            found = row["Found"]
-            extensions = row["Extensions"]
-            found_extension = row["Found_Extension"]
+    category_color = {
+        "Dependencies": "green",
+        "Parsed Readme": "blue",
+        "Wrapper Scripts": "magenta",
+    }
 
-            if not extensions:
-                ext_color_str = ""
-            else:
-                ext_color_str = ", ".join(
-                    f"[green]{ext}[/green]" if ext == found_extension else f"[red]{ext}[/red]" for ext in extensions
-                )
+    table = Table(title=title)
+    table.add_column("Category")
+    table.add_column("Variable")
+    table.add_column("Found?")
+    table.add_column("Extensions")
 
-            found_str = "[green]Found[/green]" if found else "[red]Not Found[/red]"
-            table.add_row(item, found_str, ext_color_str)
+    previous_category = ""
+    for _, row in df_table.iterrows():
+        item = row["Variable"]
+        found = row["Found?"]
+        extensions = row["Extensions"]
+        found_extension = row["Found_Extension"]
+        category = row["Category"]
 
-        console.print(table)
-        console.print("\n")
+        if category != previous_category and previous_category != "":
+            table.add_row("", "", "", "")
+
+        if not extensions:
+            ext_color_str = ""
+        else:
+            ext_color_str = ", ".join(
+                f"[green]{ext}[/green]" if ext == found_extension else f"[red]{ext}[/red]" for ext in extensions
+            )
+
+        found_str = "[green]Found[/green]" if found else "[red]Not Found[/red]"
+        category_color_str = f"[{category_color[category]}]{category}[/]"
+        table.add_row(category_color_str, item, found_str, ext_color_str)
+
+        previous_category = category
+
+    return table
 
 
 def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
@@ -227,7 +262,12 @@ def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Pat
     path_exists = path_corpus.is_dir()
 
     if path_exists and not overwrite:
-        console.print(f"Repo directory already exists: {path_corpus}, use the overwrite flag to download\n")
+        exists_text = Text.assemble(
+            "Repo directory already exists: ",
+            (str(path_corpus), Style(underline=True, color="blue")),
+            ", use the overwrite flag to download\n",
+        )
+        console.print(exists_text)
         return path_corpus
 
     path_corpus.mkdir(parents=True, exist_ok=True)
