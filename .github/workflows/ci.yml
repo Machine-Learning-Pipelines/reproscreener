@@ -9,7 +9,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9.13' 
+          python-version: '3.9.13'
 
       - name: Check-out repository
         uses: actions/checkout@v2
@@ -19,6 +19,9 @@ jobs:
 
       - name: Install dependencies
         run: poetry install 
+
+      - name: Install pandoc stuff
+        run: sudo apt-get install pandoc pandoc-citeproc
 
       - name: Run tests
         run: poetry run pytest tests/ --cov=reproscreener --cov-report=xml
