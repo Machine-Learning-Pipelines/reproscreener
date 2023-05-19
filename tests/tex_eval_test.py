@@ -15,7 +15,7 @@ from reproscreener.tex_eval import (
     paper_evaluation_results,
 )
 
-mock_folder_path = Path("./case-studies/arxiv-corpus/mine50-andor/source/1606.04671")
+mock_folder_path = Path("tests/2106.07704")
 mock_allowed_domains = ["github", "gitlab", "zenodo"]
 mock_df = pd.DataFrame([{"id": "1", "title": "title", "found_vars": set(), "found_links": []}])
 
