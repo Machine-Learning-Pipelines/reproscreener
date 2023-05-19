@@ -4,11 +4,16 @@ from pathlib import Path
 from typing import List, Set
 
 from flashtext import KeywordProcessor
+from rich import box
+from rich.markdown import Markdown
+from rich.panel import Panel
+from rich.style import Style
 from rich.table import Table
+from rich.text import Text
 from urlextract import URLExtract
 
 from reproscreener import keywords
-from reproscreener.utils import log
+from reproscreener.utils import console, log
 
 
 def combine_tex_in_folder(folder_path: Path) -> Path:
@@ -92,25 +97,44 @@ def find_data_repository_links(
     return found_list
 
 
-def initialize_repo_evaluation_table(paper_id: str, title: str, found_vars: Set[str], found_links: List[str]) -> Table:
+def paper_evaluation_results(paper_id: str, title: str, found_vars: Set[str], found_links: List[str]) -> Panel:
     """
-    Initialize a rich Table object with specified columns and add a row.
+    Create a rich Panel with the results of the paper evaluation.
 
-    Args:
+    Args
         paper_id (str): ID of the paper.
         title (str): Title of the paper.
         found_vars (Set[str]): Set of found variables.
         found_links (List[str]): List of found URLs.
-
-    Returns:
-        Table: Initialized Table object.
     """
-    table = Table()
-    table.add_column("ID", justify="right", style="cyan")
-    table.add_column("Title", style="magenta")
-    table.add_column("Found Variables", justify="right", style="green")
-    table.add_column("Found Links", style="yellow")
+    if not isinstance(paper_id, str):
+        raise TypeError(f"Expected paper_id to be str, got {type(paper_id).__name__}.")
+    if not isinstance(title, str):
+        raise TypeError(f"Expected title to be str, got {type(title).__name__}.")
+    if not isinstance(found_vars, set):
+        raise TypeError(f"Expected found_vars to be set, got {type(found_vars).__name__}.")
+    if not isinstance(found_links, list):
+        raise TypeError(f"Expected found_links to be list, got {type(found_links).__name__}.")
 
-    table.add_row(paper_id, title, ", ".join(found_vars), ", ".join(found_links))
+    result_text = Text.assemble(
+        ("\nPaper ID: ", "bold cyan"),
+        (paper_id, "bold yellow"),
+        ("\n\nTitle: ", "bold cyan"),
+        (title, "bold yellow"),
+        ("\n\nFound Variables:\n", "bold cyan"),
+        *[(f"- {var}\n", "green") for var in found_vars],
+        ("\nFound Links:\n", "bold cyan"),
+    )
+    for link in found_links:
+        result_text.append(f"- ", style="bold cyan")
+        result_text.append(link, style=Style(link=True, underline=True, color="blue"))
+        result_text.append("\n")  # Add newline after each link
 
-    return table
+    result_panel = Panel(
+        result_text,
+        title=Text.assemble((f"Paper Evaluation: {paper_id}", "bold magenta")),
+        box=box.ROUNDED,
+        expand=False,
+    )
+
+    return result_panel
