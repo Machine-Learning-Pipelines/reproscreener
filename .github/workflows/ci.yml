@@ -1,20 +1,32 @@
-name: ci 
-on:
-  push:
-    branches:
-      - master 
-      - main
-      - dev
-permissions:
-  contents: write
+name: ci
+
+on: [push, pull_request]
+
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Setup python
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.x
-      - run: sudo apt-get install pandoc pandoc-citeproc
-      - run: pip install mkdocs-material mkdocstrings-python mkdocs-bibtex mkdocs-jupyter mkdocs-macros-plugin[test]
-      - run: mkdocs gh-deploy --force
+          python-version: '3.9.13' 
+
+      - name: Check-out repository
+        uses: actions/checkout@v2
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install dependencies
+        run: poetry install 
+
+      - name: Run tests
+        run: poetry run pytest tests/ --cov=reproscreener --cov-report=xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+
+      - name: Build docs to gh-pages branch
+        run: poetry run mkdocs gh-deploy --force

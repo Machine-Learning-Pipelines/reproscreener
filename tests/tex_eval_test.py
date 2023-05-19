@@ -1,8 +1,11 @@
 from pathlib import Path
+from typing import List, Set
 
 import pandas as pd
 import pytest
-from rich.table import Table
+from rich.panel import Panel
+from rich.style import Style
+from rich.text import Text
 
 from reproscreener.tex_eval import (
     combine_tex_in_folder,
@@ -41,14 +44,6 @@ def test_find_data_repository_links():
     assert isinstance(found_links, list)  # The result should be a list
     assert len(found_links) == 1  # Only one link is from the allowed domains
     assert "https://github.com/user/repo" in found_links  # The allowed link should be in the result
-
-
-import pytest
-from typing import List, Set
-from rich.panel import Panel
-from rich.text import Text
-from rich.style import Style
-from rich import box
 
 
 def test_paper_evaluation_results_input_type():
