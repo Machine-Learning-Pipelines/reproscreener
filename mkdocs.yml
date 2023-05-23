@@ -15,6 +15,7 @@ nav:
   - Docstrings: docstrings.md
   - References: z_references.md
   - License: license.md
+  - Funding: funding.md
 
 theme:
   name: material
