@@ -13,7 +13,14 @@
 
 </p>
 
-
-## reproscreener
-
 `reproscreener` is a tool designed to evaluate the reproducibility of papers and code to enhance trustworthy machine learning research. Please see the [project website](https://reproscreener.com/) for more information.
+
+### License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+### Funding
+
+We thank the The Center for Research and Education in AI and Learning (REAL@USC) for their funding and support towards this project.
+
+Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the The Center for Research and Education in AI and Learning (REAL@USC).
