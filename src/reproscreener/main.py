@@ -5,7 +5,7 @@ import typer
 from rich import print as rprint
 from rich.text import Text
 
-from reproscreener import tex_eval, repo_eval
+from reproscreener import tex_eval, repo_eval, report
 from reproscreener.utils import log, console
 from reproscreener.download_arxiv import download_extract_source
 
@@ -55,8 +55,8 @@ def main(
         found_vars = tex_eval.find_tex_variables(combined_tex)
         urls = tex_eval.extract_tex_urls(combined_tex)
         found_links = tex_eval.find_data_repository_links(urls)
-        paper_results = tex_eval.paper_evaluation_results(paper_id, paper_title, found_vars, found_links)
-        rprint(paper_results)
+        _, df_paper_results = tex_eval.paper_evaluation_results(paper_id, paper_title, found_vars, found_links)
+        rprint(df_paper_results)
         console.print("\n")
 
     if repo:
@@ -76,10 +76,19 @@ def main(
         cloned_path = None
 
     if cloned_path is not None:
-        repo_df = repo_eval.evaluate_repo(cloned_path)
-        repo_eval_results = repo_eval.repo_eval_table(repo_df)
-        console.print(repo_eval_results)
+        df_repo_results = repo_eval.evaluate_repo(cloned_path)
+        repo_results = repo_eval.repo_eval_table(df_repo_results)
+        console.print(repo_results)
 
+    if path_paper and cloned_path:
+        report_path = path_base / "report.html"
+        report.create_html_report(
+            paper_id, paper_title, found_vars, found_links, report_path, df_paper_results, df_repo_results
+        )
+        # console.print(f"Report saved to {report_path}")
+
+    if not (arxiv or local_arxiv or repo or local_repo):
+        raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")
     if not (arxiv or local_arxiv or repo or local_repo):
         raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")
 
