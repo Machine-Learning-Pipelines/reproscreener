@@ -11,6 +11,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from urlextract import URLExtract
+import pandas as pd
 
 from reproscreener import keywords
 from reproscreener.utils import console, log
@@ -97,7 +98,9 @@ def find_data_repository_links(
     return found_list
 
 
-def paper_evaluation_results(paper_id: str, title: str, found_vars: Set[str], found_links: List[str]) -> Panel:
+def paper_evaluation_results(
+    paper_id: str, title: str, found_vars: Set[str], found_links: List[str]
+) -> (pd.DataFrame, Panel):
     """
     Create a rich Panel with the results of the paper evaluation.
 
@@ -137,4 +140,12 @@ def paper_evaluation_results(paper_id: str, title: str, found_vars: Set[str], fo
         expand=False,
     )
 
-    return result_panel
+    result_dataframe = pd.DataFrame(
+        {
+            "Paper ID": [paper_id],
+            "Found Variables": [", ".join(found_vars)],
+            "Found Links": [", ".join(found_links)],
+        }
+    )
+
+    return result_panel, result_dataframe
