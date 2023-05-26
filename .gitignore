@@ -16,6 +16,8 @@ case-studies/individual/
 
 client_secrets.json
 
+doc/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
