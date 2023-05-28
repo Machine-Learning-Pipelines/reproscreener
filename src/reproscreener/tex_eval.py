@@ -3,13 +3,15 @@ import urllib.parse
 from pathlib import Path
 from typing import List, Set
 
+from multiprocessing import Manager
+from concurrent.futures import ProcessPoolExecutor
+from rich.progress import Progress, BarColumn, TimeRemainingColumn, TimeElapsedColumn
 from flashtext import KeywordProcessor
 from rich import box
-from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.style import Style
-from rich.table import Table
 from rich.text import Text
+
 from urlextract import URLExtract
 import pandas as pd
 
@@ -98,9 +100,101 @@ def find_data_repository_links(
     return found_list
 
 
+def evaluate_paper(tex_folder_path: Path, paper_id: str) -> pd.DataFrame:
+    """
+    Evaluate a paper by extracting variables and URLs from its tex files.
+
+    Args:
+        tex_folder_path (Path): Path to the directory containing the paper's .tex files.
+        paper_id (str): ID of the paper.
+
+    Returns:
+        pd.DataFrame: A DataFrame with the evaluation results.
+    """
+    combined_path = combine_tex_in_folder(tex_folder_path)
+    found_vars = find_tex_variables(combined_path)
+    found_urls = extract_tex_urls(combined_path)
+    found_links = find_data_repository_links(found_urls)
+
+    _, evaluation_results = paper_evaluation_results(paper_id, found_vars, found_links)
+
+    return evaluation_results
+
+
+def long_running_fn(args):
+    progress, task_id, paper_path, paper_id = args
+    result = evaluate_paper(paper_path, paper_id)
+    progress[task_id] = {"progress": 1, "total": 1}
+    return paper_id, result
+
+
+def evaluate_papers(path_corpus: Path, evaluation_dict: dict) -> dict:
+    """
+    Evaluate a list of papers by extracting variables and URLs from their tex files.
+
+    Args:
+        path_corpus (Path): Path to the directory containing all papers.
+        evaluation_dict (dict): Dictionary to store the evaluation results.
+
+    Returns:
+        dict: Dictionary with the evaluation results.
+    """
+    with Progress(
+        "[progress.description]{task.description}",
+        BarColumn(),
+        "[progress.percentage]{task.percentage:>3.0f}%",
+        TimeRemainingColumn(),
+        TimeElapsedColumn(),
+        refresh_per_second=1,
+    ) as progress:
+        futures = []
+        with Manager() as manager:
+            _progress = manager.dict()
+            overall_progress_task = progress.add_task("[green]Tex evaluation on all papers:")
+            with ProcessPoolExecutor() as executor:
+                for subdir in path_corpus.glob("*"):
+                    if subdir.is_dir():
+                        paper_path = subdir
+                        paper_id = subdir.name
+                        task_id = progress.add_task(f"task {paper_id}", visible=False)
+                        futures.append(executor.submit(long_running_fn, (_progress, task_id, paper_path, paper_id)))
+
+                while (n_finished := sum([future.done() for future in futures])) < len(futures):
+                    progress.update(overall_progress_task, completed=n_finished, total=len(futures))
+                    for task_id, update_data in _progress.items():
+                        latest = update_data["progress"]
+                        total = update_data["total"]
+                        progress.update(task_id, completed=latest, total=total, visible=latest < total)
+
+                for future in futures:
+                    paper_id, result = future.result()
+                    evaluation_dict[paper_id] = result
+
+    return evaluation_dict
+
+
+def get_all_tex_eval_dict(path_corpus: Path) -> dict:
+    """Evaluates all papers in the given corpus and returns a dictionary of evaluation data.
+
+    Args:
+        path_corpus: A Path object representing the path to the corpus of papers to evaluate.
+
+    Returns:
+        A dictionary where the keys are paper IDs and the values are DataFrames containing the tex_eval results.
+    """
+    evaluation_dict = {}
+
+    evaluation_dict = evaluate_papers(path_corpus, evaluation_dict)
+
+    return evaluation_dict
+
+
 def paper_evaluation_results(
-    paper_id: str, title: str, found_vars: Set[str], found_links: List[str]
-) -> (pd.DataFrame, Panel):
+    paper_id: str,
+    found_vars: Set[str],
+    found_links: List[str],
+    title: str = "No title found",
+) -> (Panel, pd.DataFrame):
     """
     Create a rich Panel with the results of the paper evaluation.
 
