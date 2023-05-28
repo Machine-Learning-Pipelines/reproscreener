@@ -9,7 +9,6 @@ from rich.table import Table
 from rich.text import Text
 
 from reproscreener.utils import console
-from gold_standard import get_gold_standard_ids_from_manual
 
 path_style = Style(underline=True)
 
@@ -209,31 +208,27 @@ def evaluate_repos(path_corpus: Path, evaluation_dict: dict) -> dict:
     for subdir in path_corpus.glob("*"):
         if subdir.is_dir():
             repo_path = subdir
-            arxiv_id = subdir.name  # assuming subdir name is the arXiv ID
+            arxiv_id = subdir.name
             evaluation_dict[arxiv_id] = evaluate_repo(repo_path)
 
     return evaluation_dict
 
 
-def get_all_repo_eval_dict(path_corpus: Path, path_manual: Path) -> (dict, List[str]):
+def get_all_repo_eval_dict(path_corpus: Path) -> dict:
     """Evaluates all repositories in the given corpus and returns a dictionary of evaluation data.
 
     Args:
         path_corpus: A Path object representing the path to the corpus of repositories to evaluate.
-        path_manual: A Path object representing the path to the manual evaluation file.
 
     Returns:
-        A tuple containing two elements:
-            - A dictionary where the keys are repository names and the values are DataFrames containing the the repo_eval results.
-            - A list of arXiv paper IDs from the gold standard manual evaluation file (50 in total).
+        dict: where the keys are repository names and the values are DataFrames containing the the repo_eval results.
     """
     evaluation_dict = {}
-    gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
 
     evaluation_dict = evaluate_repos(path_corpus, evaluation_dict)
     # log.info(f"Found {len(evaluation_dict)} repositories to evaluate")
 
-    return gold_standard_ids, evaluation_dict
+    return evaluation_dict
 
 
 def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:

@@ -8,11 +8,12 @@ from matplotlib.patches import Patch
 
 from reproscreener import repo_eval
 from reproscreener.utils import reverse_mapping, console
+from reproscreener.gold_standard import get_gold_standard_ids_from_manual
 
 from typing import List
 
 
-def prepare_heatmap_df(evaluation_dict: dict, gold_standard_ids: List[str]) -> pd.DataFrame:
+def prepare_repo_heatmap_df(evaluation_dict: dict, gold_standard_ids: List[str]) -> pd.DataFrame:
     heatmap_results = []
 
     for paper_id in gold_standard_ids:
@@ -35,7 +36,9 @@ def prepare_heatmap_df(evaluation_dict: dict, gold_standard_ids: List[str]) -> p
     return heatmap_df
 
 
-def plot_heatmap(heatmap_df: pd.DataFrame, filename="heatmap_repo.png", dpi=1000, path_plots: Path = Path("plots")):
+def plot_repo_heatmap(
+    heatmap_df: pd.DataFrame, filename="heatmap_repo.png", dpi=1000, path_plots: Path = Path("plots")
+):
     binary_df = pd.crosstab(heatmap_df["Paper_ID"], heatmap_df["Matched_File"]).replace({1: True, 0: False})
     binary_df = binary_df.applymap(float).T
 
@@ -56,7 +59,7 @@ def plot_heatmap(heatmap_df: pd.DataFrame, filename="heatmap_repo.png", dpi=1000
     plt.close()
 
 
-def plot_clustermap(
+def plot_repo_clustermap(
     heatmap_df: pd.DataFrame, filename="clustermap_repo.png", dpi=1000, path_plots: Path = Path("plots")
 ):
     #                                (empty, filled)
@@ -121,8 +124,9 @@ if __name__ == "__main__":
     path_corpus = Path("case-studies/arxiv-corpus/mine50-andor/repo")
     path_manual = Path("case-studies/arxiv-corpus/manual_eval.csv")
 
-    gold_standard_ids, evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus, path_manual)
-    heatmap_df = prepare_heatmap_df(evaluation_dict, gold_standard_ids)
+    gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
+    evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus)
+    heatmap_df = prepare_repo_heatmap_df(evaluation_dict, gold_standard_ids)
 
-    plot_heatmap(heatmap_df, filename="heatmap_repo_eval.png")
-    plot_clustermap(heatmap_df, filename="heatmap_repo_eval_grouped.png")
+    plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval.png")
+    plot_repo_clustermap(heatmap_df, filename="heatmap_repo_eval_grouped.png")

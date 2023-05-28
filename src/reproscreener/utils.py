@@ -57,3 +57,18 @@ reverse_mapping = {
     for file, extensions in files.items()
     for ext in extensions
 }
+
+labels_mapping = {
+    "experiment_setup": "Experimental setup",
+    "hypothesis": "Hypothesis",
+    "method_source_code": "Method source code",
+    "objective": "Objective/Goal",
+    "prediction": "Prediction",
+    "problem": "Research problem",
+    "pseudocode": "Pseudocode",
+    "research_method": "Research method",
+    "research_questions": "Research questions",
+    "test_data": "Test data",
+    "training_data": "Training data",
+    "validation_data": "Validation data",
+}
