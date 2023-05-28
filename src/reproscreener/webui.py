@@ -40,7 +40,7 @@ def evaluate_paper(arxiv: str = None, local_arxiv: str = None, log_level: str = 
         found_vars = tex_eval.find_tex_variables(combined_tex)
         urls = tex_eval.extract_tex_urls(combined_tex)
         found_links = tex_eval.find_data_repository_links(urls)
-        _, df_paper_results = tex_eval.paper_evaluation_results(paper_id, paper_title, found_vars, found_links)
+        _, df_paper_results = tex_eval.paper_evaluation_results(paper_id, found_vars, found_links, paper_title)
         progress(1.0)  # Mark progress as complete
         return df_paper_results
 
