@@ -8,9 +8,10 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-path_style = Style(underline=True)
-
 from reproscreener.utils import console
+from gold_standard import get_gold_standard_ids_from_manual
+
+path_style = Style(underline=True)
 
 ext_mapping = {
     "run": [".py", ".sh"],
@@ -194,6 +195,107 @@ def evaluate_repo(path_corpus: Path) -> pd.DataFrame:
     )
 
 
+def evaluate_repos(path_corpus: Path, evaluation_dict: dict) -> dict:
+    """
+    Evaluate a list of repositories by checking the existence of certain files and sections in README.
+
+    Args:
+        path_corpus (Path): Path to the directory containing all repositories.
+        evaluation_dict (dict): Dictionary to store the evaluation results.
+
+    Returns:
+        dict: Dictionary with the evaluation results.
+    """
+    for subdir in path_corpus.glob("*"):
+        if subdir.is_dir():
+            repo_path = subdir
+            arxiv_id = subdir.name  # assuming subdir name is the arXiv ID
+            evaluation_dict[arxiv_id] = evaluate_repo(repo_path)
+
+    return evaluation_dict
+
+
+def get_all_repo_eval_dict(path_corpus: Path, path_manual: Path) -> (dict, List[str]):
+    """Evaluates all repositories in the given corpus and returns a dictionary of evaluation data.
+
+    Args:
+        path_corpus: A Path object representing the path to the corpus of repositories to evaluate.
+        path_manual: A Path object representing the path to the manual evaluation file.
+
+    Returns:
+        A tuple containing two elements:
+            - A dictionary where the keys are repository names and the values are DataFrames containing the the repo_eval results.
+            - A list of arXiv paper IDs from the gold standard manual evaluation file (50 in total).
+    """
+    evaluation_dict = {}
+    gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
+
+    evaluation_dict = evaluate_repos(path_corpus, evaluation_dict)
+    # log.info(f"Found {len(evaluation_dict)} repositories to evaluate")
+
+    return gold_standard_ids, evaluation_dict
+
+
+def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
+    """
+    Clone a repository from the given URL to the given path. If the repository already exists, it won't be overwritten unless specified.
+
+    Args:
+        repo_url (str): URL of the repository to clone.
+        path_corpus (Path): Path to clone the repository to.
+        overwrite (bool, optional): Whether to overwrite the existing repository. Defaults to False.
+
+    Returns:
+        Path: Path to the cloned repository. Returns False if cloning fails.
+    """
+    path_exists = path_corpus.is_dir()
+
+    if path_exists and not overwrite:
+        exists_text = Text.assemble(
+            "Repo directory already exists: ",
+            (str(path_corpus), Style(underline=True, color="blue")),
+            ", use the overwrite flag to download\n",
+        )
+        console.print(exists_text)
+        return path_corpus
+
+    path_corpus.mkdir(parents=True, exist_ok=True)
+    repo_name = repo_url.split("/")[-1].split(".git")[0]
+    cloned_path = path_corpus / repo_name
+
+    try:
+        with console.status("Cloning repo...", spinner="dots"):
+            git.Repo.clone_from(repo_url, cloned_path)
+            console.print(f"Successfully cloned repo: {repo_url}\n")
+            return cloned_path
+    except git.exc.CommandError as error:
+        console.print(f"Failed to clone repo: {repo_url}. Error: {error}\n")
+        return False
+
+
+def clone_repos(repo_urls: List[str], path_corpus: Path, overwrite: bool = False) -> List[Path]:
+    """
+    Clone a list of repositories from the given URLs to the given path. If a repository already exists, it won't be overwritten unless specified.
+
+    Args:
+        repo_urls (List[str]): List of URLs of the repositories to clone.
+        path_corpus (Path): Path to clone the repositories to.
+        overwrite (bool, optional): Whether to overwrite the existing repositories. Defaults to False.
+
+    Returns:
+        List[Path]: List of paths to the cloned repositories. Returns False if cloning fails.
+    """
+    cloned_paths = []
+    for repo_url in repo_urls:
+        repo_name = repo_url.split("/")[-1].split(".git")[0]
+        arxiv_id = repo_name  # assuming repo name is the arXiv ID
+        path_to_clone = path_corpus / arxiv_id  # unique path for each repository
+        cloned_path = clone_repo(repo_url, path_to_clone, overwrite)
+        cloned_paths.append(cloned_path)
+
+    return cloned_paths
+
+
 def repo_eval_table(df_table: pd.DataFrame, title: str = "") -> Table:
     """
     Prepare a DataFrame for display as a rich table.
@@ -245,40 +347,3 @@ def repo_eval_table(df_table: pd.DataFrame, title: str = "") -> Table:
         previous_category = category
 
     return table
-
-
-def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
-    """
-    Clone a repository from the given URL to the given path. If the repository already exists, it won't be overwritten unless specified.
-
-    Args:
-        repo_url (str): URL of the repository to clone.
-        path_corpus (Path): Path to clone the repository to.
-        overwrite (bool, optional): Whether to overwrite the existing repository. Defaults to False.
-
-    Returns:
-        Path: Path to the cloned repository. Returns False if cloning fails.
-    """
-    path_exists = path_corpus.is_dir()
-
-    if path_exists and not overwrite:
-        exists_text = Text.assemble(
-            "Repo directory already exists: ",
-            (str(path_corpus), Style(underline=True, color="blue")),
-            ", use the overwrite flag to download\n",
-        )
-        console.print(exists_text)
-        return path_corpus
-
-    path_corpus.mkdir(parents=True, exist_ok=True)
-    repo_name = repo_url.split("/")[-1].split(".git")[0]
-    cloned_path = path_corpus / repo_name
-
-    try:
-        with console.status("Cloning repo...", spinner="dots"):
-            git.Repo.clone_from(repo_url, cloned_path)
-            console.print(f"Successfully cloned repo: {repo_url}\n")
-            return cloned_path
-    except git.exc.CommandError as error:
-        console.print(f"Failed to clone repo: {repo_url}. Error: {error}\n")
-        return False

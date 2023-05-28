@@ -28,6 +28,7 @@ feedparser = "^6.0.10"
 datapane = "^0.16.4"
 appengine-python-standard = "^1.1.1"
 gradio = "^3.32.0"
+scipy = "^1.10.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
