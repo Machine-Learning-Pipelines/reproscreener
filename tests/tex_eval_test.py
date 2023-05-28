@@ -49,13 +49,13 @@ def test_find_data_repository_links():
 def test_paper_evaluation_results_input_type():
     # Test that a TypeError is raised when input types are not as expected
     with pytest.raises(TypeError):
-        paper_evaluation_results(123, "title", set(), list())  # paper_id is not str
+        paper_evaluation_results(123, set(), list(), "title")  # paper_id is not str
     with pytest.raises(TypeError):
-        paper_evaluation_results("paper_id", 123, set(), list())  # title is not str
+        paper_evaluation_results("paper_id", set(), list(), 123)  # title is not str
     with pytest.raises(TypeError):
-        paper_evaluation_results("paper_id", "title", list(), list())  # found_vars is not set
+        paper_evaluation_results("paper_id", list(), list(), "title")  # found_vars is not set
     with pytest.raises(TypeError):
-        paper_evaluation_results("paper_id", "title", set(), set())  # found_links is not list
+        paper_evaluation_results("paper_id", set(), set(), "title")  # found_links is not list
 
 
 def test_paper_evaluation_results_correct_input():
@@ -66,7 +66,7 @@ def test_paper_evaluation_results_correct_input():
     found_links = ["http://example.com", "http://example.org"]
 
     # Now we can check the structure of the output
-    panel = paper_evaluation_results(paper_id, title, found_vars, found_links)
+    panel = paper_evaluation_results(paper_id, found_vars, found_links, title)
 
     assert isinstance(panel, Panel), "The function should return a Panel object"
 
