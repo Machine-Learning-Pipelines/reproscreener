@@ -181,6 +181,8 @@ if __name__ == "__main__":
     gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
     evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus)
     heatmap_df = prepare_repo_heatmap_df(evaluation_dict, gold_standard_ids)
+    # save the heatmap_df to a csv
+    heatmap_df.to_csv(Path("plots/") / "repo_heatmap_df.csv", index=False)
 
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval.png")
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=True, sort_y=False)
