@@ -40,7 +40,6 @@ mkdocstrings-python = "^1.0.0"
 mkdocs-bibtex = "^2.8.16"
 mkdocs-jupyter = "^0.24.1"
 ruff = "^0.0.269"
-mike = "^1.1.2"
 
 
 [tool.poetry.group.extras.dependencies]
