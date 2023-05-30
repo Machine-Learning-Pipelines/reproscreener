@@ -5,6 +5,8 @@ extra:
   versions:
     python: 3.9.13
     reproscreener: 0.1.2
+  version:
+    provider: mike
 
 nav:
   - Home: index.md
@@ -47,6 +49,7 @@ plugins:
       # cite_inline: True
   - search
   - macros
+  - mike
 
 markdown_extensions:
   - pymdownx.highlight:
