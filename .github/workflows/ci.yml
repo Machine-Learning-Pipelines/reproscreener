@@ -31,5 +31,5 @@ jobs:
         with:
           files: ./coverage.xml
 
-      - name: Build docs to gh-pages branch
-        run: poetry run mkdocs gh-deploy --force
+      # - name: Build docs to gh-pages branch
+      #   run: poetry run mike deploy --branch gh-pages --deploy_prefix docs --push --update-aliases
