@@ -10,7 +10,7 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Usage: usage.md
-  # - Case studies: manual_eval_compare.ipynb
+  - Case studies: evaluation_results.ipynb
   # - Todo: todo.md
   - Docstrings: docstrings.md
   - References: z_references.md
@@ -33,10 +33,9 @@ theme:
     - content.code.copy
 
 plugins:
-  # - mkdocs-jupyter:
-  #     kernel_name: reproscreener
-  #     theme: dark
-  #     execute: false
+  - mkdocs-jupyter:
+      theme: dark
+      execute: false
   - mkdocstrings:
       handlers:
         python:
