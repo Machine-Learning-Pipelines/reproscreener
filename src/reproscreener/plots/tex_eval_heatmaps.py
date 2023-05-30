@@ -72,9 +72,14 @@ def plot_tex_heatmap(
     sns.heatmap(binary_df, cmap=custom_cmap, cbar=False, linewidths=1, ax=ax)
     plt.subplots_adjust(top=0.95, left=0.15, right=0.95)
     ax.set(xlabel=None, ylabel=None)
-    plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
-    console.print(f"Heatmap saved to {path_plots / filename}")
-    plt.close()
+
+    if path_plots is None:
+        plt.show()
+
+    else:
+        plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
+        console.print(f"Heatmap saved to {path_plots / filename}")
+        plt.close()
 
 
 if __name__ == "__main__":
