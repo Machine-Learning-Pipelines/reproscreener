@@ -44,14 +44,14 @@ def prepare_repo_heatmap_df(evaluation_dict: dict, gold_standard_ids: List[str])
             matched_files = df[df["Found?"]].Variable + df[df["Found?"]].Found_Extension
 
             if matched_files.empty:  # Check if there are any matches in this paper
-                heatmap_results.append([paper_id, "Code provided but no matches", None])
+                heatmap_results.append([paper_id, "Code provided but no matches", "Others"])
             else:
                 for file in matched_files:
                     # Add the paper id and the matched file name into heatmap_results
                     category = reverse_mapping.get(file, None)
                     heatmap_results.append([paper_id, file, category])
         else:
-            heatmap_results.append([paper_id, "No code provided", None])  # For papers not in the evaluation_dict
+            heatmap_results.append([paper_id, "No code provided", "Others"])  # For papers not in the evaluation_dict
 
     heatmap_df = pd.DataFrame(heatmap_results, columns=["Paper_ID", "Matched_File", "Category"]).drop_duplicates()
 
@@ -95,9 +95,14 @@ def plot_repo_heatmap(
     ax.set_yticklabels(y_labels)  # Set y-axis labels
     plt.subplots_adjust(top=0.95, left=0.15, right=0.95)
     ax.set(xlabel=None, ylabel=None)
-    plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
-    console.print(f"Heatmap saved to {path_plots / filename}")
-    plt.close()
+
+    if path_plots is None:
+        plt.show()
+
+    else:
+        plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
+        console.print(f"Heatmap saved to {path_plots / filename}")
+        plt.close()
 
 
 def plot_repo_clustermap(
@@ -118,8 +123,8 @@ def plot_repo_clustermap(
     category_pal = sns.husl_palette(len(categories), s=0.45)
     category_lut = dict(zip(categories, category_pal))
 
-    console.print(heatmap_df)
-    console.print(category_lut)
+    # console.print(heatmap_df)
+    # console.print(category_lut)
 
     # Convert the palette to vectors that will be drawn on the side of the matrix
     categories = binary_df.index.map(reverse_mapping)
@@ -169,9 +174,14 @@ def plot_repo_clustermap(
     g.ax_heatmap.set_ylabel("")
 
     plt.tight_layout()
-    plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
-    console.print(f"Heatmap saved to {path_plots / filename}")
-    plt.close()
+
+    if path_plots is None:
+        plt.show()
+
+    else:
+        plt.savefig(path_plots / filename, dpi=dpi, bbox_inches="tight")
+        console.print(f"Heatmap saved to {path_plots / filename}")
+        plt.close()
 
 
 if __name__ == "__main__":
