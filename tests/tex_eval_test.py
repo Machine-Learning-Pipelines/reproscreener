@@ -61,12 +61,12 @@ def test_paper_evaluation_results_input_type():
 def test_paper_evaluation_results_correct_input():
     # Test that the function completes successfully with correct input
     paper_id = "123"
-    title = "Title"
     found_vars = {"var1", "var2", "var3"}
     found_links = ["http://example.com", "http://example.org"]
+    title = "Title"
 
     # Now we can check the structure of the output
-    panel = paper_evaluation_results(paper_id, found_vars, found_links, title)
+    panel, _ = paper_evaluation_results(paper_id, found_vars, found_links, title)
 
     assert isinstance(panel, Panel), "The function should return a Panel object"
 
