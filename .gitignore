@@ -5,13 +5,6 @@
 site/
 sphinxdocs/
 
-case-studies/arxiv-corpus/*
-!case-studies/arxiv-corpus/manual_eval.csv
-
-!case-studies/arxiv-corpus/mine50-andor/
-case-studies/arxiv-corpus/mine50-andor/*
-!case-studies/arxiv-corpus/mine50-andor/output/
-
 case-studies/individual/
 
 client_secrets.json
