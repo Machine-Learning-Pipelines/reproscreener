@@ -2,4 +2,4 @@
     remote = gcp
     autostage = true
 ['remote "gcp"']
-    url = gs://reproscreener/reproscreener_case_studies
+    url = gs://reproscreener_case_studies
