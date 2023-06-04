@@ -185,7 +185,7 @@ def plot_repo_clustermap(
 
 
 if __name__ == "__main__":
-    path_corpus = Path("case-studies/arxiv-corpus/mine50-andor/repo")
+    path_corpus = Path("case-studies/arxiv-corpus/gold_standard/repo")
     path_manual = Path("case-studies/arxiv-corpus/manual_eval.csv")
 
     gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
