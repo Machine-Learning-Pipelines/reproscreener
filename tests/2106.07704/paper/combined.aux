@@ -1,0 +1,206 @@
+\relax 
+\bibstyle{acl_natbib}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{yin2019benchmarking,shin2020autoprompt,zhong2021meta,liu2021pre}
+\citation{wallace2019universal,atanasova2020generating}
+\citation{sutton2018reinforcement}
+\citation{williams1992simple}
+\citation{bahdanau2016actor,rennie2017self}
+\citation{ranzato2015sequence,li2016deep,rennie2017self,tan2018connecting,pasunuru2018multi,paulus2018a}
+\citation{Choshen2020On,wu2018study}
+\citation{pang2021text,zhou2017end,kandasamy2016batch}
+\citation{guo2015generating,jaques2020human,narasimhan2015language}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\citation{haarnoja2017reinforcement,schulman2017equivalence}
+\citation{nachum2017bridging}
+\citation{deng2022rlprompt}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  \textbf  {Left:} An overview of the proposed SQL algorithm. Text generation is challenging due to sparse reward (i.e., the rewards of all intermediate steps are $0$) and large action space (i.e., large vocabulary). Our SQL formulation enables several key algorithmic features as highlighted with \textcolor [HTML]{D0A28F}{\textbf  {yellow}} color, including (1) the combined on- and off-policy updates for the best of both, (2) bridging the final non-zero reward to directly supervise the $Q$-value estimation at intermediate steps for learning stability, and (3) simultaneously updating the $Q$-values of all candidate actions for efficiency. \textbf  {Right:} We explore diverse applications of the text-generation RL algorithm. \relax }}{3}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:first-figure}{{1}{3}{\textbf {Left:} An overview of the proposed SQL algorithm. Text generation is challenging due to sparse reward (i.e., the rewards of all intermediate steps are $0$) and large action space (i.e., large vocabulary). Our SQL formulation enables several key algorithmic features as highlighted with \textcolor [HTML]{D0A28F}{\textbf {yellow}} color, including (1) the combined on- and off-policy updates for the best of both, (2) bridging the final non-zero reward to directly supervise the $Q$-value estimation at intermediate steps for learning stability, and (3) simultaneously updating the $Q$-values of all candidate actions for efficiency. \textbf {Right:} We explore diverse applications of the text-generation RL algorithm. \relax }{figure.caption.1}{}}
+\citation{ranzato2015sequence}
+\citation{wu2018study,Choshen2020On}
+\citation{mnih2013playing}
+\citation{mnih2013playing}
+\citation{jaques2017sequence}
+\citation{kumar2019stabilizing}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Challenges}{4}{section.2}\protected@file@percent }
+\newlabel{subsec:preliminaries}{{2}{4}{Background and Challenges}{section.2}{}}
+\newlabel{eq:softmax-logit}{{1}{4}{Background and Challenges}{equation.2.1}{}}
+\newlabel{sec:background:rl}{{2}{4}{Background and Challenges}{equation.2.1}{}}
+\newlabel{eq:q-regression}{{2}{4}{Background and Challenges}{equation.2.2}{}}
+\citation{haarnoja2017reinforcement,schulman2017equivalence,nachum2017bridging}
+\citation{mnih2015human,sutton2018reinforcement}
+\citation{haarnoja2017reinforcement,schulman2017equivalence}
+\citation{sutton2018reinforcement}
+\citation{haarnoja2017reinforcement,schulman2017equivalence}
+\citation{nachum2017bridging}
+\citation{nachum2017bridging}
+\@writefile{toc}{\contentsline {section}{\numberline {3}The Soft $Q$-Learning Framework}{5}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}SQL Formulation for Text Generation}{5}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:sql-formulation}{{3.1}{5}{SQL Formulation for Text Generation}{subsection.3.1}{}}
+\newlabel{eq:optimal-pi-and-q}{{3}{5}{SQL Formulation for Text Generation}{equation.3.3}{}}
+\newlabel{eq:pi-and-q-theta}{{4}{5}{SQL Formulation for Text Generation}{equation.3.4}{}}
+\newlabel{eq:sql-state-value}{{5}{5}{SQL Formulation for Text Generation}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Efficient Training with Path Consistency}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{subsec:method:pcl}{{3.2}{5}{Efficient Training with Path Consistency}{subsection.3.2}{}}
+\newlabel{eq:pcl}{{6}{5}{Efficient Training with Path Consistency}{equation.3.6}{}}
+\newlabel{eq:pcl-loss}{{7}{5}{Efficient Training with Path Consistency}{equation.3.7}{}}
+\citation{nachum2017bridging}
+\citation{pasunuru2017multi}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Soft $Q$-Learning with path consistency learning (PCL) objectives. {\bf  Left:} Single-step objective (Eq.\ref {eq:pcl-loss}), where for each $(\bm  {s}_t, a_t)$, the computation involves step $t$ and $t+1$. Dashed boxes in \textcolor [HTML]{3A6B73}{\textbf  {dark green}} and \textcolor [HTML]{808285}{\textbf  {gray}} indicate the regression target, where the intermediate reward $r_t$ is often 0 due to sparsity. The gradient is applied to parameters $\bm  {\theta }$ at step $t$ (indicated by {\textcolor {orange}{\textbf  {orange}}} color). {\bf  Right:} Multi-step objective (Eq.\ref {eq:multi-loss}) which aggregates from step $t$ all the way to $T$. In this way, the final-step non-zero reward $r_T$ is used as the regression target. \relax }}{6}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:soft-q-learning-pcl}{{2}{6}{Soft $Q$-Learning with path consistency learning (PCL) objectives. {\bf Left:} Single-step objective (Eq.\ref {eq:pcl-loss}), where for each $(\s _t, a_t)$, the computation involves step $t$ and $t+1$. Dashed boxes in \textcolor [HTML]{3A6B73}{\textbf {dark green}} and \textcolor [HTML]{808285}{\textbf {gray}} indicate the regression target, where the intermediate reward $r_t$ is often 0 due to sparsity. The gradient is applied to parameters $\btheta $ at step $t$ (indicated by {\textcolor {orange}{\textbf {orange}}} color). {\bf Right:} Multi-step objective (Eq.\ref {eq:multi-loss}) which aggregates from step $t$ all the way to $T$. In this way, the final-step non-zero reward $r_T$ is used as the regression target. \relax }{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Multi-step PCL for Sparse Reward.}{6}{section*.3}\protected@file@percent }
+\newlabel{eq:multi-loss}{{9}{6}{Multi-step PCL for Sparse Reward}{equation.3.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Joint On- and Off-policy Training.}{6}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Applications and Experiments}{6}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Learning from Noisy (Negative) Text}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{subsec:noisy-data}{{4.1}{6}{Learning from Noisy (Negative) Text}{subsection.4.1}{}}
+\citation{bowman2015large}
+\citation{nie2020adversarial}
+\citation{radford2019language}
+\citation{ranzato2015sequence}
+\citation{rennie2017self}
+\citation{pang2021text}
+\citation{gehrmann2021gem}
+\citation{caccia2019language,hashimoto2019unifying}
+\citation{holtzman2019curious}
+\citation{wallace2019universal,atanasova2020generating}
+\citation{morris2020textattack,jin2020bert,ebrahimi2017hotflip}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Efficient Soft $Q$-Learning for Text Generation\relax }}{7}{algorithm.1}\protected@file@percent }
+\newlabel{alg:sql}{{1}{7}{Efficient Soft $Q$-Learning for Text Generation\relax }{algorithm.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup (more in\nobreakspace  {}\S  \ref {appendix-subsubsec:setup-noisy-data}).}{7}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results.}{7}{section*.7}\protected@file@percent }
+\citation{williams2018broad}
+\citation{morris2020textattack,jin2020bert,ebrahimi2017hotflip}
+\citation{wallace2019universal}
+\citation{Hu2017TowardCG,radford2019language,NEURIPS2020_1457c0d6}
+\citation{Dathathri2020Plug,krause2020gedi,qin2020backpropagation}
+\citation{wallace2019universal,li2021prefix,lester2021power}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  \textbf  {Left:} entailment generation performance plotted against diversity (average of $H_1$ and $H_2$). Circles represent results of top-$p$ sample outputs, and triangles represent results of beam-search outputs. Please see Table\nobreakspace  {}\ref {table:entailment-generation} for additional results. \textbf  {Right:} entailment attack performance against diversity. Only a few \texttt  {MLE+PG} dots are visible because the model is not able to generate more diverse samples even with increasing $p$ value in top-$p$ decoding, i.e., the model collapses. \relax }}{8}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:entailment-generation}{{3}{8}{\textbf {Left:} entailment generation performance plotted against diversity (average of $H_1$ and $H_2$). Circles represent results of top-$p$ sample outputs, and triangles represent results of beam-search outputs. Please see Table~\ref {table:entailment-generation} for additional results. \textbf {Right:} entailment attack performance against diversity. Only a few \texttt {MLE+PG} dots are visible because the model is not able to generate more diverse samples even with increasing $p$ value in top-$p$ decoding, i.e., the model collapses. \relax }{figure.caption.5}{}}
+\newlabel{fig:entailment-attack}{{3}{8}{\textbf {Left:} entailment generation performance plotted against diversity (average of $H_1$ and $H_2$). Circles represent results of top-$p$ sample outputs, and triangles represent results of beam-search outputs. Please see Table~\ref {table:entailment-generation} for additional results. \textbf {Right:} entailment attack performance against diversity. Only a few \texttt {MLE+PG} dots are visible because the model is not able to generate more diverse samples even with increasing $p$ value in top-$p$ decoding, i.e., the model collapses. \relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}\textit  {Universal} Adversarial Attacks}{8}{subsection.4.2}\protected@file@percent }
+\newlabel{subsec:adversarial-attack}{{4.2}{8}{\textit {Universal} Adversarial Attacks}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup (more in\nobreakspace  {}\S  \ref {appendix-subsubsec:setup-adversarial-attack}).}{8}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results.}{8}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Prompt Generation for Controlling Pretrained Language Models}{8}{subsection.4.3}\protected@file@percent }
+\newlabel{subsec:prompt-generation}{{4.3}{8}{Prompt Generation for Controlling Pretrained Language Models}{subsection.4.3}{}}
+\citation{dathathri2019plug}
+\citation{dathathri2019plug}
+\citation{krause2020gedi}
+\citation{wallace2019universal,sheng2020towards}
+\citation{haarnoja2017reinforcement,nachum2017bridging,schulman2017equivalence}
+\citation{ziebart2008maximum,ODonoghue2017CombiningPG,nachum2018trustpcl,eysenbach2021maximum}
+\citation{nachum2017bridging}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Average topic accuracy. Please see Table\nobreakspace  {}\ref {table:prompt-generation-full} for more details.\relax }}{9}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:prompt-generation-topic}{{4}{9}{Average topic accuracy. Please see Table~\ref {table:prompt-generation-full} for more details.\relax }{figure.caption.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  Average perplexity across topics. The lower, the more fluent the generated continuation sentences. \relax }}{9}{figure.caption.10}\protected@file@percent }
+\newlabel{table:prompt-generation}{{1}{9}{Average perplexity across topics. The lower, the more fluent the generated continuation sentences. \relax }{figure.caption.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Average sentence generation time cost.\relax }}{9}{figure.caption.10}\protected@file@percent }
+\newlabel{table:prompt-generation-speed}{{2}{9}{Average sentence generation time cost.\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  The scheme of prompt generation for controlling the outputs of pretraind LMs. \relax }}{9}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:prompt-generation-flow}{{5}{9}{The scheme of prompt generation for controlling the outputs of pretraind LMs. \relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup (more in\nobreakspace  {}\S  \ref {appendix-subsubsec:setup-prompt-generation}).}{9}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results.}{9}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Related Work}{9}{section.5}\protected@file@percent }
+\citation{guo2015generating,li2016deep,wu2016google,rennie2017self,paulus2018a,chen2018fast,liu2020data,pang2021amortized}
+\citation{ranzato2015sequence}
+\citation{williams1992simple}
+\citation{bahdanau2016actor}
+\citation{guo2018long}
+\citation{shi2018toward}
+\citation{norouzi2016reward}
+\citation{tan2018connecting}
+\citation{hu2022standard}
+\citation{kandasamy2016batch,zhou2017end,jaques2020human,pang2021text}
+\citation{deng2022rlprompt}
+\citation{eysenbach2021maximum}
+\citation{ribeiro2020beyond}
+\bibdata{citations}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{10}{section.6}\protected@file@percent }
+\citation{novikova2017e2e}
+\citation{lin-etal-2020-commongen}
+\citation{gehrmann2021gem}
+\citation{gehrmann2021gem}
+\citation{vaswani2017attention}
+\citation{hu2019texar}
+\citation{nie2020adversarial}
+\citation{lewis2020bart}
+\citation{radford2019language}
+\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces BLEU results on the E2E val/test sets.\relax }}{11}{table.caption.18}\protected@file@percent }
+\newlabel{table:e2e-results}{{A.1}{11}{BLEU results on the E2E val/test sets.\relax }{table.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{11}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Applications and Experiments}{11}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.1}Learning from Noisy (Negative) Text}{11}{subsubsection.A.1.1}\protected@file@percent }
+\newlabel{appendix-subsubsec:experiments-noisy-data}{{A.1.1}{11}{Learning from Noisy (Negative) Text}{subsubsection.A.1.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.2}\textit  {Universal} Adversarial Attacks}{11}{subsubsection.A.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.3}Prompt Generation for Controlling Pretrained Language Models}{11}{subsubsection.A.1.3}\protected@file@percent }
+\newlabel{appendix-subsubsec:experiments-prompt-generation}{{A.1.3}{11}{Prompt Generation for Controlling Pretrained Language Models}{subsubsection.A.1.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.4}Supervised Text Generation Tasks}{11}{subsubsection.A.1.4}\protected@file@percent }
+\newlabel{appendix-subsec:standard-tasks}{{A.1.4}{11}{Supervised Text Generation Tasks}{subsubsection.A.1.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{11}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results.}{11}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Setup Details}{11}{subsection.A.2}\protected@file@percent }
+\newlabel{appendix-subsec:setup-details}{{A.2}{11}{Setup Details}{subsection.A.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Reward Functions}{11}{section*.22}\protected@file@percent }
+\citation{bowman2015large}
+\citation{nie2020adversarial}
+\citation{radford2019language}
+\citation{williams2018broad}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Entailment generation performance plotted against diversity (average of $H_1$ and $H_2$).\relax }}{12}{figure.caption.17}\protected@file@percent }
+\newlabel{appendix-fig:entailment-generation}{{A.1}{12}{Entailment generation performance plotted against diversity (average of $H_1$ and $H_2$).\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Training curves on validation sets. {\bf  Left:} Training curves on E2E with best hyperparameter configurations. {\bf  Middle:} Training curves on E2E with varying reward scale. {\bf  Right:} Training curves on CommonGen with varying reward scale. \relax }}{12}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:supervised-text-generation-tasks}{{A.2}{12}{Training curves on validation sets. {\bf Left:} Training curves on E2E with best hyperparameter configurations. {\bf Middle:} Training curves on E2E with varying reward scale. {\bf Right:} Training curves on CommonGen with varying reward scale. \relax }{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.2.1}Setup Details: \S  \ref {subsec:noisy-data}}{12}{subsubsection.A.2.1}\protected@file@percent }
+\newlabel{appendix-subsubsec:setup-noisy-data}{{A.2.1}{12}{Setup Details: \S \ref {subsec:noisy-data}}{subsubsection.A.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces  Entailment attack samples and respective entailment rates across all test premises. For example, the adversarial sample by \texttt  {SQL} is considered to entail 97.40\% test premises by the entailment classifier. \relax }}{12}{table.caption.23}\protected@file@percent }
+\newlabel{table:entailment-attack-examples}{{A.2}{12}{Entailment attack samples and respective entailment rates across all test premises. For example, the adversarial sample by \texttt {SQL} is considered to entail 97.40\% test premises by the entailment classifier. \relax }{table.caption.23}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.2.2}Setup Details: \S  \ref {subsec:adversarial-attack}}{12}{subsubsection.A.2.2}\protected@file@percent }
+\newlabel{appendix-subsubsec:setup-adversarial-attack}{{A.2.2}{12}{Setup Details: \S \ref {subsec:adversarial-attack}}{subsubsection.A.2.2}{}}
+\citation{morris2020textattack,jin2020bert,ebrahimi2017hotflip}
+\citation{wallace2019universal}
+\citation{ebrahimi2017hotflip,wallace2019universal}
+\citation{dathathri2019plug}
+\citation{Dathathri2020Plug}
+\citation{dathathri2019plug}
+\citation{krause2020gedi}
+\citation{zhang2019pegasus}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.2.3}Setup Details: \S  \ref {subsec:prompt-generation}}{13}{subsubsection.A.2.3}\protected@file@percent }
+\newlabel{appendix-subsubsec:setup-prompt-generation}{{A.2.3}{13}{Setup Details: \S \ref {subsec:prompt-generation}}{subsubsection.A.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}The Soft $Q$-Learning Framework}{13}{subsection.A.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.3.1}Comparison with MLE Objective}{13}{subsubsection.A.3.1}\protected@file@percent }
+\newlabel{comparison-with-mle-objective}{{A.3.1}{13}{Comparison with MLE Objective}{subsubsection.A.3.1}{}}
+\citation{ziebart2008maximum,ziebart2010modeling,fox2016taming,nachum2017bridging}
+\citation{pang2021text}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.3.2}Vanilla Training with Temporal Consistency}{14}{subsubsection.A.3.2}\protected@file@percent }
+\newlabel{appendix-subsubsec:vanilla-training-with-temporal-consistency}{{A.3.2}{14}{Vanilla Training with Temporal Consistency}{subsubsection.A.3.2}{}}
+\newlabel{eq:q-and-next-v}{{10}{14}{Vanilla Training with Temporal Consistency}{equation.A.10}{}}
+\newlabel{eq:optimal-Q-2}{{11}{14}{Vanilla Training with Temporal Consistency}{equation.A.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces Beam search results on entailment generation, in the format \textbf  {val/test}. $\uparrow $/$\downarrow $ indicates higher/lower is better. $^\dagger $\texttt  {SQL (single)} achieves zero in $H_1$/$H_2$ as it generates a single token. \relax }}{15}{table.caption.24}\protected@file@percent }
+\newlabel{table:entailment-generation}{{A.3}{15}{Beam search results on entailment generation, in the format \textbf {val/test}. $\uparrow $/$\downarrow $ indicates higher/lower is better. $^\dagger $\texttt {SQL (single)} achieves zero in $H_1$/$H_2$ as it generates a single token. \relax }{table.caption.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.4}{\ignorespaces Prompt generation results. Note that some of the numbers from GeDi are low because the topics are tokenized into two subword tokens, which the model was not trained with. \relax }}{15}{table.caption.25}\protected@file@percent }
+\newlabel{table:prompt-generation-full}{{A.4}{15}{Prompt generation results. Note that some of the numbers from GeDi are low because the topics are tokenized into two subword tokens, which the model was not trained with. \relax }{table.caption.25}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.5}{\ignorespaces Entailment generation samples from SQL (beam search, validation dataset).\relax }}{16}{table.caption.26}\protected@file@percent }
+\newlabel{table:entailment-generation-examples-sql}{{A.5}{16}{Entailment generation samples from SQL (beam search, validation dataset).\relax }{table.caption.26}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.6}{\ignorespaces Prompt samples from SQL.\relax }}{17}{table.caption.27}\protected@file@percent }
+\newlabel{table:prompt-examples-sql}{{A.6}{17}{Prompt samples from SQL.\relax }{table.caption.27}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.7}{\ignorespaces Prompt samples from MLE+PG.\relax }}{18}{table.caption.28}\protected@file@percent }
+\newlabel{table:prompt-examples-pg}{{A.7}{18}{Prompt samples from MLE+PG.\relax }{table.caption.28}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.8}{\ignorespaces Prompt samples from GeDi.\relax }}{19}{table.caption.29}\protected@file@percent }
+\newlabel{table:prompt-examples-gedi}{{A.8}{19}{Prompt samples from GeDi.\relax }{table.caption.29}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.9}{\ignorespaces Prompt samples from PPLM.\relax }}{20}{table.caption.30}\protected@file@percent }
+\newlabel{table:prompt-examples-pplm}{{A.9}{20}{Prompt samples from PPLM.\relax }{table.caption.30}{}}
+\gdef \@abspage@last{20}

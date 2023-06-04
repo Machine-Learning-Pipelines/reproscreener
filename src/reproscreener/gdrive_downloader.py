@@ -9,6 +9,7 @@ from reproscreener.utils import console
 
 
 def gdrive_authenticate():
+    # TODO: Find a better way to specify the credentials file
     gauth = GoogleAuth()
     gauth.LocalWebserverAuth()
     drive = GoogleDrive(gauth)
