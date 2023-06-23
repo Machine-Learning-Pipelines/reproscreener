@@ -8,9 +8,16 @@ from pydrive2.drive import GoogleDrive
 from reproscreener.utils import console
 
 
-def gdrive_authenticate():
+def gdrive_authenticate(client_secrets_path):
     # TODO: Find a better way to specify the credentials file
-    gauth = GoogleAuth()
+    GoogleAuth.DEFAULT_SETTINGS["client_config_file"] = str(client_secrets_path)
+
+    try:
+        gauth = GoogleAuth()
+    except:
+        console.print(f"InvalidConfigError: Looking for client secrets at {client_secrets_path}")
+        raise
+
     gauth.LocalWebserverAuth()
     drive = GoogleDrive(gauth)
     return drive
@@ -32,13 +39,17 @@ def gdrive_download_manual_eval(drive, manual_path):
                     return manual_path
 
 
-def gdrive_get_manual_eval(overwrite=False, manual_path="case-studies/arxiv-corpus/manual_eval.csv"):
+def gdrive_get_manual_eval(
+    overwrite=False,
+    manual_path="case-studies/arxiv-corpus/manual_eval.csv",
+    client_secrets_path=Path(Path.cwd() / "client_secrets.json"),
+):
     dtypes_manual = {
         "paper": str,
         "notes": str,
         "empirical_dataset": str,
-        "article_link_avail": float,
-        "code_available_article_desc": str,
+        "code_avail_article": float,
+        "code_avail_article_desc": str,
         "code_avail_url": str,
         "pwc_link_avail": float,
         "pwc_link_match": float,
@@ -46,10 +57,31 @@ def gdrive_get_manual_eval(overwrite=False, manual_path="case-studies/arxiv-corp
         "result_replication_code_avail": float,
         "code_language": str,
         "package": float,
-        "wrapper_script": str,
+        "wrapper_scripts": float,
+        "wrapper_scripts_desc": str,
         "hardware_specifications": str,
-        "software_dependencies": str,
+        "software_dependencies": float,
+        "software_dependencies_desc": str,
         "will_it_reproduce": float,
+        "will_it_reproduce_desc": str,
+        "problem": float,
+        "problem_desc": str,
+        "objective": float,
+        "objective_desc": str,
+        "research_method": float,
+        "research_method_desc": str,
+        "research_questions": float,
+        "research_questions_desc": str,
+        "parsed_readme": str,
+        "pseudocode": float,
+        "pseudocode_desc": str,
+        "dataset": float,
+        "dataset_desc": str,
+        "hypothesis": float,
+        "hypothesis_desc": str,
+        "prediction": float,
+        "experiment_setup": float,
+        "experiment_setup_desc": str,
     }
     path_exists = Path(manual_path).is_file()
 
@@ -57,7 +89,7 @@ def gdrive_get_manual_eval(overwrite=False, manual_path="case-studies/arxiv-corp
         console.print("Manual eval file already exists, use the overwrite flag to download")
 
     if (not path_exists) or (path_exists and overwrite):
-        drive = gdrive_authenticate()
+        drive = gdrive_authenticate(client_secrets_path)
         manual_path = gdrive_download_manual_eval(drive, manual_path)
 
     manual_eval = pd.read_csv(manual_path)
