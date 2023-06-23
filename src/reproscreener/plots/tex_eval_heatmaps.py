@@ -93,6 +93,7 @@ if __name__ == "__main__":
 
     heatmap_df = prepare_tex_heatmap_df(evaluation_dict, gold_standard_ids)
     heatmap_df.to_csv(Path("plots/") / "tex_heatmap_df.csv", index=False)
+    heatmap_df.to_csv(Path("case-studies/arxiv-corpus/gold_standard/output") / "tex_heatmap_df.csv", index=False)
 
     plot_tex_heatmap(heatmap_df, filename="heatmap_tex.png", dpi=1000, path_plots=Path("plots"))
     plot_tex_heatmap(heatmap_df, filename="heatmap_tex.png", dpi=1000, sort_x=True, path_plots=Path("plots"))
