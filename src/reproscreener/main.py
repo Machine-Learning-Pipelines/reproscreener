@@ -1,16 +1,16 @@
 from pathlib import Path
 import logging
-
-import typer
-from rich import print as rprint
+import pandas as pd
 from rich.text import Text
+from rich.progress import Progress
+import typer
 
 from reproscreener import tex_eval, repo_eval, report
-from reproscreener.utils import log, console
-from reproscreener.download_arxiv import download_extract_source
+from reproscreener.utils import log, console, download_extract_source
+from reproscreener.plots import tex_eval_heatmaps, repo_eval_heatmaps
+from reproscreener.scrape_arxiv import scrape_arxiv, get_paper_ids, init_paths, extract_tar_files
 
 app = typer.Typer()
-
 
 # Mapping from command-line strings to logging levels
 LOG_LEVELS = {
@@ -56,7 +56,7 @@ def main(
         urls = tex_eval.extract_tex_urls(combined_tex)
         found_links = tex_eval.find_data_repository_links(urls)
         _, df_paper_results = tex_eval.paper_evaluation_results(paper_id, found_vars, found_links, paper_title)
-        rprint(df_paper_results)
+        console.print(df_paper_results)
         console.print("\n")
 
     if repo:
@@ -91,6 +91,49 @@ def main(
         raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")
     if not (arxiv or local_arxiv or repo or local_repo):
         raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")
+
+
+@app.command()
+def download_gold_standard(
+    base_dir: str = "./case-studies/arxiv-corpus/",
+    folder_name: str = "gold_standard/",
+    path_manual_eval: str = "case-studies/arxiv-corpus/manual_eval.csv",
+):
+    progress = Progress()
+    path_corpus = init_paths(base_dir, folder_name)
+    paper_ids = get_paper_ids(path_manual_eval)
+
+    with progress:
+        task_id = progress.add_task("[cyan]Downloading...", total=len(paper_ids))
+        scrape_arxiv(paper_ids, path_corpus, progress, task_id)
+        extract_tar_files(path_corpus, progress)
+
+    console.log("[green]Gold standard papers have been downloaded and extracted.")
+
+
+@app.command()
+def download_repositories(
+    path_manual_eval: Path = "case-studies/arxiv-corpus/manual_eval.csv",
+    path_corpus: Path = "case-studies/arxiv-corpus/gold_standard/repo",  # Adjust path_corpus to include /repo
+):
+    df = pd.read_csv(path_manual_eval)
+    df = df.iloc[1:-1]  # drop the first and last rows of df
+    repo_urls = df["code_avail_url"].dropna().tolist()
+    arxiv_ids = df["paper"].dropna().tolist()  # get arxiv ids
+    path_corpus = Path(path_corpus)
+    path_corpus.mkdir(parents=True, exist_ok=True)
+    repo_eval.clone_repos(arxiv_ids, repo_urls, path_corpus)  # pass arxiv ids to clone_repos
+    console.log("[green]Repositories have been cloned.")
+
+
+@app.command()
+def run_evaluation_modules(
+    path_corpus: Path = "case-studies/arxiv-corpus/gold_standard/",
+    path_manual_eval: Path = "case-studies/arxiv-corpus/manual_eval.csv",
+):
+    repo_eval_heatmaps.evaluate_and_save_plots(path_corpus, path_manual_eval)
+    tex_eval_heatmaps.evaluate_and_save_plots(path_corpus, path_manual_eval)
+    console.log("[green]Repo and tex evaluations have been run.")
 
 
 if __name__ == "__main__":
