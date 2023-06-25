@@ -30,7 +30,7 @@ appengine-python-standard = "^1.1.1"
 gradio = "^3.32.0"
 scipy = "^1.10.1"
 scikit-learn = "^1.2.2"
-agreement = "^0.1.1"
+arxiv = "^1.4.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"

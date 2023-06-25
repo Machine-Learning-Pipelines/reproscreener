@@ -82,12 +82,14 @@ def plot_tex_heatmap(
         plt.close()
 
 
-if __name__ == "__main__":
-    path_corpus = Path("case-studies/arxiv-corpus/gold_standard/source")
-    path_manual = Path("case-studies/arxiv-corpus/manual_eval.csv")
-
+def evaluate_and_save_plots(
+    path_corpus: Path = Path("case-studies/arxiv-corpus/gold_standard/"),
+    path_manual: Path = Path("case-studies/arxiv-corpus/manual_eval.csv"),
+):
+    (path_corpus / "output").mkdir(parents=True, exist_ok=True)
+    (path_corpus / "plots").mkdir(parents=True, exist_ok=True)
     gold_standard_ids = get_gold_standard_ids_from_manual(manual_path=path_manual)
-    evaluation_dict = tex_eval.get_all_tex_eval_dict(path_corpus)
+    evaluation_dict = tex_eval.get_all_tex_eval_dict(path_corpus / "source")
     console.print(f"Number of papers in the tex evaluation dict: {len(evaluation_dict)}")
     # console.print(evaluation_dict)
 
@@ -101,3 +103,7 @@ if __name__ == "__main__":
     plot_tex_heatmap(
         heatmap_df, filename="heatmap_tex.png", dpi=1000, sort_x=True, sort_y=True, path_plots=Path("plots")
     )
+
+
+if __name__ == "__main__":
+    evaluate_and_save_plots()

@@ -6,7 +6,8 @@ site/
 sphinxdocs/
 
 case-studies/individual/
-
+case-studies/arxiv-corpus/gold_standard_old/
+case-studies/arxiv-corpus/gold_standard_test/
 client_secrets.json
 
 doc/

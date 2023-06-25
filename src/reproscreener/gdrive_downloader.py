@@ -41,7 +41,7 @@ def gdrive_download_manual_eval(drive, manual_path):
 
 def gdrive_get_manual_eval(
     overwrite=False,
-    manual_path="case-studies/arxiv-corpus/manual_eval.csv",
+    manual_path=Path("case-studies/arxiv-corpus/manual_eval.csv"),
     client_secrets_path=Path(Path.cwd() / "client_secrets.json"),
 ):
     dtypes_manual = {
