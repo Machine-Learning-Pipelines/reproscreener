@@ -184,12 +184,15 @@ def plot_repo_clustermap(
         plt.close()
 
 
-if __name__ == "__main__":
-    path_corpus = Path("case-studies/arxiv-corpus/gold_standard/repo")
-    path_manual = Path("case-studies/arxiv-corpus/manual_eval.csv")
+def evaluate_and_save_plots(
+    path_corpus: Path = Path("case-studies/arxiv-corpus/gold_standard/"),
+    path_manual: Path = Path("case-studies/arxiv-corpus/manual_eval.csv"),
+):
+    (path_corpus / "output").mkdir(parents=True, exist_ok=True)
+    (path_corpus / "plots").mkdir(parents=True, exist_ok=True)
 
     gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
-    evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus)
+    evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus / "repo")
     heatmap_df = prepare_repo_heatmap_df(evaluation_dict, gold_standard_ids)
 
     # create a copy for saving
@@ -209,3 +212,7 @@ if __name__ == "__main__":
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=True, sort_y=False)
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=False, sort_y=True)
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=True, sort_y=True)
+
+
+if __name__ == "__main__":
+    evaluate_and_save_plots()
