@@ -13,8 +13,8 @@ def summary_table(df, column, number_of_papers):
     variable_counts = df[column].value_counts()
     percentage = variable_counts / number_of_papers * 100
 
-    summary_table = pd.DataFrame({"Count": variable_counts, "Percentage": percentage})
-    summary_table = summary_table.sort_values(by="Count", ascending=False)
+    summary_table = pd.DataFrame({"Article_Count": variable_counts, "Percentage": percentage})
+    summary_table = summary_table.sort_values(by="Article_Count", ascending=False)
     summary_table["Percentage"] = summary_table["Percentage"].map("{:.2f}%".format)
     return summary_table
 
@@ -35,16 +35,6 @@ def prepare_pivot(df, id_column, map_dict, var_column=None, match_column=None, v
         pivot_df = df.pivot_table(values="Value", index=id_column, columns="Mapped_Variable", fill_value=0)
 
     return pivot_df
-
-
-# def calc_metrics(df, manual_label, auto_label):
-#     precision = precision_score(df[manual_label], df[auto_label])
-#     recall = recall_score(df[manual_label], df[auto_label])
-#     f1 = f1_score(df[manual_label], df[auto_label])
-#     accuracy = accuracy_score(df[manual_label], df[auto_label])
-#     kappa = cohen_kappa_score(df[manual_label], df[auto_label])
-
-#     return precision, recall, f1, accuracy, kappa
 
 
 tex_map_dict = {
@@ -69,64 +59,21 @@ repo_map_dict = {
 }
 
 
-def run_evaluation_repo(df, map_dict, manual_eval):
-    summary_df = pd.DataFrame(columns=["Category", "Found_Articles", "Percentage"])
-
-    total_articles = 50
+def run_evaluation(df, map_dict, total_articles=50):
+    summary_df = pd.DataFrame(columns=["Category", "Article_Count", "Percentage"])
 
     for col in map_dict.values():
-        if col in df.columns:
-            found_articles = df[col].sum()
-            percentage = (found_articles / total_articles) * 100
+        article_count = df[col].sum() if col in df.columns else 0
+        percentage = f"{(article_count / total_articles) * 100:.2f}%"
 
-            temp_df = pd.DataFrame(
-                {
-                    "Category": [col],
-                    "Found_Articles": [found_articles],
-                    "Percentage": [percentage],
-                }
-            )
-            summary_df = pd.concat([summary_df, temp_df])
-        else:
-            temp_df = pd.DataFrame(
-                {
-                    "Category": [col],
-                    "Found_Articles": [0],
-                    "Percentage": [0],
-                }
-            )
-            summary_df = pd.concat([summary_df, temp_df])
-
-    return summary_df
-
-
-def run_evaluation_tex(df, map_dict, manual_eval):
-    summary_df = pd.DataFrame(columns=["Category", "Found_Articles", "Percentage"])
-
-    total_articles = 50
-
-    for col in map_dict.values():
-        if col in df.columns:
-            found_articles = df[col].sum()
-            percentage = (found_articles / total_articles) * 100
-
-            temp_df = pd.DataFrame(
-                {
-                    "Category": [col],
-                    "Found_Articles": [found_articles],
-                    "Percentage": [percentage],
-                }
-            )
-            summary_df = pd.concat([summary_df, temp_df])
-        else:
-            temp_df = pd.DataFrame(
-                {
-                    "Category": [col],
-                    "Found_Articles": [0],
-                    "Percentage": [0],
-                }
-            )
-            summary_df = pd.concat([summary_df, temp_df])
+        temp_df = pd.DataFrame(
+            {
+                "Category": [col],
+                "Article_Count": [article_count],
+                "Percentage": [percentage],
+            }
+        )
+        summary_df = pd.concat([summary_df, temp_df])
 
     return summary_df
 
