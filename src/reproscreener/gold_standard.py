@@ -72,7 +72,7 @@ repo_map_dict = {
 def run_evaluation_repo(df, map_dict, manual_eval):
     summary_df = pd.DataFrame(columns=["Category", "Found_Articles", "Percentage"])
 
-    total_articles = len(df)
+    total_articles = 50
 
     for col in map_dict.values():
         if col in df.columns:
@@ -103,7 +103,7 @@ def run_evaluation_repo(df, map_dict, manual_eval):
 def run_evaluation_tex(df, map_dict, manual_eval):
     summary_df = pd.DataFrame(columns=["Category", "Found_Articles", "Percentage"])
 
-    total_articles = len(df)
+    total_articles = 50
 
     for col in map_dict.values():
         if col in df.columns:
