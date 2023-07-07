@@ -44,6 +44,7 @@ mkdocs-jupyter = "^0.24.1"
 ruff = "^0.0.269"
 dvc = "^2.58.2"
 dvc-gs = "^2.22.1"
+mkdocs-autorefs = "^0.4.1"
 
 
 [tool.poetry.group.extras.dependencies]
