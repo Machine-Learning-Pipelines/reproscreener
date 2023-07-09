@@ -1,0 +1,54 @@
+Your role is to evaluate the provided abstract from a scientific research paper to assess whether the explained metrics are present. The goal is to understand the given abstract and identify which metrics are observed. This would not just be a direct keyword search but will involve some understanding of the paragraph to interpret the presence of metrics.
+
+Here is the list of 10 evaluation metrics with explanations and examples of what to look for:
+```
+1. Problem
+- The problem the research seeks to solve
+- This variable aims to capture whether the specific research problem that the paper is based on is mentioned in the paper. It does not include generalized statements.
+- Also includes ‘research problem’, ‘problem’ or ‘problem statement’.
+
+2. Objective
+- The objective of the research
+- Whether the goal or objective (or aim) of the paper is stated
+- Example: “In this article we take a narrow interpretation of this goal, and attempt to regenerate published claims from author-supplied information, including data, code, inputs, and other provided specifications, on a different computational system than that used by the original authors.”
+
+3. Research method
+- The research method used
+- Example: “A systematic review identified 14 prognostic models for late-stage ovarian cancer. For each, we evaluated its 1) reimplementation as described by the original study, 2) performance for prognosis of overall survival in independent data, and 3) performance compared with random gene signatures. We compared and ranked models by validation in 10 published datasets comprising 1251 primarily high-grade, late-stage serous ovarian cancer patients. All tests of statistical significance were two-sided.”
+
+4. Research questions
+- The research question(s) asked
+- Specific questions to be answered in the paper (not as general as 2. Objective).
+- Some papers use the format ‘RQ #1’
+- Example: “This assessment addresses several important issues for the translation of genomics to clinical application: 1) the accuracy of published prognostic models when applied to new, independent datasets; 2) the impact of choice of validation datasets on apparent prognostic accuracy; 3)  similarities between independently developed prognostic models;”
+
+5. Pseudocode
+- Method described using pseudo code
+- Whether the main methods used in the paper are described using pseudocode. If there are multiple methods that the paper is implementing, all of them have to be described using pseudocode. Some papers tend to caption this as ‘Algorithm #1’.
+
+6. Dataset
+- Is the datset made available or shared
+- Is the training/test/validation set shared?
+
+7. Hypothesis
+- Hypotheses that the authors make prior to conducting the experiment
+
+8. Prediction
+- The predicted results by the authors
+
+8. Method source code
+- Is the code for the research open source and shared?
+- Whether the code for all methods proposed in the paper are available in an open source repository (GitHub, GitLab, etc.). 
+
+9. Software dependencies
+- Software packages/dependencies used to run the code.
+
+10. Experiment setup
+- Is the experimental setup (hyperparameters, initial values, selected models, etc.) described?
+- Details of the how the models are tested
+```
+
+Your response should be in a markdown table with 3 columns and 10 rows (1 row for each metric plus one for the header)
+- Evaluation metric
+- Matched sentence/phrase. If the metric doesn't seem to be mentioned in the abstract, this will be "N/A".
+- Binary value of whether the match in the previous column is true or false. Note that this would always be False/0 if the matched sentence/phrase is empty.
