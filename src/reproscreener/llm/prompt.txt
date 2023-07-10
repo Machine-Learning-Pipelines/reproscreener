@@ -1,4 +1,7 @@
-Your role is to evaluate the provided abstract from a scientific research paper to assess whether the explained metrics are present. The goal is to understand the given abstract and identify which metrics are observed. This would not just be a direct keyword search but will involve some understanding of the paragraph to interpret the presence of metrics.
+Your role is to evaluate the provided abstract from a scientific research paper to assess whether the explained metrics are present. The goal is to understand the given abstract and identify which metrics are observed. This would not just be a direct keyword search but will involve some understanding of the paragraph to interpret the presence of metrics. I want the results in a table with 3 columns
+- Evaluation metric
+- Matched sentence/phrase. If the metric doesn't seem to be mentioned in the abstract, this will be empty.
+- A score from between 0 and 1 indicating how likely that a match was found/corresponds to the metric description. Note that this would be 0 if the matched sentence/phrase is not found.
 
 Here is the list of 10 evaluation metrics with explanations and examples of what to look for:
 ```
@@ -48,7 +51,55 @@ Here is the list of 10 evaluation metrics with explanations and examples of what
 - Details of the how the models are tested
 ```
 
-Your response should be in a markdown table with 3 columns and 10 rows (1 row for each metric plus one for the header)
-- Evaluation metric
-- Matched sentence/phrase. If the metric doesn't seem to be mentioned in the abstract, this will be "N/A".
-- Binary value of whether the match in the previous column is true or false. Note that this would always be False/0 if the matched sentence/phrase is empty.
+For example:
+
+1. Abstract of `1606.04671.txt`:
+
+```
+Learning to solve complex sequences of tasks--while both leveraging transfer
+and avoiding catastrophic forgetting--remains a key obstacle to achieving
+human-level intelligence. The progressive networks approach represents a step
+forward in this direction: they are immune to forgetting and can leverage prior
+knowledge via lateral connections to previously learned features. We evaluate
+this architecture extensively on a wide variety of reinforcement learning tasks
+(Atari and 3D maze games), and show that it outperforms common baselines based
+on pretraining and finetuning. Using a novel sensitivity measure, we
+demonstrate that transfer occurs at both low-level sensory and high-level
+control layers of the learned policy.
+```
+Found metrics:
+- Problem: "Learning to solve complex sequences of tasks--while both leveraging transfer
+and avoiding catastrophic forgetting" is the research problem defined by the authors.
+- Method: "Using a novel sensitivity measure, we demonstrate that transfer occurs at both low-level sensory and high-level control layers of the learned policy." would be the research method in this abstract.
+
+2. Abstract of `2105.01937.txt`
+```
+The increasing availability of video recordings made by multiple cameras has
+offered new means for mitigating occlusion and depth ambiguities in pose and
+motion reconstruction methods. Yet, multi-view algorithms strongly depend on
+camera parameters; particularly, the relative transformations between the
+cameras. Such a dependency becomes a hurdle once shifting to dynamic capture in
+uncontrolled settings. We introduce FLEX (Free muLti-view rEconstruXion), an
+end-to-end extrinsic parameter-free multi-view model. FLEX is extrinsic
+parameter-free (dubbed ep-free) in the sense that it does not require extrinsic
+camera parameters. Our key idea is that the 3D angles between skeletal parts,
+as well as bone lengths, are invariant to the camera position. Hence, learning
+3D rotations and bone lengths rather than locations allows predicting common
+values for all camera views. Our network takes multiple video streams, learns
+fused deep features through a novel multi-view fusion layer, and reconstructs a
+single consistent skeleton with temporally coherent joint rotations. We
+demonstrate quantitative and qualitative results on three public datasets, and
+on synthetic multi-person video streams captured by dynamic cameras. We compare
+our model to state-of-the-art methods that are not ep-free and show that in the
+absence of camera parameters, we outperform them by a large margin while
+obtaining comparable results when camera parameters are available. Code,
+trained models, and other materials are available on our project page.
+```
+Found metrics:
+- Method source code: "Code, trained models, and other materials are available on our project page." implies that the source code has been provided
+- "Data": "Code, trained models, and other materials are available on our project page." implies that the data has been provided
+
+Here is the abstract to check:
+```
+
+```
