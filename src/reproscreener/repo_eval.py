@@ -140,10 +140,8 @@ def evaluate_repo(path_corpus: Path) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame with the evaluation results.
     """
-    if (path_corpus / "repo").is_dir():
-        repo_path = path_corpus / "repo"
-    else:
-        repo_path = path_corpus
+
+    repo_path = path_corpus
 
     dependencies_found, dependencies_not_found = check_dependencies(repo_path)
     parsed_readme_found, parsed_readme_not_found = check_parsed_readme(repo_path)
@@ -210,7 +208,6 @@ def evaluate_repos(path_corpus: Path, evaluation_dict: dict) -> dict:
             repo_path = subdir
             arxiv_id = subdir.name
             evaluation_dict[arxiv_id] = evaluate_repo(repo_path)
-
     return evaluation_dict
 
 
@@ -231,11 +228,13 @@ def get_all_repo_eval_dict(path_corpus: Path) -> dict:
     return evaluation_dict
 
 
-def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
+def clone_repo(arxiv_id: str, repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
     """
-    Clone a repository from the given URL to the given path. If the repository already exists, it won't be overwritten unless specified.
+    Clone a repository from the given URL to the given path using the arxiv_id as the directory name.
+    If the repository already exists, it won't be overwritten unless specified.
 
     Args:
+        arxiv_id (str): The arxiv id of the paper.
         repo_url (str): URL of the repository to clone.
         path_corpus (Path): Path to clone the repository to.
         overwrite (bool, optional): Whether to overwrite the existing repository. Defaults to False.
@@ -243,20 +242,17 @@ def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Pat
     Returns:
         Path: Path to the cloned repository. Returns False if cloning fails.
     """
-    path_exists = path_corpus.is_dir()
+    cloned_path = path_corpus / arxiv_id
+    path_exists = cloned_path.is_dir()
 
     if path_exists and not overwrite:
         exists_text = Text.assemble(
             "Repo directory already exists: ",
-            (str(path_corpus), Style(underline=True, color="blue")),
+            (str(cloned_path), Style(underline=True, color="blue")),
             ", use the overwrite flag to download\n",
         )
         console.print(exists_text)
-        return path_corpus
-
-    path_corpus.mkdir(parents=True, exist_ok=True)
-    repo_name = repo_url.split("/")[-1].split(".git")[0]
-    cloned_path = path_corpus / repo_name
+        return cloned_path
 
     try:
         with console.status("Cloning repo...", spinner="dots"):
@@ -268,11 +264,13 @@ def clone_repo(repo_url: str, path_corpus: Path, overwrite: bool = False) -> Pat
         return False
 
 
-def clone_repos(repo_urls: List[str], path_corpus: Path, overwrite: bool = False) -> List[Path]:
+def clone_repos(arxiv_ids: List[str], repo_urls: List[str], path_corpus: Path, overwrite: bool = False) -> List[Path]:
     """
-    Clone a list of repositories from the given URLs to the given path. If a repository already exists, it won't be overwritten unless specified.
+    Clone a list of repositories from the given URLs to the given path using the arxiv_ids as the directory names.
+    If a repository already exists, it won't be overwritten unless specified.
 
     Args:
+        arxiv_ids (List[str]): List of arxiv ids corresponding to the repositories.
         repo_urls (List[str]): List of URLs of the repositories to clone.
         path_corpus (Path): Path to clone the repositories to.
         overwrite (bool, optional): Whether to overwrite the existing repositories. Defaults to False.
@@ -281,11 +279,8 @@ def clone_repos(repo_urls: List[str], path_corpus: Path, overwrite: bool = False
         List[Path]: List of paths to the cloned repositories. Returns False if cloning fails.
     """
     cloned_paths = []
-    for repo_url in repo_urls:
-        repo_name = repo_url.split("/")[-1].split(".git")[0]
-        arxiv_id = repo_name  # assuming repo name is the arXiv ID
-        path_to_clone = path_corpus / arxiv_id  # unique path for each repository
-        cloned_path = clone_repo(repo_url, path_to_clone, overwrite)
+    for arxiv_id, repo_url in zip(arxiv_ids, repo_urls):
+        cloned_path = clone_repo(arxiv_id, repo_url, path_corpus, overwrite)  # Pass path_corpus directly
         cloned_paths.append(cloned_path)
 
     return cloned_paths

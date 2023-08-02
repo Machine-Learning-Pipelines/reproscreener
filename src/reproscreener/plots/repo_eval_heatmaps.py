@@ -184,18 +184,35 @@ def plot_repo_clustermap(
         plt.close()
 
 
-if __name__ == "__main__":
-    path_corpus = Path("case-studies/arxiv-corpus/gold_standard/repo")
-    path_manual = Path("case-studies/arxiv-corpus/manual_eval.csv")
+def evaluate_and_save_plots(
+    path_corpus: Path = Path("case-studies/arxiv-corpus/gold_standard/"),
+    path_manual: Path = Path("case-studies/arxiv-corpus/manual_eval.csv"),
+):
+    (path_corpus / "output").mkdir(parents=True, exist_ok=True)
+    (path_corpus / "plots").mkdir(parents=True, exist_ok=True)
 
     gold_standard_ids = get_gold_standard_ids_from_manual(path_manual)
-    evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus)
+    evaluation_dict = repo_eval.get_all_repo_eval_dict(path_corpus / "repo")
     heatmap_df = prepare_repo_heatmap_df(evaluation_dict, gold_standard_ids)
-    # save the heatmap_df to a csv
-    heatmap_df.to_csv(Path("plots/") / "repo_heatmap_df.csv", index=False)
 
+    # create a copy for saving
+    heatmap_df_copy = heatmap_df.copy()
+
+    # apply the transformations to the copy
+    heatmap_df_copy.loc[
+        heatmap_df_copy["Matched_File"].isin(display_name_mapping.keys()), "Matched_File"
+    ] = heatmap_df_copy["Matched_File"]
+
+    # save the transformed copy to a csv
+    heatmap_df_copy.to_csv(Path("plots/") / "repo_heatmap_df.csv", index=False)
+    heatmap_df_copy.to_csv(Path("case-studies/arxiv-corpus/gold_standard/output") / "repo_heatmap_df.csv", index=False)
+
+    # plotting with original df
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval.png")
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=True, sort_y=False)
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=False, sort_y=True)
     plot_repo_heatmap(heatmap_df, filename="heatmap_repo_eval_sorted.png", sort_x=True, sort_y=True)
-    # plot_repo_clustermap(heatmap_df, filename="heatmap_repo_eval_grouped.png")
+
+
+if __name__ == "__main__":
+    evaluate_and_save_plots()

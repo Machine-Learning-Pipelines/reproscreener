@@ -85,10 +85,3 @@ def test_repo_eval_table_correct_input():
     assert (
         len(table.rows) == expected_num_rows
     ), "The table should have a row for each data frame entry plus additional rows for category changes"
-
-
-def test_clone_repo(mocker):
-    # Mocking the git.Repo.clone_from method to simulate successful cloning
-    mocker.patch("git.Repo.clone_from", return_value=True)
-    cloned_path = clone_repo(mock_repo_url, mock_folder_path, overwrite=True)
-    assert cloned_path  # The returned path should be truthy

@@ -1,298 +1,298 @@
 Paper_ID,Found_Variable
+1606.04671,Research questions
+1606.04671,Training data
 1606.04671,Research problem
 1606.04671,Hypothesis
-1606.04671,Research questions
-1606.04671,Objective/Goal
 1606.04671,Prediction
-1606.04671,Training data
 1606.04671,Experimental setup
+1606.04671,Objective/Goal
 1606.04671,Research method
+1903.09668,Training data
 1903.09668,Research problem
+1903.09668,Prediction
 1903.09668,Objective/Goal
 1903.09668,Research questions
-1903.09668,Prediction
-1903.09668,Training data
 1903.09668,Research method
 1904.10554,Research problem
 1904.10554,Hypothesis
 1904.10554,Objective/Goal
 1904.10554,Research questions
 1904.10554,Research method
-1908.05659,Research problem
-1908.05659,Hypothesis
 1908.05659,Research questions
-1908.05659,Objective/Goal
-1908.05659,Prediction
 1908.05659,Training data
+1908.05659,Research problem
+1908.05659,Prediction
+1908.05659,Hypothesis
+1908.05659,Objective/Goal
 1908.05659,Research method
 1909.00931,Research problem
 1909.00931,Hypothesis
-1909.00931,Research questions
 1909.00931,Prediction
 1909.00931,Experimental setup
+1909.00931,Research questions
 1909.00931,Method source code
 1909.00931,Research method
-1911.03867,Research problem
-1911.03867,Research questions
-1911.03867,Objective/Goal
-1911.03867,Test data
-1911.03867,Prediction
-1911.03867,Validation data
 1911.03867,Training data
+1911.03867,Research problem
+1911.03867,Test data
+1911.03867,Validation data
+1911.03867,Prediction
+1911.03867,Objective/Goal
+1911.03867,Research questions
 1911.03867,Research method
 2002.05905,Research problem
 2002.05905,Hypothesis
 2002.05905,Objective/Goal
-2002.05905,Research questions
 2002.05905,Experimental setup
+2002.05905,Research questions
 2002.05905,Research method
-2004.05258,Research problem
-2004.05258,Research questions
-2004.05258,Test data
 2004.05258,Training data
+2004.05258,Research problem
+2004.05258,Test data
+2004.05258,Research questions
 2004.05258,Research method
 2009.01947,Research problem
-2009.01947,Objective/Goal
-2009.01947,Research questions
 2009.01947,Pseudocode
 2009.01947,Experimental setup
+2009.01947,Objective/Goal
+2009.01947,Research questions
 2009.01947,Method source code
 2009.01947,Research method
 2010.04261,Research problem
-2010.04261,Hypothesis
-2010.04261,Research questions
-2010.04261,Objective/Goal
 2010.04261,Test data
+2010.04261,Hypothesis
 2010.04261,Prediction
 2010.04261,Experimental setup
+2010.04261,Objective/Goal
+2010.04261,Research questions
 2010.04261,Method source code
 2010.04261,Research method
+2010.04855,Research questions
 2010.04855,Research problem
 2010.04855,Hypothesis
-2010.04855,Research questions
-2010.04855,Objective/Goal
 2010.04855,Prediction
 2010.04855,Pseudocode
+2010.04855,Objective/Goal
 2010.04855,Research method
+2011.11576,Training data
 2011.11576,Research problem
-2011.11576,Hypothesis
-2011.11576,Objective/Goal
-2011.11576,Research questions
 2011.11576,Test data
 2011.11576,Prediction
-2011.11576,Training data
+2011.11576,Hypothesis
 2011.11576,Experimental setup
+2011.11576,Objective/Goal
+2011.11576,Research questions
 2011.11576,Method source code
 2011.11576,Research method
-2012.09302,Research questions
-2012.09302,Objective/Goal
+2012.09302,Training data
 2012.09302,Test data
 2012.09302,Prediction
-2012.09302,Training data
 2012.09302,Pseudocode
+2012.09302,Objective/Goal
+2012.09302,Research questions
 2012.09302,Method source code
 2012.09302,Research method
-2101.07354,Research problem
 2101.07354,Research questions
-2101.07354,Objective/Goal
+2101.07354,Research problem
 2101.07354,Prediction
+2101.07354,Objective/Goal
 2101.07354,Research method
+2102.11887,Training data
 2102.11887,Research problem
-2102.11887,Objective/Goal
-2102.11887,Research questions
 2102.11887,Test data
 2102.11887,Prediction
-2102.11887,Training data
+2102.11887,Objective/Goal
+2102.11887,Research questions
 2104.11893,Research problem
 2104.11893,Hypothesis
-2104.11893,Objective/Goal
 2104.11893,Prediction
 2104.11893,Pseudocode
 2104.11893,Experimental setup
+2104.11893,Objective/Goal
 2104.11893,Research method
 2104.12546,Research problem
-2104.12546,Hypothesis
-2104.12546,Research questions
-2104.12546,Objective/Goal
 2104.12546,Prediction
+2104.12546,Hypothesis
+2104.12546,Objective/Goal
+2104.12546,Research questions
 2104.12546,Method source code
 2104.12546,Research method
-2105.01099,Research problem
-2105.01099,Objective/Goal
 2105.01099,Research questions
+2105.01099,Research problem
 2105.01099,Prediction
+2105.01099,Objective/Goal
 2105.01099,Research method
+2105.01937,Prediction
 2105.01937,Objective/Goal
 2105.01937,Research questions
-2105.01937,Prediction
 2105.01937,Method source code
 2105.01937,Research method
-2105.15197,Research problem
-2105.15197,Hypothesis
 2105.15197,Objective/Goal
+2105.15197,Hypothesis
+2105.15197,Research problem
+2106.01528,Training data
 2106.01528,Research problem
 2106.01528,Hypothesis
-2106.01528,Research questions
-2106.01528,Objective/Goal
-2106.01528,Training data
 2106.01528,Pseudocode
+2106.01528,Objective/Goal
+2106.01528,Research questions
 2106.01528,Method source code
 2106.01528,Research method
-2106.03157,Research problem
-2106.03157,Objective/Goal
-2106.03157,Prediction
 2106.03157,Training data
+2106.03157,Research problem
+2106.03157,Prediction
 2106.03157,Experimental setup
-2106.03157,Method source code
+2106.03157,Objective/Goal
 2106.03157,Research method
-2106.03725,Research problem
-2106.03725,Objective/Goal
+2106.03157,Method source code
 2106.03725,Research method
-2106.06927,Research problem
-2106.06927,Objective/Goal
+2106.03725,Objective/Goal
+2106.03725,Research problem
 2106.06927,Research questions
+2106.06927,Research problem
 2106.06927,Prediction
 2106.06927,Experimental setup
+2106.06927,Objective/Goal
 2106.06927,Method source code
 2106.06927,Research method
+2106.07704,Training data
 2106.07704,Research problem
 2106.07704,Hypothesis
-2106.07704,Research questions
 2106.07704,Objective/Goal
-2106.07704,Training data
+2106.07704,Research questions
 2106.07704,Method source code
 2106.07704,Research method
 2106.10898,Research problem
+2106.10898,Prediction
 2106.10898,Hypothesis
 2106.10898,Objective/Goal
 2106.10898,Research questions
-2106.10898,Prediction
 2106.10898,Research method
-2106.12177,Research problem
-2106.12177,Objective/Goal
 2106.12177,Research questions
+2106.12177,Research problem
 2106.12177,Prediction
+2106.12177,Objective/Goal
 2106.12177,Research method
 2106.12936,Research problem
 2106.12936,Hypothesis
-2106.12936,Research questions
 2106.12936,Prediction
+2106.12936,Research questions
 2106.12936,Research method
-2106.13823,Research problem
 2106.13823,Research questions
-2107.01131,Research problem
-2107.01131,Hypothesis
-2107.01131,Research questions
-2107.01131,Objective/Goal
-2107.01131,Prediction
+2106.13823,Research problem
 2107.01131,Training data
+2107.01131,Research problem
+2107.01131,Prediction
+2107.01131,Hypothesis
 2107.01131,Pseudocode
 2107.01131,Experimental setup
+2107.01131,Objective/Goal
+2107.01131,Research questions
 2107.01131,Method source code
 2107.01131,Research method
 2108.09779,Research problem
-2108.09779,Research questions
-2108.09779,Objective/Goal
 2108.09779,Experimental setup
+2108.09779,Objective/Goal
+2108.09779,Research questions
 2108.09779,Method source code
 2108.09779,Research method
-2109.01372,Research problem
-2109.01372,Hypothesis
 2109.01372,Research questions
-2109.01372,Objective/Goal
-2109.01372,Prediction
 2109.01372,Training data
-2109.01372,Method source code
+2109.01372,Research problem
+2109.01372,Prediction
+2109.01372,Hypothesis
+2109.01372,Objective/Goal
 2109.01372,Research method
-2109.12784,Research problem
+2109.01372,Method source code
 2109.12784,Research questions
+2109.12784,Research problem
 2109.12784,Objective/Goal
-2109.12784,Method source code
 2109.12784,Research method
+2109.12784,Method source code
+2110.02343,Training data
 2110.02343,Research problem
-2110.02343,Objective/Goal
 2110.02343,Test data
 2110.02343,Prediction
-2110.02343,Training data
+2110.02343,Objective/Goal
 2110.02474,Research problem
 2110.02474,Hypothesis
-2110.02474,Research questions
-2110.02474,Objective/Goal
 2110.02474,Prediction
+2110.02474,Objective/Goal
+2110.02474,Research questions
 2110.02474,Research method
 2110.03135,Research questions
 2110.03135,Research method
 2110.05169,Research questions
 2110.05169,Method source code
-2110.08255,Prediction
 2110.08255,Research questions
-2110.08432,Research problem
-2110.08432,Objective/Goal
+2110.08255,Prediction
 2110.08432,Research questions
-2110.08432,Prediction
-2110.08432,Validation data
 2110.08432,Training data
+2110.08432,Research problem
+2110.08432,Validation data
+2110.08432,Prediction
 2110.08432,Experimental setup
+2110.08432,Objective/Goal
 2110.08432,Method source code
 2110.08432,Research method
-2110.09902,Research problem
-2110.09902,Research questions
-2110.09902,Prediction
 2110.09902,Training data
+2110.09902,Research problem
+2110.09902,Prediction
+2110.09902,Research questions
 2110.09902,Method source code
 2110.09902,Research method
-2110.11688,Research problem
 2110.11688,Research questions
 2110.11688,Research method
+2110.11688,Research problem
 2110.14241,Research problem
+2110.14241,Prediction
 2110.14241,Hypothesis
+2110.14241,Experimental setup
 2110.14241,Objective/Goal
 2110.14241,Research questions
-2110.14241,Prediction
-2110.14241,Experimental setup
 2110.14241,Research method
 2111.02997,Research problem
+2111.02997,Prediction
 2111.02997,Hypothesis
 2111.02997,Objective/Goal
 2111.02997,Research questions
-2111.02997,Prediction
 2111.02997,Method source code
 2111.02997,Research method
 2111.03664,Research problem
-2111.03664,Objective/Goal
-2111.03664,Research questions
 2111.03664,Prediction
 2111.03664,Experimental setup
+2111.03664,Objective/Goal
+2111.03664,Research questions
 2111.03664,Method source code
 2111.03664,Research method
+2111.08356,Research questions
+2111.08356,Training data
 2111.08356,Research problem
 2111.08356,Hypothesis
-2111.08356,Research questions
-2111.08356,Objective/Goal
 2111.08356,Prediction
-2111.08356,Training data
+2111.08356,Objective/Goal
 2111.08356,Research method
-2111.12673,Research problem
-2111.12673,Research questions
 2111.12673,Research method
-2111.15449,Research problem
+2111.12673,Research questions
+2111.12673,Research problem
 2111.15449,Research questions
-2111.15449,Objective/Goal
+2111.15449,Research problem
 2111.15449,Prediction
-2111.15449,Method source code
+2111.15449,Objective/Goal
 2111.15449,Research method
-2112.00016,Research problem
-2112.00016,Objective/Goal
+2111.15449,Method source code
 2112.00016,Research questions
-2112.00016,Prediction
 2112.00016,Training data
-2112.00016,Method source code
+2112.00016,Research problem
+2112.00016,Prediction
+2112.00016,Objective/Goal
 2112.00016,Research method
+2112.00016,Method source code
 2112.03432,No variables found
 2112.04871,Research problem
-2112.04871,Objective/Goal
-2112.04871,Research questions
 2112.04871,Prediction
 2112.04871,Experimental setup
+2112.04871,Objective/Goal
+2112.04871,Research questions
 2112.04871,Method source code
 2112.04871,Research method
