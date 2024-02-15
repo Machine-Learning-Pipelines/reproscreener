@@ -1,0 +1,24 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Reproscreener
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Adhithya
+    family-names: Bhaskar
+    email: adhithya@usc.edu
+    affiliation: University of Southern California
+  - given-names: Victoria
+    family-names: Stodden
+    email: vcs@stodden.net
+    affiliation: University of Southern California
+repository-code: >-
+  https://github.com/Machine-Learning-Pipelines/reproscreener
+url: 'https://reproscreener.com/'
+license: MIT
+version: 0.1.2
+date-released: '2024-02-15'
