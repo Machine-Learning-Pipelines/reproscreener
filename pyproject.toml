@@ -34,6 +34,7 @@ arxiv = "^1.4.7"
 transformers = "^4.30.2"
 adapter-transformers = "^3.2.1"
 
+
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
 pytest-cov = "^4.0.0"
@@ -52,7 +53,6 @@ rank-bm25 = "^0.2.2"
 faiss-gpu = "^1.7.2"
 torch = {version = "^2.1.0.dev20230708+cu121", allow-prereleases = true}
 
-
 [tool.poetry.group.extras.dependencies]
 pydrive2 = "^1.15.3"
 black = {extras = ["jupyter"], version = "^23.3.0"}
@@ -70,15 +70,14 @@ pylint = "^2.17.4"
 ipywidgets = "^8.0.6"
 shtab = "^1.6.1"
 openai = "^0.27.7"
-langchain = "^0.0.189"
-nltk = "^3.8.1"
+# langchain = "^0.0.189"
+# nltk = "^3.8.1"
 
 
 [[tool.poetry.source]]
-name = "nightly"
-url = "https://download.pytorch.org/whl/nightly/cu121"
-default = false
-secondary = false
+name = "torch-nightly"
+url = "https://download.pytorch.org/whl/nightly/cpu"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

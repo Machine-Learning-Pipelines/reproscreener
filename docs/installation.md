@@ -8,7 +8,7 @@ All you need is to pip install `reproscreener`!
 pip install reproscreener
 ```
 
-=== "pyenv"
+=== ["pyenv"](https://github.com/pyenv/pyenv-virtualenv)
 
     ``` bash
     pyenv install {{ versions.python }}
