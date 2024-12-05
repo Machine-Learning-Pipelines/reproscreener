@@ -1,6 +1,7 @@
 .DS_Store
 .vscode/
 .idea/
+poetry.lock*
 
 site/
 sphinxdocs/
@@ -142,3 +143,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.aider*
