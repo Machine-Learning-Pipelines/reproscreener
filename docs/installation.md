@@ -1,6 +1,6 @@
 # Installation
 
-To install `reproscreener`, we recommend using a virtual environment such as [pyenv](https://github.com/pyenv/pyenv) or [conda](https://docs.conda.io/en/latest/), or installing it using [pipx](https://pypa.github.io/pipx/). We recommend using python version {{ versions.python }}.
+To install `reproscreener`, we recommend using a virtual environment such as [pyenv]( https://github.com/pyenv/pyenv-virtualenv) or [conda](https://docs.conda.io/en/latest/), or installing it using [pipx](https://pypa.github.io/pipx/). We recommend using python version {{ versions.python }}.
 
 All you need is to pip install `reproscreener`! 
 
@@ -8,7 +8,7 @@ All you need is to pip install `reproscreener`!
 pip install reproscreener
 ```
 
-=== ["pyenv"](https://github.com/pyenv/pyenv-virtualenv)
+=== "pyenv"
 
     ``` bash
     pyenv install {{ versions.python }}
