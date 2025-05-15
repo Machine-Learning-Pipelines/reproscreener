@@ -5,7 +5,7 @@ import numpy as np
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 
-from reproscreener.utils import console
+from utils import console
 
 
 def gdrive_authenticate(client_secrets_path):

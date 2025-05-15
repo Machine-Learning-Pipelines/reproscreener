@@ -4,9 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-from reproscreener import tex_eval
-from reproscreener.utils import console, labels_mapping
-from reproscreener.gold_standard import get_gold_standard_ids_from_manual
+import tex_eval
+from utils import console, labels_mapping
+from gold_standard import get_gold_standard_ids_from_manual
 
 from typing import List
 

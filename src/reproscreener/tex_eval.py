@@ -15,8 +15,8 @@ from rich.text import Text
 from urlextract import URLExtract
 import pandas as pd
 
-from reproscreener import keywords
-from reproscreener.utils import console, log
+import keywords
+from utils import console, log
 
 
 def combine_tex_in_folder(folder_path: Path) -> Path:

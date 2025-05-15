@@ -8,7 +8,7 @@ import arxiv
 import pandas as pd
 from rich.progress import Progress
 
-from reproscreener.utils import console
+from utils import console
 
 progress = Progress(console=console)
 done_event = Event()
