@@ -7,14 +7,14 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
-from reproscreener import repo_eval, tex_eval
-from reproscreener.gold_standard import (
+import repo_eval, tex_eval
+from gold_standard import (
     get_gold_standard_ids_from_manual,
     repo_map_dict,
     tex_map_dict,
     split_parsed_readme,
 )
-from reproscreener.utils import console, labels_mapping, reverse_mapping
+from utils import console, labels_mapping, reverse_mapping
 
 
 background_colors = [

@@ -1,5 +1,5 @@
 import pandas as pd
-from reproscreener.gdrive_downloader import gdrive_get_manual_eval
+from gdrive_downloader import gdrive_get_manual_eval
 from pathlib import Path
 from typing import List
 

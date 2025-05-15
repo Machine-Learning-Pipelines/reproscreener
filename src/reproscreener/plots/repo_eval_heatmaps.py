@@ -6,9 +6,9 @@ from matplotlib.colors import ListedColormap
 import matplotlib.patheffects as path_effects
 from matplotlib.patches import Patch
 
-from reproscreener import repo_eval
-from reproscreener.utils import reverse_mapping, console
-from reproscreener.gold_standard import get_gold_standard_ids_from_manual
+import repo_eval
+from utils import reverse_mapping, console
+from gold_standard import get_gold_standard_ids_from_manual
 
 from typing import List
 

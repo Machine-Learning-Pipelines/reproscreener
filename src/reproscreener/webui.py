@@ -2,9 +2,9 @@ from pathlib import Path
 import logging
 import time
 import gradio as gr
-from reproscreener import tex_eval, repo_eval, report
-from reproscreener.utils import log, console
-from reproscreener.download_arxiv import download_extract_source
+import tex_eval, repo_eval, report
+from utils import log, console
+from download_arxiv import download_extract_source
 
 
 # Mapping from command-line strings to logging levels

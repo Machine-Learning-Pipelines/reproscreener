@@ -5,10 +5,10 @@ from rich.text import Text
 from rich.progress import Progress
 import typer
 
-from reproscreener import tex_eval, repo_eval, report
-from reproscreener.utils import log, console, download_extract_source
-from reproscreener.plots import tex_eval_heatmaps, repo_eval_heatmaps
-from reproscreener.scrape_arxiv import scrape_arxiv, get_paper_ids, init_paths, extract_tar_files
+import tex_eval, repo_eval
+from utils import log, console, download_extract_source
+from plots import tex_eval_heatmaps, repo_eval_heatmaps
+from scrape_arxiv import scrape_arxiv, get_paper_ids, init_paths, extract_tar_files
 
 app = typer.Typer()
 
@@ -79,13 +79,6 @@ def main(
         df_repo_results = repo_eval.evaluate_repo(cloned_path)
         repo_results = repo_eval.repo_eval_table(df_repo_results)
         console.print(repo_results)
-
-    if path_paper and cloned_path:
-        report_path = path_base / "report.html"
-        report.create_html_report(
-            paper_id, paper_title, found_vars, found_links, report_path, df_paper_results, df_repo_results
-        )
-        # console.print(f"Report saved to {report_path}")
 
     if not (arxiv or local_arxiv or repo or local_repo):
         raise ValueError("Must specify either an arXiv paper, a local paper, a repo, or a local repo.")

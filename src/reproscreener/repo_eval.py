@@ -8,7 +8,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from reproscreener.utils import console
+from utils import console
 
 path_style = Style(underline=True)
 
@@ -228,7 +228,7 @@ def get_all_repo_eval_dict(path_corpus: Path) -> dict:
     return evaluation_dict
 
 
-def clone_repo(arxiv_id: str, repo_url: str, path_corpus: Path, overwrite: bool = False) -> Path:
+def clone_repo(repo_url: str, cloned_path: Path, overwrite: bool = False) -> Path:
     """
     Clone a repository from the given URL to the given path using the arxiv_id as the directory name.
     If the repository already exists, it won't be overwritten unless specified.
@@ -242,7 +242,6 @@ def clone_repo(arxiv_id: str, repo_url: str, path_corpus: Path, overwrite: bool 
     Returns:
         Path: Path to the cloned repository. Returns False if cloning fails.
     """
-    cloned_path = path_corpus / arxiv_id
     path_exists = cloned_path.is_dir()
 
     if path_exists and not overwrite:

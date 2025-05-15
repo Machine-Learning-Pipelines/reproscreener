@@ -7,7 +7,7 @@ from rich.panel import Panel
 from rich.style import Style
 from rich.text import Text
 
-from reproscreener.tex_eval import (
+from src.reproscreener.tex_eval import (
     combine_tex_in_folder,
     extract_tex_urls,
     find_data_repository_links,
