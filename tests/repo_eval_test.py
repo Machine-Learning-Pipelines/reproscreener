@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from rich.table import Table
 
-from reproscreener.repo_eval import (
+from src.reproscreener.repo_eval import (
     check_dependencies,
     check_files,
     check_parsed_readme,

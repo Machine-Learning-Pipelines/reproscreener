@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 import torch
-from reproscreener.utils import console
+from utils import console
 from rich.console import Console
 from rich.table import Table
 from sklearn.metrics.pairwise import cosine_similarity

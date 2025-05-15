@@ -4,7 +4,7 @@ import pandas as pd
 import tiktoken
 from pathlib import Path
 from rich.progress import Progress
-from reproscreener.utils import log, console
+from utils import log, console
 
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:

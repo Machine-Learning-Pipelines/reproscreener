@@ -1,4 +1,4 @@
-from reproscreener.gold_standard import get_gold_standard_ids_from_manual
+from src.reproscreener.gold_standard import get_gold_standard_ids_from_manual
 
 
 def test_get_gold_standard_ids_from_manual():
