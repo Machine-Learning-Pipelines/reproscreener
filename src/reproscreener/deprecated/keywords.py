@@ -31,7 +31,6 @@ def generate_gunderson_dict():
     keys_training_data = list(exrex.generate("(T|t)raining (D|d)ata"))
     keys_validation_data = list(exrex.generate("(V|v)alidation (D|d)ata"))
     keys_test_data = list(exrex.generate("(T|t)est (D|d)ata"))
-    keys_dataset = keys_training_data + keys_validation_data + keys_test_data
     keys_experiment_setup = list(
         exrex.generate(
             "(E|e)xperimental( |-)(S|s)etup|" "((H|h)yper( |-)(P|p)arameters)"
@@ -53,7 +52,9 @@ def generate_gunderson_dict():
         "research_method": keys_research_method,
         "research_questions": keys_research_questions,
         "pseudocode": keys_pseudocode,
-        "dataset": keys_dataset,
+        "training_data": keys_training_data,
+        "validation_data": keys_validation_data,
+        "test_data": keys_test_data,
         "hypothesis": keys_hypothesis,
         "prediction": keys_prediction,
         "method_source_code": keys_method_source_code,
