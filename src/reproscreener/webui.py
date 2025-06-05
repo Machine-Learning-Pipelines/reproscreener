@@ -1,102 +1,287 @@
+import streamlit as st
 from pathlib import Path
 import logging
-import time
-import gradio as gr
-import tex_eval, repo_eval, report
-from utils import log, console
-from download_arxiv import download_extract_source
+import pandas as pd
+import torch
+torch.classes.__path__ = [] # for the torch streamlit error RuntimeError: Tried to instantiate class '__path__._path', 
 
+from paper_analyzer import analyze_arxiv_paper, parse_arxiv_id
+from repo_analyzer import analyze_github_repo
 
-# Mapping from command-line strings to logging levels
-LOG_LEVELS = {
-    "debug": logging.DEBUG,
-    "info": logging.INFO,
-    "warning": logging.WARNING,
-    "error": logging.ERROR,
-    "critical": logging.CRITICAL,
-}
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log = logging.getLogger(__name__)
 
+BASE_DOWNLOAD_DIR = Path("./reproscreener_downloads")
+ARXIV_DOWNLOAD_DIR = BASE_DOWNLOAD_DIR / "arxiv_papers"
+REPO_CLONE_DIR = BASE_DOWNLOAD_DIR / "git_repos"
 
-def evaluate_paper(arxiv: str = None, local_arxiv: str = None, log_level: str = "info", progress=gr.Progress()):
-    # Set the logging level based on the command-line option
-    log.setLevel(LOG_LEVELS[log_level])
-    path_download = Path("case-studies/individual")
-    path_download.mkdir(parents=True, exist_ok=True)
+ARXIV_DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
+REPO_CLONE_DIR.mkdir(parents=True, exist_ok=True)
 
-    if arxiv:
-        paper_id = arxiv.split("/")[-1]
-        console.rule(f"\nPaper evaluation: {paper_id}")
-        path_base = path_download / paper_id
-        paper_title, path_paper = download_extract_source(arxiv, path_base / "paper")
-    elif local_arxiv:
-        path_paper = Path(local_arxiv)
-        paper_id = path_paper.name
-        console.rule("")
+st.set_page_config(layout="wide", page_title="ReproScreener", initial_sidebar_state="collapsed")
+
+st.title("ReproScreener")
+st.header("Automating reproducibility evaluation of papers and code")
+
+def clean_title(title):
+    """Clean up title text by replacing newlines with spaces"""
+    if isinstance(title, str):
+        return title.replace("\n", " ").strip()
+    return title
+
+def format_list_as_html(items_list):
+    """Format a list as HTML bullet points"""
+    if not items_list or len(items_list) == 0:
+        return "None found"
+    
+    html = "<ul style='padding-left:1rem; margin-top:0.5rem; margin-bottom:0.5rem'>"
+    for item in items_list:
+        html += f"<li>{item}</li>"
+    html += "</ul>"
+    return html
+
+def format_links_as_html(links_list):
+    """Format a list of links as clickable HTML links"""
+    if not links_list or len(links_list) == 0:
+        return "None found"
+    
+    html = "<ul style='padding-left:1rem; margin-top:0.5rem; margin-bottom:0.5rem'>"
+    for link in links_list:
+        html += f"<li><a href='{link}' target='_blank'>{link}</a></li>"
+    html += "</ul>"
+    return html
+
+def prepare_arxiv_display_df(df):
+    """Prepare the dataframe for display in Streamlit"""
+    if df.empty:
+        return df
+    
+    display_df = df.copy()
+    
+    display_df["Title"] = display_df["Title"].apply(clean_title)
+    
+    # Convert lists to formatted HTML for variables and links
+    if "Found Variables" in display_df.columns:
+        display_df["Variables"] = display_df["Found Variables"].apply(format_list_as_html)
+        
+    if "Found Links" in display_df.columns:
+        display_df["Links"] = display_df["Found Links"].apply(format_links_as_html)
+    
+    # Drop the original columns that have been transformed
+    display_columns = ["Paper ID", "Title"]
+    if "Variables" in display_df.columns:
+        display_columns.append("Variables")
+    if "Links" in display_df.columns:
+        display_columns.append("Links")
+    if "Error" in display_df.columns and df["Error"].notna().any():
+        display_columns.append("Error")
+    
+    return display_df[display_columns]
+
+def prepare_repo_display_df(df):
+    """Prepare the repository dataframe for display"""
+    if df.empty:
+        return df
+    
+    display_df = df.copy()
+    
+    # Format any list columns
+    for col in display_df.columns:
+        if display_df[col].apply(lambda x: isinstance(x, list)).any():
+            display_df[col] = display_df[col].apply(
+                lambda x: ", ".join(x) if isinstance(x, list) and x else "None"
+            )
+    
+    return display_df
+
+tab1, tab2 = st.tabs(["Manuscript Evaluation (arXiv)", "Repository Evaluation (GitHub)"])
+with tab1:
+    st.header("Manuscript Evaluation (arXiv)")
+    # Persist results across interactions in session_state
+    if "arxiv_results" not in st.session_state:
+        st.session_state["arxiv_results"] = {"tex": pd.DataFrame(), "pdf": pd.DataFrame()}
+
+    arxiv_url_type = st.radio("Select the type of arXiv URL to *evaluate now*:", ("tex", "pdf"))
+    arxiv_urls_text = st.text_area("Enter arXiv URLs (one per line):", height=100, key="arxiv_urls")
+    evaluate_arxiv_button = st.button("Evaluate arXiv Manuscript(s)", key="eval_arxiv")
+    
+    # Placeholder for combined display
+    combined_placeholder = st.container()
+
+with tab2:
+    st.header("Repository Evaluation (GitHub)")
+    repo_urls_text = st.text_area("Enter GitHub Repository URLs (one per line):", height=100, key="repo_urls")
+    evaluate_repo_button = st.button("Evaluate GitHub Repository(s)", key="eval_repo")
+    
+    repo_results_placeholder = st.empty()
+
+if evaluate_arxiv_button and arxiv_urls_text:
+    arxiv_urls = [url.strip() for url in arxiv_urls_text.split('\n') if url.strip()]
+    if arxiv_urls:
+        st.info("Processing arXiv manuscripts...")
+        all_paper_results = pd.DataFrame()
+        
+        for url in arxiv_urls:
+            try:
+                log.info(f"Analyzing arXiv URL: {url}")
+                paper_id_for_path = parse_arxiv_id(url)
+                paper_specific_download_dir = ARXIV_DOWNLOAD_DIR / paper_id_for_path
+                result_df = analyze_arxiv_paper(url, paper_specific_download_dir, arxiv_url_type)
+                all_paper_results = pd.concat([all_paper_results, result_df], ignore_index=True)
+            except Exception as e:
+                log.error(f"Error processing arXiv URL {url}: {e}")
+                error_df = pd.DataFrame({
+                    "Paper ID": [url.split('/')[-1]],
+                    "Title": ["Error"],
+                    "Found Variables": [[]],
+                    "Found Links": [[]],
+                    "Error": [str(e)]
+                })
+                all_paper_results = pd.concat([all_paper_results, error_df], ignore_index=True)
+        
+        # Store results in session state
+        st.session_state["arxiv_results"][arxiv_url_type] = all_paper_results
+        st.success("arXiv manuscript evaluation complete!")
     else:
-        path_paper = None
+        st.warning("Please enter at least one arXiv URL.")
 
-    if path_paper is not None:
-        combined_tex = tex_eval.combine_tex_in_folder(path_paper)
-        found_vars = tex_eval.find_tex_variables(combined_tex)
-        urls = tex_eval.extract_tex_urls(combined_tex)
-        found_links = tex_eval.find_data_repository_links(urls)
-        _, df_paper_results = tex_eval.paper_evaluation_results(paper_id, found_vars, found_links, paper_title)
-        progress(1.0)  # Mark progress as complete
-        return df_paper_results
+def render_combined_results():
+    tex_df = st.session_state["arxiv_results"].get("tex", pd.DataFrame())
+    pdf_df = st.session_state["arxiv_results"].get("pdf", pd.DataFrame())
 
+    if tex_df.empty and pdf_df.empty:
+        combined_placeholder.info("No evaluations yet.")
+        return
 
-def evaluate_repo(repo: str = None, local_repo: str = None, log_level: str = "info", progress=gr.Progress()):
-    # Set the logging level based on the command-line option
-    log.setLevel(LOG_LEVELS[log_level])
-    path_download = Path("case-studies/individual")
-    path_download.mkdir(parents=True, exist_ok=True)
+    combined_placeholder.markdown("---")
+    combined: dict = {}
 
-    if repo:
-        repo_name = repo.split("/")[-1].split(".git")[0]
-        cloned_path = repo_eval.clone_repo(repo, path_download / repo_name)
-    elif local_repo:
-        cloned_path = Path(local_repo)
+    def _add_rows(df: pd.DataFrame, fmt: str):
+        for _, row in df.iterrows():
+            pid = row["Paper ID"]
+            entry = combined.setdefault(pid, {
+                "title": row["Title"],
+                "tex_vars": {}, "pdf_vars": {},
+                "tex_links": [], "pdf_links": []
+            })
+            if fmt == "tex":
+                # merge variables
+                for k, v in row["Found Variables"].items():
+                    entry.setdefault("tex_vars", {}).setdefault(k, set()).update(v)
+                entry["tex_links"].extend(row["Found Links"])
+            else:
+                for k, v in row["Found Variables"].items():
+                    entry.setdefault("pdf_vars", {}).setdefault(k, set()).update(v)
+                entry["pdf_links"].extend(row["Found Links"])
+
+    if not tex_df.empty:
+        _add_rows(tex_df, "tex")
+    if not pdf_df.empty:
+        _add_rows(pdf_df, "pdf")
+
+    for pid, data in combined.items():
+        combined_placeholder.subheader(f"{pid}: {clean_title(data['title'])}")
+
+        # ------------ Variables ------------
+        combined_placeholder.markdown("**Found Variables**")
+        v_col_tex, v_col_pdf = combined_placeholder.columns(2)
+
+        # TeX variables DataFrame
+        if data["tex_vars"]:
+            tex_var_df = pd.DataFrame([
+                {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
+            ])
+            v_col_tex.dataframe(tex_var_df, use_container_width=True)
+        else:
+            v_col_tex.info("No variables found in TeX")
+
+        # PDF variables DataFrame
+        if data["pdf_vars"]:
+            pdf_var_df = pd.DataFrame([
+                {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
+            ])
+            v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
+        else:
+            v_col_pdf.info("No variables found in PDF")
+
+        # ------------ Links ------------
+        combined_placeholder.markdown("**Found Links**")
+        l_col_tex, l_col_pdf = combined_placeholder.columns(2)
+
+        if data["tex_links"]:
+            tex_links_df = pd.DataFrame(sorted(set(data["tex_links"])), columns=["Link"])
+            l_col_tex.dataframe(tex_links_df, use_container_width=True)
+        else:
+            l_col_tex.info("No links found in TeX")
+
+        if data["pdf_links"]:
+            pdf_links_df = pd.DataFrame(sorted(set(data["pdf_links"])), columns=["Link"])
+            l_col_pdf.dataframe(pdf_links_df, use_container_width=True)
+        else:
+            l_col_pdf.info("No links found in PDF")
+
+render_combined_results()
+
+if evaluate_repo_button and repo_urls_text:
+    repo_urls = [url.strip() for url in repo_urls_text.split('\n') if url.strip()]
+    if repo_urls:
+        repo_results_placeholder.info("Processing GitHub repositories...")
+        all_repo_results = []
+        
+        for url in repo_urls:
+            try:
+                log.info(f"Analyzing GitHub URL: {url}")
+                result = analyze_github_repo(url, REPO_CLONE_DIR)
+                all_repo_results.append(result)
+            except Exception as e:
+                log.error(f"Error processing GitHub URL {url}: {e}")
+                all_repo_results.append({"Repo URL": url, "Error": str(e)})
+        
+        with repo_results_placeholder.container():
+            st.subheader("Repository Evaluation Results:")
+            
+            # Convert results to dataframe
+            repo_df = pd.DataFrame()
+            for res in all_repo_results:
+                if res.get("Error"):
+                    error_df = pd.DataFrame({
+                        "Repo URL": [res.get("Repo URL", "N/A")],
+                        "Error": [res.get("Error")]
+                    })
+                    repo_df = pd.concat([repo_df, error_df], ignore_index=True)
+                else:
+                    analysis_data = res.get("Analysis", [])
+                    if analysis_data:
+                        # Add Repo URL to each row
+                        for item in analysis_data:
+                            item["Repo URL"] = res.get("Repo URL", "N/A")
+                        df = pd.DataFrame(analysis_data)
+                        repo_df = pd.concat([repo_df, df], ignore_index=True)
+            
+            if not repo_df.empty:
+                # Prepare display dataframe
+                display_df = prepare_repo_display_df(repo_df)
+                st.write(display_df.to_html(escape=False), unsafe_allow_html=True)
+                
+                # Export option
+                csv = repo_df.to_csv(index=False)
+                current_time = pd.Timestamp.now().strftime("%Y-%m-%dT%H-%M")
+                st.download_button(
+                    label="Download results as CSV",
+                    data=csv,
+                    file_name=f"{current_time}_repo_export.csv",
+                    mime="text/csv"
+                )
+            else:
+                st.warning("No results were obtained.")
+                
+            st.success("GitHub repository evaluation complete!")
     else:
-        cloned_path = None
+        repo_results_placeholder.warning("Please enter at least one GitHub repository URL.")
 
-    if cloned_path is not None:
-        df_repo_results = repo_eval.evaluate_repo(cloned_path)
-        repo_results = repo_eval.repo_eval_table(df_repo_results)
-        progress(1.0)  # Mark progress as complete
-        return repo_results
-
-
-with gr.Blocks() as demo:
-    gr.Markdown("Reproscreener tool: Evaluate ArXiv papers and Git repositories.")
-
-    with gr.Tab("Evaluate Paper"):
-        with gr.Row():
-            arxiv_input = gr.Textbox(lines=2, label="arXiv URL")
-            local_arxiv_input = gr.Textbox(lines=2, label="Local arXiv Directory")
-            log_level_input = gr.Dropdown(choices=["debug", "info", "warning", "error", "critical"], label="Log Level")
-            evaluate_paper_button = gr.Button("Evaluate Paper")
-        paper_result_output = gr.Textbox()
-
-    evaluate_paper_button.click(
-        evaluate_paper,
-        inputs=[arxiv_input, local_arxiv_input, log_level_input],
-        outputs=paper_result_output,
-    )
-
-    with gr.Tab("Evaluate Repo"):
-        with gr.Row():
-            repo_input = gr.Textbox(lines=2, label="Repo URL")
-            local_repo_input = gr.Textbox(lines=2, label="Local Repo Directory")
-            log_level_input = gr.Dropdown(choices=["debug", "info", "warning", "error", "critical"], label="Log Level")
-            evaluate_repo_button = gr.Button("Evaluate Repo")
-        repo_result_output = gr.Textbox()
-
-    evaluate_repo_button.click(
-        evaluate_repo,
-        inputs=[repo_input, local_repo_input, log_level_input],
-        outputs=repo_result_output,
-    )
-
-if __name__ == "__main__":
-    demo.queue()
-    demo.launch()
+st.sidebar.header("About ReproScreener")
+st.sidebar.info(
+    "This tool helps evaluate the reproducibility of research papers "
+    "from arXiv and code repositories from GitHub. "
+    "Enter URLs in the respective text areas and click evaluate."
+) 
