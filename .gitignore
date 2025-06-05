@@ -1,14 +1,33 @@
+data/
+docs/z_client_secrets.json
+__marimo__
+.env
+.python-version
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.DS_Store
+
+# Virtual environments
+.venv
+
+repro-screener.code-workspace
+repro_screener_downloads/
+uv.lock
+
 .DS_Store
 .vscode/
 .idea/
 poetry.lock*
-
+.cursor
 site/
 sphinxdocs/
 
-case-studies/individual/
-case-studies/arxiv-corpus/gold_standard_old/
-case-studies/arxiv-corpus/gold_standard_test/
 client_secrets.json
 
 outputs/
