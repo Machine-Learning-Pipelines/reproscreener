@@ -17,7 +17,7 @@ poetry add flake8 "black[jupyter]" mypy loguru beautifulsoup4 bandit seaborn typ
 ```
 
 ```
-poetry add ipykernel streamlit types-tabulate pdfx jupyter-contrib-nbextensions tabulate mkdocs mkdocs-bibtex mkdocs-material pymdown-extensions mkdocstrings-python mkdocs-jupyter markdown-it-py linkify-it-py plotly graphviz pygraphviz --group explore
+poetry add ipykernel streamlit types-tabulate pdfx jupyter-contrib-nbextensions tabulate mkdocs mkdocs-bibtex mkdocs-material pymdown-extensions mkdocstrings-python mkdocs-jupyter mkdocs-macros-plugin markdown-it-py linkify-it-py plotly graphviz pygraphviz --group explore
 ```
 
 ```

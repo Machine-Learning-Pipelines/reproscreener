@@ -1,0 +1,61 @@
+\section{Introduction}
+
+
+
+
+
+
+Off-policy reinforcement learning is an important research direction as the reuse of old experience promises to make these methods more sample efficient than their on-policy counterparts. This is an important property for many applications such as robotics where  interactions with the environment are very time- and cost-intensive.
+Many successful off-policy methods make use of a learned Q-value function~\cite{td3,SAC,hessel2018rainbow,dqn15}. 
+If the action space is discrete the Q-function can be directly  used to generate actions while for continuous action spaces it is usually used in an actor-critic setting where the policy is trained to choose actions that maximize the Q-function. In both cases accurate estimates of the Q-values are of crucial importance.
+
+% \looseness=-1
+% \looseness=-1 \spaceskip= 2pt plus 1pt minus 1.5pt  \spaceskip= 3pt plus 2pt minus 2pt
+Unfortunately, learning the Q-function off-policy can lead to an overestimation bias~\cite{Thrun+Schwartz:1993}.
+Especially when a nonlinear function approximator is used to model the Q-function, there are many potential sources of bias.
+Different heuristics were proposed for their mitigation, such as the double estimator in the case of discrete action spaces~\cite{hasselt2016deepdouble} or taking the minimum of two estimates in the case of continuous actions~\cite{td3}.
+While these methods successfully prevent extreme overestimation, due to their coarse nature, they can  still induce under- or overestimation bias to a varying degree depending on the environment~\cite{Lan2020Maxmin}.\looseness=-1
+
+To overcome these problems we propose a principled and general method to alleviate the bias called Adaptively Calibrated Critics (ACC).
+Our algorithm uses the most recent on-policy rollouts to determine the current bias of the Q-estimates and adjusts a bias controlling parameter accordingly.
+This parameter adapts the size of the temporal difference (TD) targets  such that the bias can be corrected in the subsequent updates.
+As the parameter changes slower than the rollout returns, our method still benefits from stable and low-variance temporal difference targets, while it incorporates the information from unbiased but high variance samples from the recent policy to reduce the bias. 
+
+
+{\spaceskip= 2pt plus 1pt minus 1.5pt  \spaceskip= 3pt plus 2pt minus 2pt We apply ACC to Truncated Quantile Critics (TQC) \cite{tqc}, which is a recent off-policy actor-critic algorithm for continuous control showing strong performance on various tasks. 
+In TQC the bias can be controlled in a finegrained way with the help of a hyperparameter that has to be tuned for every environment.
+ACC allows to automatically adjusts this parameter online during the training in the environment.
+As a result, it eliminates the need to tune this hyperparameter in a new environment, which is very expensive or even infeasible for many applications.}
+
+% \looseness=-1
+We evaluate our algorithm on a range of continuous control tasks from OpenAI gym \cite{gymopenai} and robotic tasks from the meta world benchmark \cite{yu2020meta} and exceed the current state-of-the-art results among all algorithms that do not need  tuning of environment-specific hyperparameters.
+For each environment, ACC matches the performance of TQC with the optimal hyperparameter for that environment.
+Further, we show that the automatic bias correction allows to increase the number of value function updates performed per environment step, which results in even larger performance gains in the sample-efficient regime.
+We additionally apply ACC to the TD3 algorithm \cite{td3} where it also leads to notably improved performance, underscoring the generality of our proposed method.
+% \linepenalty 
+To summarize, the main contributions of this work are:
+\begin{enumerate}[leftmargin=0.72cm]
+    \item We propose Adaptively Calibrated Critics, a new general algorithm  that reduces the bias of value estimates in a principled fashion with the help of the most recent unbiased on-policy rollouts.
+    \item As a practical implementation we describe how ACC can be applied to learn a bias-controlling hyperparameter of the TQC algorithm and show that the resulting algorithm sets a new state of the art on the OpenAI continuous control benchmark suite.
+    \item ACC achieves strong performance on robotics tasks.
+    % \item We demonstrate that ACC is a general algorithm by additionally applying it successfully to TD3.
+    \item We demonstrate that ACC is a general algorithm with respect to the adjusted parameter by additionally applying it successfully to TD3.
+    % \item We evaluate the resulting algorithm and show that it sets a new state of the art  on the OpenAI continuous control benchmark suite.
+\end{enumerate}
+\looseness=-1
+
+% To summarize the main contributions of this work, we show:
+% \begin{enumerate}[leftmargin=0.72cm]
+%     \item We propose Adaptively Calibrated Critics, a new general algorithm  that reduces the bias of value estimates in a principled fashion with the help of the most recent unbiased on-policy rollouts.
+%     \item As a practical implementation we describe how ACC can be applied to learn a bias-controlling hyperparameter of the TQC algorithm and show that the resulting algorithm sets a new state of the art on the OpenAI continuous control benchmark suite.
+%     \item We show that ACC achievs strong performance on robotics tasks.
+%     % \item We demonstrate that ACC is a general algorithm by additionally applying it successfully to TD3.
+%     \item We demonstrate that ACC is a general algorithm with respect to the adjusted parameter by additionally applying it successfully to TD3.
+%     % \item We evaluate the resulting algorithm and show that it sets a new state of the art  on the OpenAI continuous control benchmark suite.
+% \end{enumerate}
+
+To allow for reproducibility of our results we describe our algorithm in detail, report all hyperparameters, use a large number of random seeds for evaluation, and made the source code publicly available\footnote{\url{https://github.com/Nicolinho/ACC}}. 
+
+
+
+

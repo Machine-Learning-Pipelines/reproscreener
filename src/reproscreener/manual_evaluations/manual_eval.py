@@ -1,7 +1,8 @@
 from pathlib import Path
 import pandas as pd
+from importlib import resources
 import logging
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, Optional, Union
 import numpy as np
 
 log = logging.getLogger(__name__)
@@ -9,8 +10,7 @@ log = logging.getLogger(__name__)
 class ManualEvaluationParser:
     """Parser for manual evaluation CSV files with standardized format."""
     
-    def __init__(self, base_dir: str = "manual_evaluations"):
-        self.base_dir = Path(base_dir)
+    def __init__(self):
         self.standardized_metrics = {
             # Binary metrics (0/1 or True/False)
             'problem': 'problem_identified',
@@ -85,14 +85,9 @@ class ManualEvaluationParser:
     
     def parse_abstract_evaluation(self, filename: str = "abstract_manual_evaluation.csv") -> pd.DataFrame:
         """Parse the abstract evaluation CSV file."""
-        file_path = self.base_dir / filename
-        
-        if not file_path.exists():
-            log.error(f"File not found: {file_path}")
-            return pd.DataFrame()
-        
         try:
-            df = pd.read_csv(file_path)
+            path = get_abstract_evaluation_path()
+            df = pd.read_csv(path)
             df = df.iloc[1:] # remove header rows
             df = df.iloc[:-1] # remove totals row
 
@@ -127,22 +122,17 @@ class ManualEvaluationParser:
             
             df = pd.DataFrame(standardized_data)
             return self._finalize_dataframe(df)
-            
+                
         except Exception as e:
             log.error(f"Error parsing abstract evaluation file: {e}")
             return pd.DataFrame()
     
     def parse_agreement_evaluation(self, filename: str = "abstract_gpt_agreement_with_manual.csv") -> pd.DataFrame:
         """Parse the GPT agreement evaluation CSV file."""
-        file_path = self.base_dir / filename
-        
-        if not file_path.exists():
-            log.error(f"File not found: {file_path}")
-            return pd.DataFrame()
-        
         try:
+            path = get_agreement_evaluation_path()
             # Skip the first row (note) and use the second row as headers
-            df = pd.read_csv(file_path, skiprows=1)
+            df = pd.read_csv(path, skiprows=1)
             
             # Remove header rows and totals
             df = df[~df['paper'].isin(['Paper', 'Totals']) & df['paper'].notna()]
@@ -183,21 +173,16 @@ class ManualEvaluationParser:
             
             df = pd.DataFrame(standardized_data)
             return self._finalize_dataframe(df)
-            
+                
         except Exception as e:
             log.error(f"Error parsing agreement evaluation file: {e}")
             return pd.DataFrame()
     
     def parse_manuscript_evaluation(self, filename: str = "full_manuscript_manual_evaluation.csv") -> pd.DataFrame:
         """Parse the manuscript evaluation CSV file."""
-        file_path = self.base_dir / filename
-        
-        if not file_path.exists():
-            log.error(f"File not found: {file_path}")
-            return pd.DataFrame()
-        
         try:
-            df = pd.read_csv(file_path)
+            path = get_manuscript_evaluation_path()
+            df = pd.read_csv(path)
             
             # Remove header description row and totals row
             df = df[~df['paper'].isin(['Paper', 'Totals']) & df['paper'].notna()]
@@ -261,7 +246,7 @@ class ManualEvaluationParser:
             
             df = pd.DataFrame(standardized_data)
             return self._finalize_dataframe(df)
-            
+                
         except Exception as e:
             log.error(f"Error parsing manuscript evaluation file: {e}")
             return pd.DataFrame()
@@ -437,10 +422,37 @@ class ManualEvaluationParser:
         return df
 
 
-def load_manual_evaluations(base_dir: str = "manual_evaluations") -> ManualEvaluationParser:
+def load_manual_evaluations() -> ManualEvaluationParser:
     """Factory function to create and return a ManualEvaluationParser instance."""
-    return ManualEvaluationParser(base_dir)
+    return ManualEvaluationParser()
 
+
+def get_abstract_evaluation_path() -> Path:
+    """Get the path to the abstract evaluation CSV file.
+    
+    Returns:
+        Path: Path object pointing to the abstract evaluation CSV file.
+    """
+    with resources.path("reproscreener.manual_evaluations", "abstract_manual_evaluation.csv") as path:
+        return Path(path)
+
+def get_agreement_evaluation_path() -> Path:
+    """Get the path to the GPT agreement evaluation CSV file.
+    
+    Returns:
+        Path: Path object pointing to the GPT agreement evaluation CSV file.
+    """
+    with resources.path("reproscreener.manual_evaluations", "abstract_gpt_agreement_with_manual.csv") as path:
+        return Path(path)
+
+def get_manuscript_evaluation_path() -> Path:
+    """Get the path to the manuscript evaluation CSV file.
+    
+    Returns:
+        Path: Path object pointing to the manuscript evaluation CSV file.
+    """
+    with resources.path("reproscreener.manual_evaluations", "full_manuscript_manual_evaluation.csv") as path:
+        return Path(path)
 
 def main():
     """Example usage of the manual evaluation parser."""

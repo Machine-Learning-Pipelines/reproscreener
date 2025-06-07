@@ -1,7 +1,7 @@
 import glob
 import urllib.parse
 from pathlib import Path
-from typing import List, Set, Tuple, Dict, Union, Optional
+from typing import List, Set, Tuple, Dict
 import logging
 import re
 
@@ -11,9 +11,9 @@ import tarfile
 from flashtext import KeywordProcessor
 from urlextract import URLExtract
 import pandas as pd
-
-import keywords
 from docling.document_converter import DocumentConverter
+
+from .keywords import generate_gunderson_dict
 
 log = logging.getLogger(__name__)
 
@@ -154,7 +154,7 @@ def combine_files_in_folder(folder_path: Path, file_extensions: List[str] = [".t
 
 def find_variables(combined_path: Path):
     """Return a list of (variable_category, matched_phrase) pairs found in the paper."""
-    keyword_dict = keywords.generate_gunderson_dict()
+    keyword_dict = generate_gunderson_dict()
 
     pattern_to_category = {}
     keyword_processor = KeywordProcessor(case_sensitive=True)
@@ -282,11 +282,13 @@ def analyze_arxiv_paper(arxiv_url: str, download_dir: Path, url_type: str = "tex
             "Error": [str(e)]
         })
 
-if __name__ == '__main__':
+def main():
     logging.basicConfig(level=logging.INFO)
     sample_arxiv_url = "https://arxiv.org/abs/2111.12673"
     temp_download_dir = Path("./temp_arxiv_downloads")
-    
     results = analyze_arxiv_paper(sample_arxiv_url, temp_download_dir)
     print("\nPaper Analysis Results:")
     print(results)
+
+if __name__ == '__main__':
+    main()

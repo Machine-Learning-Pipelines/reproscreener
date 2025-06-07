@@ -1,0 +1,145 @@
+\section{Adaptively Calibrated Critics }
+
+In this section, we will introduce the problem of estimation bias in TD learning, present our method ACC and demonstrate how it can be applied to TQC.
+
+\subsection{Over- and Underestimation Bias}
+
+
+The problem of overestimation bias in temporal difference learning with function approximation has been known for a long time \cite{Thrun+Schwartz:1993}.
+In Q-learning \cite{watkins1992q} the predicted Q-value $Q(\stt,\at)$ is regressed onto the target given by $y = \rt + \gamma \max_a Q(\stone, a)$.
+%Updates of this form converge 
+In the tabular case and under mild assumptions the Q-values converge to that of the optimal policy \cite{watkins1992q} with this update rule. However, using a function approximator to generate the Q-value introduces an approximation error.
+Even under the assumption of zero mean noise corruption of the Q-value
+$\E[\epsilon_a] = 0$,  an overestimation bias occurs in the computation of the target value because of Jensen's inequality
+\vspace{-0.2cm}
+\begin{align}
+    \max_a Q(\stone, a) &= \max_a \E [ Q(\stone, a) + \epsilon_a] \nonumber \\
+    & \leq \E \big[\max_a \{Q(\stone, a) + \epsilon_a\} \big] .
+    \vspace{-0.9cm}
+\end{align}\\[-0.5cm]
+In continuous action spaces it is impossible to take the maximum over all actions. The most successful algorithms rely on an actor-critic structure where the actor is trained to choose actions that maximize the Q-value \cite{td3,SAC,ddpg}. So the actor can be interpreted an approximation to the argmax of the Q-value.
+
+With deep neural networks as function approximators other problems such as over-generalization \cite{dqn15,NIPS17-ishand} can occur where the updates to $Q(\stt,\at)$ also increases the target through $Q(\stone,a)$ for all $a$ which could lead to divergence.
+There are many other potential sources for overestimation bias such as  stochasticity of the environment 
+ \cite{hasselt2010double} or computing the Q-target from actions that lie outside of the current training data distribution \cite{kumarStabilizing19}.
+
+While for discrete action spaces the overestimation can be controlled with the double estimator \cite{hasselt2016deepdouble,hasselt2010double}, it was shown that this estimator does not prevent overestimation when the action space is continuous \cite{td3}. 
+As a solution the TD3 algorithm \cite{td3} uses the minimum of two separate estimators to compute the critic target. This approach was shown to prevent overestimation but can introduce an underestimation bias.
+In TQC \cite{tqc} the problem is handled by dropping some targets from the pooled set of all targets of an ensemble of distributional critics. This allows for more finegrained control of over- or underestimation by choosing how many targets are dropped. 
+TQC is able to achieve an impressive performance but the parameter $d$ determining the number of dropped targets has to be set for each environment individually. This is highly undesirable for many applications
+since the hyperparameter sweep to determine a good choice of the parameter increases the actual number of environment interactions proportional to the number of hyperparameters tested. For many applications like robotics this makes the training prohibitively expensive. 
+
+
+
+
+
+
+\subsection{Dynamically Adjusting the Bias}
+In the following we present a new general approach to adaptively control bias emerging in TD targets regardless of the source of the bias.
+Let $R^\pi \sa$ be the random variable denoting the sum of future discounted rewards when the agent starts in state $s$, executes action $a$ and follows policy $\pi$ afterwards. This means that the Q-value is defined as its expectation $\qpi\sa = \E[R^\pi \sa]$. For notational convenience we will drop the dependency on the policy $\pi$ in the following.
+We start with the tabular case. Suppose for each state-action pair $\sa$ we have a family $\{\qhat_\beta \sa \}_{\beta \in [\bmin , \bmax] \subset \mathbb{R}}$ of estimators for $Q\sa$ with the property that
+$\qhat_{\bmin}(s,a) \leq Q\sa \leq  \qhat_{\bmax}(s,a)$, where $Q\sa$ is the true Q-value of the policy $\pi$ and $Q_\beta$ a continuous monotone increasing function in $\beta$ .
+
+
+If we have samples $R_i \sa$ of the discounted returns $R \sa$, an unbiased estimator for $Q\sa$ is given by the average of the $R_i$ through Monte Carlo estimation \cite{introdrl2018}.
+We further define the estimator $\qhat_{\beta^*}\sa$, where $\beta^*$ is given by
+\begin{equation}
+    \beta^* \sa = \argmin_{\beta \in [\bmin, \bmax]} \Bigg| \qhat_\beta \sa - \frac{1}{N} \sum_{i=1}^{N} R_i \sa  \Bigg| .
+    \label{eq:optimal_q_estimator}
+\end{equation}
+
+
+The following Theorem, which we prove in the appendix, shows that the estimator is unbiased under some assumptions.
+\begin{theorem}
+Let $Q_\beta \sa$ be a continuous monotone increasing function in $\beta$ and
+ assume that for all $\sa$ it holds $\qhat_{\bmin}(s,a) \leq Q\sa \leq  \qhat_{\bmax}(s,a)$, the returns $R\sa$ follow a symmetric probability distribution and that $\qhat_{\bmin}(s,a)$ and $\qhat_{\bmax}(s,a)$ have the same distance to $Q\sa$.
+Then $Q_{\beta^*}$ from Equation \ref{eq:optimal_q_estimator} is an unbiased estimator for the true value $Q$ for all $\sa$.
+\end{theorem}
+% The proof is provided in the appendix.
+The symmetry and same distance assumption can  be replaced by assuming that $\qhat_{\bmin}(s,a)  \leq R_i \leq \qhat_{\bmax}(s,a) $ with probability one. In this case the proof is straightforward since $\qbeta$ can take any value for which $R_i$ has positive mass. 
+
+\begin{figure}
+\begin{algorithm}[H]
+   \caption{ACC - General}
+   \label{alg:general_acc}
+\begin{algorithmic}
+   \STATE {\bfseries Initialize:} bias controlling parameter $\beta$, steps between $\beta$ updates $T_\beta$, $t_\beta = 0$
+   \FOR{$t=1$ {\bfseries to} total number of environment steps}
+   \STATE Interact with environment according to $\pi$, store transitions in replay buffer $\mathcal{B}$ and store observed returns $R\sa$, increment $t_\beta \pluseq 1$
+   \IF{episode ended \textbf{and} $t_\beta >= T_\beta$}
+   \STATE Update $\beta$ with Eq. \ref{eq:one_step_beta_update} using the most recent experience and set $t_\beta=0$
+   \ENDIF
+%   \FOR{$j=1$ {\bfseries to} number Q-updates per environment step}
+   \STATE Sample mini-batch $b$ from $\mathcal{B}$
+   \STATE Update $Q$ with target computed from $\qbeta$ and $b$
+%   \ENDFOR
+  \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\vspace{-0.8cm}
+\end{figure}
+
+We are interested in the case where $\qhat$ is given by a function approximator such that there is generalization between state-action pairs and that it is possible to generate estimates for pairs for which there are no samples of the return available.
+Consider off-policy TD learning where the samples for updates of the Q-function are sampled from a replay buffer of past experience.
+While the above assumptions might not hold anymore in this case, we have an estimator for all state-action pairs and not just the ones for which we have samples of the return.
+Also in practice rolling out the policy several times from each state action pair is undesirable and so we set $N=1$ which allows the use of the actual exploration rollouts.
+Our proposed algorithm starts by initializing the bias-controlling parameter $\beta$ to some value.
+After a number of environment steps and when the next episode is finished, the Q-value estimates and actual observed returns are compared. Depending on the difference $\beta$ is adjusted according to  
+\vspace{-0.2cm}
+\begin{equation}
+    % \beta_{new} = \beta_{old} + \alpha \E_{s,a \sim P^\pi} \Big[   R \sa - \qhat \sa \Big], 
+    \beta_{new} = \beta_{old} + \alpha \sum_{t=1}^{T_\beta} \Big[   R (s_t, a_t) - \hat{Q} (s_t, a_t) \Big], 
+    \label{eq:one_step_beta_update}
+\vspace{-0.2cm}
+\end{equation}
+where $\alpha$ is a step size parameter and $(s_t, a_t)_{t=1}^{T_\beta}$ are the $T_\beta \in \mathbb{N}$ most recent state-action pairs.
+As a result $\beta$ is decreased in the case of overestimation, where the Q-estimates are larger than the actual observed returns, 
+and increased in the case of underestimation. 
+We assumed that $\qbeta$ is continuous and monotonically increasing in $\beta$.  Hence, increasing $\beta$ increases $\qbeta$ and vice versa.
+For updating the Q-function the target will be computed from $\qbeta$.
+
+
+
+Only performing one update step and not the complete minimization from Equation \ref{eq:optimal_q_estimator} has the advantage that $\beta$ is changing relatively slow which means the targets are more stable.
+Through this mechanism our method can incorporate the high variance on-policy samples to correct for under- or overestimation bias. 
+At the same time our method can benefit from the low variance TD targets.
+ACC in its general form is summarized  in Algorithm \ref{alg:general_acc}.
+
+
+
+
+
+
+Other algorithms that attempt to control the bias arising in TD learning with non-linear function approximators usually use some kind of heuristic that includes more than one estimator.
+Some approaches use them to decouple the choice of the maximizing action and the evaluation of the maximum in the computation of the TD targets \cite{hasselt2016deepdouble}. 
+Alternative approaches take the  minimum, maximum or a combination of both over the different estimators \cite{td3,Lan2020Maxmin,agarwal2020optimistic,fujimoto2019off}.
+All of these have in common that the same level of bias correction is done for every environment and for all time steps during training.
+In the deep case there are many different sources that can influence the tendency of TD learning building up bias in non-trivial ways.
+ACC is more principled in the regard that it allows to dynamically adjust the magnitude and direction of bias correction during training.
+Regardless of the source and amount of bias ACC provides a way to alleviate it. This makes ACC promising to work robustly on a wide range of different environments. 
+
+
+
+One assumption of ACC is that there is a way to adjust the estimated Q-value with a parameter $\beta$ such that $\qhatbeta$ is continuous and monotonically increasing in $\beta$. 
+There are many different functions that are in accordance with this assumption.
+We give one general example of how such a $\qhatbeta$ can be easily constructed for any algorithm that learns a Q-value.
+Let $\qhat$ be the current estimate. 
+Then define $\qhatbeta = \beta |\qhat| / K + \qhat$, where $K$ is a constant (e.g. $100$) and $[\bmin,\bmax]$ is some interval around $0$.
+In the following section we will present an application of ACC in a more sophisticated way.
+
+
+ 
+
+
+
+% \vspace{-0.2cm}
+\subsection{ Applying ACC to TQC}
+
+As a practical instantiation of the general ACC algorithm we apply it to adjust the number of targets dropped from the set of all targets in TQC. 
+Denote with $d_{max} \in \{0,\dots, M \}$ some upper limit of targets to drop per network.
+Define $\bmin=0$, $\bmax=d_{max}$ and let $d = d_{max} - \beta$ be the current number of targets dropped for each network. Further, we write $\qbeta$ for the TQC estimate with $dN$ targets dropped from the pooled set of all targets. 
+If $d_{max}$ is set high enough the TQC estimate without dropped targets $Q_{\bmax}$ induces overestimation 
+while the TQC estimate with $d_{max}$ dropped targets per net $Q_{\bmin}$ induces underestimation. 
+
+In general, $\beta \in [0,d_{max}]$ is continuous and hence also $d$ is a continuous value. As  the number of dropped targets from the pooled set of all targets has to be a discrete number in $\{0, \dots, NM\}$ we round the total number of dropped targets $d N$ to the nearest integer in the computation of the TD target.
+When updating $\beta$ with Equation \ref{eq:one_step_beta_update}, we divide the expectation by the moving average of the absolute value of the difference between returns and estimated Q-values for normalization.

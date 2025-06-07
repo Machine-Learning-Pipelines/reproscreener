@@ -1,0 +1,83 @@
+\section{Background}
+
+
+
+
+
+
+We consider model-free reinforcement learning for episodic tasks with continuous state and action spaces $\cS$ and $\cA$. An agent interacts with its environment by selecting an action $\at \in \cA$ in state $\stt \in \cS$ for every discrete time step $t$. The agent receives a scalar reward $r_t$ and transitions to a new state $s_{t+1}$.
+To model this in a mathematical framework we use a Markov decision process, defined by the tuple 
+$(\cS, \cA, \cP, \cR, \gamma)$. Given an action $a \in \cA$ in state $s \in \cS$ the unknown state transition density $\cP$ defines a distribution over the next state.
+% Rewards are given to the agent according to the reward function $\cR$ and future rewards are discounted via the discount factor $\gamma \in [0, 1]$. 
+Rewards come from the reward function $\cR$ and future rewards are discounted via the discount factor $\gamma \in [0, 1]$.
+% The reward function $\cR$ determines the experienced reward and future rewards are discounted via the discount factor $\gamma \in [0, 1]$. 
+
+The goal is to learn a policy $\pi$ mapping a state $s$ to a distribution over actions such that the sum of future discounted rewards $R_t = \sum_{i=t}^{T} \gamma^{i-t} r_i$ is maximized.
+We use the term $\pi_\phi$ for the policy with parameters $\phi$ trained to maximize the expected return 
+% $J(\phi) = \mathbb{E}_{s_i \sim \cP , a_i \sim \pi} [R_0]$.
+$J(\phi) = \E_{s_i \sim \cP , a_i \sim \pi} [R_0]$.
+The value function for a given state-action pair $(s,a)$ is defined as 
+$Q^\pi (s,a) = \E_{s_i \sim \cP , a_i \sim \pi} [ R_t |s,a]$, which is the expected return when executing action $a$ in state $s$ and following $\pi$ afterwards.
+
+
+
+\subsection{Soft Actor Critic}
+TQC extends Soft Actor-Critic (SAC) \cite{SAC}, which is a strong off-policy algorithm for continuous control using entropy regularization.
+While in the end we are interested in maximizing the performance with respect to the total amount of reward collected in the environment, SAC maximizes for an auxiliary objective that augments the original reward with the entropy of the policy
+% $J(\phi) = \mathbb{E}_{\stt \sim \cP , \at \sim \pi} [ \sum_t \gamma^{t} (r_t + \alpha \cH (\pi(\cdot | \stt)))   ]$, where $\cH$ denotes the entropy. 
+$J(\phi) = \E_{\stt \sim \cP , \at \sim \pi} [ \sum_t \gamma^{t} (r_t + \alpha \cH (\pi(\cdot | \stt)))   ]$, where $\cH$ denotes the entropy. 
+
+A critic is learned that evaluates the policy $\pi$ in terms of its Q-value of the entropy augmented reward.
+The policy---called actor---is trained to choose actions such that the Q-function is maximized with an additional entropy regularization
+\vspace{-0.1cm}
+\begin{equation}
+    J_\pi (\phi) = \E_{\stt \sim \cD, \at \sim \pi_\phi} 
+                    [ Q_\theta(\stt, \at) - \alpha \log \pi_\phi (\at|\stt) ].
+\vspace{-0.1cm}
+\end{equation}
+The weighting parameter $\alpha$ of the entropy term can be automatically adjusted during the training~\cite{SACalgapp}.
+Both the training of actor and critic happen off-policy with transitions sampled from a replay buffer.
+
+
+
+\subsection{Truncated Quantile Critics}
+
+The TQC algorithm uses distributional reinforcement learning \cite{bellemare2017distributional} to learn
+a distribution over the future augmented reward instead of a Q-function which is a point estimate for the expectation of this quantity.
+To do so TQC utilizes quantile regression \cite{dabney2018distributional} to approximate the distribution with Dirac delta functions
+$Z_\theta (\stt,\at) = \frac{1}{M} \sum_{m=1}^{M} \delta ( \theta^m (\stt,\at))$.
+The Diracs are located at the quantile locations for fractions 
+$\tau_m = \frac{2m -1}{m}, m \in \{1, \dots, M \}$. The network is trained to learn the quantile locations $\theta^m (s,a)$  
+by regressing the predictions $\theta^m (\stt, \at)$ onto the Bellman targets 
+$y_m(\stt, \at) = \rt + \gamma ( \theta^m (\stone, \atone) - \alpha \log \pi_\phi (\atone | \stone ))$ 
+via the  Huber quantile loss.
+
+
+
+TQC uses an ensemble of $N$ networks $(\theta_1, \cdots, \theta_N)$  where each network $\theta_n$ predicts the distribution 
+$Z_{\theta_n} (\stt,\at) = \frac{1}{M} \sum_{m=1}^{M} \delta ( \theta_n^m(\stt,\at))$.
+A single Bellman target distribution is computed for all networks. This happens by first computing all targets for all networks, pooling all targets together in one set and sorting them in ascending order. 
+Let $k \in \{1, \dots, M\}$, then the $kN$ smallest of these targets $y_i$ are used to define the target distribution
+$Y(\stt, \at) = \frac{1}{kN} \sum_{i=1}^{kN} \delta ( y_i (\stt,\at))$.
+The networks are trained by minimizing the quantile Huber loss which in this case is given by
+\vspace{-0.2cm}
+\begin{equation}
+    L(\stt,\at; \theta_n) \hspace{-1pt} = \hspace{-1pt} \frac{1}{kNM} \hspace{-2pt} \sum_{m,i=1}^{M, kN} \hspace{-2pt} \rho^H_{\tau_m} \hspace{-1pt} (y_i(\stt,\at)  -  \theta^m_n (\stt,\at))
+    \vspace{-0.2cm}
+\end{equation}
+% where $\rho^H_{\tau} (u) = |\tau -  \mathbbm{1}(u < 0) | \cL_H^1(u)$ and $\cL_H^1(u)$ is the Huber loss with parameter $1$.
+where $\rho^H_{\tau} (u) = |\tau -  \mathbf{1}(u < 0) | \cL_H^1(u)$ and $\cL_H^1(u)$ is the Huber loss with parameter $1$.
+
+
+The rationale behind truncating some quantiles from the target distribution is to prevent overestimation bias. 
+In TQC the number of dropped targets per network $d = M- k$ is a hyperparameter that has to be tuned per environment but allows for a finegrained control of the bias. 
+
+
+
+The policy is trained as in SAC by maximizing the entropy penalized estimate of the Q-value which is the expectation over the distribution obtained from the critic
+%\vspace{-0.1cm}
+\begin{equation}
+J(\phi) = \E_{\substack{s\sim\cD\\ a\sim\pi}} \Bigg[ \frac{1}{NM} \sum_{m,n=1}^{M,N} \theta_n^m (s,a)  - \alpha \log \pi_\phi(a|s)   \Bigg]   .
+%\vspace{-0.1cm}
+\end{equation}
+

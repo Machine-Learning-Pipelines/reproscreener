@@ -10,10 +10,9 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Usage: usage.md
+  - Manual evaluation datasets: manual_evaluation_datasets.md
   - Case studies: evaluation_results.ipynb
-  # - Todo: todo.md
-  - Architecture: architecture.md
-  - Docstrings: docstrings.md
+  - Architecture: docstrings.md
   - References: z_references.md
   - License: license.md
   - Funding: funding.md
@@ -35,6 +34,7 @@ theme:
     - content.code.copy
 
 plugins:
+  - marimo
   - autorefs
   - mkdocs-jupyter:
       theme: dark

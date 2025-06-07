@@ -1,35 +1,46 @@
 # Architecture
 
-## `tex_eval` module
+This page documents the public API of the three core modules that power **reproscreener**.
 
-The `tex_eval` module is used to evaluate `.tex` files exttracted from the arXiv source tarball of the paper.
+## `paper_analyzer` module
 
-::: reproscreener.tex_eval
+The `paper_analyzer` module is responsible for analysing individual research papers hosted on arXiv.
+It can:
+
+- Parse canonical arXiv identifiers from arbitrary arXiv URLs.
+- Download either the TeX source bundle (**e-print**) or the PDF of the paper.
+- Optionally convert PDFs to Markdown via `docling` for easier text processing.
+- Extract reproducibility variables (problem statements, dataset mentions, hypotheses, etc.).
+- Detect external links such as source-code or data repositories contained in the manuscript.
+- Return the results as a convenient `pandas.DataFrame`.
+
+::: reproscreener.paper_analyzer
     options:
       show_source: false
       heading_level: 3
 
-## `repo_eval` module
+## `repo_analyzer` module
 
-::: reproscreener.repo_eval
+The `repo_analyzer` module evaluates the structure of a Git repository that claims to implement the research.
+Its main tasks are:
+
+- Cloning public repositories (GitHub, GitLab, Bitbucket, …).
+- Searching for dependency specification files (e.g. `requirements.txt`, `environment.yml`, `pyproject.toml`, `Dockerfile`, …).
+- Detecting wrapper scripts or entry-point files (`run.py`, `main.sh`, `Makefile`, …).
+- Parsing the project's `README` for sections that describe installation or requirements.
+- Aggregating the findings into a tabular report.
+
+::: reproscreener.repo_analyzer
     options:
       show_source: false
       heading_level: 3
 
-## `scrape_arxiv` module
+## `keywords` module
 
-The `scrape_arxiv` module is used to obtain the gold standard dataset from the arXiv. It includes the PDFs, source tarballs, and abstract for each paper.
+The `keywords` module generates the lists of keywords/regular-expression patterns that are used by the analyser modules to identify important concepts inside paper text.
+Currently it implements the metrics from [@bhaskarReproscreenerLeveragingLLMs2024].
 
-::: reproscreener.scrape_arxiv
+::: reproscreener.keywords
     options:
       show_source: false
-      heading_level: 3
-
-## `gold_standard` module
-
-The `gold_standard` module is used to evaluate and compare the performance of `reproscreener` on the gold standard dataset. It uses the data from the `scrape_arxiv` module.
-
-::: reproscreener.gold_standard
-    options:
-      show_source: false
-      heading_level: 3
+      heading_level: 3 

@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
-from manual_eval import load_manual_evaluations
+from .manual_eval import load_manual_evaluations
 
 # Configure Streamlit page
 st.set_page_config(
