@@ -1,0 +1,235 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{tqc}
+A.~Kuznetsov, P.~Shvechikov, A.~Grishin, and D.~Vetrov, ``Controlling
+  overestimation bias with truncated mixture of continuous distributional
+  quantile critics,'' in \emph{International Conference on Machine
+  Learning}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2020, pp. 5556--5566.
+
+\bibitem{td3}
+S.~Fujimoto, H.~Hoof, and D.~Meger, ``Addressing function approximation error
+  in actor-critic methods,'' in \emph{International Conference on Machine
+  Learning}, 2018, pp. 1582--1591.
+
+\bibitem{SAC}
+T.~Haarnoja, A.~Zhou, P.~Abbeel, and S.~Levine, ``Soft actor-critic: Off-policy
+  maximum entropy deep reinforcement learning with a stochastic actor,'' in
+  \emph{Proceedings of the 35th International Conference on Machine Learning},
+  2018, pp. 1861--1870.
+
+\bibitem{hessel2018rainbow}
+M.~Hessel, J.~Modayil, H.~Van~Hasselt, T.~Schaul, G.~Ostrovski, W.~Dabney,
+  D.~Horgan, B.~Piot, M.~Azar, and D.~Silver, ``Rainbow: Combining improvements
+  in deep reinforcement learning,'' in \emph{Proceedings of the AAAI Conference
+  on Artificial Intelligence}, vol.~32, no.~1, 2018.
+
+\bibitem{dqn15}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
+  A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski, \emph{et~al.},
+  ``Human-level control through deep reinforcement learning,'' \emph{Nature},
+  vol. 518, no. 7540, p. 529, 2015.
+
+\bibitem{Thrun+Schwartz:1993}
+S.~Thrun and A.~Schwartz, ``Issues in using function approximation for
+  reinforcement learning,'' in \emph{Proceedings of the 1993 Connectionist
+  Models Summer School}, 1993, pp. 255--263.
+
+\bibitem{hasselt2016deepdouble}
+H.~Van~Hasselt, A.~Guez, and D.~Silver, ``Deep reinforcement learning with
+  double q-learning,'' in \emph{Thirtieth AAAI Conference on Artificial
+  Intelligence}, 2016.
+
+\bibitem{Lan2020Maxmin}
+\BIBentryALTinterwordspacing
+Q.~Lan, Y.~Pan, A.~Fyshe, and M.~White, ``Maxmin q-learning: Controlling the
+  estimation bias of q-learning,'' in \emph{International Conference on
+  Learning Representations}, 2020. [Online]. Available:
+  \url{https://openreview.net/forum?id=Bkg0u3Etwr}
+\BIBentrySTDinterwordspacing
+
+\bibitem{gymopenai}
+G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and
+  W.~Zaremba, ``Openai gym,'' \emph{arXiv preprint arXiv:1606.01540}, 2016.
+
+\bibitem{yu2020meta}
+T.~Yu, D.~Quillen, Z.~He, R.~Julian, K.~Hausman, C.~Finn, and S.~Levine,
+  ``Meta-world: A benchmark and evaluation for multi-task and meta
+  reinforcement learning,'' in \emph{Conference on Robot Learning}.\hskip 1em
+  plus 0.5em minus 0.4em\relax PMLR, 2020, pp. 1094--1100.
+
+\bibitem{SACalgapp}
+\BIBentryALTinterwordspacing
+T.~Haarnoja, A.~Zhou, K.~Hartikainen, G.~Tucker, S.~Ha, J.~Tan, V.~Kumar,
+  H.~Zhu, A.~Gupta, P.~Abbeel, and S.~Levine, ``Soft actor-critic algorithms
+  and applications,'' \emph{CoRR}, vol. abs/1812.05905, 2018. [Online].
+  Available: \url{http://arxiv.org/abs/1812.05905}
+\BIBentrySTDinterwordspacing
+
+\bibitem{bellemare2017distributional}
+M.~G. Bellemare, W.~Dabney, and R.~Munos, ``A distributional perspective on
+  reinforcement learning,'' in \emph{International Conference on Machine
+  Learning}, 2017, pp. 449--458.
+
+\bibitem{dabney2018distributional}
+W.~Dabney, M.~Rowland, M.~Bellemare, and R.~Munos, ``Distributional
+  reinforcement learning with quantile regression,'' in \emph{Proceedings of
+  the AAAI Conference on Artificial Intelligence}, vol.~32, no.~1, 2018.
+
+\bibitem{watkins1992q}
+C.~J. Watkins and P.~Dayan, ``Q-learning,'' \emph{Machine learning}, vol.~8,
+  no. 3-4, pp. 279--292, 1992.
+
+\bibitem{ddpg}
+T.~P. Lillicrap, J.~J. Hunt, A.~Pritzel, N.~Heess, T.~Erez, Y.~Tassa,
+  D.~Silver, and D.~Wierstra, ``Continuous control with deep reinforcement
+  learning,'' \emph{arXiv preprint arXiv:1509.02971}, 2015.
+
+\bibitem{NIPS17-ishand}
+\BIBentryALTinterwordspacing
+I.~Durugkar and P.~Stone, ``Td learning with constrained gradients,'' in
+  \emph{Proceedings of the Deep Reinforcement Learning Symposium, NIPS 2017},
+  Long Beach, CA, USA, December 2017. [Online]. Available:
+  \url{http://www.cs.utexas.edu/users/ai-lab?NIPS17-ishand}
+\BIBentrySTDinterwordspacing
+
+\bibitem{hasselt2010double}
+H.~V. Hasselt, ``Double q-learning,'' in \emph{Advances in Neural Information
+  Processing Systems}, 2010, pp. 2613--2621.
+
+\bibitem{kumarStabilizing19}
+A.~Kumar, J.~Fu, M.~Soh, G.~Tucker, and S.~Levine, ``Stabilizing off-policy
+  q-learning via bootstrapping error reduction,'' in \emph{Advances in Neural
+  Information Processing Systems}, vol.~32, 2019, pp. 11\,784--11\,794.
+
+\bibitem{introdrl2018}
+R.~S. Sutton and A.~G. Barto, \emph{Reinforcement learning: An
+  introduction}.\hskip 1em plus 0.5em minus 0.4em\relax {MIT} Press, 2018.
+
+\bibitem{agarwal2020optimistic}
+R.~Agarwal, D.~Schuurmans, and M.~Norouzi, ``An optimistic perspective on
+  offline reinforcement learning,'' in \emph{International Conference on
+  Machine Learning}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2020, pp.
+  104--114.
+
+\bibitem{fujimoto2019off}
+S.~Fujimoto, D.~Meger, and D.~Precup, ``Off-policy deep reinforcement learning
+  without exploration,'' in \emph{International Conference on Machine
+  Learning}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2019, pp. 2052--2062.
+
+\bibitem{mujoco}
+E.~Todorov, T.~Erez, and Y.~Tassa, ``Mujoco: A physics engine for model-based
+  control.'' in \emph{IROS}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2012,
+  pp. 5026--5033.
+
+\bibitem{agarwal2021deep}
+R.~Agarwal, M.~Schwarzer, P.~S. Castro, A.~C. Courville, and M.~Bellemare,
+  ``Deep reinforcement learning at the edge of the statistical precipice,''
+  \emph{Advances in Neural Information Processing Systems}, vol.~34, 2021.
+
+\bibitem{weightedQlearning}
+\BIBentryALTinterwordspacing
+Z.~Zhang, Z.~Pan, and M.~J. Kochenderfer, ``Weighted double q-learning,'' in
+  \emph{Proceedings of the 26th International Joint Conference on Artificial
+  Intelligence}, ser. IJCAI'17.\hskip 1em plus 0.5em minus 0.4em\relax AAAI
+  Press, 2017, pp. 3455--3461. [Online]. Available:
+  \url{http://dl.acm.org/citation.cfm?id=3172077.3172372}
+\BIBentrySTDinterwordspacing
+
+\bibitem{cini2020deep}
+A.~Cini, C.~D'Eramo, J.~Peters, and C.~Alippi, ``Deep reinforcement learning
+  with weighted q-learning,'' \emph{arXiv preprint arXiv:2003.09280}, 2020.
+
+\bibitem{d2017estimating}
+C.~D'Eramo, A.~Nuara, M.~Pirotta, and M.~Restelli, ``Estimating the maximum
+  expected value in continuous reinforcement learning problems,'' in
+  \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
+  vol.~31, no.~1, 2017.
+
+\bibitem{lvSDDQ19}
+P.~{Lv}, X.~{Wang}, Y.~{Cheng}, and Z.~{Duan}, ``Stochastic double deep
+  q-network,'' \emph{IEEE Access}, vol.~7, pp. 79\,446--79\,454, 2019.
+
+\bibitem{cetin2021learning}
+E.~Cetin and O.~Celiktutan, ``Learning pessimism for robust and efficient
+  off-policy reinforcement learning,'' \emph{arXiv preprint arXiv:2110.03375},
+  2021.
+
+\bibitem{degris2012off}
+T.~Degris, M.~White, and R.~Sutton, ``Off-policy actor-critic,'' in
+  \emph{International Conference on Machine Learning}, 2012.
+
+\bibitem{NIPS2010_35cf8659}
+T.~Jie and P.~Abbeel, ``On a connection between importance sampling and the
+  likelihood ratio policy gradient,'' in \emph{Advances in Neural Information
+  Processing Systems}, J.~Lafferty, C.~Williams, J.~Shawe-Taylor, R.~Zemel, and
+  A.~Culotta, Eds., vol.~23, 2010, pp. 1000--1008.
+
+\bibitem{o2016combining}
+B.~O'Donoghue, R.~Munos, K.~Kavukcuoglu, and V.~Mnih, ``Combining policy
+  gradient and q-learning,'' in \emph{ICLR}, 2016.
+
+\bibitem{NIPS2017_IPG}
+S.~S. Gu, T.~Lillicrap, R.~E. Turner, Z.~Ghahramani, B.~Sch\"{o}lkopf, and
+  S.~Levine, ``Interpolated policy gradient: Merging on-policy and off-policy
+  gradient estimation for deep reinforcement learning,'' in \emph{Advances in
+  Neural Information Processing Systems}, vol.~30, 2017, pp. 3846--3855.
+
+\bibitem{NIPS2014_be53ee61}
+A.~R. Mahmood, H.~P. van Hasselt, and R.~S. Sutton, ``Weighted importance
+  sampling for off-policy learning with linear function approximation,'' in
+  \emph{Advances in Neural Information Processing Systems}, vol.~27, 2014, pp.
+  3014--3022.
+
+\bibitem{precup2000eligibility}
+D.~Precup, ``Eligibility traces for off-policy policy evaluation,''
+  \emph{Computer Science Department Faculty Publication Series}, p.~80, 2000.
+
+\bibitem{hausknecht2016policy}
+M.~Hausknecht and P.~Stone, ``On-policy vs. off-policy updates for deep
+  reinforcement learning,'' in \emph{Deep Reinforcement Learning: Frontiers and
+  Challenges, IJCAI 2016 Workshop}, 2016.
+
+\bibitem{bhatt2019crossnorm}
+A.~Bhatt, M.~Argus, A.~Amiranashvili, and T.~Brox, ``Crossnorm: Normalization
+  for off-policy td reinforcement learning,'' \emph{arXiv preprint
+  arXiv:1902.05605}, 2019.
+
+\bibitem{chiang19}
+H.-T.~L. Chiang, A.~Faust, M.~Fiser, and A.~Francis, ``Learning navigation
+  behaviors end-to-end with autorl,'' \emph{IEEE Robotics and Automation
+  Letters}, vol.~4, no.~2, pp. 2007--2014, 2019.
+
+\bibitem{falkner18a}
+S.~Falkner, A.~Klein, and F.~Hutter, ``{BOHB}: Robust and efficient
+  hyperparameter optimization at scale,'' in \emph{Proceedings of the 35th
+  International Conference on Machine Learning}, 2018, pp. 1437--1446.
+
+\bibitem{jaderberg2017population}
+M.~Jaderberg, V.~Dalibard, S.~Osindero, W.~M. Czarnecki, J.~Donahue, A.~Razavi,
+  O.~Vinyals, T.~Green, I.~Dunning, K.~Simonyan, \emph{et~al.}, ``Population
+  based training of neural networks,'' \emph{arXiv preprint arXiv:1711.09846},
+  2017.
+
+\bibitem{xu2018meta}
+Z.~Xu, H.~P. van Hasselt, and D.~Silver, ``Meta-gradient reinforcement
+  learning,'' in \emph{NeurIPS}, 2018.
+
+\end{thebibliography}

@@ -2,6 +2,8 @@ import re
 from pathlib import Path
 from typing import List, Tuple, Dict, Any
 import logging
+import json
+import shutil
 
 import git
 import pandas as pd
@@ -41,14 +43,10 @@ def clone_repo(repo_url: str, cloned_path: Path, overwrite: bool = False) -> Pat
     elif cloned_path.exists() and overwrite:
         log.info(f"Overwriting existing directory: {cloned_path}")
         try:
-            for item in cloned_path.iterdir():
-                if item.is_dir():
-                    log.warning(f"Cannot remove subdirectory {item} in simple rmdir.")
-                else:
-                    item.unlink()
-            cloned_path.rmdir()
+            shutil.rmtree(cloned_path)
         except Exception as e:
             log.error(f"Failed to remove existing directory {cloned_path}: {e}")
+            raise
 
     cloned_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -228,12 +226,13 @@ def analyze_github_repo(repo_url: str, clone_dir: Path) -> Dict[str, Any]:
     
     return results
 
-if __name__ == '__main__':
+def main():
     logging.basicConfig(level=logging.INFO)
     sample_repo_url = "https://github.com/HanGuo97/soft-Q-learning-for-text-generation"
     temp_clone_dir = Path("./temp_repo_clones")
-    
     repo_analysis = analyze_github_repo(sample_repo_url, temp_clone_dir)
-    print("\\nRepo Analysis Results:")
-    import json
+    print("\nRepo Analysis Results:")
     print(json.dumps(repo_analysis, indent=2))
+
+if __name__ == '__main__':
+    main()
