@@ -1,0 +1,16 @@
+\section{Conclusion}
+
+We present Adaptively Calibrated Critics (ACC), a general off-policy algorithm that learns a Q-value function with bias calibrated TD targets. 
+The bias correction in the targets is determined via a parameter that is adjusted by comparing the current value estimates with the most recently observed on-policy returns.
+Our method incorporates information from the unbiased sample returns into the TD targets while keeping the high variance of the samples out. We apply ACC to TQC, a recent off-policy continuous control algorithm that allows fine-grained control of the TD target scale through a hyperparameter tuned per environment.
+With ACC, this parameter can automatically be adjusted during training,  obviating the need for extensive tuning.
+The strong experimental results suggest that our method provides an efficient and general way to control the bias occurring in TD learning. 
+
+Interesting directions for future research are to evaluate the effectiveness of ACC applied to algorithms that work with discrete action spaces and when learning on a real robot where tuning of hyperparameters is very costly. 
+
+
+
+
+
+
+

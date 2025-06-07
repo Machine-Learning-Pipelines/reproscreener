@@ -1,0 +1,236 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%In case you encounter the following error:
+%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
+%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
+%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
+%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
+%\pdfobjcompresslevel=0
+%\pdfminorversion=4
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+% \usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{multirow}
+
+%%%%%%%%%% my packages%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+
+\usepackage[scientific-notation=true]{siunitx}
+
+
+\usepackage{microtype}
+\usepackage{graphicx}
+% \usepackage{subfigure}
+% \usepackage{subfig}
+% \usepackage{subcaption}
+% \usepackage{cleveref}
+
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{bbm}
+
+% \usepackage{algorithm2e}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\let\labelindent\relax
+\usepackage{enumitem}
+
+\usepackage{soul}
+
+\usepackage{cuted}
+
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+
+
+% shortcuts
+\newcommand{\todo}[1]{\textbf{{\color{red} TODO:} #1}}
+\newcommand{\etal}{{\em et al. }}
+
+% math
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cD}{\mathcal{D}}
+
+\newcommand{\cH}{\mathcal{H}} %entropy
+\newcommand{\cL}{\mathcal{L}} %loss fct
+
+\newcommand{\stt}{s_t}
+\newcommand{\at}{a_t}
+\newcommand{\rt}{r_t}
+\newcommand{\stone}{s_{t+1}}
+\newcommand{\atone}{a_{t+1}}
+
+\newcommand{\sa}{(s, a)}
+\newcommand{\stat}{(\st, \at)}
+\newcommand{\sttatt}{(\stone, \atone)}
+
+% \newcommand{\E}{\mathbb{E}} % expectation
+\DeclareMathOperator*{\E}{\mathbb{E}} % expectation
+% \DeclareMathOperator*{\E}{E} % expectation
+% \newcommand{\idc}[1]{\mathds{1}\left[#1\right]}  % indicator function
+% \newcommand{\idc}[1]{\mathbbm{1}\big[#1\big]}  % indicator function
+\newcommand{\idc}[1]{1\big[#1\big]}  % indicator function
+
+% \mathbb{1}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{\arg\,min}
+
+% for this paper
+\newcommand{\bmax}{\beta_{max}}
+\newcommand{\bmin}{\beta_{min}}
+
+\newcommand{\qhat}{\hat{Q}}
+\newcommand{\qhatpi}{\hat{Q}^{\pi}}
+\newcommand{\qpi}{Q^{\pi}}
+\newcommand{\qbeta}{Q_{\beta}}
+\newcommand{\qhatbeta}{\hat{Q}_{\beta}}
+
+
+% algorithms
+\newcommand{\pluseq}{\mathrel{+}=}
+
+
+
+
+\newtheorem{theorem}{Theorem}
+
+
+
+\setlength{\skip\footins}{0.6pc plus 5pt minus 2pt}
+
+
+
+\title{\LARGE \bf
+Adaptively Calibrated Critic Estimates for Deep Reinforcement Learning
+}
+
+\author{Nicolai Dorka$^{1}$ and Tim Welschehold$^{1}$ and Joschka Bödecker$^{1}$ and Wolfram Burgard$^{2}$% <-this % stops a space
+
+\thanks{Authors are with: $^{1}$University of Freiburg and $^{2}$ University of Technology Nuremberg, Germany.
+        {\tt\small dorka@cs.uni-freiburg.de}.}%
+\thanks{This work was supported by the European Union’s Horizon 2020 research and innovation program under grant agreement No 871449-OpenDR.}%
+        }
+
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+Accurate value estimates are important for off-policy reinforcement learning. 
+Algorithms based on temporal difference learning typically are prone to an over- or underestimation bias building up over time.
+In this paper, we propose a general method called Adaptively Calibrated Critics (ACC) that uses the most recent high variance but unbiased on-policy rollouts to alleviate the bias of the low variance temporal difference targets.
+We apply ACC to Truncated Quantile Critics~\cite{tqc}, which is an algorithm for continuous control that allows regulation of the bias with a hyperparameter tuned per environment.
+The resulting algorithm adaptively adjusts the parameter during training rendering hyperparameter search unnecessary 
+and sets a new state of the art on the OpenAI gym continuous control benchmark among all algorithms
+that do not tune hyperparameters for each environment.
+ACC further achieves improved results on different tasks from the Meta-World robot benchmark.
+Additionally, we demonstrate the generality of ACC by applying it to TD3~\cite{td3} and showing an improved performance also in this setting. 
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\input{sections/introduction.tex}
+
+\input{sections/background.tex}
+\input{sections/method.tex}
+\input{sections/experiments.tex}
+\input{sections/related_work.tex}
+\input{sections/conclusion.tex}
+
+
+% \clearpage
+
+% \appendix
+% \input{sections/appendix.tex}
+
+
+%\section*{ACKNOWLEDGMENT}
+%Include already in submission?
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,acc_bibliography}
+
+
+
+\input{sections/appendix_arxiv.tex}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+\end{document}

@@ -4,7 +4,7 @@ __generated_with = "0.13.15"
 app = marimo.App(width="full")
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import numpy as np
     import marimo as mo
@@ -17,57 +17,38 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""Evaluations datasets available:""")
+    return
+
+
+@app.cell(hide_code=True)
 def _():
     import pandas as pd
     from sklearn.metrics import jaccard_score
-    from pathlib import Path
-    import sys
+    from reproscreener.manual_evaluations.manual_eval import ManualEvaluationParser
 
-    module_path = Path("../src/reproscreener")
-
-
-    sys.path.append(str(module_path))
-    sys.path.append(str("src/reproscreener/"))
-    from manual_eval import ManualEvaluationParser
-
-    parser = ManualEvaluationParser(str("src/reproscreener/manual_evaluations"))
+    parser = ManualEvaluationParser()
     evaluations = parser.load_all_evaluations()
     dataset_names = list(evaluations.keys())
     dataset_names
     return evaluations, pd
 
 
-@app.cell
-def _():
-    # parser.standardized_metrics.keys()
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Abstract evaluation""")
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### 1. `abstract`""")
-    return
-
-
-@app.cell
 def _(evaluations):
     df_abstract = evaluations['abstract']
     # exclude all columns with names containing "_description"
     df_abstract = df_abstract.drop(columns=["evaluation_type", "source_file", "paper_id"]
                                    +[col for col in df_abstract.columns if "_description" in col])
-    df_abstract.head()
-    return (df_abstract,)
 
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### 1. `agreement_gpt`""")
-    return
-
-
-@app.cell
-def _(evaluations):
     df_agreement_gpt = evaluations["agreement_gpt"]
     # exclude all columns with names containing "_description"
     df_agreement_gpt = df_agreement_gpt.drop(
@@ -82,18 +63,17 @@ def _(evaluations):
             if col.startswith("gpt_")
         }
     )
-    df_agreement_gpt.head()
-    return (df_agreement_gpt,)
+    return df_abstract, df_agreement_gpt
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_abstract, mo):
     dropdown = mo.ui.dropdown(df_abstract.columns.tolist(), value="problem")
     dropdown
     return (dropdown,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_abstract, df_agreement_gpt, dropdown, np, pd):
     selected_metric = dropdown.value
 
@@ -138,20 +118,22 @@ def _(df_abstract, df_agreement_gpt, dropdown, np, pd):
     return (evals_per_metric,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(evals_per_metric, pd):
     # Calculate summary statistics
     summary_df = pd.DataFrame()
 
+    sum_true_header = f"sum_true \n(n = {len(evals_per_metric)})"
+
     # Add sum of trues
-    summary_df["sum_true"] = evals_per_metric[[
+    summary_df[sum_true_header] = evals_per_metric[[
+        "gpt",
+        "manual",
+        "manual_rev",
         "manual_vs_manual_rev",
         "gpt_vs_manual",
         "gpt_vs_manual_rev",
     ]].sum()
-
-    # Add total count (n)
-    summary_df["total_n"] = len(evals_per_metric)
 
     # Add proportion true
     summary_df["proportion_true"] = evals_per_metric[[
@@ -160,33 +142,8 @@ def _(evals_per_metric, pd):
         "gpt_vs_manual_rev",
     ]].mean()
 
-    # Transpose for better readability
-    summary_df = summary_df.T
-
+    print()
     summary_df
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### 1. `manuscript`""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### 1. `abstract`""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### 1. `combined_abstract`""")
     return
 
 

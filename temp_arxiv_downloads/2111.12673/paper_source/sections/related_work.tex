@@ -1,0 +1,47 @@
+\section{Related Work}
+
+
+\subsection{Overestimation in Reinforcement Learning}
+
+
+The problem of overestimation in Q-learning with function approximation was introduced by \cite{Thrun+Schwartz:1993}.
+For discrete actions the double estimator has been proposed \cite{hasselt2010double} where two Q-functions are learned and one is used to determine the maximizing action, while the other evaluates the Q-function for that action. The Double DQN algorithm extended this to neural networks~\cite{hasselt2016deepdouble}.
+However, Zhang \emph{et al.} \cite{weightedQlearning} observed that the double estimator sometimes underestimates the Q-value and propose to use a weighted average of the single and the double estimator as target. This work is similar to ours in the regard that depending on the parameter over- or underestimation could be corrected. A major difference to our algorithm is that the weighting parameter is computed from the maximum and minimum of the estimated Q-value and does not use unbiased rollouts.
+Similarly, the weighted estimator
+\cite{cini2020deep,d2017estimating} 
+estimates the maximum over actions in the TD target as the sum of values weighted by their probability of being the maximum. In continuous action spaces this can be done through Gaussian process regression
+\cite{d2017estimating} and for discrete actions via dropout variational inference \cite{cini2020deep}.
+Different to ACC the weighting is computed from the same off-policy data used to compute the single quantities while ACC adjusts the weighting parameter $\beta$ in a separate process using the latest on-policy rollouts.
+Lv \emph{et al.} \cite{lvSDDQ19} use a similar weighting but suggest a stochastic selection of either the single or double estimator. The probability of choosing one or the other follows a predefined schedule.
+Other approaches compute the weighted average of the minimum and maximum over different Q-value estimates \cite{fujimoto2019off,kumarStabilizing19}. However, the weighting parameter is a fixed hyperparameter.
+The TD3 algorithm~\cite{td3} uses the minimum over two Q-value estimates as TD target. 
+Maxmin Q-learning is another approach for discrete action spaces using an ensemble of Q-functions. For the TD target, first  the minimum of over all Q-functions is computed followed by maximization with respect to the action~\cite{Lan2020Maxmin}. Decreasing the ensemble size increases the estimated targets while increasing the size decreases the targets. Similarly to TQC this provides a way to control the bias in a more fine-grained way; the respective hyperparameter has to be set before the start of the training for each environment, however.
+Cetin \emph{et al.}  \cite{cetin2021learning} propose to learn a pessimistic penalty to overcome the overestimation bias.
+
+What sets ACC apart from the previously mentioned works is that unbiased on-policy rollouts are used to adjust a term that controls the bias correction instead of using some predefined heuristic. 
+
+
+
+
+
+
+\subsection{Combining On- and Off-Policy Learning}
+There are many approaches that combine on- and off-policy learning by combining policy gradients with off-policy samples
+\cite{degris2012off,NIPS2010_35cf8659,o2016combining}.
+In \cite{NIPS2017_IPG} an actor-critic is used where the critic is updated off-policy and the actor is updated with a mixture of policy gradient and Q-gradient. This differs from our work in that we are interested only in better critic estimates through the information of on-policy samples. 
+To learn better value estimates by combining on- and off-policy data prior works proposed the use of some form of importance sampling
+\cite{NIPS2014_be53ee61,precup2000eligibility}.
+In \cite{hausknecht2016policy} the TD target is computed by mixing Monte Carlo samples with the bootstrap estimator.
+These methods provide a tradeoff between variance and bias. They differ from our work in using the actual returns directly in the TD targets while we incorporate the returns indirectly via another parameter.
+Bhatt \emph{et al.} \cite{bhatt2019crossnorm} propose the use of a mixture of on- and off-policy transitions to generate a feature normalization that can be used in off-policy TD learning. Applied to TD3, learning becomes more stable eliminating the need to use a delayed target network.
+
+
+
+\subsection{Hyperparameter Tuning for Reinforcement Learning}
+
+Most algorithms that tune hyperparameters of RL algorithms use many different instances of the environment to find a good setting
+\cite{chiang19,falkner18a,jaderberg2017population}. 
+There is, however, also work that adjusts a hyperparameter online during training \cite{xu2018meta}. In this work the meta-gradient (i.e., the gradient of the update rule) is used to adjust the discount factor and the length of bootstrapping intervals. However, it would not be straightforward to apply this method to control the bias of the value estimate. Their method also differs from ours in that they do not use a combination of on- and off-policy data.
+
+
+
