@@ -3,6 +3,9 @@ docs/z_client_secrets.json
 __marimo__
 .env
 .python-version
+_site
+docs bkp/
+reference/
 
 # Python-generated files
 __pycache__/
@@ -165,3 +168,5 @@ dmypy.json
 .aider*
 .cursorignore
 uv.lock
+
+/.quarto/

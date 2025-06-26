@@ -45,4 +45,6 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "anthropic>=0.52.2",
+    "quarto>=0.1.0",
+    "quartodoc>=0.11.1",
 ]
