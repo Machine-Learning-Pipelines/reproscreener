@@ -20,7 +20,7 @@ nav:
 theme:
   name: material
   palette:
-    scheme: slate
+    scheme: default
     primary: indigo
     accent: indigo
   # font: 
@@ -37,7 +37,7 @@ plugins:
   - marimo
   - autorefs
   - mkdocs-jupyter:
-      theme: dark
+      theme: light
       execute: false
   - mkdocstrings:
       default_handler: python
