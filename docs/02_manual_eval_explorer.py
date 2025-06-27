@@ -1,14 +1,13 @@
 import marimo
 
-__generated_with = "0.13.15"
+__generated_with = "0.14.8"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _():
-    import numpy as np
     import marimo as mo
-    return mo, np
+    return (mo,)
 
 
 @app.cell(hide_code=True)
@@ -18,22 +17,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""Evaluations datasets available:""")
-    return
-
-
-@app.cell(hide_code=True)
 def _():
     import pandas as pd
-    from sklearn.metrics import jaccard_score
-    from reproscreener.manual_evaluations.manual_eval import ManualEvaluationParser
-
-    parser = ManualEvaluationParser()
-    evaluations = parser.load_all_evaluations()
-    dataset_names = list(evaluations.keys())
-    dataset_names
-    return evaluations, pd
+    import numpy as np
+    return np, pd
 
 
 @app.cell(hide_code=True)
@@ -42,14 +29,24 @@ def _(mo):
     return
 
 
+@app.cell
+def _():
+    from pathlib import Path
+    # get current directory
+
+
+    return
+
+
 @app.cell(hide_code=True)
-def _(evaluations):
-    df_abstract = evaluations['abstract']
+def _(pd):
+    df_abstract = pd.read_csv(str("public/abstract.csv"))
     # exclude all columns with names containing "_description"
+    print(df_abstract.columns)
     df_abstract = df_abstract.drop(columns=["evaluation_type", "source_file", "paper_id"]
                                    +[col for col in df_abstract.columns if "_description" in col])
 
-    df_agreement_gpt = evaluations["agreement_gpt"]
+    df_agreement_gpt = pd.read_csv(str("public/agreement_gpt.csv"))
     # exclude all columns with names containing "_description"
     df_agreement_gpt = df_agreement_gpt.drop(
         columns=["evaluation_type", "source_file", "paper_id"]
@@ -142,7 +139,6 @@ def _(evals_per_metric, pd):
         "gpt_vs_manual_rev",
     ]].mean()
 
-    print()
     summary_df
     return
 
