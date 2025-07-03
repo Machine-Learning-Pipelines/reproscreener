@@ -6,6 +6,9 @@ extra:
     python: 3.9.13
     reproscreener: 0.1.2
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Home: index.md
   - Installation: installation.md
@@ -31,6 +34,9 @@ theme:
     - toc.integrate
     - navigation.top
     - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
     - content.code.copy
 
 plugins:
