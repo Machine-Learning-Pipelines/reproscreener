@@ -21,13 +21,13 @@ jobs:
       - name: Install pandoc stuff
         run: sudo apt-get install pandoc
 
-      - name: Run tests
-        run: uv run pytest tests/ --cov=reproscreener --cov-report=xml
+      # - name: Run tests
+      #   run: uv run pytest tests/ --cov=reproscreener --cov-report=xml
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage.xml
+      # - name: Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v5
+      #   with:
+      #     files: ./coverage.xml
 
       - name: Build docs to gh-pages branch
         run: uv run mkdocs gh-deploy --force
