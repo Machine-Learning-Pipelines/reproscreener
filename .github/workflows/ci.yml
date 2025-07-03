@@ -19,7 +19,7 @@ jobs:
         run: uv sync
 
       - name: Install pandoc stuff
-        run: sudo apt-get install pandoc pandoc-citeproc
+        run: sudo apt-get install pandoc
 
       - name: Run tests
         run: uv run pytest tests/ --cov=reproscreener --cov-report=xml
