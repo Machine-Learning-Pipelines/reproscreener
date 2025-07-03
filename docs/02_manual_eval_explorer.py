@@ -16,35 +16,33 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import pandas as pd
     import numpy as np
-    from pathlib import Path
     return np, pd
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Abstract evaluation""")
+    mo.md(r"""## Summary of GPT vs. Manual evaluations on preprint abstracts""")
     return
 
 
-@app.cell
-def _(pd):
-    df_abstract = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/abstract.csv")
-    # exclude all columns with names containing "_description"
-    df_abstract = df_abstract.drop(columns=["evaluation_type", "source_file", "paper_id"]
-                                   +[col for col in df_abstract.columns if "_description" in col])
-
+@app.cell(hide_code=True)
+def _(np, pd):
     df_agreement_gpt = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/agreement_gpt.csv")
 
-    # exclude all columns with names containing "_description"
+    # Clean up columns - exclude metadata and description columns
+    # Make "paper_id" the index
+    df_agreement_gpt = df_agreement_gpt.set_index("paper_id")
+
     df_agreement_gpt = df_agreement_gpt.drop(
-        columns=["evaluation_type", "source_file", "paper_id"]
+        columns=["evaluation_type", "source_file"]
         + [col for col in df_agreement_gpt.columns if "_description" in col]
     )
-    # rename all columns to remove the "gpt_" prefix
+
+    # Remove gpt_ prefix from column names
     df_agreement_gpt = df_agreement_gpt.rename(
         columns={
             col: col.replace("gpt_", "")
@@ -52,86 +50,63 @@ def _(pd):
             if col.startswith("gpt_")
         }
     )
-    return df_abstract, df_agreement_gpt
+
+    all_columns = df_agreement_gpt.columns.tolist()
+    metric_columns = [col for col in all_columns if not col.endswith("_agreement")]
+    results = {}
+    for metric in metric_columns:
+        gpt_col = metric
+        agreement_col = f"{metric}_agreement"
+
+        if agreement_col in df_agreement_gpt.columns:
+            gpt_vals = df_agreement_gpt[gpt_col].astype(bool)
+            agreement_vals = df_agreement_gpt[agreement_col]
+
+            # Calculate revised manual evaluation: keep GPT when agreement=1, invert when agreement=0
+            manual_vals = np.where(agreement_vals == 1, gpt_vals, ~gpt_vals)
+
+            # Add manual_vals to the agreement_gpt DataFrame
+            df_agreement_gpt[f"manual_{metric}"] = manual_vals.astype(bool)
+
+            results[metric] = {
+                'gpt_sum': gpt_vals.sum(),
+                'manual_sum': manual_vals.sum(),
+                'gpt_proportion': gpt_vals.mean(),
+                'manual_proportion': manual_vals.mean(),
+                'gpt_manual_agreement': agreement_vals.mean(),
+                'total_n': len(gpt_vals)
+            }
+    results_df = pd.DataFrame(results).T
+    results_df
+    return df_agreement_gpt, metric_columns
 
 
-@app.cell
-def _(df_abstract, mo):
-    dropdown = mo.ui.dropdown(df_abstract.columns.tolist(), value="problem")
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Select a metric to view evaluation results for each paper""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(metric_columns, mo):
+    dropdown = mo.ui.dropdown(metric_columns, value=metric_columns[0] if metric_columns else None)
     dropdown
     return (dropdown,)
 
 
-@app.cell
-def _(df_abstract, df_agreement_gpt, dropdown, np, pd):
-    selected_metric = dropdown.value
-
-    # Define column names for clarity
-    gpt_col = selected_metric                      # GPT prediction column
-    manual_col = selected_metric                   # Original manual label column
-    agreement_col = f"{selected_metric}_agreement"  # Agreement indicator column
-
-    # Collect the relevant columns into a single dataframe (aligned on the index)
-    evals_per_metric = pd.concat(
-        [
-            df_agreement_gpt[gpt_col].rename("gpt"),
-            df_abstract[manual_col].rename("manual"),
-            df_agreement_gpt[agreement_col].rename("agreement"),
-        ],
-        axis=1,
-    )
-
-    # Ensure boolean dtype for logical operations
-    evals_per_metric["gpt"] = evals_per_metric["gpt"].astype(bool)
-    evals_per_metric["manual"] = evals_per_metric["manual"].astype(bool)
-
-    # Derive the revised manual score: keep GPT value when agreement == 1, otherwise invert it
-    evals_per_metric["manual_rev"] = np.where(
-        evals_per_metric["agreement"] == 1,
-        evals_per_metric["gpt"],
-        ~evals_per_metric["gpt"],
-    )
-
-    evals_per_metric["manual_vs_manual_rev"] = (
-        evals_per_metric["manual"] == evals_per_metric["manual_rev"]
-    )
-    evals_per_metric["gpt_vs_manual"] = (
-        evals_per_metric["gpt"] == evals_per_metric["manual"]
-    )
-    evals_per_metric["gpt_vs_manual_rev"] = (
-        evals_per_metric["gpt"] == evals_per_metric["manual_rev"]
-    )
-
-    evals_per_metric
-
-    return (evals_per_metric,)
-
-
-@app.cell
-def _(evals_per_metric, pd):
-    # Calculate summary statistics
-    summary_df = pd.DataFrame()
-
-    sum_true_header = f"sum_true \n(n = {len(evals_per_metric)})"
-
-    # Add sum of trues
-    summary_df[sum_true_header] = evals_per_metric[[
-        "gpt",
-        "manual",
-        "manual_rev",
-        "manual_vs_manual_rev",
-        "gpt_vs_manual",
-        "gpt_vs_manual_rev",
-    ]].sum()
-
-    # Add proportion true
-    summary_df["proportion_true"] = evals_per_metric[[
-        "manual_vs_manual_rev",
-        "gpt_vs_manual",
-        "gpt_vs_manual_rev",
-    ]].mean()
-
-    summary_df
+@app.cell(hide_code=True)
+def _(df_agreement_gpt, dropdown, pd):
+    if dropdown.value:
+        selected_metric = dropdown.value
+        selected_metric_df = pd.DataFrame({
+            'gpt': df_agreement_gpt[selected_metric].astype(bool),
+            'manual': df_agreement_gpt[f"manual_{selected_metric}"].astype(bool),
+            'agreement': df_agreement_gpt[f"{selected_metric}_agreement"],
+        })
+        selected_metric_df
+    else:
+        pd.DataFrame()
+    selected_metric_df
     return
 
 
