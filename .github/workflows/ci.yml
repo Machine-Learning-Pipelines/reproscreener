@@ -16,7 +16,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync
 
       - name: Install pandoc stuff
         run: sudo apt-get install pandoc pandoc-citeproc
