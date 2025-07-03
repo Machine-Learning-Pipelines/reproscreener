@@ -6,7 +6,6 @@
 
 <p align="center">
   <img alt="GitHub Workflow Status (with branch)" src="https://github.com/Machine-Learning-Pipelines/reproscreener/actions/workflows/ci.yml/badge.svg?branch=main">
-    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/Machine-Learning-Pipelines/reproscreener/github-pages?label=build docs">
   <img alt="Codecov" src="https://codecov.io/gh/Machine-Learning-Pipelines/reproscreener/branch/main/graph/badge.svg?token=DWBDDAERY4">
   <img alt="PyPI" src="https://img.shields.io/pypi/v/reproscreener">
   <img alt="License" src="https://img.shields.io/github/license/Machine-Learning-Pipelines/reproscreener">
