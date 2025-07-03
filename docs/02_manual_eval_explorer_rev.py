@@ -4,7 +4,7 @@ __generated_with = "0.14.8"
 app = marimo.App(width="full")
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import marimo as mo
     return (mo,)
@@ -16,11 +16,10 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import pandas as pd
     import numpy as np
-    from pathlib import Path
     return np, pd
 
 
@@ -31,13 +30,23 @@ def _(mo):
 
 
 @app.cell
+def _():
+    from pathlib import Path
+    # get current directory
+
+
+    return
+
+
+@app.cell(hide_code=True)
 def _(pd):
-    df_abstract = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/abstract.csv")
+    df_abstract = pd.read_csv("https://github.com/Machine-Learning-Pipelines/reproscreener/blob/204095f7a8fb11423bef04e0eaad7d1d74c0466b/docs/public/abstract.csv?raw=true")
     # exclude all columns with names containing "_description"
+    print(df_abstract.columns)
     df_abstract = df_abstract.drop(columns=["evaluation_type", "source_file", "paper_id"]
                                    +[col for col in df_abstract.columns if "_description" in col])
 
-    df_agreement_gpt = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/agreement_gpt.csv")
+    df_agreement_gpt = pd.read_csv("https://github.com/Machine-Learning-Pipelines/reproscreener/blob/204095f7a8fb11423bef04e0eaad7d1d74c0466b/docs/public/agreement_gpt.csv?raw=true")
 
     # exclude all columns with names containing "_description"
     df_agreement_gpt = df_agreement_gpt.drop(
@@ -55,14 +64,14 @@ def _(pd):
     return df_abstract, df_agreement_gpt
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_abstract, mo):
     dropdown = mo.ui.dropdown(df_abstract.columns.tolist(), value="problem")
     dropdown
     return (dropdown,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_abstract, df_agreement_gpt, dropdown, np, pd):
     selected_metric = dropdown.value
 
@@ -107,7 +116,7 @@ def _(df_abstract, df_agreement_gpt, dropdown, np, pd):
     return (evals_per_metric,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(evals_per_metric, pd):
     # Calculate summary statistics
     summary_df = pd.DataFrame()
