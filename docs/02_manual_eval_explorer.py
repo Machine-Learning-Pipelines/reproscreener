@@ -30,7 +30,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(np, pd):
+def _(mo, np, pd):
     df_agreement_gpt = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/agreement_gpt.csv")
 
     # Clean up columns - exclude metadata and description columns
@@ -77,7 +77,15 @@ def _(np, pd):
                 'total_n': len(gpt_vals)
             }
     results_df = pd.DataFrame(results).T
-    results_df
+
+    tab_decimal = results_df
+    tab_percent = results_df.copy()
+    tab_percent['gpt_proportion'] = tab_percent['gpt_proportion'].mul(100).round(0).astype(int).astype(str).add('%')
+    tab_percent['manual_proportion'] = tab_percent['manual_proportion'].mul(100).round(0).astype(int).astype(str).add('%')
+    tab_percent['gpt_manual_agreement'] = tab_percent['gpt_manual_agreement'].mul(100).round(0).astype(int).astype(str).add('%')
+
+    tabs = mo.ui.tabs({"percent": tab_percent, "decimal": tab_decimal})
+    tabs
     return df_agreement_gpt, metric_columns
 
 
