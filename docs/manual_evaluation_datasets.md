@@ -123,17 +123,8 @@ def _(mo, np, pd):
 def _(mo):
     mo.md(r"""## Select a metric to view evaluation results for each paper""")
     return
-```
 
-///
 
-/// marimo-embed
-    height: 400px
-    mode: read
-    app_width: wide
-    include_code: false
-
-```python
 @app.cell()
 def _(metric_columns, mo):
     dropdown = mo.ui.dropdown(metric_columns, value=metric_columns[0] if metric_columns else None)
