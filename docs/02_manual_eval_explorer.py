@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.14.8"
+__generated_with = "0.14.11"
 app = marimo.App(width="full")
 
 
@@ -21,6 +21,26 @@ def _():
     import pandas as pd
     import numpy as np
     return np, pd
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Reproscreener (regex) vs. Manual evaluations of preprint manuscripts""")
+    return
+
+
+@app.cell
+def _(pd):
+    df_manuscript = pd.read_csv("https://huggingface.co/datasets/adbX/reproscreener_manual_evaluations/resolve/main/manuscript.csv")
+
+    df_manuscript.set_index("paper_id", inplace=True)
+    df_manuscript = df_manuscript.drop(
+        columns=["evaluation_type", "source_file"]
+        + [col for col in df_manuscript.columns if "_description" in col]
+    )
+
+    df_manuscript
+    return
 
 
 @app.cell(hide_code=True)
