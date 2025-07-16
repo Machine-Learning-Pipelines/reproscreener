@@ -48,4 +48,6 @@ dev = [
     "anthropic>=0.52.2",
     "quarto>=0.1.0",
     "quartodoc>=0.11.1",
+    "ruff>=0.12.3",
+    "ty>=0.0.1a14",
 ]
