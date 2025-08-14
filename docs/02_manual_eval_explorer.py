@@ -92,8 +92,8 @@ def _(mo, np, pd):
                 'gpt_sum': gpt_vals.sum(),
                 'manual_sum': manual_vals.sum(),
                 'gpt_proportion': gpt_vals.mean(),
-                'manual_proportion': manual_vals.mean(),
                 'gpt_manual_agreement': agreement_vals.mean(),
+                'manual_proportion': manual_vals.mean(),
                 'total_n': len(gpt_vals)
             }
     results_df = pd.DataFrame(results).T
