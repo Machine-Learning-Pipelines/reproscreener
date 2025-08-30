@@ -1,51 +1,51 @@
-paper_id  , problem, objective, research_method, research_questions, pseudocode, dataset, hypothesis, prediction, code_available, software_dependencies, experiment_setup
-1606.04671, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-1903.09668, False  , False    , True           , True              , False     , False  , False     , True      , False         , False                , False
-1904.10554, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-1908.05659, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-1909.00931, False  , False    , True           , True              , False     , False  , False     , False     , False         , False                , False
-1911.03867, False  , False    , False          , False             , False     , False  , False     , True      , False         , False                , False
-2002.05905, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2004.05258, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2009.01947, False  , True     , False          , False             , False     , False  , False     , False     , False         , False                , False
-2010.04261, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2010.04855, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2011.11576, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2012.09302, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2101.07354, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2102.11887, False  , True     , False          , False             , False     , False  , False     , False     , False         , False                , False
-2104.11893, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2104.12546, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2105.01099, True   , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2105.01937, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2105.15197, True   , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2106.01528, True   , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2106.03157, True   , True     , True           , False             , False     , True   , False     , False     , False         , False                , False
-2106.03725, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2106.06927, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2106.07704, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2106.10898, True   , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2106.12177, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2106.12936, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2106.13823, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2107.01131, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2108.09779, False  , False    , False          , True              , False     , False  , False     , False     , True          , False                , False
-2109.01372, True   , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2109.12784, True   , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2110.02343, True   , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2110.02474, False  , False    , False          , False             , False     , False  , False     , False     , False         , False                , False
-2110.03135, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , True
-2110.05169, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2110.08255, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2110.08432, True   , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2110.09902, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2110.11688, True   , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2110.14241, False  , True     , True           , False             , False     , False  , False     , False     , False         , False                , False
-2111.02997, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2111.03664, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2111.08356, True   , False    , True           , False             , False     , False  , False     , True      , False         , False                , False
-2111.12673, False  , False    , True           , False             , False     , False  , False     , False     , False         , False                , False
-2111.15449, False  , False    , False          , False             , False     , False  , False     , False     , True          , False                , False
-2112.00016, False  , False    , False          , False             , False     , False  , False     , True      , False         , False                , False
-2112.03432, False  , False    , False          , True              , False     , False  , False     , False     , False         , False                , False
-2112.04871, True   , False    , True           , True              , False     , False  , False     , False     , False         , False                , False
+paper_id,problem,objective,research_method,research_questions,pseudocode,dataset,hypothesis,prediction,code_available,software_dependencies,experiment_setup
+1606.04671,False,False,False,False,False,False,False,False,False,False,False
+1903.09668,False,False,True,True,False,False,False,True,False,False,False
+1904.10554,False,False,False,True,False,False,False,False,False,False,False
+1908.05659,False,False,False,True,False,False,False,False,False,False,False
+1909.00931,False,False,True,True,False,False,False,False,False,False,False
+1911.03867,False,False,False,False,False,False,False,True,False,False,False
+2002.05905,False,False,False,True,False,False,False,False,False,False,False
+2004.05258,False,False,False,False,False,False,False,False,False,False,False
+2009.01947,False,True,False,False,False,False,False,False,False,False,False
+2010.04261,False,False,False,False,False,False,False,False,False,False,False
+2010.04855,False,False,False,False,False,False,False,False,False,False,False
+2011.11576,False,False,True,False,False,False,False,False,False,False,False
+2012.09302,False,False,False,True,False,False,False,False,False,False,False
+2101.07354,False,False,False,False,False,False,False,False,False,False,False
+2102.11887,False,True,False,False,False,False,False,False,False,False,False
+2104.11893,False,False,False,False,False,False,False,False,False,False,False
+2104.12546,False,False,False,False,False,False,False,False,False,False,False
+2105.01099,True,False,False,True,False,False,False,False,False,False,False
+2105.01937,False,False,True,False,False,False,False,False,False,False,False
+2105.15197,True,False,False,False,False,False,False,False,False,False,False
+2106.01528,True,False,True,False,False,False,False,False,False,False,False
+2106.03157,True,True,True,False,False,True,False,False,False,False,False
+2106.03725,False,False,False,False,False,False,False,False,False,False,False
+2106.06927,False,False,True,False,False,False,False,False,False,False,False
+2106.07704,False,False,True,False,False,False,False,False,False,False,False
+2106.10898,True,False,True,False,False,False,False,False,False,False,False
+2106.12177,False,False,False,True,False,False,False,False,False,False,False
+2106.12936,False,False,False,False,False,False,False,False,False,False,False
+2106.13823,False,False,False,False,False,False,False,False,False,False,False
+2107.01131,False,False,False,False,False,False,False,False,False,False,False
+2108.09779,False,False,False,True,False,False,False,False,True,False,False
+2109.01372,True,False,False,True,False,False,False,False,False,False,False
+2109.12784,True,False,False,False,False,False,False,False,False,False,False
+2110.02343,True,False,False,False,False,False,False,False,False,False,False
+2110.02474,False,False,False,False,False,False,False,False,False,False,False
+2110.03135,False,False,True,False,False,False,False,False,False,False,True
+2110.05169,False,False,True,False,False,False,False,False,False,False,False
+2110.08255,False,False,False,True,False,False,False,False,False,False,False
+2110.08432,True,False,True,False,False,False,False,False,False,False,False
+2110.09902,False,False,True,False,False,False,False,False,False,False,False
+2110.11688,True,False,True,False,False,False,False,False,False,False,False
+2110.14241,False,True,True,False,False,False,False,False,False,False,False
+2111.02997,False,False,True,False,False,False,False,False,False,False,False
+2111.03664,False,False,True,False,False,False,False,False,False,False,False
+2111.08356,True,False,True,False,False,False,False,True,False,False,False
+2111.12673,False,False,True,False,False,False,False,False,False,False,False
+2111.15449,False,False,False,False,False,False,False,False,True,False,False
+2112.00016,False,False,False,False,False,False,False,True,False,False,False
+2112.03432,False,False,False,True,False,False,False,False,False,False,False
+2112.04871,True,False,True,True,False,False,False,False,False,False,False
