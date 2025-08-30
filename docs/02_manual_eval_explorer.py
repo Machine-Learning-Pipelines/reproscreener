@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.14.11"
+__generated_with = "0.15.2"
 app = marimo.App(width="full")
 
 
@@ -20,6 +20,10 @@ def _(mo):
 def _():
     import pandas as pd
     import numpy as np
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import ListedColormap
+    from textwrap import wrap
 
     all_columns = [
       "problem",
@@ -46,7 +50,7 @@ def _():
       "experiment_setup_agreement"
     ]
     metric_columns = [col for col in all_columns if not col.endswith("_agreement")]
-    return metric_columns, np, pd
+    return metric_columns, np, pd, plt, wrap
 
 
 @app.cell
@@ -160,7 +164,6 @@ def _(metric_columns, np, pd):
             abs_agreement_vals = df_abs_gpt_agreement[abs_agreement_col]
             abs_manual_vals = np.where(abs_agreement_vals == 1, abs_gpt_vals, ~abs_gpt_vals)
             df_abs_gpt_agreement[f"manual_{abs_metric}"] = abs_manual_vals.astype(bool)
-
     return (df_abs_gpt_agreement,)
 
 
@@ -183,10 +186,10 @@ def _(df_abstract_manual, df_abstract_regex, metric_columns, mo, pd):
     manual_bool_abs = df_abstract_manual.loc[common_idx_abs]
     regex_bool_abs = df_abstract_regex.loc[common_idx_abs]
 
-    abstract_metrics = [m for m in metric_columns if m in manual_bool_abs.columns and m in regex_bool_abs.columns]
+    # abstract_metrics = [m for m in metric_columns if m in manual_bool_abs.columns and m in regex_bool_abs.columns]
 
     results_abs = {}
-    for metric in abstract_metrics:
+    for metric in metric_columns:
         regex_vals = regex_bool_abs[metric].astype(bool)
         manual_vals = manual_bool_abs[metric].astype(bool)
 
@@ -276,6 +279,109 @@ def _(metric_columns, mo, np, pd):
     return abstract_results_gpt4_df, df_gpt_agreement_manu
 
 
+@app.cell
+def _(metric_columns, pd):
+    # Load LLaMA 3.2 abstract results
+    df_abstract_llama32 = pd.read_csv("../llama3/outputs_json/20250222-215739/analysis_summary_reproscreener.csv")
+    df_abstract_llama32 = df_abstract_llama32.set_index("paper_id")
+    # Ensure boolean dtype for metrics present in this dataframe
+    available_cols_llama32 = [c for c in metric_columns if c in df_abstract_llama32.columns]
+    df_abstract_llama32[available_cols_llama32] = df_abstract_llama32[available_cols_llama32].astype(bool)
+    df_abstract_llama32
+    return (df_abstract_llama32,)
+
+
+@app.cell
+def _(df_abstract_llama32, df_abstract_manual, metric_columns, mo, pd):
+    common_idx_abs_llama32 = df_abstract_manual.index.intersection(df_abstract_llama32.index)
+    manual_bool_abs_llama32 = df_abstract_manual.loc[common_idx_abs_llama32]
+    llama32_bool_abs = df_abstract_llama32.loc[common_idx_abs_llama32]
+
+    metrics_llama32_shared = [
+        m for m in metric_columns
+        if m in manual_bool_abs_llama32.columns and m in llama32_bool_abs.columns
+    ]
+
+    results_abs_llama32 = {}
+    for metric_llama32 in metrics_llama32_shared:
+        llama32_vals = llama32_bool_abs[metric_llama32].astype(bool)
+        manual_vals_llama32 = manual_bool_abs_llama32[metric_llama32].astype(bool)
+
+        results_abs_llama32[metric_llama32] = {
+            'llama32_sum': int(llama32_vals.sum()),
+            'manual_sum_llama32': int(manual_vals_llama32.sum()),
+            'llama32_proportion': float(llama32_vals.mean()),
+            'llama32_manual_agreement': float((llama32_vals == manual_vals_llama32).mean()),
+            'manual_proportion_llama32': float(manual_vals_llama32.mean()),
+            'total_n_llama32': int(len(llama32_vals)),
+        }
+
+    abstract_results_llama32_df = pd.DataFrame(results_abs_llama32).T
+
+    tab_decimal_abs_llama32 = abstract_results_llama32_df
+    tab_percent_abs_llama32 = abstract_results_llama32_df.copy()
+    tab_percent_abs_llama32['llama32_proportion'] = tab_percent_abs_llama32['llama32_proportion'].mul(100).round(0).astype(int).astype(str).add('%')
+    tab_percent_abs_llama32['manual_proportion_llama32'] = tab_percent_abs_llama32['manual_proportion_llama32'].mul(100).round(0).astype(int).astype(str).add('%')
+    tab_percent_abs_llama32['llama32_manual_agreement'] = tab_percent_abs_llama32['llama32_manual_agreement'].mul(100).round(0).astype(int).astype(str).add('%')
+
+    tabs_abs_llama32 = mo.ui.tabs({"percent": tab_percent_abs_llama32, "decimal": tab_decimal_abs_llama32})
+    tabs_abs_llama32
+    return (abstract_results_llama32_df,)
+
+
+app._unparsable_cell(
+    r"""
+    def plot_heatmap_llama()
+        # Map metric names to custom display labels (fallback: Title Case)
+        metrics_display_map = {
+            \"experiment_setup\": \"Experimental setup\",
+            \"hypothesis\": \"Hypothesis\",
+            \"method_source_code\": \"Method source code\",
+            \"objective\": \"Objective/Goal\",
+            \"prediction\": \"Prediction\",
+            \"problem\": \"Research problem\",
+            \"pseudocode\": \"Pseudocode\",
+            \"research_method\": \"Research method\",
+            \"research_questions\": \"Research questions\",
+            \"test_data\": \"Test data\",
+            \"training_data\": \"Training data\",
+            \"validation_data\": \"Validation data\",
+            \"dataset\": \"Dataset\",
+            \"software_dependencies\": \"Software dependencies\",
+        }
+
+        # Metrics on rows, papers on columns
+        heatmap_df = df_abstract_llama32.astype(float).T
+        heatmap_df.index = [metrics_display_map.get(m, m.replace(\"_\", \" \").title()) for m in heatmap_df.index]
+
+        # Two-color scheme (empty, filled)
+        custom_cmap = ListedColormap([\"#FFF0F0\", \"#E74C3C\"])
+
+        fig, ax = plt.subplots(figsize=(12, 4), tight_layout={\"pad\": 1.5})
+
+        # Black frame
+        ax.axhline(y=0, color=\"k\", linewidth=1)
+        ax.axvline(x=0, color=\"k\", linewidth=1)
+        ax.axhline(y=heatmap_df.shape[0], color=\"k\", linewidth=1)
+        ax.axvline(x=heatmap_df.shape[1], color=\"k\", linewidth=1)
+
+        sns.heatmap(heatmap_df, cmap=custom_cmap, cbar=False, linewidths=1, ax=ax)
+
+        ax.set(xlabel=\"Paper\", ylabel=\"Metric\")
+        plt.title(\"LLama 3.2 evaluations on manuscript abstracts\", pad=15)
+        plt.subplots_adjust(top=0.95, left=0.15, right=0.95)
+        plt.tight_layout()
+
+        # Optional:
+        plt.savefig(\"heatmap_metric_presence_llama32_direct.png\", dpi=320, bbox_inches=\"tight\")
+        plt.show()
+
+    plot_heatmap_llama()
+    """,
+    name="_"
+)
+
+
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""## Select a metric to view evaluation results for each paper""")
@@ -306,14 +412,67 @@ def _(df_gpt_agreement_manu, dropdown, pd):
 
 
 @app.cell
-def _(abstract_results_gpt4_df, abstract_results_regex_df):
-    import matplotlib.pyplot as plt
-    import scienceplots
-    plt.style.use('science')
+def _(
+    abstract_results_gpt4_df,
+    abstract_results_llama32_df,
+    abstract_results_regex_df,
+    pd,
+):
 
+
+    # plot all 3 agreement metrics
     abstract_results_regex_df.regex_manual_agreement
     abstract_results_gpt4_df.gpt_manual_agreement
+    abstract_results_llama32_df.llama32_manual_agreement
 
+    merged_agreement_results = pd.DataFrame({
+        'Reproscreener (regex)': abstract_results_regex_df['regex_manual_agreement'],
+        'GPT-4': abstract_results_gpt4_df['gpt_manual_agreement'],
+        'LLaMA 3.2': abstract_results_llama32_df['llama32_manual_agreement']
+    })
+    merged_agreement_results.index.name = 'Metric'
+    merged_agreement_results
+    return (merged_agreement_results,)
+
+
+@app.cell
+def _(merged_agreement_results):
+    merged_agreement_results_melt = merged_agreement_results.reset_index().melt(id_vars='Metric', var_name='Method', value_name='Agreement')
+    merged_agreement_results_melt
+    return (merged_agreement_results_melt,)
+
+
+@app.cell
+def _(merged_agreement_results_melt, np, plt, wrap):
+    # import numpy as np
+    # import matplotlib.pyplot as plt
+    # import scienceplots
+    # plt.style.use('ieee')
+    metric_order = [
+        "problem", "objective", "research_method", "research_questions",
+        "pseudocode", "dataset", "hypothesis", "prediction",
+        "code_available", "software_dependencies", "experiment_setup"
+    ]# assumes df from above
+    df_sorted = merged_agreement_results_melt.sort_values(["Metric","Method"])
+    methods = df_sorted["Method"].unique()
+    metrics = metric_order
+    x = np.arange(len(metrics))
+    width = 0.8 / len(methods)
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    for i, m in enumerate(methods):
+        sub = df_sorted[df_sorted["Method"] == m].set_index("Metric").reindex(metrics)
+        ax.bar(x + i*width - (len(methods)-1)*width/2, sub["Agreement"].values, width, label=m)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([ "\n".join(wrap(m, 12)) for m in metrics ])
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("Agreement")
+    ax.set_title("Agreement by Metric — All Methods")
+    ax.yaxis.grid(True, linestyle="--", linewidth=0.5, alpha=0.7)
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
     return
 
 
