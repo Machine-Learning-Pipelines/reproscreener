@@ -29,6 +29,7 @@ dependencies = [
     "pytest>=8.4.1",
     "requests>=2.32.3",
     "rich>=14.0.0",
+    "scienceplots>=2.1.1",
     "scikit-learn>=1.6.1",
     "seaborn>=0.13.2",
     "streamlit>=1.45.1",
