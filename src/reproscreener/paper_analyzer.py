@@ -282,6 +282,127 @@ def analyze_arxiv_paper(arxiv_url: str, download_dir: Path, url_type: str = "tex
             "Error": [str(e)]
         })
 
+def _build_keyword_processor_and_map() -> Tuple[KeywordProcessor, Dict[str, str]]:
+    """
+    Build a KeywordProcessor and a reverse map from phrase -> category using
+    the Gunderson keyword dictionary.
+    """
+    keyword_dict = generate_gunderson_dict()
+    pattern_to_category: Dict[str, str] = {}
+    keyword_processor = KeywordProcessor(case_sensitive=True)
+
+    for category, phrases in keyword_dict.items():
+        for phrase in phrases:
+            keyword_processor.add_keyword(phrase)
+            pattern_to_category[phrase] = category
+
+    return keyword_processor, pattern_to_category
+
+def extract_category_presence_from_text(text: str) -> Dict[str, bool]:
+    """
+    Given raw text (e.g., an abstract), return boolean presence for each
+    category relevant to the gold-standard CSV output.
+
+    Output keys (CSV columns):
+    - problem
+    - objective
+    - research_method
+    - research_questions
+    - pseudocode
+    - dataset
+    - hypothesis
+    - prediction
+    - code_available (mapped from method_source_code)
+    - software_dependencies
+    - experiment_setup
+    """
+    # Initialize all as False
+    presence: Dict[str, bool] = {
+        "problem": False,
+        "objective": False,
+        "research_method": False,
+        "research_questions": False,
+        "pseudocode": False,
+        "dataset": False,
+        "hypothesis": False,
+        "prediction": False,
+        "code_available": False,  # maps from method_source_code
+        "software_dependencies": False,
+        "experiment_setup": False,
+    }
+
+    keyword_processor, pattern_to_category = _build_keyword_processor_and_map()
+
+    # Extract keywords across entire text at once
+    matches = keyword_processor.extract_keywords(text, span_info=False)
+    for m in matches:
+        category = pattern_to_category.get(m)
+        if not category:
+            continue
+        if category == "method_source_code":
+            presence["code_available"] = True
+        elif category in presence:
+            presence[category] = True
+        # Categories not requested in CSV (e.g., hardware_specifications) are ignored
+
+    return presence
+
+def analyze_abstract_file(abstract_path: Path) -> Dict[str, object]:
+    """
+    Analyze a single abstract .txt file and return a row dict for the CSV.
+    The paper_id is derived from the filename stem.
+    """
+    try:
+        text = abstract_path.read_text(encoding="utf-8", errors="replace")
+    except Exception as e:
+        log.warning(f"Could not read abstract file {abstract_path}: {e}")
+        text = ""
+
+    paper_id = abstract_path.stem
+    presence = extract_category_presence_from_text(text)
+
+    row: Dict[str, object] = {"paper_id": paper_id}
+    row.update(presence)
+    return row
+
+def analyze_abstracts_directory(abstracts_dir: Path) -> pd.DataFrame:
+    """
+    Analyze all .txt abstracts in a directory and return a DataFrame with
+    the expected CSV columns.
+    """
+    abstracts = sorted(abstracts_dir.glob("*.txt"))
+    rows: List[Dict[str, object]] = []
+    for path in abstracts:
+        rows.append(analyze_abstract_file(path))
+
+    # Ensure exact column order as requested
+    columns = [
+        "paper_id",
+        "problem",
+        "objective",
+        "research_method",
+        "research_questions",
+        "pseudocode",
+        "dataset",
+        "hypothesis",
+        "prediction",
+        "code_available",
+        "software_dependencies",
+        "experiment_setup",
+    ]
+
+    if not rows:
+        # Return empty DataFrame with the correct columns
+        return pd.DataFrame(columns=columns)
+
+    df = pd.DataFrame(rows)
+    # Fill missing columns with False
+    for col in columns:
+        if col not in df.columns:
+            df[col] = False
+    df = df[columns]
+    return df
+
 def main():
     logging.basicConfig(level=logging.INFO)
     sample_arxiv_url = "https://arxiv.org/abs/2111.12673"
