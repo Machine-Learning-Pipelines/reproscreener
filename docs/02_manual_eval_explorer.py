@@ -50,7 +50,7 @@ def _():
       "experiment_setup_agreement"
     ]
     metric_columns = [col for col in all_columns if not col.endswith("_agreement")]
-    return metric_columns, np, pd, plt, wrap
+    return ListedColormap, metric_columns, np, pd, plt, sns, wrap
 
 
 @app.cell
@@ -329,57 +329,55 @@ def _(df_abstract_llama32, df_abstract_manual, metric_columns, mo, pd):
     return (abstract_results_llama32_df,)
 
 
-app._unparsable_cell(
-    r"""
-    def plot_heatmap_llama()
+@app.cell
+def _(ListedColormap, df_abstract_llama32, plt, sns):
+    def plot_heatmap_llama():
         # Map metric names to custom display labels (fallback: Title Case)
         metrics_display_map = {
-            \"experiment_setup\": \"Experimental setup\",
-            \"hypothesis\": \"Hypothesis\",
-            \"method_source_code\": \"Method source code\",
-            \"objective\": \"Objective/Goal\",
-            \"prediction\": \"Prediction\",
-            \"problem\": \"Research problem\",
-            \"pseudocode\": \"Pseudocode\",
-            \"research_method\": \"Research method\",
-            \"research_questions\": \"Research questions\",
-            \"test_data\": \"Test data\",
-            \"training_data\": \"Training data\",
-            \"validation_data\": \"Validation data\",
-            \"dataset\": \"Dataset\",
-            \"software_dependencies\": \"Software dependencies\",
+            "experiment_setup": "Experimental setup",
+            "hypothesis": "Hypothesis",
+            "method_source_code": "Method source code",
+            "objective": "Objective/Goal",
+            "prediction": "Prediction",
+            "problem": "Research problem",
+            "pseudocode": "Pseudocode",
+            "research_method": "Research method",
+            "research_questions": "Research questions",
+            "test_data": "Test data",
+            "training_data": "Training data",
+            "validation_data": "Validation data",
+            "dataset": "Dataset",
+            "software_dependencies": "Software dependencies",
         }
 
         # Metrics on rows, papers on columns
         heatmap_df = df_abstract_llama32.astype(float).T
-        heatmap_df.index = [metrics_display_map.get(m, m.replace(\"_\", \" \").title()) for m in heatmap_df.index]
+        heatmap_df.index = [metrics_display_map.get(m, m.replace("_", " ").title()) for m in heatmap_df.index]
 
         # Two-color scheme (empty, filled)
-        custom_cmap = ListedColormap([\"#FFF0F0\", \"#E74C3C\"])
+        custom_cmap = ListedColormap(["#FFF0F0", "#E74C3C"])
 
-        fig, ax = plt.subplots(figsize=(12, 4), tight_layout={\"pad\": 1.5})
+        fig, ax = plt.subplots(figsize=(12, 4), tight_layout={"pad": 1.5})
 
         # Black frame
-        ax.axhline(y=0, color=\"k\", linewidth=1)
-        ax.axvline(x=0, color=\"k\", linewidth=1)
-        ax.axhline(y=heatmap_df.shape[0], color=\"k\", linewidth=1)
-        ax.axvline(x=heatmap_df.shape[1], color=\"k\", linewidth=1)
+        ax.axhline(y=0, color="k", linewidth=1)
+        ax.axvline(x=0, color="k", linewidth=1)
+        ax.axhline(y=heatmap_df.shape[0], color="k", linewidth=1)
+        ax.axvline(x=heatmap_df.shape[1], color="k", linewidth=1)
 
         sns.heatmap(heatmap_df, cmap=custom_cmap, cbar=False, linewidths=1, ax=ax)
 
-        ax.set(xlabel=\"Paper\", ylabel=\"Metric\")
-        plt.title(\"LLama 3.2 evaluations on manuscript abstracts\", pad=15)
+        ax.set(xlabel="Paper", ylabel="Metric")
+        plt.title("LLama 3.2 evaluations on manuscript abstracts", pad=15)
         plt.subplots_adjust(top=0.95, left=0.15, right=0.95)
         plt.tight_layout()
 
         # Optional:
-        plt.savefig(\"heatmap_metric_presence_llama32_direct.png\", dpi=320, bbox_inches=\"tight\")
+        plt.savefig("heatmap_metric_presence_llama32_direct.png", dpi=320, bbox_inches="tight")
         plt.show()
 
     plot_heatmap_llama()
-    """,
-    name="_"
-)
+    return
 
 
 @app.cell(hide_code=True)
