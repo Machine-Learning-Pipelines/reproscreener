@@ -23,3 +23,5 @@ poetry add ipykernel streamlit types-tabulate pdfx jupyter-contrib-nbextensions 
 ```
 idna platformdirs dnspython
 ```
+
+uv run reproscreener --gold-abstracts-dir ../gold_standard/abstracts --out-csv reports/tables/abstract_regex_gs.csv
