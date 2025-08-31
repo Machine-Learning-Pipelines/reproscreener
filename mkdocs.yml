@@ -13,7 +13,7 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Usage: usage.md
-  - Manual evaluation datasets: manual_evaluation_datasets.md
+  - Manual evaluation datasets: manual_evaluation_explorer.ipynb
   - Case studies: evaluation_results.ipynb
   - Architecture: docstrings.md
   - References: z_references.md
