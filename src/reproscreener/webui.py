@@ -5,8 +5,8 @@ import pandas as pd
 import torch
 torch.classes.__path__ = [] # for the torch streamlit error RuntimeError: Tried to instantiate class '__path__._path', 
 
-from paper_analyzer import analyze_arxiv_paper, parse_arxiv_id
-from repo_analyzer import analyze_github_repo
+from analysis.paper_analyzer import analyze_arxiv_paper, parse_arxiv_id
+from analysis.repo_analyzer import analyze_github_repo
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 log = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ REPO_CLONE_DIR.mkdir(parents=True, exist_ok=True)
 st.set_page_config(layout="wide", page_title="ReproScreener", initial_sidebar_state="collapsed")
 
 st.title("ReproScreener")
-st.header("Automating reproducibility evaluation of papers and code")
+st.subheader("Automating reproducibility evaluations of papers and code")
 
 def clean_title(title):
     """Clean up title text by replacing newlines with spaces"""
@@ -96,21 +96,30 @@ def prepare_repo_display_df(df):
 
 tab1, tab2 = st.tabs(["Manuscript Evaluation (arXiv)", "Repository Evaluation (GitHub)"])
 with tab1:
-    st.header("Manuscript Evaluation (arXiv)")
+    # st.header("Manuscript Evaluation (arXiv)")
     # Persist results across interactions in session_state
     if "arxiv_results" not in st.session_state:
         st.session_state["arxiv_results"] = {"tex": pd.DataFrame(), "pdf": pd.DataFrame()}
 
-    arxiv_url_type = st.radio("Select the type of arXiv URL to *evaluate now*:", ("tex", "pdf"))
-    arxiv_urls_text = st.text_area("Enter arXiv URLs (one per line):", height=100, key="arxiv_urls")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        arxiv_url_type = st.radio("1. Select the type of arXiv URL to evaluate:", ("TeX", "PDF"))
+        # Normalize selection to internal keys used throughout the app
+        arxiv_url_type_key = "tex" if arxiv_url_type.strip().lower().startswith("tex") else "pdf"
+    with col2:
+        arxiv_urls_text = st.text_area("2. Enter arXiv URLs (one per line):", height=100, key="arxiv_urls")
+
+    st.divider()
     evaluate_arxiv_button = st.button("Evaluate arXiv Manuscript(s)", key="eval_arxiv")
     
     # Placeholder for combined display
     combined_placeholder = st.container()
 
 with tab2:
-    st.header("Repository Evaluation (GitHub)")
+    # st.header("Repository Evaluation (GitHub)")
     repo_urls_text = st.text_area("Enter GitHub Repository URLs (one per line):", height=100, key="repo_urls")
+    st.divider()
     evaluate_repo_button = st.button("Evaluate GitHub Repository(s)", key="eval_repo")
     
     repo_results_placeholder = st.empty()
@@ -118,7 +127,8 @@ with tab2:
 if evaluate_arxiv_button and arxiv_urls_text:
     arxiv_urls = [url.strip() for url in arxiv_urls_text.split('\n') if url.strip()]
     if arxiv_urls:
-        st.info("Processing arXiv manuscripts...")
+        processing_placeholder = st.empty()
+        processing_placeholder.info("Processing arXiv manuscripts...")
         all_paper_results = pd.DataFrame()
         
         for url in arxiv_urls:
@@ -126,7 +136,7 @@ if evaluate_arxiv_button and arxiv_urls_text:
                 log.info(f"Analyzing arXiv URL: {url}")
                 paper_id_for_path = parse_arxiv_id(url)
                 paper_specific_download_dir = ARXIV_DOWNLOAD_DIR / paper_id_for_path
-                result_df = analyze_arxiv_paper(url, paper_specific_download_dir, arxiv_url_type)
+                result_df = analyze_arxiv_paper(url, paper_specific_download_dir, arxiv_url_type_key)
                 all_paper_results = pd.concat([all_paper_results, result_df], ignore_index=True)
             except Exception as e:
                 log.error(f"Error processing arXiv URL {url}: {e}")
@@ -140,7 +150,8 @@ if evaluate_arxiv_button and arxiv_urls_text:
                 all_paper_results = pd.concat([all_paper_results, error_df], ignore_index=True)
         
         # Store results in session state
-        st.session_state["arxiv_results"][arxiv_url_type] = all_paper_results
+        st.session_state["arxiv_results"][arxiv_url_type_key] = all_paper_results
+        processing_placeholder.empty()
         st.success("arXiv manuscript evaluation complete!")
     else:
         st.warning("Please enter at least one arXiv URL.")
@@ -155,6 +166,8 @@ def render_combined_results():
 
     combined_placeholder.markdown("---")
     combined: dict = {}
+    has_tex_results = not tex_df.empty
+    has_pdf_results = not pdf_df.empty
 
     def _add_rows(df: pd.DataFrame, fmt: str):
         for _, row in df.iterrows():
@@ -184,41 +197,75 @@ def render_combined_results():
 
         # ------------ Variables ------------
         combined_placeholder.markdown("**Found Variables**")
-        v_col_tex, v_col_pdf = combined_placeholder.columns(2)
+        if has_tex_results and has_pdf_results:
+            v_col_tex, v_col_pdf = combined_placeholder.columns(2)
 
-        # TeX variables DataFrame
-        if data["tex_vars"]:
-            tex_var_df = pd.DataFrame([
-                {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
-            ])
-            v_col_tex.dataframe(tex_var_df, use_container_width=True)
-        else:
-            v_col_tex.info("No variables found in TeX")
+            # TeX variables DataFrame
+            if data["tex_vars"]:
+                tex_var_df = pd.DataFrame([
+                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
+                ])
+                v_col_tex.dataframe(tex_var_df, use_container_width=True)
+            else:
+                v_col_tex.info("No variables found in TeX")
 
-        # PDF variables DataFrame
-        if data["pdf_vars"]:
-            pdf_var_df = pd.DataFrame([
-                {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
-            ])
-            v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
-        else:
-            v_col_pdf.info("No variables found in PDF")
+            # PDF variables DataFrame
+            if data["pdf_vars"]:
+                pdf_var_df = pd.DataFrame([
+                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
+                ])
+                v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
+            else:
+                v_col_pdf.info("No variables found in PDF")
+        elif has_tex_results:
+            v_col_tex = combined_placeholder.container()
+            if data["tex_vars"]:
+                tex_var_df = pd.DataFrame([
+                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
+                ])
+                v_col_tex.dataframe(tex_var_df, use_container_width=True)
+            else:
+                v_col_tex.info("No variables found in TeX")
+        elif has_pdf_results:
+            v_col_pdf = combined_placeholder.container()
+            if data["pdf_vars"]:
+                pdf_var_df = pd.DataFrame([
+                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
+                ])
+                v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
+            else:
+                v_col_pdf.info("No variables found in PDF")
 
         # ------------ Links ------------
         combined_placeholder.markdown("**Found Links**")
-        l_col_tex, l_col_pdf = combined_placeholder.columns(2)
+        if has_tex_results and has_pdf_results:
+            l_col_tex, l_col_pdf = combined_placeholder.columns(2)
 
-        if data["tex_links"]:
-            tex_links_df = pd.DataFrame(sorted(set(data["tex_links"])), columns=["Link"])
-            l_col_tex.dataframe(tex_links_df, use_container_width=True)
-        else:
-            l_col_tex.info("No links found in TeX")
+            if data["tex_links"]:
+                tex_links_df = pd.DataFrame(sorted(set(data["tex_links"])), columns=["Link"])
+                l_col_tex.dataframe(tex_links_df, use_container_width=True)
+            else:
+                l_col_tex.info("No links found in TeX")
 
-        if data["pdf_links"]:
-            pdf_links_df = pd.DataFrame(sorted(set(data["pdf_links"])), columns=["Link"])
-            l_col_pdf.dataframe(pdf_links_df, use_container_width=True)
-        else:
-            l_col_pdf.info("No links found in PDF")
+            if data["pdf_links"]:
+                pdf_links_df = pd.DataFrame(sorted(set(data["pdf_links"])), columns=["Link"])
+                l_col_pdf.dataframe(pdf_links_df, use_container_width=True)
+            else:
+                l_col_pdf.info("No links found in PDF")
+        elif has_tex_results:
+            l_col_tex = combined_placeholder.container()
+            if data["tex_links"]:
+                tex_links_df = pd.DataFrame(sorted(set(data["tex_links"])), columns=["Link"])
+                l_col_tex.dataframe(tex_links_df, use_container_width=True)
+            else:
+                l_col_tex.info("No links found in TeX")
+        elif has_pdf_results:
+            l_col_pdf = combined_placeholder.container()
+            if data["pdf_links"]:
+                pdf_links_df = pd.DataFrame(sorted(set(data["pdf_links"])), columns=["Link"])
+                l_col_pdf.dataframe(pdf_links_df, use_container_width=True)
+            else:
+                l_col_pdf.info("No links found in PDF")
 
 render_combined_results()
 
