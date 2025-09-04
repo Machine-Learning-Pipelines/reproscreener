@@ -2,7 +2,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from .paper_analyzer import (
+from analysis.paper_analyzer import (
     main as paper_analyzer_main,
     analyze_abstracts_directory,
 )
@@ -17,19 +17,14 @@ def main():
     parser.add_argument(
         "--gold-abstracts-dir",
         type=Path,
-        default=None,
+        default="../gold_standard/abstracts",
         help="Path to directory containing gold standard abstract .txt files",
     )
     parser.add_argument(
         "--out-csv",
         type=Path,
-        default=None,
-        help="Output CSV path for gold abstract evaluation (defaults to ./gold_abstracts_eval.csv)",
-    )
-    parser.add_argument(
-        "--analyze-sample-arxiv",
-        action="store_true",
-        help="Run the sample arXiv analysis (for quick sanity check)",
+        default="reports/tables/abstract_regex_gs.csv",
+        help="Output CSV path for gold abstract evaluation (defaults to ./reports/tables/abstract_regex_gs.csv)",
     )
 
     args = parser.parse_args()
@@ -44,12 +39,6 @@ def main():
         print(f"Wrote gold abstract evaluation to {out_csv}")
         return
 
-    if args.analyze_sample_arxiv:
-        paper_analyzer_main()
-        return
-
-    # Default behavior: no-op placeholder to avoid surprising actions
-    # Uncomment as needed to run other analyzers
     # repo_analyzer_main()
     # manual_eval_main()
     return

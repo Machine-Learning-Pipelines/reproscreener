@@ -13,7 +13,7 @@ from urlextract import URLExtract
 import pandas as pd
 from docling.document_converter import DocumentConverter
 
-from .keywords import generate_gunderson_dict
+from analysis.keywords import generate_gunderson_dict
 
 log = logging.getLogger(__name__)
 
