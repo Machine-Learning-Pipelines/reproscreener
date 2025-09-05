@@ -300,8 +300,8 @@ if evaluate_repo_button and repo_urls_text:
                     analysis_data = res.get("Analysis", [])
                     if analysis_data:
                         # Add Repo URL to each row
-                        for item in analysis_data:
-                            item["Repo URL"] = res.get("Repo URL", "N/A")
+                        # for item in analysis_data:
+                        #     item["Repo URL"] = res.get("Repo URL", "N/A")
                         df = pd.DataFrame(analysis_data)
                         repo_df = pd.concat([repo_df, df], ignore_index=True)
             
