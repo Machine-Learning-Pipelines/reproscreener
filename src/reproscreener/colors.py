@@ -225,31 +225,3 @@ ALERT_DARK = [
     "#f1c21b",  # Yellow 30
     "#24a148"   # Green 50
 ]
-
-# ===== METRIC GROUPING COLORS =====
-
-# Color mappings for metric groups using Carbon Palette 3-color option 1
-METRIC_GROUP_COLORS_LIGHT = {
-    "Method": "#a56eff",    # Purple 50
-    "Data": "#005d5d",      # Teal 70  
-    "Experiment": "#9f1853" # Magenta 70
-}
-
-METRIC_GROUP_COLORS_DARK = {
-    "Method": "#8a3ffc",    # Purple 60
-    "Data": "#08bdba",      # Teal 40
-    "Experiment": "#ff7eb6" # Magenta 40
-}
-
-# ===== CONVENIENCE MAPPINGS =====
-
-# For backwards compatibility with existing code
-carbon_palette_1 = {
-    "LLaMA 3.2": CATEGORICAL_3_LIGHT_OPTION_1[0],  # Purple 50
-    "Regex": CATEGORICAL_3_LIGHT_OPTION_1[1],      # Teal 70
-    "GPT-4": CATEGORICAL_3_LIGHT_OPTION_1[2]       # Magenta 70
-}
-
-# Quick access to commonly used palettes
-CARBON_3_LIGHT_1 = CATEGORICAL_3_LIGHT_OPTION_1
-CARBON_3_DARK_1 = CATEGORICAL_3_DARK_OPTION_1
