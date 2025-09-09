@@ -14,7 +14,7 @@ It can:
 - Detect external links such as source-code or data repositories contained in the manuscript.
 - Return the results as a convenient `pandas.DataFrame`.
 
-::: reproscreener.paper_analyzer
+::: reproscreener.analysis.paper_analyzer
     options:
       show_source: false
       heading_level: 3
@@ -30,7 +30,7 @@ Its main tasks are:
 - Parsing the project's `README` for sections that describe installation or requirements.
 - Aggregating the findings into a tabular report.
 
-::: reproscreener.repo_analyzer
+::: reproscreener.analysis.repo_analyzer
     options:
       show_source: false
       heading_level: 3
@@ -40,7 +40,7 @@ Its main tasks are:
 The `keywords` module generates the lists of keywords/regular-expression patterns that are used by the analyser modules to identify important concepts inside paper text.
 Currently it implements the metrics from [@bhaskarReproscreenerLeveragingLLMs2024].
 
-::: reproscreener.keywords
+::: reproscreener.analysis.keywords
     options:
       show_source: false
       heading_level: 3 
