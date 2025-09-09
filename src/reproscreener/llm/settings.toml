@@ -1,0 +1,39 @@
+# Ollama configuration for manuscript processing
+[manuscript]
+# Model configuration
+# ollama_model = "llama3.1"
+ollama_model = "llama3.2"
+ollama_url = "http://127.0.0.1:11434/api/generate"
+
+# Processing limits
+num_runs = 10
+max_papers = 50
+
+# Model options
+# ollama_options = {
+    seed = 42              # For reproducible results
+    num_ctx = 131072       # Context window size
+    # num_ctx = 40960
+    temperature = 1      # Low temperature for consistent outputs
+    # top_p = 0.9            # Top-p sampling
+#}
+
+# Repository analysis configuration
+[repo]
+# Model configuration
+# ollama_model = "llama3.1"
+ollama_url = "http://127.0.0.1:11434/api/generate"
+
+# Model options (can be different from manuscript processing)
+# ollama_options = {
+#    seed = 42,
+#    num_ctx = 131072,
+#    temperature = 0.1,
+#    top_p = 0.9
+#}
+
+# Paths configuration
+[paths]
+prompts_dir = "./prompts"
+abstracts_dir = "../../gold_standard/abstracts"
+output_dir = "../outputs_json"
