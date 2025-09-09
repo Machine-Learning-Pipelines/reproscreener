@@ -62,15 +62,15 @@ def prepare_arxiv_display_df(df):
     
     # Convert lists to formatted HTML for variables and links
     if "Found Variables" in display_df.columns:
-        display_df["Variables"] = display_df["Found Variables"].apply(format_list_as_html)
+        display_df["Metrics"] = display_df["Found Variables"].apply(format_list_as_html)
         
     if "Found Links" in display_df.columns:
         display_df["Links"] = display_df["Found Links"].apply(format_links_as_html)
     
     # Drop the original columns that have been transformed
     display_columns = ["Paper ID", "Title"]
-    if "Variables" in display_df.columns:
-        display_columns.append("Variables")
+    if "Metrics" in display_df.columns:
+        display_columns.append("Metrics")
     if "Links" in display_df.columns:
         display_columns.append("Links")
     if "Error" in display_df.columns and df["Error"].notna().any():
@@ -196,7 +196,7 @@ def render_combined_results():
         combined_placeholder.subheader(f"{pid}: {clean_title(data['title'])}")
 
         # ------------ Variables ------------
-        combined_placeholder.markdown("**Found Variables**")
+        combined_placeholder.markdown("**Found Metrics**")
         if has_tex_results and has_pdf_results:
             v_col_tex, v_col_pdf = combined_placeholder.columns(2)
 
@@ -207,34 +207,34 @@ def render_combined_results():
                 ])
                 v_col_tex.dataframe(tex_var_df, use_container_width=True)
             else:
-                v_col_tex.info("No variables found in TeX")
+                v_col_tex.info("No metrics found in TeX")
 
             # PDF variables DataFrame
             if data["pdf_vars"]:
                 pdf_var_df = pd.DataFrame([
-                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
+                    {"Metric": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
                 ])
                 v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
             else:
-                v_col_pdf.info("No variables found in PDF")
+                v_col_pdf.info("No metrics found in PDF")
         elif has_tex_results:
             v_col_tex = combined_placeholder.container()
             if data["tex_vars"]:
                 tex_var_df = pd.DataFrame([
-                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
+                    {"Metric": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["tex_vars"].items()
                 ])
                 v_col_tex.dataframe(tex_var_df, use_container_width=True)
             else:
-                v_col_tex.info("No variables found in TeX")
+                v_col_tex.info("No metrics found in TeX")
         elif has_pdf_results:
             v_col_pdf = combined_placeholder.container()
             if data["pdf_vars"]:
                 pdf_var_df = pd.DataFrame([
-                    {"Variable": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
+                    {"Metric": k, "Matched Phrase": "\n".join(sorted(v))} for k, v in data["pdf_vars"].items()
                 ])
                 v_col_pdf.dataframe(pdf_var_df, use_container_width=True)
             else:
-                v_col_pdf.info("No variables found in PDF")
+                v_col_pdf.info("No metrics found in PDF")
 
         # ------------ Links ------------
         combined_placeholder.markdown("**Found Links**")
