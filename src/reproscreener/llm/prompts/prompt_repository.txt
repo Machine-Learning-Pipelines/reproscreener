@@ -1,0 +1,153 @@
+Your role is to evaluate the provided file tree and README from a code repository for **reproducibility metrics**. Follow these steps carefully:
+
+1. **Parsed README sub‐metrics** (look specifically in “README.md,” “README.txt,” or similarly named files):
+   - **Dependencies**: Do you see the words “dependencies,” “libraries,” “toolkits,” “packages,” or “prerequisites”? If yes, capture the snippet in `matched_content`.
+   - **Requirements**: Any mention of “requirements” or “requirements file”? Capture the snippet in `matched_content`.
+   - **Setup**: Any mention of “setup,” “configure,” or “how to prepare environment / local environment,” etc.? Capture the snippet in `matched_content`.
+   - **Installation**: Any instructions or mention of “install” or “installation,” “pip install,” or “conda install,” etc.? Capture it in `matched_content`.
+
+2. **Wrapper Scripts**: 
+   - Look in the file tree for script names that might orchestrate code execution (e.g., `run.sh`, `main.py`, `start.sh`, `run_experiments.py`, `Makefile`, `Dockerfile`). Return them in `matched_filename` if found.
+
+3. **Software Dependencies**:
+   - Look in the file tree for environment or dependency files, such as `requirements.txt`, `environment.yml`, `pyproject.toml`, `setup.py`, `conda_reqs.txt`, `pip_reqs.txt`, `Dockerfile`. Return them in `matched_filename` if found.
+
+**Scoring**:
+- Use **1** if you find clear evidence of the metric (e.g., snippet or filename).
+- Use **0** if no evidence.
+
+**Output**:
+Return **exactly** a JSON array with 6 objects, one for each metric:
+1. `"evaluation_metric": "Parsed Readme: Dependencies"`
+2. `"evaluation_metric": "Parsed Readme: Requirements"`
+3. `"evaluation_metric": "Parsed Readme: Setup"`
+4. `"evaluation_metric": "Parsed Readme: Installation"`
+5. `"evaluation_metric": "Wrapper Scripts"`
+6. `"evaluation_metric": "Software Dependencies"`
+
+Each object includes:
+```json
+{
+  "evaluation_metric": "...",
+  "matched_content": "" (for README sub‐metrics only),
+  "matched_filename": "" (for Wrapper/Software files),
+  "score": 0 or 1
+}
+
+### **Example Input:**
+
+```
+File tree structure of the repository:
+```
+├── tqc
+│   ├── __init__.py
+│   ├── functions.py
+│   ├── structures.py
+│   └── trainer.py
+├── .gitignore
+├── LICENSE
+├── main.py
+├── README.md
+├── run_experiment.sh
+└── run_experiment_data_efficient.sh
+```
+Contents of the README file:
+```
+# Adaptively Calibrated Critic Estimates for Deep Reinforcement Learning
+<img src="https://user-images.githubusercontent.com/21196568/143023503-70cdf47a-d039-4c20-9e3c-efa23d3f0383.png">
+
+Official implementation of ACC, described in the paper
+["Adaptively Calibrated Critic Estimates for Deep Reinforcement Learning"](https://arxiv.org/abs/2111.12673).
+The source code is based on the pytorch implementation of [TQC](https://github.com/SamsungLabs/tqc_pytorch),
+which again is based on [TD3](https://github.com/sfujim/TD3). 
+We thank the authors for making their source code publicly available.
+
+## Requirements
+### Install MuJoCo
+
+1. [Download](https://www.roboti.us/index.html) and install MuJoCo 1.50 from the MuJoCo website.
+We assume that the MuJoCo files are extracted to the default location (`~/.mujoco/mjpro150`).
+
+2. Copy your MuJoCo license key (mjkey.txt) to ```~/.mujoco/mjkey.txt```:
+
+### Install 
+We recommend to use an anaconda environment.
+In our experiments we used ```python 3.7``` and the following dependencies
+```
+pip install gym==0.17.2 mujoco-py==1.50.1.68 numpy==1.19.1 torch==1.6.0 torchvision==0.7.0
+
+```
+
+## Running ACC
+You can run ACC for TQC on one of the gym continuous control environments by calling
+```
+python main.py --env "HalfCheetah-v3" --max_timesteps 5000000 --seed 0
+```
+To run the data efficient variant with 4 critic update steps per environment step you can call
+
+```
+python main.py --env "HalfCheetah-v3" --max_timesteps 1000000 --num_critic_updates 4 --seed 0
+```
+An example script that runs the experiments for 10 seeds and all environments is in
+```run_experiment.sh``` and ```run_experiment_data_efficient.sh```.
+
+You can speed up the experiments by using fewer networks in the ensemble of TQC.
+This trades off a little bit of performance for a faster runtime (see the Appendix of the paper).
+The number of networks can be controlled with the flag
+```--n_nets```. For example
+```
+python main.py --env "HalfCheetah-v3" --max_timesteps 5000000 --n_nets 2--seed 0
+```
+```
+
+### **Example JSON Output:**
+
+```json
+[
+  {
+    "evaluation_metric": "Parsed Readme: Dependencies",
+    "matched_content": "dependencies",
+    "score": 1
+  },
+  {
+    "evaluation_metric": "Parsed Readme: Requirements",
+    "matched_content": "## Requirements",
+    "score": 1
+  },
+  {
+    "evaluation_metric": "Parsed Readme: Setup",
+    "matched_content": "",
+    "score": 0
+  },
+  {
+    "evaluation_metric": "Parsed Readme: Installation",
+    "matched_content": "### Install",
+    "score": 1
+  },
+  {
+    "evaluation_metric": "Wrapper Scripts",
+    "matched_filename": "run_experiment.sh",
+    "score": 1
+  },
+  {
+    "evaluation_metric": "Software Dependencies",
+    "matched_filename": "",
+    "score": 0
+  }
+]
+```
+
+#### Explanation of Example
+
+- **Parsed Readme: Dependencies**: `README.md` contains "In our experiments we used ```python 3.7``` and the following dependencies" which implying of dependency information
+- **Parsed Readme: Requirements/Installation**: `README.md` contains both as headers 
+- **Wrapper Scripts**: `run_experiments.sh` is present in the repo
+- **Software Dependencies**: There aren't requirements related files in the repo
+
+Remember:
+
+- **Parsed Readme** sub-metrics → Return `matched_content`.
+- **Wrapper Scripts** and **Software Dependencies** → Return `matched_filename`.
+- In all cases, include a numerical `score` in `[0, 1]`.
+
+Use this structure whenever you evaluate a new repository. Your response must always be valid JSON, and each metric object in your array must include an **evaluation_metric** key plus either **matched_content** or **matched_filename**, and finally a **score**.
