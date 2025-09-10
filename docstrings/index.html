@@ -1,0 +1,1486 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../evaluation_results/">
+      
+      
+        <link rel="next" href="../z_references/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Architecture - reproscreener</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="reproscreener" class="md-header__button md-logo" aria-label="reproscreener" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            reproscreener
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Machine-Learning-Pipelines/reproscreener/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../usage/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Usage
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../manual_evaluation_explorer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Manual Evaluation Explorer
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../evaluation_results/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Case studies
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../z_references/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  References
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  License
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../funding/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Funding
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="reproscreener" class="md-nav__button md-logo" aria-label="reproscreener" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    reproscreener
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Machine-Learning-Pipelines/reproscreener/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manual_evaluation_explorer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual Evaluation Explorer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation_results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Case studies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#paper_analyzer-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      paper_analyzer module
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="paper_analyzer module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      paper_analyzer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_abstract_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_abstract_file
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_abstracts_directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_abstracts_directory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_arxiv_paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_arxiv_paper
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="analyze_arxiv_paper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_arxiv_paper--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_arxiv_paper--returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Returns:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.analyze_content" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.combine_files_in_folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      combine_files_in_folder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.download_extract_source" class="md-nav__link">
+    <span class="md-ellipsis">
+      download_extract_source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.download_pdf_and_convert" class="md-nav__link">
+    <span class="md-ellipsis">
+      download_pdf_and_convert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.extract_category_presence_from_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_category_presence_from_text
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.extract_urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_urls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.find_data_repository_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      find_data_repository_links
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.find_variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      find_variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.paper_analyzer.parse_arxiv_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      parse_arxiv_id
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repo_analyzer-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      repo_analyzer module
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="repo_analyzer module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.repo_analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      repo_analyzer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.repo_analyzer.analyze_github_repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_github_repo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.repo_analyzer.analyze_repository_structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      analyze_repository_structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.repo_analyzer.check_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.repo_analyzer.clone_repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      clone_repo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keywords-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      keywords module
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="keywords module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      keywords
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproscreener.analysis.keywords.generate_gunderson_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      generate_gunderson_dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../z_references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../funding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="architecture">Architecture</h1>
+<p>This page documents the public API of the three core modules that power <strong>reproscreener</strong>.</p>
+<h2 id="paper_analyzer-module"><code>paper_analyzer</code> module</h2>
+<p>The <code>paper_analyzer</code> module is responsible for analysing individual research papers hosted on arXiv.
+It can:</p>
+<ul>
+<li>Parse canonical arXiv identifiers from arbitrary arXiv URLs.</li>
+<li>Download either the TeX source bundle (<strong>e-print</strong>) or the PDF of the paper.</li>
+<li>Optionally convert PDFs to Markdown via <code>docling</code> for easier text processing.</li>
+<li>Extract reproducibility variables (problem statements, dataset mentions, hypotheses, etc.).</li>
+<li>Detect external links such as source-code or data repositories contained in the manuscript.</li>
+<li>Return the results as a convenient <code>pandas.DataFrame</code>.</li>
+</ul>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="reproscreener.analysis.paper_analyzer"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.analyze_abstract_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_abstract_file</span><span class="p">(</span><span class="n">abstract_path</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Analyze a single abstract .txt file and return a row dict for the CSV.
+The paper_id is derived from the filename stem.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.analyze_abstracts_directory" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_abstracts_directory</span><span class="p">(</span><span class="n">abstracts_dir</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Analyze all .txt abstracts in a directory and return a DataFrame with
+the expected CSV columns.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.analyze_arxiv_paper" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_arxiv_paper</span><span class="p">(</span><span class="n">arxiv_url</span><span class="p">,</span> <span class="n">download_dir</span><span class="p">,</span> <span class="n">url_type</span><span class="o">=</span><span class="s1">&#39;tex&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Main function to download, extract, and analyze an arXiv paper.</p>
+<h5 id="reproscreener.analysis.paper_analyzer.analyze_arxiv_paper--parameters">Parameters:</h5>
+<p>arxiv_url : str
+    The arXiv URL of the paper
+download_dir : Path
+    Directory to download and store the paper
+url_type : str
+    Type of arXiv URL, either "tex" or "pdf"</p>
+<h5 id="reproscreener.analysis.paper_analyzer.analyze_arxiv_paper--returns">Returns:</h5>
+<p>pd.DataFrame
+    Analysis results as a DataFrame</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.analyze_content" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_content</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">paper_id</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Evaluate a paper by extracting variables and URLs from its files.
+Returns a DataFrame with evaluation results.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.combine_files_in_folder" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">combine_files_in_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;.tex&#39;</span><span class="p">,</span> <span class="s1">&#39;.md&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">])</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Combine all files with specified extensions in a given directory into a single file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.download_extract_source" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">download_extract_source</span><span class="p">(</span><span class="n">arxiv_url</span><span class="p">,</span> <span class="n">path_download</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Downloads and extracts the source code of an ArXiv paper from its URL.
+Also retrieves the paper title from the arXiv API.
+Returns the paper title and the download directory path.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.download_pdf_and_convert" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">download_pdf_and_convert</span><span class="p">(</span><span class="n">arxiv_url</span><span class="p">,</span> <span class="n">path_download</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Downloads a PDF from arXiv and converts it to markdown using docling.
+Returns the paper title and the path to the markdown file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.extract_category_presence_from_text" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extract_category_presence_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Given raw text (e.g., an abstract), return boolean presence for each
+category relevant to the gold-standard CSV output.</p>
+<p>Output keys (CSV columns):
+- problem
+- objective
+- research_method
+- research_questions
+- pseudocode
+- dataset
+- hypothesis
+- prediction
+- code_available (mapped from method_source_code)
+- software_dependencies
+- experiment_setup</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.extract_urls" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extract_urls</span><span class="p">(</span><span class="n">combined_path</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Extract URLs from the combined file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.find_data_repository_links" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_data_repository_links</span><span class="p">(</span><span class="n">url_list</span><span class="p">,</span> <span class="n">allowed_domains</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;github&#39;</span><span class="p">,</span> <span class="s1">&#39;gitlab&#39;</span><span class="p">,</span> <span class="s1">&#39;bitbucket&#39;</span><span class="p">,</span> <span class="s1">&#39;zenodo&#39;</span><span class="p">])</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Find URLs belonging to allowed domains.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.find_variables" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_variables</span><span class="p">(</span><span class="n">combined_path</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a list of (variable_category, matched_phrase) pairs found in the paper.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.paper_analyzer.parse_arxiv_id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_arxiv_id</span><span class="p">(</span><span class="n">arxiv_url</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Extract the canonical arXiv identifier (without version or extension)
+from <em>arxiv_url</em> which may be any of:
+• https://arxiv.org/abs/1909.00066v1
+• https://arxiv.org/pdf/1909.00066.pdf
+• https://arxiv.org/pdf/1909.00066v2.pdf
+• https://arxiv.org/src/1909.00066
+• https://arxiv.org/e-print/1909.00066
+Returns the bare identifier, e.g. <code>1909.00066</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="repo_analyzer-module"><code>repo_analyzer</code> module</h2>
+<p>The <code>repo_analyzer</code> module evaluates the structure of a Git repository that claims to implement the research.
+Its main tasks are:</p>
+<ul>
+<li>Cloning public repositories (GitHub, GitLab, Bitbucket, …).</li>
+<li>Searching for dependency specification files (e.g. <code>requirements.txt</code>, <code>environment.yml</code>, <code>pyproject.toml</code>, <code>Dockerfile</code>, …).</li>
+<li>Detecting wrapper scripts or entry-point files (<code>run.py</code>, <code>main.sh</code>, <code>Makefile</code>, …).</li>
+<li>Parsing the project's <code>README</code> for sections that describe installation or requirements.</li>
+<li>Aggregating the findings into a tabular report.</li>
+</ul>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="reproscreener.analysis.repo_analyzer"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.repo_analyzer.analyze_github_repo" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_github_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_dir</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Main function to clone and analyze a GitHub repository.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.repo_analyzer.analyze_repository_structure" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">analyze_repository_structure</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Evaluate a repository by checking the existence of certain files and sections in README.
+Returns a DataFrame with the evaluation results.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.repo_analyzer.check_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_files</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">files_to_check</span><span class="p">,</span> <span class="n">current_ext_mapping</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Check if the given files exist in the directory based on ext_mapping.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.repo_analyzer.clone_repo" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clone_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">cloned_path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Clone a repository from the given URL to the given path.
+If the repository already exists, it won't be overwritten unless specified.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="keywords-module"><code>keywords</code> module</h2>
+<p>The <code>keywords</code> module generates the lists of keywords/regular-expression patterns that are used by the analyser modules to identify important concepts inside paper text.
+Currently it implements the metrics from <sup id="fnref:bhaskarReproscreenerLeveragingLLMs2024"><a class="footnote-ref" href="#fn:bhaskarReproscreenerLeveragingLLMs2024">1</a></sup>.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="reproscreener.analysis.keywords"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="reproscreener.analysis.keywords.generate_gunderson_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">generate_gunderson_dict</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Generate a dictionary of Gunderson variables with regex patterns.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>_type_</code></td>            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary of keywords and regex patterns.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><div class="footnote">
+<hr />
+<ol>
+<li id="fn:bhaskarReproscreenerLeveragingLLMs2024">
+<p>Bhaskar, A. and Stodden, V. 2024. <a href="https://doi.org/10.1145/3641525.3663629">Reproscreener: Leveraging LLMs for Assessing Computational Reproducibility of Machine Learning Pipelines</a>. <em>Proceedings of the 2nd ACM Conference on Reproducibility and Replicability</em> (New York, NY, USA, Jul. 2024), 101--109.&#160;<a class="footnote-backref" href="#fnref:bhaskarReproscreenerLeveragingLLMs2024" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["toc.follow", "toc.integrate", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
