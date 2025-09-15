@@ -226,6 +226,122 @@ def analyze_github_repo(repo_url: str, clone_dir: Path) -> Dict[str, Any]:
     
     return results
 
+def analyze_repositories_from_csv(csv_path: Path, clone_dir: Path) -> pd.DataFrame:
+    """
+    Analyze repositories from a CSV file containing paper IDs and repository URLs.
+    Returns a DataFrame with aggregated repository metrics for each paper.
+    """
+    import pandas as pd
+    
+    # Read the manual evaluation CSV
+    try:
+        df_manual = pd.read_csv(csv_path)
+    except Exception as e:
+        log.error(f"Failed to read CSV file {csv_path}: {e}")
+        return pd.DataFrame()
+    
+    # Filter for repositories with URLs
+    df_repos = df_manual[df_manual['code_avail_url'].notna() & (df_manual['code_avail_url'] != '')].copy()
+    
+    rows: List[Dict[str, object]] = []
+    
+    for _, row in df_repos.iterrows():
+        paper_id = row['paper']
+        repo_url = row['code_avail_url']
+        
+        log.info(f"Analyzing repository for paper {paper_id}: {repo_url}")
+        
+        try:
+            # Try to analyze the repository
+            repo_analysis = analyze_github_repo(repo_url, clone_dir)
+            
+            if repo_analysis.get('Error'):
+                log.warning(f"Error analyzing repository for {paper_id}: {repo_analysis['Error']}")
+                # Create a row with all metrics as False
+                repo_row = {
+                    'paper_id': paper_id,
+                    'repo_url': repo_url,
+                    'parsed_dependencies': False,
+                    'parsed_setup': False, 
+                    'parsed_requirements': False,
+                    'parsed_installation': False,
+                    'wrapper_scripts': False,
+                    'software_dependencies': False,
+                    'error': repo_analysis['Error']
+                }
+            else:
+                # Process the analysis results
+                analysis_df = pd.DataFrame(repo_analysis.get('Analysis', []))
+                
+                # Initialize metrics
+                repo_row = {
+                    'paper_id': paper_id,
+                    'repo_url': repo_url,
+                    'parsed_dependencies': False,
+                    'parsed_setup': False,
+                    'parsed_requirements': False,
+                    'parsed_installation': False,
+                    'wrapper_scripts': False,
+                    'software_dependencies': False,
+                    'error': None
+                }
+                
+                if not analysis_df.empty:
+                    # Check for parsed README sections
+                    readme_items = analysis_df[analysis_df['Category'] == 'Parsed Readme']
+                    repo_row['parsed_dependencies'] = bool(readme_items[readme_items['Variable'] == 'readme_dependencies']['Found?'].any())
+                    repo_row['parsed_setup'] = bool(readme_items[readme_items['Variable'] == 'readme_setup']['Found?'].any())
+                    repo_row['parsed_requirements'] = bool(readme_items[readme_items['Variable'] == 'readme_requirements']['Found?'].any())
+                    repo_row['parsed_installation'] = bool(readme_items[readme_items['Variable'] == 'readme_install']['Found?'].any())
+                    
+                    # Check for wrapper scripts
+                    wrapper_items = analysis_df[analysis_df['Category'] == 'Wrapper Scripts']
+                    repo_row['wrapper_scripts'] = bool(wrapper_items['Found?'].any())
+                    
+                    # Check for software dependencies files
+                    dependency_items = analysis_df[analysis_df['Category'] == 'Dependencies']
+                    repo_row['software_dependencies'] = bool(dependency_items['Found?'].any())
+            
+            rows.append(repo_row)
+            
+        except Exception as e:
+            log.error(f"Failed to analyze repository for {paper_id}: {e}")
+            repo_row = {
+                'paper_id': paper_id,
+                'repo_url': repo_url,
+                'parsed_dependencies': False,
+                'parsed_setup': False,
+                'parsed_requirements': False,
+                'parsed_installation': False,
+                'wrapper_scripts': False,
+                'software_dependencies': False,
+                'error': str(e)
+            }
+            rows.append(repo_row)
+    
+    # Create DataFrame with results
+    columns = [
+        'paper_id',
+        'repo_url',
+        'parsed_dependencies',
+        'parsed_setup',
+        'parsed_requirements', 
+        'parsed_installation',
+        'wrapper_scripts',
+        'software_dependencies',
+        'error'
+    ]
+    
+    if not rows:
+        return pd.DataFrame(columns=columns)
+    
+    df_results = pd.DataFrame(rows)
+    
+    # Ensure column order
+    df_results = df_results.reindex(columns=columns)
+    
+    return df_results
+
 def main():
     logging.basicConfig(level=logging.INFO)
     sample_repo_url = "https://github.com/HanGuo97/soft-Q-learning-for-text-generation"

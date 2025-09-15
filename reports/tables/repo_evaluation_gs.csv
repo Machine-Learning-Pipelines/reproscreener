@@ -1,0 +1,42 @@
+paper_id,repo_url,parsed_dependencies,parsed_setup,parsed_requirements,parsed_installation,wrapper_scripts,software_dependencies,error
+Paper,"URL of the repository, if available",False,False,False,False,False,False,"Cmd('git') failed due to: exit code(128)
+  cmdline: git clone -v -- URL of the repository, if available temp_repo_clones/URL of the repository, if available
+  stderr: 'fatal: repository 'URL of the repository, if available' does not exist
+'"
+1909.00931,https://github.com/yukiar/TransferFT,False,False,False,False,False,False,
+2009.01947,https://gitlab.com/luciacyx/nm-adaptive-code,True,False,False,False,True,False,
+2011.11576,https://github.com/jpbrooks/conjecturing,False,False,False,False,False,False,
+2012.09302,https://github.com/ain-soph/trojanzoo,False,False,False,False,False,True,
+2104.11893,https://github.com/jingweio/LGD-GCN,False,False,False,False,False,False,
+2105.01937,https://github.com/BrianG13/FLEX,False,False,True,False,False,True,
+2106.01528,https://github.com/dereklhansen/flowselect,False,False,False,False,False,True,
+2106.03157,https://github.com/kyo-takano/EfficientCube,False,False,False,False,False,True,
+2106.06927,https://github.com/renanrojasg/adv_robust_autoencoder,False,False,False,False,False,True,
+2106.07704,https://github.com/HanGuo97/soft-Q-learning-for-text-generation,False,True,True,False,True,True,
+2107.01131,https://github.com/qingguo666/FLO,False,False,False,False,False,False,
+2108.09779,"https://github.com/pairlab/leibnizgym/
+https://s2r2-ig.github.io/",False,False,False,False,False,False,"Cmd('git') failed due to: exit code(128)
+  cmdline: git clone -v -- https://github.com/pairlab/leibnizgym/
+https://s2r2-ig.github.io/ temp_repo_clones
+  stderr: 'Cloning into 'temp_repo_clones'...
+warning: url contains a newline in its path component: https://github.com/pairlab/leibnizgym/
+https://s2r2-ig.github.io/
+fatal: credential url cannot be parsed: https://github.com/pairlab/leibnizgym/
+https://s2r2-ig.github.io/
+fatal: remote helper 'https' aborted session
+'"
+2109.01372,https://github.com/dataiku-research/sample_noise_impact_on_active_learning,False,False,False,False,False,False,
+2109.12784,https://github.com/tliu1997/TI-SVM/,False,False,False,False,False,False,
+2110.05169,https://github.com/facebookresearch/salina/tree/main/salina_examples/rl/subspace_of_policies,False,False,False,False,False,False,"Cmd('git') failed due to: exit code(128)
+  cmdline: git clone -v -- https://github.com/facebookresearch/salina/tree/main/salina_examples/rl/subspace_of_policies temp_repo_clones/subspace_of_policies
+  stderr: 'Cloning into 'temp_repo_clones/subspace_of_policies'...
+fatal: repository 'https://github.com/facebookresearch/salina/tree/main/salina_examples/rl/subspace_of_policies/' not found
+'"
+2110.08255,https://github.com/18kiran12/Yformer-Time-Series-Forecasting,False,False,False,False,False,True,
+2110.09902,https://github.com/tenghuilee/nnvolterra,False,False,False,False,True,False,
+2110.11688,https://gitlab.inria.fr/pmangold1/private-coordinate-descent/,False,False,False,False,False,False,
+2111.02997,https://github.com/ShangtongZhang/DeepRL,False,False,False,False,True,True,
+2111.12673,https://github.com/nicolinho/acc,False,False,True,True,True,False,
+2111.15449,https://github.com/tianyuzu/pod-loss,False,False,False,False,False,False,
+2112.00016,https://github.com/JessRachel97/Knots_across_dims,False,True,False,False,False,False,
+2112.04871,https://github.com/wentao-xu/kge-cl,True,False,False,False,False,False,
