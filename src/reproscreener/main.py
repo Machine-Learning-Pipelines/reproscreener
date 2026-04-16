@@ -1,78 +1,53 @@
-import argparse
-import logging
-from pathlib import Path
-
-# from .analysis.paper_analyzer import analyze_abstracts_directory
-from .analysis.repo_analyzer import analyze_repositories_from_csv
-# from .manual_evaluations.manual_eval import main as manual_eval_main
+import sqlite3
+from reproscreener.reprodb import MetricSetManager
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Reproscreener CLI"
-    )
-    parser.add_argument(
-        "--gold-abstracts-dir",
-        type=Path,
-        default="../gold_standard/abstracts",
-        help="Path to directory containing gold standard abstract .txt files",
-    )
-    parser.add_argument(
-        "--manual-eval-csv",
-        type=Path,
-        default="notebooks/explore/manual_eval.csv",
-        help="Path to CSV file containing manual evaluation data with repository URLs",
-    )
-    parser.add_argument(
-        "--repo-clone-dir",
-        type=Path,
-        default="temp_repo_clones",
-        help="Directory to clone repositories to for analysis",
-    )
-    parser.add_argument(
-        "--out-csv",
-        type=Path,
-        default="reports/tables/abstract_regex_gs.csv",
-        help="Output CSV path for gold abstract evaluation (defaults to ./reports/tables/abstract_regex_gs.csv)",
-    )
-    parser.add_argument(
-        "--repo-out-csv",
-        type=Path,
-        default="reports/tables/repo_evaluation_gs.csv",
-        help="Output CSV path for repository evaluation (defaults to ./reports/tables/repo_evaluation_gs.csv)",
-    )
-    parser.add_argument(
-        "--analyze-repos",
-        action="store_true",
-        help="Analyze repositories from manual evaluation CSV",
-    )
+    # Initialize
+    conn = sqlite3.connect('reproscreener.db')
+    manager = MetricSetManager(conn)
 
-    args = parser.parse_args()
+    # 1. Create metrics
+    manager.add_metric('code_available', 'Code Available', 'repository')
+    manager.add_metric('dependencies', 'Software Dependencies', 'repository')
+    manager.add_metric('dataset', 'Dataset', 'paper')
+    manager.add_metric('hypothesis', 'Hypothesis', 'paper')
+    manager.add_metric('problem', 'Problem Statement', 'paper')
 
-    logging.basicConfig(level=logging.INFO)
+    # 2. Create metric sets
+    manager.create_metric_set('basic', 'Basic Check', 'Quick reproducibility check')
+    manager.create_metric_set('comprehensive', 'Full Analysis', 'Complete evaluation')
 
-    if args.analyze_repos:
-        print(f"Analyzing repositories from {args.manual_eval_csv}")
-        df = analyze_repositories_from_csv(args.manual_eval_csv, args.repo_clone_dir)
-        out_csv = args.repo_out_csv
-        out_csv.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(out_csv, index=False)
-        print(f"Wrote repository evaluation to {out_csv}")
-        print(f"Analyzed {len(df)} repositories")
-        return
+    # 3. Add metrics to sets
+    # Method 1: Add one at a time with specific positions
+    manager.add_metric_to_set('basic', 'code_available', 1)
+    manager.add_metric_to_set('basic', 'dependencies', 2)
 
-    if args.gold_abstracts_dir is not None:
-        df = analyze_abstracts_directory(args.gold_abstracts_dir)
-        out_csv = args.out_csv or Path("./gold_abstracts_eval.csv")
-        out_csv.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(out_csv, index=False)
-        print(f"Wrote gold abstract evaluation to {out_csv}")
-        return
+    # Method 2: Add multiple at once (auto-positions)
+    manager.add_multiple_metrics_to_set('comprehensive', [
+        'problem', 'hypothesis', 'dataset', 'code_available', 'dependencies'
+    ])
 
-    # repo_analyzer_main()
-    # manual_eval_main()
-    return
+    # 4. Query relationships
+    # Get all metrics in the 'basic' set
+    basic_metrics = manager.get_metrics_in_set('basic')
+    print("Basic set contains:", [m['display_name'] for m in basic_metrics])
 
+    # Find which sets contain 'code_available'
+    sets_with_code = manager.get_sets_containing_metric('code_available')
+    print("'code_available' appears in:", [s['set_name'] for s in sets_with_code])
+
+    # 5. Modify relationships
+    # Remove a metric from a set
+    manager.remove_metric_from_set('basic', 'dependencies')
+
+    # Reorder a metric within a set
+    manager.reorder_metric_in_set('comprehensive', 'dataset', 1)  # Move to position 1
+
+    # 6. Get overview matrix
+    matrix = manager.get_comparison_matrix()
+    print("\nMetric-Set Matrix:")
+    print(matrix)
 
 if __name__ == "__main__":
     main()

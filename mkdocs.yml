@@ -15,7 +15,9 @@ nav:
   - Usage: usage.md
   - Manual evaluation datasets: manual_evaluation_explorer.ipynb
   - Case studies: evaluation_results.ipynb
-  - Architecture: docstrings.md
+  - Metrics: metrics.md
+  - Architecture: architecture.md
+  # - Docs: docstrings.md
   - References: z_references.md
   - License: license.md
   - Funding: funding.md
@@ -45,11 +47,11 @@ plugins:
   - mkdocs-jupyter:
       theme: light
       execute: false
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          paths: [src/reproscreener/]
+  # - mkdocstrings:
+  #     default_handler: python
+  #     handlers:
+  #       python:
+  #         paths: [src/reproscreener/]
   - bibtex:
       bib_file: "docs/references.bib"
       csl_file: "https://raw.githubusercontent.com/citation-style-language/styles/master/acm-sig-proceedings.csl"
