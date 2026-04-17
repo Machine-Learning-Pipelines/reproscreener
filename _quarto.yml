@@ -28,10 +28,10 @@ quartodoc:
       contents:
         # the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
-        - paper_analyzer
-        - repo_analyzer
-        - keywords
-        - webui
+        # - paper_analyzer
+        # - repo_analyzer
+        # - keywords
+        # - webui
 
 website:
   title: "reproscreener"
